@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class MapMgr : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public Map map;
     void Start()
     {
-        
+        InitializeMapData();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void InitializeMapData()
     {
-        
+
     }
 }

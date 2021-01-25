@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class Cube : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] protected List<Cube> neighbors = new List<Cube>();
+    public List<Cube> Neighbors { get => neighbors; set => neighbors = value; }
+    
+    [SerializeField] public Transform platform;
+    public float groundHeight;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        groundHeight = transform.position.y;
     }
 }
