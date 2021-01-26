@@ -10,8 +10,8 @@ public class Cube : MonoBehaviour
     [SerializeField] public Transform platform;
     public float groundHeight;
 
-    private void Start()
+    private void Awake()
     {
-        groundHeight = transform.position.y;
+        groundHeight = platform.position.y;
     }
 }

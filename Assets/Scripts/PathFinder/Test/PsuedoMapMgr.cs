@@ -10,8 +10,4 @@ public class PsuedoMapMgr : MonoBehaviour
 
     public Map map;
 
-    private void Start()
-    {
-        
-    }
 }
