@@ -118,9 +118,9 @@ GameObject:
   - component: {fileID: 7025990094714437955}
   - component: {fileID: 6979911564697511371}
   - component: {fileID: 7158171346263585431}
-  - component: {fileID: 3155972006670850411}
+  - component: {fileID: -8065024636235403933}
   m_Layer: 0
-  m_Name: PsuedoCube
+  m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -190,7 +190,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 7051658874182861775}
   m_Enabled: 1
---- !u!114 &3155972006670850411
+--- !u!114 &-8065024636235403933
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -199,7 +199,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7027995579611356079}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1751b409df2d8f8488c51c272026c235, type: 3}
+  m_Script: {fileID: 11500000, guid: 565ba9ea69779d4448ea3861cbb0d3f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   neighbors: []
