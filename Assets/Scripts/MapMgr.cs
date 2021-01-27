@@ -14,4 +14,16 @@ public class MapMgr : MonoBehaviour
     {
 
     }
+
+    public void BlinkCubes(List<Cube> cubes, float intensity)
+    {
+        foreach(var cube in cubes)
+            cube.SetBlink(intensity);
+    }
+
+    public void StopBlinkAll()
+    {
+        foreach(var cube in map.Cubes)
+            cube.StopBlink();
+    }
 }

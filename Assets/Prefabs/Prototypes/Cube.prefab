@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4645231809078179430}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 7034568787706245805}
   - component: {fileID: 7059471774229931829}
   - component: {fileID: 7051658874182861775}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: block_brick_black_3_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,8 +118,9 @@ GameObject:
   - component: {fileID: 7025990094714437955}
   - component: {fileID: 6979911564697511371}
   - component: {fileID: 7158171346263585431}
+  - component: {fileID: 870320578484474995}
   - component: {fileID: -8065024636235403933}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -190,6 +191,19 @@ LODGroup:
     renderers:
     - renderer: {fileID: 7051658874182861775}
   m_Enabled: 1
+--- !u!65 &870320578484474995
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7027995579611356079}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-8065024636235403933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,7 +218,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   neighbors: []
   platform: {fileID: 4645231809078179430}
+  pathRequester: {fileID: 0}
   groundHeight: 0
+  neighborMaxDistance: 1.1
+  _paths: []
 --- !u!1 &7028660774964400377
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,7 +233,7 @@ GameObject:
   - component: {fileID: 7034284869716675059}
   - component: {fileID: 7059636523424273861}
   - component: {fileID: 7052536237697607221}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: block_brick_black_3_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,7 +310,7 @@ GameObject:
   - component: {fileID: 7034445141735852769}
   - component: {fileID: 7058950397117189027}
   - component: {fileID: 7051643841922614483}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: block_brick_black_3_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -2,32 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PsuedoCube : MonoBehaviour
+public class PsuedoCube : Cube
 {
-    [SerializeField] protected List<PsuedoCube> neighbors = new List<PsuedoCube>();
-    public List<PsuedoCube> Neighbors { get => neighbors; set => neighbors = value; }
-
-    [SerializeField] public Transform platform;
-    public float groundHeight;
-
-    private void Start()
+    [SerializeField] [Range(0, 1)] float blinkIntensity = 0f;
+    [SerializeField] bool blinking = false;
+    private void Awake()
     {
         groundHeight = transform.position.y;
-        PsuedoCube[] cubeArr = FindObjectsOfType<PsuedoCube>();
-        foreach(var c in cubeArr)
-        {
-            c.RegisterIfItsNeighbor(this);
-        }
     }
 
-    public void RegisterIfItsNeighbor(PsuedoCube registerer)
-    {
-        Vector2 registererPlanePos = new Vector2(registerer.transform.position.x, registerer.transform.position.z);
-        Vector2 myPlanePos = new Vector2(transform.position.x, transform.position.z);
+    //private void Update()
+    //{
+    //    if (blinking)
+    //        SetBlink(blinkIntensity);
+    //    else
+    //        StopBlink();
+    //}
 
-        if (Vector2.Distance(registererPlanePos, myPlanePos) < 1.1f && registerer != this)
-        {
-            Neighbors.Add(registerer);
-        }
-    }
+
+
 }
