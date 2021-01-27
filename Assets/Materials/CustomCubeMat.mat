@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CubeMat
+  m_Name: CustomCubeMat
   m_Shader: {fileID: -6465566751694194690, guid: 3ec7df8abd282514385e32e8343e6372,
     type: 3}
   m_ShaderKeywords: 
@@ -29,6 +29,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Boolean_61BC6E3A: 0
+    - Boolean_61BC6E3A: 1
+    - Vector1_B12ECF3: 0
     - Vector1_EC83A206: 10
+    - _BlinkSpeed: 10
+    - _ColorIntensity: 0
+    - _isBlinking: 1
     m_Colors: []

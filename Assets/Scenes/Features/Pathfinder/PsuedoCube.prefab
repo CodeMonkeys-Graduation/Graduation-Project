@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4645231809078179430}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 7034568787706245805}
   - component: {fileID: 7059471774229931829}
   - component: {fileID: 7051658874182861775}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: block_brick_black_3_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,8 +118,9 @@ GameObject:
   - component: {fileID: 7025990094714437955}
   - component: {fileID: 6979911564697511371}
   - component: {fileID: 7158171346263585431}
+  - component: {fileID: 5097294133748266752}
   - component: {fileID: 3155972006670850411}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PsuedoCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,6 +142,7 @@ Transform:
   - {fileID: 7034445141735852769}
   - {fileID: 7034284869716675059}
   - {fileID: 7034568787706245805}
+  - {fileID: 7623422682187532780}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -190,6 +192,19 @@ LODGroup:
     renderers:
     - renderer: {fileID: 7051658874182861775}
   m_Enabled: 1
+--- !u!65 &5097294133748266752
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7027995579611356079}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3155972006670850411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,7 +219,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   neighbors: []
   platform: {fileID: 4645231809078179430}
+  pathRequester: {fileID: 0}
   groundHeight: 0
+  neighborMaxDistance: 1.1
+  _paths: []
+  blinkIntensity: 0
+  blinking: 0
 --- !u!1 &7028660774964400377
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,7 +236,7 @@ GameObject:
   - component: {fileID: 7034284869716675059}
   - component: {fileID: 7059636523424273861}
   - component: {fileID: 7052536237697607221}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: block_brick_black_3_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,7 +313,7 @@ GameObject:
   - component: {fileID: 7034445141735852769}
   - component: {fileID: 7058950397117189027}
   - component: {fileID: 7051643841922614483}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: block_brick_black_3_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -359,3 +379,33 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &7416463821735390146
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7623422682187532780}
+  m_Layer: 8
+  m_Name: Paths
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7623422682187532780
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7416463821735390146}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7025990094714437955}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

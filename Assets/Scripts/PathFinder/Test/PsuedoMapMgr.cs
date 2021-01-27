@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PsuedoMapMgr : MonoBehaviour
+public class PsuedoMapMgr : MapMgr
 {
     [SerializeField] List<PsuedoCube> cubes;
 
-    public List<List<PsuedoCube>> cubeSorted;
-
-    public Map map;
+    private void Awake()
+    {
+        map = new Map();
+        foreach(var cube in cubes)
+            map.AddNode(cube);
+    }
 
 }
