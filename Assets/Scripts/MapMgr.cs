@@ -1,18 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+
 
 public class MapMgr : MonoBehaviour
 {
     public Map map;
+    private void Reset()
+    {
+        map = new Map(FindObjectsOfType<Cube>().ToList());
+    }
     void Start()
     {
         InitializeMapData();
-    }
-
-    private void InitializeMapData()
-    {
-
     }
 
     public void BlinkCubes(List<Cube> cubes, float intensity)
@@ -26,4 +27,6 @@ public class MapMgr : MonoBehaviour
         foreach(var cube in map.Cubes)
             cube.StopBlink();
     }
+
+    private void InitializeMapData() => map = new Map(FindObjectsOfType<Cube>().ToList());
 }

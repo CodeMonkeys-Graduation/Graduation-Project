@@ -13,26 +13,13 @@ public class PathRequester : MonoBehaviour
     /// </summary>
     /// <param name="start">경로의 시작 큐브</param>
     /// <param name="OnServe">경로를 찾은 후 실행할 함수</param>
-    public void Request(Cube start, Action<List<Path>> OnServe)
-    {
-        pathFinder.Request(mapMgr.map, start, OnServe);
-    }
+    public void RequestAsync(Cube start, Action<List<Path>> OnServe) => pathFinder.Request(mapMgr.map, start, OnServe);
 
     /// <summary>
     /// 에디터 모드에서 실행하는 용입니다. 코루틴으로 하지않기 때문에 프레임이 떨어집니다.
     /// </summary>
     /// <param name="start">경로의 시작 큐브</param>
     /// <returns>시작 큐브로부터 모든 큐브로의 경로들</returns>
-    public List<Path> Request(Cube start)
-    {
-        Map map = new Map();
-        Cube[] cubes = FindObjectsOfType<Cube>();
-        foreach(var cube in cubes)
-        {
-            map.AddNode(cube);
-        }
+    public List<Path> RequestSync(Cube start) => pathFinder.DijkstraPathfinding(mapMgr.map, start);
 
-
-        return pathFinder.DijkstraPathfinding(map, start);
-    }
 }

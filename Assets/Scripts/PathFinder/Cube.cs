@@ -11,8 +11,8 @@ public class Cube : MonoBehaviour
     public float groundHeight;
     public float neighborMaxDistance = 1.1f;
     
-    [SerializeField] public List<Path> _paths; // Dictionary<destination, Path>
-    public void Reset()
+    [SerializeField] public List<Path> paths; // Dictionary<destination, Path>
+    private void Reset()
     {
         neighbors.Clear();
         neighbors = GetNeighbors();
@@ -21,8 +21,8 @@ public class Cube : MonoBehaviour
         platform = transform.Find("Platform");
         groundHeight = platform.position.y;
 
-        _paths.Clear();
-        _paths.AddRange(pathRequester.Request(this));
+        paths.Clear();
+        paths.AddRange(pathRequester.RequestSync(this));
     }
 
     public void SetBlink(float intensity)
@@ -37,9 +37,8 @@ public class Cube : MonoBehaviour
             renderer.material.SetFloat("_ColorIntensity", 0f);
     }
 
-    public void ClearNeighbor() => neighbors.Clear();
 
-    public List<Cube> GetNeighbors()
+    private List<Cube> GetNeighbors()
     {
         List<Cube> neighbors = new List<Cube>();
         Cube[] cubes = FindObjectsOfType<Cube>();
@@ -50,7 +49,7 @@ public class Cube : MonoBehaviour
         return neighbors;
     }
 
-    public bool NeighborCondition(Cube candidate)
+    private bool NeighborCondition(Cube candidate)
     {
         Vector2 registererPlanePos = new Vector2(candidate.transform.position.x, candidate.transform.position.z);
         Vector2 myPlanePos = new Vector2(transform.position.x, transform.position.z);
@@ -58,7 +57,5 @@ public class Cube : MonoBehaviour
         return Vector2.Distance(registererPlanePos, myPlanePos) < neighborMaxDistance && 
             candidate != this;
     }
-
-    public void ClearPaths() => _paths.Clear();
 
 }

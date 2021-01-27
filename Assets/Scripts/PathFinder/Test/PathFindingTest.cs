@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class FindingTest : MonoBehaviour
+public class PathFindingTest : MonoBehaviour
 {
     [SerializeField] LayerMask cubeLayer;
     public Cube start;
@@ -32,7 +32,7 @@ public class FindingTest : MonoBehaviour
                     {
                         FindObjectOfType<MapMgr>().StopBlinkAll();
                         start = hit.collider.GetComponent<Cube>();
-                        foreach(var path in start._paths.Where((p) => p.path.Count <= moveRange))
+                        foreach(var path in start.paths.Where((p) => p.path.Count <= moveRange))
                         {
                             PathVisualize(path);
                         }
@@ -41,7 +41,7 @@ public class FindingTest : MonoBehaviour
                     {
                         FindObjectOfType<MapMgr>().StopBlinkAll();
                         destination = hit.collider.GetComponent<Cube>();
-                        PathVisualize(start._paths.Find((p) => p.destination == destination));
+                        PathVisualize(start.paths.Find((p) => p.destination == destination));
 
                         start = null;
                         destination = null;
