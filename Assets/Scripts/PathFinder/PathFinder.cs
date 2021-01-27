@@ -10,29 +10,16 @@ public class Path
     public Cube start;
     public Cube destination;
     public List<Cube> path;
+    public int cost;
     public int Length { get => path.Count; }
 
-    public Path(Cube start, Cube destination)
+    public Path(Cube start, Cube destination, int cost = 0)
     {
         this.start = start;
         this.destination = destination;
         path = new List<Cube>();
+        this.cost = cost;
     }
-
-    //public static Path CreateInstance(Cube start, Cube destination)
-    //{
-    //    var data = ScriptableObject.CreateInstance<Path>();
-    //    data.Init(start, destination);
-    //    return data;
-    //}
-
-    //public void Init(Cube start, Cube destination)
-    //{
-    //    this.start = start;
-    //    this.destination = destination;
-    //    path = new List<Cube>();
-    //}
-    
 
     public void Add(Cube cube) => path.Add(cube);
     public void Remove(Cube cube) => path.Remove(cube);
@@ -110,8 +97,8 @@ public class Pathfinder : MonoBehaviour
         OnSearchBegin();
 
         // Dijkstra
-        Table Table = new Table(map.Cubes.ToList());
-        Table[start].cost = 0;
+        Table table = new Table(map.Cubes.ToList());
+        table[start].cost = 0;
 
         Dictionary<Cube, bool> visited = new Dictionary<Cube, bool>();
         foreach (var cube in map.Cubes)
@@ -121,30 +108,14 @@ public class Pathfinder : MonoBehaviour
         while (true)
         {
             // find least cost && unvisited node from table
-            Node currNode = null;
-            int currCost = int.MaxValue;
-            foreach (var node in Table.nodes)
-            {
-                if (node.cost < currCost && visited[node.cube] == false)
-                {
-                    currNode = node;
-                    currCost = node.cost;
-                }
-            }
+            Node currNode;
+            GetUnvisitedNLeastCostFromTable(table, visited, out currNode);
             if (currNode == null) break;
 
             visited[currNode.cube] = true;
 
             // update via currNode
-            foreach (var neighborCube in currNode.cube.neighbors)
-            {
-                Node neighborNode = Table.Find(neighborCube);
-                if (currNode.cost + 1 < neighborNode.cost)
-                {
-                    neighborNode.prevNode = Table.Find(currNode.cube);
-                    neighborNode.cost = currNode.cost + 1;
-                }
-            }
+            UpdateTable(table, currNode);
 
             // check if visited all nodes
             if (!visited.ContainsValue(false)) break;
@@ -154,7 +125,7 @@ public class Pathfinder : MonoBehaviour
         // to Each Cube 
         // from the Start Cube
         List<Path> paths = new List<Path>();
-        foreach (var node in Table.nodes)
+        foreach (var node in table.nodes)
         {
             Path path = new Path(start, node.cube);
             path.Add(node.cube); // add destination first
@@ -176,7 +147,7 @@ public class Pathfinder : MonoBehaviour
         return paths;
     }
 
-    
+
     /// <summary>
     /// 오래걸리는 함수이므로 런타임에는 코루틴인 이 함수를 사용하여야 합니다.
     /// </summary>
@@ -186,8 +157,8 @@ public class Pathfinder : MonoBehaviour
         OnSearchBegin();
 
         // Dijkstra
-        Table Table = new Table(map.Cubes.ToList());
-        Table[start].cost = 0;
+        Table table = new Table(map.Cubes.ToList());
+        table[start].cost = 0;
 
         Dictionary<Cube, bool> visited = new Dictionary<Cube, bool>();
         foreach (var cube in map.Cubes)
@@ -196,31 +167,14 @@ public class Pathfinder : MonoBehaviour
 
         while (true)
         {
-            // find least cost && unvisited node from table
-            Node currNode = null;
-            int currCost = int.MaxValue;
-            foreach (var node in Table.nodes)
-            {
-                if (node.cost < currCost && visited[node.cube] == false)
-                {
-                    currNode = node;
-                    currCost = node.cost;
-                }
-            }
+            Node currNode;
+            GetUnvisitedNLeastCostFromTable(table, visited, out currNode);
             if (currNode == null) break;
 
             visited[currNode.cube] = true;
 
             // update via currNode
-            foreach (var neighborCube in currNode.cube.neighbors)
-            {
-                Node neighborNode = Table.Find(neighborCube);
-                if (currNode.cost + 1 < neighborNode.cost)
-                {
-                    neighborNode.prevNode = Table.Find(currNode.cube);
-                    neighborNode.cost = currNode.cost + 1;
-                }
-            }
+            UpdateTable(table, currNode);
 
 
             // check if visited all nodes
@@ -235,7 +189,7 @@ public class Pathfinder : MonoBehaviour
         // to Each Cube 
         // from the Start Cube
         List<Path> paths = new List<Path>();
-        foreach (var node in Table.nodes)
+        foreach (var node in table.nodes)
         {
             Path path = new Path(start, node.cube);
             path.Add(node.cube); // add destination first
@@ -259,4 +213,33 @@ public class Pathfinder : MonoBehaviour
         OnServe(paths);
         OnSearchEnd();
     }
+
+    private void GetUnvisitedNLeastCostFromTable(Table table, Dictionary<Cube, bool> visited, out Node currNode)
+    {
+        currNode = null;
+        int currCost = int.MaxValue;
+        foreach (var node in table.nodes)
+        {
+            if (node.cost < currCost && visited[node.cube] == false)
+            {
+                currNode = node;
+                currCost = node.cost;
+            }
+        }
+
+    }
+
+    private void UpdateTable(Table Table, Node currNode)
+    {
+        foreach (var neighborCube in currNode.cube.neighbors)
+        {
+            Node neighborNode = Table.Find(neighborCube);
+            if (currNode.cost + 1 < neighborNode.cost)
+            {
+                neighborNode.prevNode = Table.Find(currNode.cube);
+                neighborNode.cost = currNode.cost + 1;
+            }
+        }
+    }
+
 }
