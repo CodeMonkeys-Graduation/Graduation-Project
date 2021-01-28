@@ -23,7 +23,7 @@ public class StateTransitionTest : MonoBehaviour
         }
         if (ToRun)
         {
-            unit.stateMachine.ChangeState(new UnitRun(unit), StateMachine<Unit>.StateChangeMethod.PopNPush);
+            unit.stateMachine.ChangeState(new UnitRun(unit, null), StateMachine<Unit>.StateChangeMethod.PopNPush);
             ToRun = false;
         }
     }

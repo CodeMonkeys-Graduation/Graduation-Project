@@ -9,12 +9,12 @@ public class UnitIdle : State<Unit>
     public override void Enter()
     {
         owner.anim.SetTrigger("ToIdle");
-        Debug.Log("UnitIdle Enter");
+        //Debug.Log("UnitIdle Enter");
     }
 
     public override void Execute()
     {
-        Debug.Log("UnitIdle Execute");
+        //Debug.Log("UnitIdle Execute");
     }
 
     public override void Exit()

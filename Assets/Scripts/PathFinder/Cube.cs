@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Cube : MonoBehaviour
+public class Cube : MonoBehaviour, IClickable
 {
     [SerializeField] public List<Cube> neighbors = new List<Cube>();
     [SerializeField] public Transform platform;
@@ -37,6 +37,11 @@ public class Cube : MonoBehaviour
             renderer.material.SetFloat("_ColorIntensity", 0f);
     }
 
+    public void OnClick()
+    {
+
+    }
+
 
     private List<Cube> GetNeighbors()
     {
@@ -58,4 +63,5 @@ public class Cube : MonoBehaviour
             candidate != this;
     }
 
+    
 }

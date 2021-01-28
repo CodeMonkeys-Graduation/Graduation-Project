@@ -9,12 +9,12 @@ public class UnitAttack : State<Unit>
     public override void Enter()
     {
         owner.anim.SetTrigger("ToAttack");
-        Debug.Log("UnitAttack Enter");
+        //Debug.Log("UnitAttack Enter");
     }
 
     public override void Execute()
     {
-        Debug.Log("UnitAttack Execute " + owner.anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"));
+        //Debug.Log("UnitAttack Execute " + owner.anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"));
 
         if(!owner.anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
         {

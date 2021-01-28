@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SwordMan : Unit
+public class SwordMan : Unit, IClickable
 {
-
     // Start is called before the first frame update
     public override void Start()
     {
@@ -15,6 +14,11 @@ public class SwordMan : Unit
     void Update()
     {
         stateMachine.Run();
+    }
+
+    public void OnClick()
+    {
+        Debug.Log(gameObject.name + " OnClick");
     }
 
 
