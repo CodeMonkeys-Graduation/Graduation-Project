@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PathRequester : MonoBehaviour
 {
+    [Header ("Set in Editor")]
     [SerializeField] Pathfinder pathFinder;
     [SerializeField] MapMgr mapMgr;
 
