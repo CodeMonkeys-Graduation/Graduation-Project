@@ -19,6 +19,14 @@ public class MapMgr : MonoBehaviour
         InitializeMapData();
     }
 
+    public List<Cube> GetCubes(Cube fromCube, int distance, bool excludeFromCube = true)
+    {
+        List<Cube> cubes = fromCube.paths.Where((p) => p.path.Count <= distance).Select((p) => p.destination).ToList();
+        if (excludeFromCube) cubes.Remove(fromCube);
+
+        return cubes;
+    }
+
     public void BlinkCubes(List<Cube> cubes, float intensity)
     {
         foreach(var cube in cubes)
