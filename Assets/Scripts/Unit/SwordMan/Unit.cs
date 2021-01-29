@@ -14,7 +14,8 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] public int basicAttackDamage;
     [SerializeField] public int basicAttackRange;
     [SerializeField] public float moveSpeed;
-    [SerializeField] public int actionPoints;
+    [SerializeField] private int actionPoints;
+    
     [SerializeField] public int agility;
     [SerializeField] [Range(0f, 2f)] float jumpTime;
     [SerializeField] [Range(0f, 3f)] float jumpHeight;
@@ -23,6 +24,7 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] public Event e_onUnitRunExit;
 
     [Header ("Set in Runtime")]
+    [HideInInspector] public int actionPointsRemain;
     [SerializeField] public Cube cubeOnPosition;
     [HideInInspector] public StateMachine<Unit> stateMachine;
     private bool isJumping;
@@ -34,15 +36,18 @@ public abstract class Unit : MonoBehaviour
     public virtual void Start()
     {
         SetCubeOnPosition();
+        ActionPointReset();
         stateMachine = new StateMachine<Unit>(new UnitIdle(this));
     }
 
     public void MoveTo(Cube destination)
     {
         Path pathToDest = cubeOnPosition.paths.Find((p) => p.destination == destination);
+        actionPointsRemain -= pathToDest.path.Count - 1;
         stateMachine.ChangeState(new UnitRun(this, pathToDest), StateMachine<Unit>.StateChangeMethod.PopNPush);
     }
 
+    public void ActionPointReset() => actionPointsRemain = actionPoints;
 
     internal bool FlatMove(Vector3 nextDestination)
     {

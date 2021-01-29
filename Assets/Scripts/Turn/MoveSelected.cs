@@ -14,7 +14,7 @@ public class MoveSelected : State<TurnMgr>
     {
         Debug.Log("MoveSelected Enter");
 
-        cubesCanGo = owner.mapMgr.GetCubes(unit.cubeOnPosition, unit.actionPoints);
+        cubesCanGo = owner.mapMgr.GetCubes(unit.cubeOnPosition, unit.actionPointsRemain);
         owner.mapMgr.BlinkCubes(cubesCanGo, 0.5f);
     }
 

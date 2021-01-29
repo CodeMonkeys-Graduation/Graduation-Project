@@ -13,10 +13,19 @@ public class PlayerTurnBegin : State<TurnMgr>
     }
     public override void Enter()
     {
-        owner.actionPanel.SetActive(true);
+        // 턴의 첫 액션임
+        if (owner.stateMachine.StackCount == 1)
+            unit.ActionPointReset();
 
-        el_onClickMoveBtn.OnNotify.AddListener(OnClickMoveBtn);
-        owner.e_onClickMoveBtn.Register(el_onClickMoveBtn);
+        if (unit.actionPointsRemain <= 0)
+        {
+            owner.NextTurn();
+            return;
+        }
+
+        owner.actionPanel.SetActive(true);
+        owner.actionPointText.text = $"{unit.gameObject.name} Turn\nActionPoint Remain :  {unit.actionPointsRemain}";
+        owner.e_onClickMoveBtn.Register(el_onClickMoveBtn, OnClickMoveBtn);
         
         // TODO 
         // Register ItemBtn, AttackBtn, SkillBtn
@@ -28,7 +37,7 @@ public class PlayerTurnBegin : State<TurnMgr>
         
     }
 
-    private void OnClickMoveBtn() => owner.stateMachine.ChangeState(new PlayerTurnMove(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.PopNPush);
+    private void OnClickMoveBtn() => owner.stateMachine.ChangeState(new PlayerTurnMove(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
 
     public override void Exit()
     {

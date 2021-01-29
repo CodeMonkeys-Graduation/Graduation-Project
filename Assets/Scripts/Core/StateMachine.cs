@@ -6,9 +6,11 @@ public class StateMachine<T>
 {
     public T owner;
 
-    public enum StateChangeMethod { PopNPush, JustPush, ReturnToPrev }
+    public enum StateChangeMethod { PopNPush, JustPush, ReturnToPrev, ClearNPush }
 
     private volatile Stack<State<T>> stateStack = new Stack<State<T>>();
+    public int StackCount { get => stateStack.Count; }
+
     public StateMachine(State<T> initialState)
     {
         stateStack.Push(initialState);
@@ -19,6 +21,7 @@ public class StateMachine<T>
     {
         stateStack.Peek().Execute();
     }
+
 
     public bool IsStateType(System.Type type) => stateStack.Peek().GetType() == type;
 
@@ -50,6 +53,16 @@ public class StateMachine<T>
                     currState.Exit();
                     State<T> prevState = stateStack.Peek();
                     prevState.Enter();
+                    break;
+                }
+
+            case StateChangeMethod.ClearNPush:
+                {
+                    State<T> currState = stateStack.Pop();
+                    currState.Exit();
+                    stateStack.Clear();
+                    stateStack.Push(nextState);
+                    nextState.Enter();
                     break;
                 }
         }

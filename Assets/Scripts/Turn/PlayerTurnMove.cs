@@ -14,7 +14,7 @@ public class PlayerTurnMove : State<TurnMgr>
     }
     public override void Enter()
     {
-        cubesCanGo = owner.mapMgr.GetCubes(unit.cubeOnPosition, unit.actionPoints);
+        cubesCanGo = owner.mapMgr.GetCubes(unit.cubeOnPosition, unit.actionPointsRemain);
         owner.mapMgr.BlinkCubes(cubesCanGo, 0.5f);
     }
 
@@ -29,9 +29,7 @@ public class PlayerTurnMove : State<TurnMgr>
                 Cube hitCube = hit.transform.GetComponent<Cube>();
                 if (hitCube && cubesCanGo.Contains(hitCube))
                 {
-                    //owner.onUnitRunExit.Register(owner, OnUnitRunExit);
-                    el_onRunExit.OnNotify.AddListener(OnUnitRunExit);
-                    owner.e_onUnitRunExit.Register(el_onRunExit);
+                    owner.e_onUnitRunExit.Register(el_onRunExit, OnUnitRunExit);
 
                     unit.MoveTo(hit.transform.GetComponent<Cube>());
                     owner.mapMgr.StopBlinkAll();
@@ -44,7 +42,7 @@ public class PlayerTurnMove : State<TurnMgr>
 
     private void OnUnitRunExit()
     {
-        owner.stateMachine.ChangeState(new PlayerTurnBegin(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.PopNPush);
+        owner.stateMachine.ChangeState(new PlayerTurnBegin(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
         hitCube.StopBlink();
     }
 
