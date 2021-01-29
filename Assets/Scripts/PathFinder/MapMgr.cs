@@ -6,8 +6,9 @@ using UnityEngine;
 
 public class MapMgr : MonoBehaviour
 {
-    [SerializeField] private bool showPaths;
-    public Map map;
+    [Header("Reset Before Test")]
+    [SerializeField] private bool showPaths = true;
+    [SerializeField] public Map map;
     
     private void Reset()
     {

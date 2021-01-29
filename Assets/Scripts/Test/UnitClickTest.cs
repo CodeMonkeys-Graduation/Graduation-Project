@@ -5,9 +5,13 @@ using UnityEngine;
 
 public class UnitClickTest : MonoBehaviour
 {
+    [Header ("Reset Before Test")]
     [SerializeField] public Unit selectedUnit;
-    [SerializeField] public PathRequester pathRequester;
     [SerializeField] public MapMgr mapMgr;
+    private void Reset()
+    {
+        mapMgr = FindObjectOfType<MapMgr>();
+    }
     private void Update()
     {
         if(Input.GetMouseButtonDown(0))

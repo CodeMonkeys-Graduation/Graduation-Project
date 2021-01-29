@@ -5,9 +5,14 @@ using UnityEngine;
 
 public class PathRequester : MonoBehaviour
 {
-    [Header ("Set in Editor")]
+    [Header("Reset Before Play")]
     [SerializeField] Pathfinder pathFinder;
     [SerializeField] MapMgr mapMgr;
+    private void Reset()
+    {
+        mapMgr = FindObjectOfType<MapMgr>();
+        pathFinder = FindObjectOfType<Pathfinder>();
+    }
 
     /// <summary>
     /// 플레이 모드에서 실행하는 용입니다. 코루틴으로 실행하기 때문에 느리지만 프레임이 떨어지진 않습니다.

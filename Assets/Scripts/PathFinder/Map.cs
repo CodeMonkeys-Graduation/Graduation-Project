@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[System.Serializable]
 public class Map
 {
     private HashSet<Cube> cubes = new HashSet<Cube>();
