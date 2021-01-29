@@ -29,17 +29,10 @@ public class UnitRun : State<Unit>
             Vector3 nextDestination = cubeToGo.Peek().platform.transform.position;
             float distanceRemain = Vector3.Distance(nextDestination, owner.transform.position);
             if (distanceRemain > Mathf.Epsilon)
-            {
-                Vector3 dir = (nextDestination - owner.transform.position).normalized;
-                Vector3 move = dir * owner.moveSpeed * Time.deltaTime;
+                owner.MoveTo(nextDestination);
 
-                owner.LookDirection(dir);
-                owner.transform.Translate(Vector3.ClampMagnitude(move, distanceRemain));
-            }
             else if (distanceRemain <= Mathf.Epsilon)
-            {
                 cubeToGo.Dequeue();
-            }
         }
         else
         {

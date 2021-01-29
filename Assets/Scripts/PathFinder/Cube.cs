@@ -5,24 +5,30 @@ using UnityEngine;
 
 public class Cube : MonoBehaviour, IClickable
 {
+    [Header ("Reset Before Play")]
     [SerializeField] public List<Cube> neighbors = new List<Cube>();
+    [SerializeField] public List<Path> paths; // Dictionary<destination, Path>
     [SerializeField] public Transform platform;
     [SerializeField] public PathRequester pathRequester;
     public float groundHeight;
-    public float neighborMaxDistance = 1.1f;
+    private float neighborMaxDistance = 1.1f;
     
-    [SerializeField] public List<Path> paths; // Dictionary<destination, Path>
     private void Reset()
     {
         neighbors.Clear();
         neighbors = GetNeighbors();
-
         pathRequester = FindObjectOfType<PathRequester>();
         platform = transform.Find("Platform");
         groundHeight = platform.position.y;
 
         paths.Clear();
         paths.AddRange(pathRequester.RequestSync(this));
+    }
+
+    private void OnPathServe(List<Path> paths)
+    {
+        this.paths.Clear();
+        this.paths.AddRange(paths);
     }
 
     public void SetBlink(float intensity)

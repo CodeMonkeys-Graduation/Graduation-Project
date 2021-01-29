@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1957010317544760189}
   - component: {fileID: 1555109558}
-  - component: {fileID: 1555109559}
   - component: {fileID: 1811458478770582920}
   m_Layer: 9
   m_Name: SwordMan
@@ -46,31 +45,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a18c85955c59b142b415285e2f0ad2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 1957010317598969351}
+  body: {fileID: 1957010317608653711}
   health: 10
   basicAttackDamage: 5
   basicAttackRange: 1
-  anim: {fileID: 1957010317598969351}
-  body: {fileID: 1957010317608653711}
-  cubeOnPosition: {fileID: 0}
   moveSpeed: 2
   actionPoints: 10
   agility: 5
---- !u!114 &1555109559
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1957010317544760190}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ffa624d8fc0fe94fa5bcc43e4eb7b36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ToAttack: 0
-  ToIdle: 0
-  ToRun: 0
-  unit: {fileID: 1555109558}
+  cubeOnPosition: {fileID: 0}
 --- !u!136 &1811458478770582920
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -92,6 +75,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1957010317544760189}
     m_Modifications:
+    - target: {fileID: 9569962, guid: fe2a5bf9b4c2d4a4b9853a8506f18c40, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: 7cdcc7e9b8fe52a4ab128a9b2bb1aa0c,
+        type: 2}
     - target: {fileID: 121574, guid: fe2a5bf9b4c2d4a4b9853a8506f18c40, type: 3}
       propertyPath: m_Name
       value: Body
@@ -152,11 +140,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.6
       objectReference: {fileID: 0}
-    - target: {fileID: 9569962, guid: fe2a5bf9b4c2d4a4b9853a8506f18c40, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 22100000, guid: 7cdcc7e9b8fe52a4ab128a9b2bb1aa0c,
-        type: 2}
     - target: {fileID: 417404, guid: fe2a5bf9b4c2d4a4b9853a8506f18c40, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0.49999967
