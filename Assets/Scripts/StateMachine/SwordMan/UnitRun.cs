@@ -6,11 +6,13 @@ public class UnitRun : State<Unit>
 {
     Path path;
     Queue<Cube> cubeToGo;
-
+    Cube currCube;
+    private bool isJumping = false;
     public UnitRun(Unit owner, Path path) : base(owner) 
     {
         this.path = path;
-        if(path != null)
+        this.currCube = owner.cubeOnPosition;
+        if (path != null)
             cubeToGo = new Queue<Cube>(path.path);
     }
 
@@ -27,24 +29,42 @@ public class UnitRun : State<Unit>
         if(cubeToGo.Count > 0)
         {
             Vector3 nextDestination = cubeToGo.Peek().platform.transform.position;
-            float distanceRemain = Vector3.Distance(nextDestination, owner.transform.position);
-            if (distanceRemain > Mathf.Epsilon)
-                owner.MoveTo(nextDestination);
+            float cubeHeightDiff = Mathf.Abs(currCube.platform.position.y - nextDestination.y);
 
-            else if (distanceRemain <= Mathf.Epsilon)
-                cubeToGo.Dequeue();
+            if (cubeHeightDiff < owner.cubeHeightToJump)
+            {
+                Debug.Log("Walk");
+                if (owner.FlatMove(nextDestination))
+                {
+                    Debug.Log("cubeToGo.Dequeue");
+                    currCube = cubeToGo.Dequeue();
+                }
+            }
+            else
+            {
+                if (isJumping) return;
+                else
+                {
+                    isJumping = true;
+                    owner.JumpMove(currCube.transform.position, nextDestination, OnJumpDone);
+                }
+            }
+                
         }
         else
         {
-            owner.SetCubeOnPosition();
             owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateChangeMethod.PopNPush);
         }
+    }
 
-        //Debug.Log("UnitRun Execute");
+    private void OnJumpDone()
+    {
+        isJumping = false;
+        currCube = cubeToGo.Dequeue();
     }
 
     public override void Exit()
     {
-        
+        owner.SetCubeOnPosition();
     }
 }
