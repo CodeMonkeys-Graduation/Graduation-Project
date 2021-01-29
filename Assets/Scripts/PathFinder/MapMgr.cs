@@ -27,6 +27,17 @@ public class MapMgr : MonoBehaviour
         return cubes;
     }
 
+    public void BlinkCube(Cube cubeToBlink, float intensity)
+    {
+        foreach (var cube in map.Cubes)
+            if (cube == cubeToBlink)
+            {
+                cube.SetBlink(intensity);
+                return;
+            }                
+            
+    }
+
     public void BlinkCubes(List<Cube> cubes, float intensity)
     {
         foreach(var cube in cubes)

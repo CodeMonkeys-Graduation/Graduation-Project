@@ -33,10 +33,8 @@ public class UnitRun : State<Unit>
 
             if (cubeHeightDiff < owner.cubeHeightToJump)
             {
-                Debug.Log("Walk");
                 if (owner.FlatMove(nextDestination))
                 {
-                    Debug.Log("cubeToGo.Dequeue");
                     currCube = cubeToGo.Dequeue();
                 }
             }
@@ -53,7 +51,8 @@ public class UnitRun : State<Unit>
         }
         else
         {
-            owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateChangeMethod.PopNPush);
+            owner.e_onUnitRunExit.Invoke();
+            owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateChangeMethod.JustPush);
         }
     }
 

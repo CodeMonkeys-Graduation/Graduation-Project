@@ -8,7 +8,7 @@ public class StateMachine<T>
 
     public enum StateChangeMethod { PopNPush, JustPush, ReturnToPrev }
 
-    public Stack<State<T>> stateStack = new Stack<State<T>>();
+    private volatile Stack<State<T>> stateStack = new Stack<State<T>>();
     public StateMachine(State<T> initialState)
     {
         stateStack.Push(initialState);

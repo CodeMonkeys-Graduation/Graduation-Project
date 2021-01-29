@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveSelected : PlayerTurn
+public class MoveSelected : State<TurnMgr>
 {
     List<Cube> cubesCanGo;
-    public MoveSelected(TurnMgr owner, Unit unit) : base(owner, unit)
-    { }
+    Unit unit;
+    public MoveSelected(TurnMgr owner, Unit unit) : base(owner)
+    {
+        this.unit = unit;
+    }
     public override void Enter()
     {
         Debug.Log("MoveSelected Enter");
@@ -26,7 +29,7 @@ public class MoveSelected : PlayerTurn
                 if(hit.transform.GetComponent<Cube>())
                 {
                     unit.MoveTo(hit.transform.GetComponent<Cube>());
-                    owner.stateMachine.ChangeState(new UnitSelected(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.PopNPush);
+                    owner.stateMachine.ChangeState(new PlayerTurnBegin(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.PopNPush);
                 }
             }
         }

@@ -5,9 +5,10 @@ using UnityEngine;
 public class TestMoveBtn : MonoBehaviour
 {
     [SerializeField] TurnMgr turnMgr;
+    [SerializeField] Event onClickMoveBtn;
 
     public void OnClickMove()
     {
-        turnMgr.ChangeState(new MoveSelected(turnMgr, turnMgr.turns.Peek()));
+        onClickMoveBtn.Invoke();
     }
 }

@@ -9,8 +9,11 @@ public class TurnMgr : MonoBehaviour
     [SerializeField] private List<Unit> units = new List<Unit>();
     [SerializeField] public Queue<Unit> turns = new Queue<Unit>();
     [SerializeField] public GameObject actionPanel;
+    [SerializeField] public Event e_onUnitRunExit;
+    [SerializeField] public Event e_onClickMoveBtn;
+
     public StateMachine<TurnMgr> stateMachine;
-    public enum TMState { Nobody, UnitSelected, MoveSelected, AttackSelected, AI }
+    public enum TMState { Nobody, PlayerTurnBegin, PlayerTurnMove, PlayerTurnAttack, AI }
     public TMState tmState;
 
     private void Reset()
@@ -63,22 +66,23 @@ public class TurnMgr : MonoBehaviour
         Unit unitToHaveTurn = turns.Peek();
 
         if(unitToHaveTurn.team == TeamMgr.Team.Player)
-            stateMachine.ChangeState(new UnitSelected(this, unitToHaveTurn), StateMachine<TurnMgr>.StateChangeMethod.PopNPush);
+            stateMachine.ChangeState(new PlayerTurnBegin(this, unitToHaveTurn), StateMachine<TurnMgr>.StateChangeMethod.PopNPush);
 
         else if(unitToHaveTurn.team == TeamMgr.Team.AI)
             stateMachine.ChangeState(new AITurn(this, unitToHaveTurn), StateMachine<TurnMgr>.StateChangeMethod.PopNPush);
     }
 
+    // 디버깅용
     private void CheckTurnState()
     {
-        if (stateMachine.IsStateType(typeof(UnitSelected)))
-            tmState = TMState.UnitSelected;
+        if (stateMachine.IsStateType(typeof(PlayerTurnBegin)))
+            tmState = TMState.PlayerTurnBegin;
 
-        else if(stateMachine.IsStateType(typeof(MoveSelected)))
-            tmState = TMState.MoveSelected;
+        else if(stateMachine.IsStateType(typeof(PlayerTurnMove)))
+            tmState = TMState.PlayerTurnMove;
 
-        else if (stateMachine.IsStateType(typeof(AttackSelected)))
-            tmState = TMState.AttackSelected;
+        else if (stateMachine.IsStateType(typeof(PlayerTurnAttack)))
+            tmState = TMState.PlayerTurnAttack;
 
         else if (stateMachine.IsStateType(typeof(AITurn)))
             tmState = TMState.AI;
