@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using TMPro;
 
 public class TurnMgr : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class TurnMgr : MonoBehaviour
     [SerializeField] private List<Unit> units = new List<Unit>();
     [SerializeField] public Queue<Unit> turns = new Queue<Unit>();
     [SerializeField] public GameObject actionPanel;
+    [SerializeField] public TextMeshProUGUI actionPointText;
     [SerializeField] public Event e_onUnitRunExit;
     [SerializeField] public Event e_onClickMoveBtn;
 
@@ -66,10 +68,10 @@ public class TurnMgr : MonoBehaviour
         Unit unitToHaveTurn = turns.Peek();
 
         if(unitToHaveTurn.team == TeamMgr.Team.Player)
-            stateMachine.ChangeState(new PlayerTurnBegin(this, unitToHaveTurn), StateMachine<TurnMgr>.StateChangeMethod.PopNPush);
+            stateMachine.ChangeState(new PlayerTurnBegin(this, unitToHaveTurn), StateMachine<TurnMgr>.StateChangeMethod.ClearNPush);
 
         else if(unitToHaveTurn.team == TeamMgr.Team.AI)
-            stateMachine.ChangeState(new AITurn(this, unitToHaveTurn), StateMachine<TurnMgr>.StateChangeMethod.PopNPush);
+            stateMachine.ChangeState(new AITurn(this, unitToHaveTurn), StateMachine<TurnMgr>.StateChangeMethod.ClearNPush);
     }
 
     // 디버깅용

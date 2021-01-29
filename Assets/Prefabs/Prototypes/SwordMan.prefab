@@ -65,13 +65,14 @@ MonoBehaviour:
   basicAttackDamage: 5
   basicAttackRange: 1
   moveSpeed: 2
-  actionPoints: 10
+  actionPoints: 5
   agility: 5
   jumpTime: 1
   jumpHeight: 0.3
   cubeHeightToJump: 0.2
   team: 0
   e_onUnitRunExit: {fileID: 11400000, guid: d08eea7cc7367e647ba2486a6e4af064, type: 2}
+  actionPointsRemain: 0
   cubeOnPosition: {fileID: 0}
 --- !u!1001 &1957010317608274093
 PrefabInstance:
