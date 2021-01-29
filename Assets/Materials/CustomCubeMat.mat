@@ -28,6 +28,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: b9f3a54095158e94db3bd4597c125df7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_D463E6FD_Texture_1:
+        m_Texture: {fileID: 2800000, guid: b9f3a54095158e94db3bd4597c125df7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - Boolean_61BC6E3A: 1
     - Vector1_B12ECF3: 0
