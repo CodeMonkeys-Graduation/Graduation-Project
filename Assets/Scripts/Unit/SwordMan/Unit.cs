@@ -20,11 +20,16 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] [Range(0f, 3f)] float jumpHeight;
     [SerializeField] [Range(0.1f, 0.5f)] public float cubeHeightToJump;
     [SerializeField] public TeamMgr.Team team;
+    [SerializeField] public Event e_onUnitRunExit;
 
     [Header ("Set in Runtime")]
     [SerializeField] public Cube cubeOnPosition;
     [HideInInspector] public StateMachine<Unit> stateMachine;
     private bool isJumping;
+
+    private void Reset()
+    {
+    }
 
     public virtual void Start()
     {
