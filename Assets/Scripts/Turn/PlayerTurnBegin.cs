@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerTurnBegin : State<TurnMgr>
+public class PlayerTurnBegin : TurnState
 {
-    Unit unit;
     EventListener el_onClickMoveBtn = new EventListener();
-    public PlayerTurnBegin(TurnMgr owner, Unit unit) : base(owner)
+    public PlayerTurnBegin(TurnMgr owner, Unit unit) : base(owner, unit)
     {
-        this.unit = unit;
     }
+
     public override void Enter()
     {
         // 턴의 첫 액션임
