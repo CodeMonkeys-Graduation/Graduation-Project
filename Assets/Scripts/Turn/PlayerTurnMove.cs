@@ -6,7 +6,6 @@ public class PlayerTurnMove : TurnState
 {
     List<Cube> cubesCanGo;
     Cube hitCube;
-    EventListener el_onRunExit = new EventListener();
     public PlayerTurnMove(TurnMgr owner, Unit unit) : base(owner, unit)
     {
     }
@@ -30,12 +29,10 @@ public class PlayerTurnMove : TurnState
                 {
                     TurnState nextState = new PlayerTurnBegin(owner, unit);
                     unit.MoveTo(hit.transform.GetComponent<Cube>());
-                    owner.mapMgr.StopBlinkAll();
-                    owner.mapMgr.BlinkCube(hitCube, 0.5f);
                     this.hitCube = hitCube;
 
                     owner.stateMachine.ChangeState(
-                        new WaitEvent(owner, unit, owner.e_onUnitRunExit, nextState, OnUnitRunExit), 
+                        new WaitEvent(owner, unit, owner.e_onUnitRunExit, nextState, OnUnitRunExit, OnWaitEnter), 
                         StateMachine<TurnMgr>.StateChangeMethod.JustPush);
                 }
             }
@@ -43,10 +40,10 @@ public class PlayerTurnMove : TurnState
     }
 
     private void OnUnitRunExit() => hitCube.StopBlink();
+    private void OnWaitEnter() => owner.mapMgr.BlinkCube(hitCube, 0.5f);
 
     public override void Exit()
     {
-        owner.e_onUnitRunExit.Unregister(el_onRunExit);
         owner.mapMgr.StopBlinkAll();
     }
 }
