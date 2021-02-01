@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerTurnMove : State<TurnMgr>
+public class PlayerTurnMove : TurnState
 {
-    Unit unit;
     List<Cube> cubesCanGo;
     Cube hitCube;
     EventListener el_onRunExit = new EventListener();
-    public PlayerTurnMove(TurnMgr owner, Unit unit) : base(owner)
+    public PlayerTurnMove(TurnMgr owner, Unit unit) : base(owner, unit)
     {
-        this.unit = unit;
     }
+
     public override void Enter()
     {
         cubesCanGo = owner.mapMgr.GetCubes(unit.cubeOnPosition, unit.actionPointsRemain);
@@ -29,22 +28,21 @@ public class PlayerTurnMove : State<TurnMgr>
                 Cube hitCube = hit.transform.GetComponent<Cube>();
                 if (hitCube && cubesCanGo.Contains(hitCube))
                 {
-                    owner.e_onUnitRunExit.Register(el_onRunExit, OnUnitRunExit);
-
+                    TurnState nextState = new PlayerTurnBegin(owner, unit);
                     unit.MoveTo(hit.transform.GetComponent<Cube>());
                     owner.mapMgr.StopBlinkAll();
                     owner.mapMgr.BlinkCube(hitCube, 0.5f);
                     this.hitCube = hitCube;
+
+                    owner.stateMachine.ChangeState(
+                        new WaitEvent(owner, unit, owner.e_onUnitRunExit, nextState, OnUnitRunExit), 
+                        StateMachine<TurnMgr>.StateChangeMethod.JustPush);
                 }
             }
         }
     }
 
-    private void OnUnitRunExit()
-    {
-        owner.stateMachine.ChangeState(new PlayerTurnBegin(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
-        hitCube.StopBlink();
-    }
+    private void OnUnitRunExit() => hitCube.StopBlink();
 
     public override void Exit()
     {

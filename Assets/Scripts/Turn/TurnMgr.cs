@@ -15,7 +15,7 @@ public class TurnMgr : MonoBehaviour
     [SerializeField] public Event e_onClickMoveBtn;
 
     public StateMachine<TurnMgr> stateMachine;
-    public enum TMState { Nobody, PlayerTurnBegin, PlayerTurnMove, PlayerTurnAttack, AI }
+    public enum TMState { Nobody, PlayerTurnBegin, PlayerTurnMove, PlayerTurnAttack, AI, WaitEvent }
     public TMState tmState;
 
     private void Reset()
@@ -43,17 +43,9 @@ public class TurnMgr : MonoBehaviour
     private void Update()
     {
         stateMachine.Run();
+
         // 디버깅용
         CheckTurnState();
-    }
-
-    /// <summary>
-    /// 외부에서는 stateMachine을 직접 접근하지말고 이 메서드를 사용하세요.
-    /// </summary>
-    /// <param name="state">다음 State</param>
-    public void ChangeState(State<TurnMgr> state)
-    {
-        stateMachine.ChangeState(state, StateMachine<TurnMgr>.StateChangeMethod.PopNPush);
     }
 
     public void NextTurn()
@@ -82,6 +74,9 @@ public class TurnMgr : MonoBehaviour
 
         else if(stateMachine.IsStateType(typeof(PlayerTurnMove)))
             tmState = TMState.PlayerTurnMove;
+
+        else if (stateMachine.IsStateType(typeof(WaitEvent)))
+            tmState = TMState.WaitEvent;
 
         else if (stateMachine.IsStateType(typeof(PlayerTurnAttack)))
             tmState = TMState.PlayerTurnAttack;

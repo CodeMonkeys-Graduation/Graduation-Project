@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerTurnAttack : State<TurnMgr>
+public class PlayerTurnAttack : TurnState
 {
-    Unit unit;
-    public PlayerTurnAttack(TurnMgr owner, Unit unit) : base(owner)
+    public PlayerTurnAttack(TurnMgr owner, Unit unit) : base(owner, unit)
     {
-        this.unit = unit;
     }
+
     public override void Enter()
     {
         
