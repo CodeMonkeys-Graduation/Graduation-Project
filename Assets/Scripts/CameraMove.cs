@@ -3,22 +3,6 @@ using UnityEngine;
 
 public class CameraMove : MonoBehaviour
 {
-    private static CameraMove instance;
-    public static CameraMove Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindObjectOfType<CameraMove>();
-            }
-            return instance;
-        }
-        private set
-        {
-            instance = value;
-        }
-    }
     public enum CameraState
     {
         NonTarget,
@@ -30,13 +14,6 @@ public class CameraMove : MonoBehaviour
     Transform target;
     void Awake()
     {
-        if (Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        DontDestroyOnLoad(gameObject);
-
         cameraState = CameraState.NonTarget;
     }
     void FixedUpdate()
