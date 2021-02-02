@@ -5,21 +5,18 @@ using UnityEngine;
 
 public abstract class Unit : MonoBehaviour
 {
-    [Header ("Reset Before Play")]
+    [Header ("Set in Editor (Unit)")]
     [SerializeField] public Animator anim;
     [SerializeField] public Transform body;
-
-    [Header ("Set in Editor")]
     [SerializeField] public int health;
     [SerializeField] public int basicAttackDamage;
     [SerializeField] public int basicAttackRange;
     [SerializeField] public float moveSpeed;
     [SerializeField] private int actionPoints;
-    
     [SerializeField] public int agility;
-    [SerializeField] [Range(0f, 2f)] float jumpTime;
-    [SerializeField] [Range(0f, 3f)] float jumpHeight;
-    [SerializeField] [Range(0.1f, 0.5f)] public float cubeHeightToJump;
+    [SerializeField] [Range(0f, 2f)] float jumpTime; // 점프를 실행할 timespan
+    [SerializeField] [Range(0f, 3f)] float jumpHeight; // 점프 높이
+    [SerializeField] [Range(0.1f, 0.3f)] public float cubeHeightToJump; // 유닛이 점프로 큐브를 이동할 큐브높이 최소차이.
     [SerializeField] public TeamMgr.Team team;
     [SerializeField] public Event e_onUnitRunExit;
 
@@ -95,21 +92,7 @@ public abstract class Unit : MonoBehaviour
 
         float currLerpTime = 0f;
         float lerpTime = jumpTime;
-        float yDistSum = Mathf.Abs(currCubePos.y - nextDestination.y) + 2f * jumpHeight;
-        float currSumOfYDistMove = 0f;
-        float firstYGoal, secondYGoal;
-        if (currCubePos.y < nextDestination.y) // jump up
-        {
-            firstYGoal = currCubePos.y + Mathf.Abs(currCubePos.y - nextDestination.y) + jumpHeight;
-            secondYGoal = currCubePos.y + Mathf.Abs(currCubePos.y - nextDestination.y);
-            
-        }
-        else // jump down
-        {
-            firstYGoal = currCubePos.y + Mathf.Abs(currCubePos.y - nextDestination.y) + jumpHeight;
-            secondYGoal = currCubePos.y + Mathf.Abs(currCubePos.y - nextDestination.y);
-        }
-        float firstYGoalRatio = firstYGoal / yDistSum;
+
 
         while (Vector3.Distance(transform.position, nextDestination) > Mathf.Epsilon)
         {
@@ -122,44 +105,16 @@ public abstract class Unit : MonoBehaviour
             }
             float lerp = currLerpTime / lerpTime;
 
-            /*  SLERP   */
-
-            //Vector3 center = (nextDestination + currCubePos) / 2f;
-            //Vector3 perp = Vector3.Cross(nextDestination - currCubePos, Vector3.up); // right vector with facing forward direction
-            //Vector3 centerOffset = Vector3.Cross(nextDestination - currCubePos, perp);
-            //center += centerOffset.normalized * 2f;
-
-            //Vector3 startRelCenter = currCubePos - center;
-            //Vector3 destRelCenter = nextDestination - center;
-            //transform.position = Vector3.Slerp(startRelCenter, destRelCenter, lerp) + center;
-
             /*  LERP   */
-            
 
-            float lerpX = Mathf.Lerp(transform.position.x, nextDestination.x, lerp);
+            // Linear Lerp
+            Vector3 moveLerp = Vector3.Lerp(currCubePos, nextDestination, lerp);
 
-            float lerpZ = Mathf.Lerp(transform.position.z, nextDestination.z, lerp);
+            // Sin Lerp
+            float jumpLerpY = Mathf.Sin(lerp * Mathf.PI) * jumpHeight;
+            Vector3 jumpLerp = new Vector3(0f, jumpLerpY, 0f);
 
-            float lerpY;
-            if (lerp < firstYGoalRatio)
-            {
-                lerpY = Mathf.Lerp(
-                    transform.position.y,
-                    firstYGoal,
-                    lerp / firstYGoalRatio);
-            }
-
-            else
-            {
-                lerpY = Mathf.Lerp(
-                    transform.position.y, 
-                    secondYGoal, 
-                    (lerp - firstYGoalRatio) / (1f - firstYGoalRatio));
-            }
-                
-
-
-            transform.position = new Vector3(lerpX, lerpY, lerpZ);
+            transform.localPosition = moveLerp + jumpLerp;
 
             yield return null;
         }
