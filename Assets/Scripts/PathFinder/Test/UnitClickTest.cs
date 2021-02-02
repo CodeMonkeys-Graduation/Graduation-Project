@@ -7,6 +7,7 @@ public class UnitClickTest : MonoBehaviour
 {
     [Header("Reset Before Test")]
     [SerializeField] public Unit selectedUnit;
+    [SerializeField] public CameraMove cameraMove;
     [SerializeField] public MapMgr mapMgr;
     private void Reset()
     {
@@ -22,7 +23,7 @@ public class UnitClickTest : MonoBehaviour
             {
                 hit.transform.GetComponent<IClickable>()?.OnClick();
                 selectedUnit = hit.transform.GetComponent<Unit>();
-                CameraMove.Instance.ChangeTarget(selectedUnit);
+                cameraMove.ChangeTarget(selectedUnit);
                 List<Path> paths = selectedUnit.cubeOnPosition.paths.Where((p) => p.path.Count <= selectedUnit.actionPointsRemain).ToList();
                 HashSet<Cube> cubesToBlink = new HashSet<Cube>();
                 foreach (var p in paths)
