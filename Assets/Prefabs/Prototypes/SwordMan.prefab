@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1957010317544760190}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1957010317608653711}
@@ -67,8 +67,8 @@ MonoBehaviour:
   moveSpeed: 2
   actionPoints: 5
   agility: 5
-  jumpTime: 1
-  jumpHeight: 0.3
+  jumpTime: 0.5
+  jumpHeight: 0.5
   cubeHeightToJump: 0.2
   team: 0
   e_onUnitRunExit: {fileID: 11400000, guid: d08eea7cc7367e647ba2486a6e4af064, type: 2}
@@ -147,7 +147,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 416546, guid: fe2a5bf9b4c2d4a4b9853a8506f18c40, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.003000021
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 416546, guid: fe2a5bf9b4c2d4a4b9853a8506f18c40, type: 3}
       propertyPath: m_LocalPosition.z
