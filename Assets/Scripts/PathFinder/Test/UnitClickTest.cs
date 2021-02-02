@@ -23,7 +23,7 @@ public class UnitClickTest : MonoBehaviour
             {
                 hit.transform.GetComponent<IClickable>()?.OnClick();
                 selectedUnit = hit.transform.GetComponent<Unit>();
-                cameraMove.ChangeTarget(selectedUnit);
+                cameraMove.SetTarget(selectedUnit);
                 List<Path> paths = selectedUnit.cubeOnPosition.paths.Where((p) => p.path.Count <= selectedUnit.actionPointsRemain).ToList();
                 HashSet<Cube> cubesToBlink = new HashSet<Cube>();
                 foreach (var p in paths)
