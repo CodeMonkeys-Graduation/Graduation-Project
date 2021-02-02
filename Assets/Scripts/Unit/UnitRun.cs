@@ -28,7 +28,8 @@ public class UnitRun : State<Unit>
 
         if(cubeToGo.Count > 0)
         {
-            Vector3 nextDestination = cubeToGo.Peek().platform.transform.position;
+            Cube nextCubeToGo = cubeToGo.Peek();
+            Vector3 nextDestination = nextCubeToGo.platform.position;
             float cubeHeightDiff = Mathf.Abs(currCube.platform.position.y - nextDestination.y);
 
             if (cubeHeightDiff < owner.cubeHeightToJump)
@@ -44,7 +45,7 @@ public class UnitRun : State<Unit>
                 else
                 {
                     isJumping = true;
-                    owner.JumpMove(currCube.transform.position, nextDestination, OnJumpDone);
+                    owner.JumpMove(currCube.platform.position, nextDestination, OnJumpDone);
                 }
             }
                 
