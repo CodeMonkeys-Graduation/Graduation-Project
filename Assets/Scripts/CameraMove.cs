@@ -5,43 +5,41 @@ public class CameraMove : MonoBehaviour
 {
     public enum CameraState
     {
-        NonTarget,
-        UnitMove,
-        UnitChange
+        NonTargeting,
+        Targeting
     }
-    public Vector3 offset;
-    CameraState cameraState;
+    CameraState cameraState; // 디버그용
+
+    [SerializeField] Vector3 offset;
     Transform target;
+    [SerializeField] float lerpTime = 1f; // lerpTime만에 Target으로 갑니다.
+    float lerp = 0f;
     void Awake()
     {
-        cameraState = CameraState.NonTarget;
+        cameraState = CameraState.NonTargeting;
     }
-    void FixedUpdate()
+    void LateUpdate()
     {
-        if (cameraState == CameraState.NonTarget) // 타겟 미지정
+        // NonTargeting
+        if (target == null)
         {
+            cameraState = CameraState.NonTargeting;
+            lerp = 0f;
             return;
         }
-        else if (cameraState == CameraState.UnitMove) // 타겟을 지정했고, 현재 타겟이 움직이는 중임
-        {
-            transform.position = target.position + offset;
-        }
-        else if (cameraState == CameraState.UnitChange) // 타겟을 바꾸었음
-        {
-            Vector3 unitPos = new Vector3(target.position.x, target.position.y, target.position.z);
-            unitPos += offset;
-            transform.position = Vector3.Lerp(transform.position, unitPos, Time.deltaTime * 2f);
 
-            if (Mathf.Abs(transform.position.y - unitPos.y) <= Mathf.Epsilon)
-            {
-                cameraState = CameraState.UnitMove;
-                Debug.Log("Camera Move Completed");
-            }
-        }
+        // Targeting
+        cameraState = CameraState.Targeting;
+        lerp = Mathf.Clamp((lerp + Time.deltaTime) / lerpTime, 0f, 1f);
+        LerpToDesiredPos(target.position, lerp);
     }
-    public void ChangeTarget(Unit unit)
+
+    private void LerpToDesiredPos(Vector3 targetPos, float lerp)
     {
-        cameraState = CameraState.UnitChange;
-        target = unit.transform;
+        Vector3 desiredCameraPos = targetPos + offset;
+        transform.position = Vector3.Lerp(transform.position, desiredCameraPos, lerp);
     }
+
+    public void SetTarget(Unit unit) => target = unit.transform;
+    public void UnsetTarget(Unit unit) => target = null;
 }
