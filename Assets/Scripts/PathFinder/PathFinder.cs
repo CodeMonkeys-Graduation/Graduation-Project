@@ -94,6 +94,14 @@ public class Pathfinder : MonoBehaviour
     /// <returns>Path 자료구조를 확인하세요.</returns>
     public List<Path> DijkstraPathfinding(Map map, Cube start)
     {
+        // exception handling
+        if (map == null || map.Cubes == null || map.Cubes.Count <= 0)
+        {
+            Debug.LogError("MapMgr Should be Resetted");
+            return null;
+        }
+            
+
         OnSearchBegin();
 
         // Dijkstra
@@ -154,6 +162,13 @@ public class Pathfinder : MonoBehaviour
     /// <param name="OnServe">함수가 끝나면 호출할 함수를 전달하세요.</param>
     public IEnumerator DijkstraPathfinding(Map map, Cube start, Action<List<Path>> OnServe)
     {
+        // exception handling
+        if (map == null || map.Cubes == null || map.Cubes.Count <= 0)
+        {
+            Debug.LogError("MapMgr Should be Resetted");
+            yield break;
+        }
+
         OnSearchBegin();
 
         // Dijkstra

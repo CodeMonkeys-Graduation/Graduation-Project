@@ -10,7 +10,7 @@ public class MapMgr : MonoBehaviour
     [SerializeField] private bool showPaths = true;
     [SerializeField] public Map map;
     
-    private void Reset()
+    public void Reset()
     {
         map = new Map(FindObjectsOfType<Cube>().ToList());
     }

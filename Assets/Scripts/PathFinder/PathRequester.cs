@@ -8,7 +8,7 @@ public class PathRequester : MonoBehaviour
     [Header("Reset Before Play")]
     [SerializeField] Pathfinder pathFinder;
     [SerializeField] MapMgr mapMgr;
-    private void Reset()
+    public void Reset()
     {
         mapMgr = FindObjectOfType<MapMgr>();
         pathFinder = FindObjectOfType<Pathfinder>();
