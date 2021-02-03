@@ -3,20 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Cube : MonoBehaviour, IClickable
+public class Cube : MonoBehaviour
 {
     [Header ("Reset Before Play")]
     [SerializeField] public List<Cube> neighbors = new List<Cube>();
     [SerializeField] public List<Path> paths; // Dictionary<destination, Path>
     [SerializeField] public Transform platform;
-    [SerializeField] public PathRequester pathRequester;
+    [SerializeField] public Pathfinder pathFinder;
+    [SerializeField] public MapMgr mapMgr;
 
     // Set in Runtime
     [HideInInspector] public float groundHeight;
     private float neighborMaxDistance = 1.1f;
+    private EventListener eListener = new EventListener();
 
     [Header("Set in Editor")]
     [SerializeField] float maxNeighborHeightDiff = 0.6f;
+    [SerializeField] Event e_onPathServeEnd;
+
 
     /// <summary>
     /// 1. neighborMaxDistance안에 있는 다른 Cube들을 Neighbor로 저장합니다.
@@ -33,8 +37,18 @@ public class Cube : MonoBehaviour, IClickable
         groundHeight = platform.position.y;
 
         paths.Clear();
-        pathRequester = FindObjectOfType<PathRequester>();
-        paths.AddRange(pathRequester.RequestSync(this));
+        pathFinder = FindObjectOfType<Pathfinder>();
+        mapMgr = FindObjectOfType<MapMgr>();
+        paths.AddRange(pathFinder.DijkstraPathfinding(mapMgr.map, this));
+    }
+
+    private void Start()
+    {
+        pathFinder = FindObjectOfType<Pathfinder>();
+        mapMgr = FindObjectOfType<MapMgr>();
+
+        if (GetUnit() != null)
+            UpdatePathsOnUnitRun(GetUnit().actionPoints, null, null);
     }
 
     public Unit GetUnit()
@@ -59,10 +73,20 @@ public class Cube : MonoBehaviour, IClickable
             renderer.material.SetFloat("_ColorIntensity", 0f);
     }
 
+    public void UpdatePathsOnUnitRun(int maxDistance, Unit movingUnit, Cube destination)
+    {
+        //e_onPathServeEnd.Register(eListener);
+        pathFinder.RequestAsync(mapMgr.map, this, maxDistance, OnPathServe, 
+            (cube) => cube == destination ||                            // movingUnit의 도착지는 제외
+            cube == this ||
+            (cube.GetUnit() != null && cube.GetUnit() != movingUnit));    // (cube.GetUnit() != movingUnit && cube.GetUnit() != null) movingUnit이 아닌 다른 유닛이 있는 큐브 제외
+    }
+
     private void OnPathServe(List<Path> paths)
     {
         this.paths.Clear();
         this.paths.AddRange(paths);
+        //e_onPathServeEnd.Unregister(eListener);
     }
 
     private List<Cube> GetNeighbors()
@@ -86,8 +110,4 @@ public class Cube : MonoBehaviour, IClickable
             candidate != this; // 자기자신은 아닌지
     }
 
-    public void OnClick()
-    {
-        
-    }
 }

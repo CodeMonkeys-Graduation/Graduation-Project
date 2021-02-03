@@ -13,7 +13,7 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] public int basicAttackDamage;
     [SerializeField] public int basicAttackRange;
     [SerializeField] public float moveSpeed;
-    [SerializeField] private int actionPoints;
+    [SerializeField] public int actionPoints;
     [SerializeField] public int agility;
     [SerializeField] [Range(0f, 2f)] float jumpTime; // 점프를 실행할 timespan
     [SerializeField] [Range(0f, 3f)] float jumpHeight; // 점프 높이

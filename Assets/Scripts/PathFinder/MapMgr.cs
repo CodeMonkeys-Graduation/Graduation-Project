@@ -23,6 +23,13 @@ public class MapMgr : MonoBehaviour
     public List<Cube> GetCubes(Cube fromCube, Func<Cube, bool> cubeCondition = null, Func<Path, bool> pathCondition = null)
         => fromCube.paths.Where(pathCondition).Select((p) => p.destination).Where(cubeCondition).ToList();
 
+    public void UpdateCubesPaths(Predicate<Cube> shouldUpdate, Func<Cube, int> actionPointGetter, Unit movingUnit, Cube destination)
+    {
+        foreach (var cube in map.Cubes)
+            if (shouldUpdate(cube))
+                cube.UpdatePathsOnUnitRun(actionPointGetter(cube), movingUnit, destination);
+    }
+
     public void BlinkCube(Cube cubeToBlink, float intensity)
     {
         foreach (var cube in map.Cubes)
@@ -31,7 +38,6 @@ public class MapMgr : MonoBehaviour
                 cube.SetBlink(intensity);
                 return;
             }                
-            
     }
 
     public void BlinkCubes(List<Cube> cubes, float intensity)

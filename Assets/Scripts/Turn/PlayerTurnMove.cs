@@ -31,20 +31,26 @@ public class PlayerTurnMove : TurnState
                 Cube hitCube = hit.transform.GetComponent<Cube>();
                 if (hitCube && cubesCanGo.Contains(hitCube))
                 {
-                    unit.MoveTo(hit.transform.GetComponent<Cube>());
                     this.hitCube = hitCube;
-
                     TurnState nextState = new PlayerTurnBegin(owner, unit);
+                    List<Event> eList = new List<Event>() { owner.e_onUnitRunExit, owner.e_onPathfindRequesterCountZero };
                     owner.stateMachine.ChangeState(
-                        new WaitEvent(owner, unit, owner.e_onUnitRunExit, nextState, OnUnitRunExit, OnWaitEnter), 
+                        new WaitMultipleEvents(owner, unit, eList, nextState, OnWaitEnter, null, OnWaitExit),
                         StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+
+                    unit.MoveTo(hit.transform.GetComponent<Cube>());
+                    owner.mapMgr.UpdateCubesPaths(
+                        cube => cube == hitCube || (cube.GetUnit() != null && cube.GetUnit() != unit), // hitCube와 unit이 아닌 유닛이있는 큐브는 업데이트 필요
+                        cube => cube == hitCube ? unit.actionPoints : cube.GetUnit().actionPoints, // destination이면 unit의 AP를, 아니라면 cube위의 유닛의 AP 리턴
+                        unit, 
+                        hitCube);
                 }
             }
         }
     }
 
-    private void OnUnitRunExit() => hitCube.StopBlink();
-    private void OnWaitEnter() => owner.mapMgr.BlinkCube(hitCube, 0.5f);
+    private void OnWaitExit() => hitCube.StopBlink();
+    private void OnWaitEnter() => hitCube.SetBlink(0.5f);
 
     public override void Exit()
     {
