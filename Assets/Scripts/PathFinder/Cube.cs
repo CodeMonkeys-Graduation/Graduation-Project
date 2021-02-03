@@ -37,6 +37,16 @@ public class Cube : MonoBehaviour, IClickable
         paths.AddRange(pathRequester.RequestSync(this));
     }
 
+    public Unit GetUnit()
+    {
+        RaycastHit hit;
+        Ray ray = new Ray(transform.position, Vector3.up);
+        if(Physics.Raycast(ray, out hit, 3f, LayerMask.GetMask("Unit")))
+            return hit.transform.GetComponent<Unit>();
+        else
+            return null;
+    }
+
     public void SetBlink(float intensity)
     {
         foreach (var renderer in GetComponentsInChildren<Renderer>())

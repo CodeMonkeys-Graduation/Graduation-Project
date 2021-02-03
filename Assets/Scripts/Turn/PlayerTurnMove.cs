@@ -14,7 +14,7 @@ public class PlayerTurnMove : TurnState
     {
         cubesCanGo = owner.mapMgr.GetCubes(
             unit.cubeOnPosition, 
-            cube => cube != unit.cubeOnPosition, 
+            cube => cube != unit.cubeOnPosition && cube.GetUnit() == null, 
             path => path.path.Count <= unit.actionPointsRemain + 1);
 
         owner.mapMgr.BlinkCubes(cubesCanGo, 0.5f);
