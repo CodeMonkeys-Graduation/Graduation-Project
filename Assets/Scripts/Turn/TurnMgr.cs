@@ -13,6 +13,7 @@ public class TurnMgr : MonoBehaviour
     [SerializeField] public TextMeshProUGUI actionPointText;
     [SerializeField] public Event e_onUnitRunExit;
     [SerializeField] public Event e_onClickMoveBtn;
+    [SerializeField] public Event e_onPathfindRequesterCountZero;
 
     public StateMachine<TurnMgr> stateMachine;
     public enum TMState { Nobody, PlayerTurnBegin, PlayerTurnMove, PlayerTurnAttack, AI, WaitEvent }
@@ -75,7 +76,7 @@ public class TurnMgr : MonoBehaviour
         else if(stateMachine.IsStateType(typeof(PlayerTurnMove)))
             tmState = TMState.PlayerTurnMove;
 
-        else if (stateMachine.IsStateType(typeof(WaitEvent)))
+        else if (stateMachine.IsStateType(typeof(WaitSingleEvent)))
             tmState = TMState.WaitEvent;
 
         else if (stateMachine.IsStateType(typeof(PlayerTurnAttack)))

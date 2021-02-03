@@ -8,7 +8,6 @@ public class PathFindingTest : MonoBehaviour
     [SerializeField] LayerMask cubeLayer;
     public Cube start;
     public Cube destination;
-    [SerializeField] PathRequester pathRequester;
     [SerializeField] List<Cube> path;
     [SerializeField] int moveRange;
     // Start is called before the first frame update

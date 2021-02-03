@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class Event : ScriptableObject
 {
     List<EventListener> eListeners = new List<EventListener>();
-    [SerializeField] int listenerCount = 0;
+    [SerializeField] public int listenerCount = 0;
     public void Register(EventListener l, UnityAction action)
     {
         l.OnNotify.AddListener(action);
