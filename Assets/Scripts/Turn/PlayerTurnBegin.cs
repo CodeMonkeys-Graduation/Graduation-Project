@@ -22,6 +22,8 @@ public class PlayerTurnBegin : TurnState
             return;
         }
 
+        unit.StartBlink();
+
         owner.actionPanel.SetActive(true);
         owner.actionPointText.text = $"{unit.gameObject.name} Turn\nActionPoint Remain :  {unit.actionPointsRemain}";
         owner.e_onClickMoveBtn.Register(el_onClickMoveBtn, OnClickMoveBtn);

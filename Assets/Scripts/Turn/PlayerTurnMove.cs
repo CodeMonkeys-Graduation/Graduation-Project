@@ -48,6 +48,7 @@ public class PlayerTurnMove : TurnState
 
     public override void Exit()
     {
+        unit.StopBlink();
         owner.mapMgr.StopBlinkAll();
     }
 }
