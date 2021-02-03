@@ -97,12 +97,22 @@ public class Pathfinder : MonoBehaviour
     public enum FinderState { Idle, Process }
     public FinderState sState = FinderState.Idle;
     [SerializeField] Event e_pathfindRequesterCountZero;
+    [SerializeField] MapMgr mapMgr;
     int requesterCounts = 0;
 
+    private void Start()
+    {
+        if(mapMgr == null)
+            mapMgr = FindObjectOfType<MapMgr>();
+        if (e_pathfindRequesterCountZero == null)
+            Debug.LogError("[Pathfinder] e_pathfindRequesterCountZero == null");
+    }
 
-    public void RequestAsync(Map map, Cube start, Action<List<Path>> OnServe) => StartCoroutine(DijkstraPathfinding(map, start, OnServe));
-    public void RequestAsync(Map map, Cube start, int maxDistance, Action<List<Path>> OnServe, Func<Cube, bool> cubeExculsion)
-        => StartCoroutine(BFSPathfinding(map, start, maxDistance, OnServe, cubeExculsion));
+    public void RequestAsync(Cube start, Action<List<Path>> OnServe) => StartCoroutine(DijkstraPathfinding(start, OnServe));
+    public void RequestAsync(Cube start, int maxDistance, Action<List<Path>> OnServe, Func<Cube, bool> cubeExculsion)
+        => StartCoroutine(BFSPathfinding(start, maxDistance, OnServe, cubeExculsion));
+    public List<Path> RequestSync(Cube start)
+        => DijkstraPathfinding(start);
 
     private void OnSearchBegin()
     {
@@ -123,10 +133,10 @@ public class Pathfinder : MonoBehaviour
     /// 에디터 상에서만 호출할 함수입니다.
     /// </summary>
     /// <returns>Path 자료구조를 확인하세요.</returns>
-    public List<Path> DijkstraPathfinding(Map map, Cube start)
+    private List<Path> DijkstraPathfinding(Cube start)
     {
         // exception handling
-        if (map == null || map.Cubes == null || map.Cubes.Count <= 0)
+        if (mapMgr == null || mapMgr.map == null || mapMgr.map.Cubes == null || mapMgr.map.Cubes.Count <= 0)
         {
             Debug.LogError("MapMgr Should be Resetted");
             return null;
@@ -136,11 +146,11 @@ public class Pathfinder : MonoBehaviour
         OnSearchBegin();
 
         // Dijkstra
-        Table table = new Table(map.Cubes.ToList());
+        Table table = new Table(mapMgr.map.Cubes.ToList());
         table[start].cost = 0;
 
         Dictionary<Cube, bool> visited = new Dictionary<Cube, bool>();
-        foreach (var cube in map.Cubes)
+        foreach (var cube in mapMgr.map.Cubes)
             visited.Add(cube, false);
 
 
@@ -190,10 +200,10 @@ public class Pathfinder : MonoBehaviour
     /// 오래걸리는 함수이므로 런타임에는 코루틴인 이 함수를 사용하여야 합니다.
     /// </summary>
     /// <param name="OnServe">함수가 끝나면 호출할 함수를 전달하세요.</param>
-    public IEnumerator DijkstraPathfinding(Map map, Cube start, Action<List<Path>> OnServe)
+    private IEnumerator DijkstraPathfinding(Cube start, Action<List<Path>> OnServe)
     {
         // exception handling
-        if (map == null || map.Cubes == null || map.Cubes.Count <= 0)
+        if (mapMgr == null || mapMgr.map == null || mapMgr.map.Cubes == null || mapMgr.map.Cubes.Count <= 0)
         {
             Debug.LogError("MapMgr Should be Resetted");
             yield break;
@@ -202,11 +212,11 @@ public class Pathfinder : MonoBehaviour
         OnSearchBegin();
 
         // Dijkstra
-        Table table = new Table(map.Cubes.ToList());
+        Table table = new Table(mapMgr.map.Cubes.ToList());
         table[start].cost = 0;
 
         Dictionary<Cube, bool> visited = new Dictionary<Cube, bool>();
-        foreach (var cube in map.Cubes)
+        foreach (var cube in mapMgr.map.Cubes)
             visited.Add(cube, false);
 
 
@@ -266,10 +276,10 @@ public class Pathfinder : MonoBehaviour
     /// <param name="OnServe">함수가 끝나면 호출할 함수를 전달하세요.</param>
     /// <param name="cubeExculsion">Path에 포함시키지 않을 Predicate</param>
     /// <returns></returns>
-    private IEnumerator BFSPathfinding(Map map, Cube start, int maxDistance, Action<List<Path>> OnServe, Func<Cube, bool> cubeExculsion)
+    private IEnumerator BFSPathfinding(Cube start, int maxDistance, Action<List<Path>> OnServe, Func<Cube, bool> cubeExculsion)
     {
         // exception handling
-        if (map == null || map.Cubes == null || map.Cubes.Count <= 0)
+        if (mapMgr == null || mapMgr.map == null || mapMgr.map.Cubes == null || mapMgr.map.Cubes.Count <= 0)
         {
             Debug.LogError("MapMgr Should be Resetted");
             yield break;
@@ -277,7 +287,7 @@ public class Pathfinder : MonoBehaviour
 
         OnSearchBegin();
 
-        Table table = new Table(map.Cubes.ToList());
+        Table table = new Table(mapMgr.map.Cubes.ToList());
         table[start].cost = 0;
         Queue<Node> queue = new Queue<Node>();
         queue.Enqueue(table[start]);
