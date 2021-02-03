@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class Unit : MonoBehaviour
@@ -46,7 +47,7 @@ public abstract class Unit : MonoBehaviour
 
     public void ActionPointReset() => actionPointsRemain = actionPoints;
 
-    internal bool FlatMove(Vector3 nextDestination)
+    public bool FlatMove(Vector3 nextDestination)
     {
         float distanceRemain = Vector3.Distance(nextDestination, transform.position);
         Vector3 dir = (nextDestination - transform.position).normalized;
@@ -62,7 +63,7 @@ public abstract class Unit : MonoBehaviour
     }
 
     /// <returns>도착하면 OnJumpDone을 호출합니다.</returns>
-    internal void JumpMove(Vector3 currCubePos, Vector3 nextDestination, Action OnJumpDone)
+    public void JumpMove(Vector3 currCubePos, Vector3 nextDestination, Action OnJumpDone)
     {
         Vector3 dir = nextDestination - transform.position;
         dir.y = 0f;
@@ -70,6 +71,9 @@ public abstract class Unit : MonoBehaviour
         
         StartCoroutine(JumpToDestination(currCubePos, nextDestination, OnJumpDone));
     }
+
+    public void StartBlink() => TraverseChild((tr) => { if (tr.GetComponent<Renderer>()) tr.GetComponent<Renderer>().material.SetInt("_IsFresnel", 1); });
+    public void StopBlink() => TraverseChild((tr) => { if (tr.GetComponent<Renderer>()) tr.GetComponent<Renderer>()?.material.SetInt("_IsFresnel", 0); });
 
     public void SetCubeOnPosition()
     {
@@ -80,6 +84,22 @@ public abstract class Unit : MonoBehaviour
         }
 
     }
+
+    private void TraverseChild(Action<Transform> action)
+    {
+        Queue<Transform> queue = new Queue<Transform>();
+        queue.Enqueue(transform);
+
+        while (queue.Count > 0)
+        {
+            Transform currTr = queue.Dequeue();
+            action.Invoke(currTr);
+
+            foreach (var child in currTr.GetComponentsInChildren<Transform>().Where(tr => tr != currTr))
+                queue.Enqueue(child);
+        }
+    }
+
     private void LookDirection(Vector3 dir)
     {
         if (dir != Vector3.zero) body.rotation = Quaternion.LookRotation(dir, Vector3.up);
