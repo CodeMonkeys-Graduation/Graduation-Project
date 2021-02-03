@@ -39,7 +39,7 @@ public class Cube : MonoBehaviour
         paths.Clear();
         pathFinder = FindObjectOfType<Pathfinder>();
         mapMgr = FindObjectOfType<MapMgr>();
-        paths.AddRange(pathFinder.DijkstraPathfinding(mapMgr.map, this));
+        paths.AddRange(pathFinder.RequestSync(this));
     }
 
     private void Start()
@@ -76,7 +76,7 @@ public class Cube : MonoBehaviour
     public void UpdatePathsOnUnitRun(int maxDistance, Unit movingUnit, Cube destination)
     {
         //e_onPathServeEnd.Register(eListener);
-        pathFinder.RequestAsync(mapMgr.map, this, maxDistance, OnPathServe, 
+        pathFinder.RequestAsync(this, maxDistance, OnPathServe, 
             (cube) => cube == destination ||                            // movingUnit의 도착지는 제외
             cube == this ||
             (cube.GetUnit() != null && cube.GetUnit() != movingUnit));    // (cube.GetUnit() != movingUnit && cube.GetUnit() != null) movingUnit이 아닌 다른 유닛이 있는 큐브 제외
