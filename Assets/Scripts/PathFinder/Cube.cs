@@ -10,25 +10,31 @@ public class Cube : MonoBehaviour, IClickable
     [SerializeField] public List<Path> paths; // Dictionary<destination, Path>
     [SerializeField] public Transform platform;
     [SerializeField] public PathRequester pathRequester;
-    public float groundHeight;
+
+    // Set in Runtime
+    [HideInInspector] public float groundHeight;
     private float neighborMaxDistance = 1.1f;
-    
-    private void Reset()
+
+    [Header("Set in Editor")]
+    [SerializeField] float maxNeighborHeightDiff = 0.6f;
+
+    /// <summary>
+    /// 1. neighborMaxDistance안에 있는 다른 Cube들을 Neighbor로 저장합니다.
+    /// 2. PathRequester에게 Path를 요청하여 저장합니다.
+    /// 3. 자신의 Child GameObject인 platform을 찾아 저장합니다. 이름은 "Platform"이어야합니다.
+    /// </summary>
+    public void Reset()
     {
+        platform = transform.Find("Platform");
+
         neighbors.Clear();
         neighbors = GetNeighbors();
-        pathRequester = FindObjectOfType<PathRequester>();
-        platform = transform.Find("Platform");
+        
         groundHeight = platform.position.y;
 
         paths.Clear();
+        pathRequester = FindObjectOfType<PathRequester>();
         paths.AddRange(pathRequester.RequestSync(this));
-    }
-
-    private void OnPathServe(List<Path> paths)
-    {
-        this.paths.Clear();
-        this.paths.AddRange(paths);
     }
 
     public void SetBlink(float intensity)
@@ -43,11 +49,11 @@ public class Cube : MonoBehaviour, IClickable
             renderer.material.SetFloat("_ColorIntensity", 0f);
     }
 
-    public void OnClick()
+    private void OnPathServe(List<Path> paths)
     {
-
+        this.paths.Clear();
+        this.paths.AddRange(paths);
     }
-
 
     private List<Cube> GetNeighbors()
     {
@@ -65,9 +71,13 @@ public class Cube : MonoBehaviour, IClickable
         Vector2 registererPlanePos = new Vector2(candidate.transform.position.x, candidate.transform.position.z);
         Vector2 myPlanePos = new Vector2(transform.position.x, transform.position.z);
 
-        return Vector2.Distance(registererPlanePos, myPlanePos) < neighborMaxDistance && 
-            candidate != this;
+        return Vector2.Distance(registererPlanePos, myPlanePos) < neighborMaxDistance && // Cube끼리 충분히 가까운지
+            Mathf.Abs(candidate.platform.position.y - platform.position.y) <= maxNeighborHeightDiff && // Cube끼리 높이가 너무 차이나진 않는지
+            candidate != this; // 자기자신은 아닌지
     }
 
-    
+    public void OnClick()
+    {
+        
+    }
 }
