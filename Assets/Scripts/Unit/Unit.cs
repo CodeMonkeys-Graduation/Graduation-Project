@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public abstract class Unit : MonoBehaviour
 {
     [Header ("Set in Editor (Unit)")]
