@@ -72,8 +72,14 @@ MonoBehaviour:
   cubeHeightToJump: 0.2
   team: {fileID: 11400000, guid: e0bf86c813c46794fb0e8b0c72897d22, type: 2}
   e_onUnitRunExit: {fileID: 11400000, guid: d08eea7cc7367e647ba2486a6e4af064, type: 2}
+  actionSlots:
+  - actionType: 0
+    ActionPointCost: 1
+  - actionType: 1
+    ActionPointCost: 3
+  - actionType: 2
+    ActionPointCost: 3
   actionPointsRemain: 0
-  cubeOnPosition: {fileID: 0}
 --- !u!1001 &1957010317608274093
 PrefabInstance:
   m_ObjectHideFlags: 0

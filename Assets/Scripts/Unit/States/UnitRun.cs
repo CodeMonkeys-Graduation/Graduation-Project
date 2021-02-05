@@ -65,6 +65,5 @@ public class UnitRun : State<Unit>
 
     public override void Exit()
     {
-        owner.SetCubeOnPosition();
     }
 }

@@ -17,7 +17,7 @@ public class PlayerTurnBegin : TurnState
 
         // 턴의 첫 액션임
         if (owner.stateMachine.StackCount == 1)
-            unit.ActionPointReset();
+            unit.ResetActionPoint();
 
         if (unit.actionPointsRemain <= 0)
         {
@@ -27,7 +27,7 @@ public class PlayerTurnBegin : TurnState
 
         unit.StartBlink();
 
-        owner.actionPanel.SetActive(true);
+        owner.actionPanel.SetPanel(unit.actionSlots, unit.actionPointsRemain);
         owner.actionPointText.text = $"{unit.gameObject.name} Turn\nActionPoint Remain :  {unit.actionPointsRemain}";
         owner.e_onClickMoveBtn.Register(el_onClickMoveBtn, OnClickMoveBtn);
         
@@ -46,8 +46,7 @@ public class PlayerTurnBegin : TurnState
     public override void Exit()
     {
         owner.e_onClickMoveBtn.Unregister(el_onClickMoveBtn);
-        owner.actionPanel.SetActive(false);
-
+        owner.actionPanel.HidePanel();
         unit.StopBlink();
     }
 }
