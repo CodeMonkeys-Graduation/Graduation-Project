@@ -1,5 +1,17 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &4011981954910256398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765548280369805393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce96a66cdce78f54bb4de0dc2d5f4553, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1767155763558466710
 GameObject:
   m_ObjectHideFlags: 0
@@ -56,15 +68,17 @@ MonoBehaviour:
   jumpTime: 0.5
   jumpHeight: 0.2
   cubeHeightToJump: 0.1
-  team: {fileID: 11400000, guid: e0bf86c813c46794fb0e8b0c72897d22, type: 2}
+  team: {fileID: 11400000, guid: 6ab3a43f4bd34d64a921d43e54c4f25c, type: 2}
   e_onUnitRunExit: {fileID: 11400000, guid: d08eea7cc7367e647ba2486a6e4af064, type: 2}
+  e_onUnitAttackExit: {fileID: 11400000, guid: 2079106fc3680b44ba8b64dcc785cf18, type: 2}
+  e_onUnitDead: {fileID: 11400000, guid: 66ff86eb3d1dceb47a03c6d50e4a3a26, type: 2}
   actionSlots:
-  - actionType: 0
-    ActionPointCost: 1
-  - actionType: 1
-    ActionPointCost: 3
-  - actionType: 2
-    ActionPointCost: 3
+  - type: 0
+    cost: 1
+  - type: 1
+    cost: 3
+  - type: 2
+    cost: 3
   actionPointsRemain: 0
 --- !u!65 &7182084997022087974
 BoxCollider:
@@ -148,6 +162,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38efdaadbfe1d624bbee439cb02e7661, type: 3}
+--- !u!1 &1765548280369805393 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1774625739149480, guid: 38efdaadbfe1d624bbee439cb02e7661,
+    type: 3}
+  m_PrefabInstance: {fileID: 1767155763160344825}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1771986622128515713 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4906828391645816, guid: 38efdaadbfe1d624bbee439cb02e7661,

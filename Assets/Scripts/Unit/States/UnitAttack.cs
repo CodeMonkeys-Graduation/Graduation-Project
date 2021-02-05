@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class UnitAttack : State<Unit>
 {
-    public UnitAttack(Unit owner) : base(owner) { }
+    Cube attackTarget;
+    public UnitAttack(Unit owner, Cube attackTarget) : base(owner) 
+    {
+        this.attackTarget = attackTarget;
+    }
 
     public override void Enter()
     {
         owner.anim.SetTrigger("ToAttack");
-        //Debug.Log("UnitAttack Enter");
+        owner.body.LookAt(attackTarget.platform.transform, Vector3.up);
     }
 
     public override void Execute()
     {
-        //Debug.Log("UnitAttack Execute " + owner.anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"));
-
         if(!owner.anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
         {
             owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateChangeMethod.PopNPush);
@@ -24,6 +26,6 @@ public class UnitAttack : State<Unit>
 
     public override void Exit()
     {
-        
+        owner.e_onUnitAttackExit.Invoke();
     }
 }

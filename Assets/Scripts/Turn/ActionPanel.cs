@@ -11,11 +11,11 @@ public class ActionPanel : MonoBehaviour
 
         foreach (var slot in actionSlots)
         {
-            ActionBtn btn = actionBtns.Find((actionBtn) => actionBtn.actionType == slot.actionType);
+            ActionBtn btn = actionBtns.Find((actionBtn) => actionBtn.actionType == slot.type);
 
-            btn.SetCost(slot.ActionPointCost);
+            btn.SetCost(slot.cost);
             
-            if (actionPointRemain >= slot.ActionPointCost)
+            if (actionPointRemain >= slot.cost)
                 btn.SetBtnActive(true);
         }
 

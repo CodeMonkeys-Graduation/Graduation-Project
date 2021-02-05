@@ -13,7 +13,7 @@ public class StateTransitionTest : MonoBehaviour
     {
         if(ToAttack)
         {
-            unit.stateMachine.ChangeState(new UnitAttack(unit), StateMachine<Unit>.StateChangeMethod.PopNPush);
+            unit.stateMachine.ChangeState(new UnitAttack(unit, null), StateMachine<Unit>.StateChangeMethod.PopNPush);
             ToAttack = false;
         }
         if (ToIdle)

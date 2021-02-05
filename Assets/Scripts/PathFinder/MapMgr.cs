@@ -23,11 +23,40 @@ public class MapMgr : MonoBehaviour
     public List<Cube> GetCubes(Cube fromCube, Func<Cube, bool> cubeCondition = null, Func<Path, bool> pathCondition = null)
         => fromCube.paths.Where(pathCondition).Select((p) => p.destination).Where(cubeCondition).ToList();
 
-    public void UpdateCubesPaths(Predicate<Cube> shouldUpdate, Func<Cube, int> actionPointGetter, Unit movingUnit, Cube destination)
+    public List<Cube> GetCubes(Cube fromCube, int range)
+    {
+        Queue<Cube> queue = new Queue<Cube>();
+        queue.Enqueue(fromCube);
+
+        List<Cube> result = new List<Cube>();
+        int currRange = -1;
+        while(currRange < range)
+        {
+            Queue<Cube> secondQueue = new Queue<Cube>();
+            while (queue.Count > 0)
+            {
+                Cube currCube = queue.Dequeue();
+                result.Add(currCube);
+                foreach (var neighbor in currCube.neighbors)
+                {
+                    if (!result.Contains(neighbor) && !queue.Contains(neighbor) && !secondQueue.Contains(neighbor))
+                    {
+                        secondQueue.Enqueue(neighbor);
+                    }
+                }
+            }
+            queue = secondQueue;
+            currRange++;
+        }
+
+        return result;
+    }
+
+    public void UpdateCubesPaths(Predicate<Cube> shouldUpdate, Func<Cube, int> moveRangeGetter, Unit movingUnit, Cube destination)
     {
         foreach (var cube in map.Cubes)
             if (shouldUpdate(cube))
-                cube.UpdatePathsOnUnitRun(actionPointGetter(cube), movingUnit, destination);
+                cube.UpdatePathsOnUnitRun(moveRangeGetter(cube), movingUnit, destination);
     }
 
     public void BlinkCube(Cube cubeToBlink, float intensity)
