@@ -12,6 +12,9 @@ public class PlayerTurnBegin : TurnState
 
     public override void Enter()
     {
+        owner.testPlayBtn.SetActive(false);
+        owner.testEndTurnBtn.SetActive(true);
+
         // 턴의 첫 액션임
         if (owner.stateMachine.StackCount == 1)
             unit.ActionPointReset();
@@ -44,5 +47,7 @@ public class PlayerTurnBegin : TurnState
     {
         owner.e_onClickMoveBtn.Unregister(el_onClickMoveBtn);
         owner.actionPanel.SetActive(false);
+
+        unit.StopBlink();
     }
 }
