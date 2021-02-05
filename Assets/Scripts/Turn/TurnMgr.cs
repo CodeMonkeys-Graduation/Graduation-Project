@@ -10,6 +10,8 @@ public class TurnMgr : MonoBehaviour
     [SerializeField] private List<Unit> units = new List<Unit>();
     [SerializeField] public Queue<Unit> turns = new Queue<Unit>();
     [SerializeField] public GameObject actionPanel;
+    [SerializeField] public GameObject testPlayBtn;
+    [SerializeField] public GameObject testEndTurnBtn;
     [SerializeField] public TextMeshProUGUI actionPointText;
     [SerializeField] public Event e_onUnitRunExit;
     [SerializeField] public Event e_onClickMoveBtn;
@@ -64,7 +66,7 @@ public class TurnMgr : MonoBehaviour
             stateMachine.ChangeState(new PlayerTurnBegin(this, unitToHaveTurn), StateMachine<TurnMgr>.StateChangeMethod.ClearNPush);
 
         else if(unitToHaveTurn.team == TeamMgr.Team.AI)
-            stateMachine.ChangeState(new AITurn(this, unitToHaveTurn), StateMachine<TurnMgr>.StateChangeMethod.ClearNPush);
+            stateMachine.ChangeState(new AITurnBegin(this, unitToHaveTurn), StateMachine<TurnMgr>.StateChangeMethod.ClearNPush);
     }
 
     // 디버깅용
@@ -82,7 +84,7 @@ public class TurnMgr : MonoBehaviour
         else if (stateMachine.IsStateType(typeof(PlayerTurnAttack)))
             tmState = TMState.PlayerTurnAttack;
 
-        else if (stateMachine.IsStateType(typeof(AITurn)))
+        else if (stateMachine.IsStateType(typeof(AITurnBegin)))
             tmState = TMState.AI;
 
         else

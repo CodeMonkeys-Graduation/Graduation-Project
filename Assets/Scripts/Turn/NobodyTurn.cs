@@ -9,6 +9,8 @@ public class NobodyTurn : State<TurnMgr>
     public override void Enter()
     {
         owner.actionPanel.SetActive(false);
+        owner.testPlayBtn.SetActive(true);
+        owner.testEndTurnBtn.SetActive(false);
     }
 
     public override void Execute()

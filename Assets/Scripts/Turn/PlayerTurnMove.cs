@@ -18,6 +18,8 @@ public class PlayerTurnMove : TurnState
             path => path.path.Count <= unit.actionPointsRemain + 1);
 
         owner.mapMgr.BlinkCubes(cubesCanGo, 0.5f);
+        unit.StartBlink();
+        owner.testEndTurnBtn.SetActive(true);
     }
 
     public override void Execute()
@@ -49,12 +51,20 @@ public class PlayerTurnMove : TurnState
         }
     }
 
-    private void OnWaitExit() => hitCube.StopBlink();
-    private void OnWaitEnter() => hitCube.SetBlink(0.5f);
+    private void OnWaitExit()
+    {
+        hitCube.StopBlink();
+    }
+    private void OnWaitEnter()
+    {
+        hitCube.SetBlink(0.5f);
+        owner.testEndTurnBtn.SetActive(false);
+    }
 
     public override void Exit()
     {
         unit.StopBlink();
         owner.mapMgr.StopBlinkAll();
+        owner.testEndTurnBtn.SetActive(false);
     }
 }
