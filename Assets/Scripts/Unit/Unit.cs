@@ -4,9 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public enum ActionType { Move, Attack, Item, Skill }
+
+
+
 [RequireComponent(typeof(Collider))]
 public abstract class Unit : MonoBehaviour
 {
+    [System.Serializable]
+    public struct ActionSlot
+    {
+        public ActionType actionType;
+        public int ActionPointCost;
+    }
+
     [Header ("Set in Editor (Unit)")]
     [SerializeField] public Animator anim;
     [SerializeField] public Transform body;
@@ -21,21 +32,17 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] [Range(0.1f, 0.3f)] public float cubeHeightToJump; // 유닛이 점프로 큐브를 이동할 큐브높이 최소차이.
     [SerializeField] public Team team;
     [SerializeField] public Event e_onUnitRunExit;
+    [SerializeField] public List<ActionSlot> actionSlots;
 
     [Header ("Set in Runtime")]
     [HideInInspector] public int actionPointsRemain;
-    [SerializeField] public Cube CubeOnPosition { get => SetCubeOnPosition(); }
+    [HideInInspector] public Cube CubeOnPosition { get => GetCubeOnPosition(); }
     [HideInInspector] public StateMachine<Unit> stateMachine;
     private bool isJumping;
 
-    private void Reset()
-    {
-    }
-
     public virtual void Start()
     {
-        SetCubeOnPosition();
-        ActionPointReset();
+        ResetActionPoint();
         stateMachine = new StateMachine<Unit>(new UnitIdle(this));
     }
 
@@ -46,7 +53,7 @@ public abstract class Unit : MonoBehaviour
         stateMachine.ChangeState(new UnitRun(this, pathToDest), StateMachine<Unit>.StateChangeMethod.PopNPush);
     }
 
-    public void ActionPointReset() => actionPointsRemain = actionPoints;
+    public void ResetActionPoint() => actionPointsRemain = actionPoints;
 
     public bool FlatMove(Vector3 nextDestination)
     {
@@ -73,10 +80,13 @@ public abstract class Unit : MonoBehaviour
         StartCoroutine(JumpToDestination(currCubePos, nextDestination, OnJumpDone));
     }
 
-    public void StartBlink() => TraverseChild((tr) => { if (tr.GetComponent<Renderer>()) tr.GetComponent<Renderer>().material.SetInt("_IsFresnel", 1); });
-    public void StopBlink() => TraverseChild((tr) => { if (tr.GetComponent<Renderer>()) tr.GetComponent<Renderer>()?.material.SetInt("_IsFresnel", 0); });
+    public bool HasAction(ActionType type) => actionSlots.Any((a) => a.actionType == type);
 
-    public Cube SetCubeOnPosition()
+    public void StartBlink() => TraverseChild((tr) => { if (tr.GetComponent<Renderer>()) tr.GetComponent<Renderer>().material.SetInt("_IsFresnel", 1); });
+    
+    public void StopBlink() => TraverseChild((tr) => { if (tr.GetComponent<Renderer>()) tr.GetComponent<Renderer>()?.material.SetInt("_IsFresnel", 0); });
+    
+    public Cube GetCubeOnPosition()
     {
         RaycastHit hit;
         if (Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out hit, 0.2f, LayerMask.GetMask("Cube")))
@@ -108,9 +118,6 @@ public abstract class Unit : MonoBehaviour
 
     private IEnumerator JumpToDestination(Vector3 currCubePos, Vector3 nextDestination, Action OnJumpDone)
     {
-        // 그냥 에디터 체크용
-        isJumping = true;
-
         float currLerpTime = 0f;
         float lerpTime = jumpTime;
 
@@ -139,8 +146,6 @@ public abstract class Unit : MonoBehaviour
 
             yield return null;
         }
-        // 그냥 에디터 체크용
-        isJumping = false;
 
         OnJumpDone();
     }

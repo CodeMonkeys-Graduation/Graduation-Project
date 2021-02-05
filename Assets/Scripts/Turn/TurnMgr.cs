@@ -9,7 +9,7 @@ public class TurnMgr : MonoBehaviour
     [SerializeField] public MapMgr mapMgr;
     [SerializeField] private List<Unit> units = new List<Unit>();
     [SerializeField] public Queue<Unit> turns = new Queue<Unit>();
-    [SerializeField] public GameObject actionPanel;
+    [SerializeField] public ActionPanel actionPanel;
     [SerializeField] public GameObject testPlayBtn;
     [SerializeField] public GameObject testEndTurnBtn;
     [SerializeField] public TextMeshProUGUI actionPointText;
