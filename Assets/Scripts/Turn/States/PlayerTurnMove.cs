@@ -13,8 +13,8 @@ public class PlayerTurnMove : TurnState
     public override void Enter()
     {
         cubesCanGo = owner.mapMgr.GetCubes(
-            unit.cubeOnPosition, 
-            cube => cube != unit.cubeOnPosition && cube.GetUnit() == null, 
+            unit.CubeOnPosition, 
+            cube => cube != unit.CubeOnPosition && cube.GetUnit() == null, 
             path => path.path.Count <= unit.actionPointsRemain + 1);
 
         owner.mapMgr.BlinkCubes(cubesCanGo, 0.5f);

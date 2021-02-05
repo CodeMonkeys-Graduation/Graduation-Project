@@ -19,12 +19,12 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] [Range(0f, 2f)] float jumpTime; // 점프를 실행할 timespan
     [SerializeField] [Range(0f, 3f)] float jumpHeight; // 점프 높이
     [SerializeField] [Range(0.1f, 0.3f)] public float cubeHeightToJump; // 유닛이 점프로 큐브를 이동할 큐브높이 최소차이.
-    [SerializeField] public TeamMgr.Team team;
+    [SerializeField] public Team team;
     [SerializeField] public Event e_onUnitRunExit;
 
     [Header ("Set in Runtime")]
     [HideInInspector] public int actionPointsRemain;
-    [SerializeField] public Cube cubeOnPosition;
+    [SerializeField] public Cube CubeOnPosition { get => SetCubeOnPosition(); }
     [HideInInspector] public StateMachine<Unit> stateMachine;
     private bool isJumping;
 
@@ -41,7 +41,7 @@ public abstract class Unit : MonoBehaviour
 
     public void MoveTo(Cube destination)
     {
-        Path pathToDest = cubeOnPosition.paths.Find((p) => p.destination == destination);
+        Path pathToDest = CubeOnPosition.paths.Find((p) => p.destination == destination);
         actionPointsRemain -= pathToDest.path.Count - 1;
         stateMachine.ChangeState(new UnitRun(this, pathToDest), StateMachine<Unit>.StateChangeMethod.PopNPush);
     }
@@ -76,14 +76,14 @@ public abstract class Unit : MonoBehaviour
     public void StartBlink() => TraverseChild((tr) => { if (tr.GetComponent<Renderer>()) tr.GetComponent<Renderer>().material.SetInt("_IsFresnel", 1); });
     public void StopBlink() => TraverseChild((tr) => { if (tr.GetComponent<Renderer>()) tr.GetComponent<Renderer>()?.material.SetInt("_IsFresnel", 0); });
 
-    public void SetCubeOnPosition()
+    public Cube SetCubeOnPosition()
     {
         RaycastHit hit;
         if (Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out hit, 0.2f, LayerMask.GetMask("Cube")))
         {
-            cubeOnPosition = hit.transform.GetComponent<Cube>();
+            return hit.transform.GetComponent<Cube>();
         }
-
+        return null;
     }
 
     private void TraverseChild(Action<Transform> action)
