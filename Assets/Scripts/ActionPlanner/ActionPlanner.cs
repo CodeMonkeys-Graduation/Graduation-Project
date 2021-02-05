@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class TeamMgr : MonoBehaviour
+public class ActionPlanner : MonoBehaviour
 {
-    public enum Team { Player, AI }
+    
 }

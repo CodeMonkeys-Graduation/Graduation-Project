@@ -62,10 +62,10 @@ public class TurnMgr : MonoBehaviour
 
         Unit unitToHaveTurn = turns.Peek();
 
-        if(unitToHaveTurn.team == TeamMgr.Team.Player)
+        if(unitToHaveTurn.team.controller == Team.Controller.Player)
             stateMachine.ChangeState(new PlayerTurnBegin(this, unitToHaveTurn), StateMachine<TurnMgr>.StateChangeMethod.ClearNPush);
 
-        else if(unitToHaveTurn.team == TeamMgr.Team.AI)
+        else if(unitToHaveTurn.team.controller == Team.Controller.AI)
             stateMachine.ChangeState(new AITurnBegin(this, unitToHaveTurn), StateMachine<TurnMgr>.StateChangeMethod.ClearNPush);
     }
 
