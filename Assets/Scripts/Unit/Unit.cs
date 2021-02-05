@@ -6,16 +6,13 @@ using UnityEngine;
 
 public enum ActionType { Move, Attack, Item, Skill }
 
-
-
-[RequireComponent(typeof(Collider))]
 public abstract class Unit : MonoBehaviour
 {
     [System.Serializable]
     public struct ActionSlot
     {
-        public ActionType actionType;
-        public int ActionPointCost;
+        public ActionType type;
+        public int cost;
     }
 
     [Header ("Set in Editor (Unit)")]
@@ -32,12 +29,15 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] [Range(0.1f, 0.3f)] public float cubeHeightToJump; // 유닛이 점프로 큐브를 이동할 큐브높이 최소차이.
     [SerializeField] public Team team;
     [SerializeField] public Event e_onUnitRunExit;
+    [SerializeField] public Event e_onUnitAttackExit;
+    [SerializeField] public Event e_onUnitDead;
     [SerializeField] public List<ActionSlot> actionSlots;
 
     [Header ("Set in Runtime")]
     [HideInInspector] public int actionPointsRemain;
     [HideInInspector] public Cube CubeOnPosition { get => GetCubeOnPosition(); }
     [HideInInspector] public StateMachine<Unit> stateMachine;
+    private Cube cubeToAttack;
     private bool isJumping;
 
     public virtual void Start()
@@ -49,7 +49,7 @@ public abstract class Unit : MonoBehaviour
     public void MoveTo(Cube destination)
     {
         Path pathToDest = CubeOnPosition.paths.Find((p) => p.destination == destination);
-        actionPointsRemain -= pathToDest.path.Count - 1;
+        actionPointsRemain -= (pathToDest.path.Count - 1) * GetActionSlot(ActionType.Move).cost;
         stateMachine.ChangeState(new UnitRun(this, pathToDest), StateMachine<Unit>.StateChangeMethod.PopNPush);
     }
 
@@ -80,7 +80,27 @@ public abstract class Unit : MonoBehaviour
         StartCoroutine(JumpToDestination(currCubePos, nextDestination, OnJumpDone));
     }
 
-    public bool HasAction(ActionType type) => actionSlots.Any((a) => a.actionType == type);
+    public void Attack(Cube cubeToAttack)
+    {
+        this.cubeToAttack = cubeToAttack;
+        actionPointsRemain -= GetActionSlot(ActionType.Attack).cost;
+        stateMachine.ChangeState(new UnitAttack(this, cubeToAttack), StateMachine<Unit>.StateChangeMethod.PopNPush);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        stateMachine.ChangeState(new UnitHit(this, damage), StateMachine<Unit>.StateChangeMethod.PopNPush);
+    }
+    public void GiveDamageOnTarget()
+    {
+        Unit targetUnit = cubeToAttack.GetUnit();
+        if (targetUnit)
+            targetUnit.TakeDamage(basicAttackDamage);
+    }
+
+    public ActionSlot GetActionSlot(ActionType type) => actionSlots.Find((slot) => slot.type == type);
+
+    public bool HasAction(ActionType type) => actionSlots.Any((a) => a.type == type);
 
     public void StartBlink() => TraverseChild((tr) => { if (tr.GetComponent<Renderer>()) tr.GetComponent<Renderer>().material.SetInt("_IsFresnel", 1); });
     

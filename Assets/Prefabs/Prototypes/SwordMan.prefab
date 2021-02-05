@@ -72,14 +72,28 @@ MonoBehaviour:
   cubeHeightToJump: 0.2
   team: {fileID: 11400000, guid: e0bf86c813c46794fb0e8b0c72897d22, type: 2}
   e_onUnitRunExit: {fileID: 11400000, guid: d08eea7cc7367e647ba2486a6e4af064, type: 2}
+  e_onUnitAttackExit: {fileID: 11400000, guid: 2079106fc3680b44ba8b64dcc785cf18, type: 2}
+  e_onUnitDead: {fileID: 11400000, guid: 66ff86eb3d1dceb47a03c6d50e4a3a26, type: 2}
   actionSlots:
-  - actionType: 0
-    ActionPointCost: 1
-  - actionType: 1
-    ActionPointCost: 3
-  - actionType: 2
-    ActionPointCost: 3
+  - type: 0
+    cost: 1
+  - type: 1
+    cost: 3
+  - type: 2
+    cost: 3
   actionPointsRemain: 0
+--- !u!114 &4758579248401208343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957010317608292939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce96a66cdce78f54bb4de0dc2d5f4553, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1957010317608274093
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -730,6 +744,12 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 0ee7e8b3337f1ae42a5962a5d774ee82, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe2a5bf9b4c2d4a4b9853a8506f18c40, type: 3}
+--- !u!1 &1957010317608292939 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 121574, guid: fe2a5bf9b4c2d4a4b9853a8506f18c40,
+    type: 3}
+  m_PrefabInstance: {fileID: 1957010317608274093}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1957010317608653711 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 416546, guid: fe2a5bf9b4c2d4a4b9853a8506f18c40,

@@ -14,8 +14,14 @@ public class TurnMgr : MonoBehaviour
     [SerializeField] public GameObject testEndTurnBtn;
     [SerializeField] public TextMeshProUGUI actionPointText;
     [SerializeField] public Event e_onUnitRunExit;
-    [SerializeField] public Event e_onClickMoveBtn;
+    [SerializeField] public Event e_onUnitAttackExit;
     [SerializeField] public Event e_onPathfindRequesterCountZero;
+    [SerializeField] public Event e_onUnitDead;
+    [SerializeField] public Event e_onClickMoveBtn;
+    [SerializeField] public Event e_onClickAttackBtn;
+    [SerializeField] public Event e_onClickItemBtn;
+    [SerializeField] public Event e_onClickSkillBtn;
+    private EventListener el_onUnitDead = new EventListener();
 
     public StateMachine<TurnMgr> stateMachine;
     public enum TMState { Nobody, PlayerTurnBegin, PlayerTurnMove, PlayerTurnAttack, AI, WaitEvent }
@@ -30,13 +36,13 @@ public class TurnMgr : MonoBehaviour
 
     public void Start()
     {
+        e_onUnitDead.Register(el_onUnitDead, OnUnitDead_RefreshQueue); 
         mapMgr = FindObjectOfType<MapMgr>();
         units.Clear();
         units.AddRange(FindObjectsOfType<Unit>());
         turns.Clear();
         foreach(var u in units.OrderByDescending((u) => u.agility))
         {
-            Debug.Log(u.gameObject.name);
             turns.Enqueue(u);
         }
 
@@ -69,6 +75,19 @@ public class TurnMgr : MonoBehaviour
             stateMachine.ChangeState(new AITurnBegin(this, unitToHaveTurn), StateMachine<TurnMgr>.StateChangeMethod.ClearNPush);
     }
 
+    private void OnUnitDead_RefreshQueue()
+    {
+        int turnCount = turns.Count;
+        for (int i = 0; i < turnCount; i++)
+        {
+            Unit u = turns.Dequeue();
+            if (u != null && u.gameObject.activeInHierarchy && u.health > 0)
+                turns.Enqueue(u);
+        }
+
+        this.units = turns.ToList();
+    }
+
     // 디버깅용
     private void CheckTurnState()
     {
@@ -90,4 +109,6 @@ public class TurnMgr : MonoBehaviour
         else
             tmState = TMState.Nobody;
     }
+
+
 }
