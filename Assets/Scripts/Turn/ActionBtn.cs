@@ -11,7 +11,6 @@ public class ActionBtn : MonoBehaviour
     [SerializeField] TextMeshProUGUI costText;
     private Button btn;
 
-
     public void OnClick_ActionBtn() => e_onClickActionBtn.Invoke();
 
     public void SetCost(int cost) => costText.text = cost.ToString();
