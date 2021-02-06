@@ -97,6 +97,7 @@ public class Pathfinder : MonoBehaviour
     public enum FinderState { Idle, Process }
     public FinderState sState = FinderState.Idle;
     [SerializeField] Event e_pathfindRequesterCountZero;
+    [SerializeField] Event e_onPathUpdatingStart;
     [SerializeField] MapMgr mapMgr;
     int requesterCounts = 0;
 
@@ -118,6 +119,7 @@ public class Pathfinder : MonoBehaviour
     {
         requesterCounts++;
         sState = FinderState.Process;
+        e_onPathUpdatingStart.Invoke();
     }
     private void OnSearchEnd()
     {

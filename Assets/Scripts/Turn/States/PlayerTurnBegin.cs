@@ -43,8 +43,34 @@ public class PlayerTurnBegin : TurnState
         
     }
 
-    private void OnClickMoveBtn() => owner.stateMachine.ChangeState(new PlayerTurnMove(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
-    private void OnClickAttackBtn() => owner.stateMachine.ChangeState(new PlayerTurnAttack(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+    private void OnClickMoveBtn()
+    {
+        // path를 업데이트중인 큐브가 있으므로 큐브가 업데이트 될때까지 기다려야함.
+        if (owner.isAnyCubePathUpdating)
+        {
+            owner.stateMachine.ChangeState(
+                new WaitSingleEvent(owner, unit, owner.e_onPathfindRequesterCountZero, new PlayerTurnMove(owner, unit)),
+                StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+        }
+        else
+        {
+            owner.stateMachine.ChangeState(new PlayerTurnMove(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+        }
+    }
+    private void OnClickAttackBtn()
+    {
+        // path를 업데이트중인 큐브가 있으므로 큐브가 업데이트 될때까지 기다려야함.
+        if(owner.isAnyCubePathUpdating)
+        {
+            owner.stateMachine.ChangeState(
+                new WaitSingleEvent(owner, unit, owner.e_onPathfindRequesterCountZero, new PlayerTurnAttack(owner, unit)),
+                StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+        }
+        else
+        {
+            owner.stateMachine.ChangeState(new PlayerTurnAttack(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+        }
+    }
 
     public override void Exit()
     {

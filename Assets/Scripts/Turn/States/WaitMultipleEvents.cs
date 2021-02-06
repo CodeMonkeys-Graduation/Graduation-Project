@@ -42,7 +42,20 @@ public class WaitMultipleEvents : TurnState
     {
         if (onWaitExecute != null) this.onWaitExecute.Invoke();
 
-        if (elList.Count == 0) owner.stateMachine.ChangeState(nextState, StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+        if (elList.Count == 0)
+        {
+            // path를 업데이트중인 큐브가 있으므로 큐브가 업데이트 될때까지 기다려야함.
+            if (owner.isAnyCubePathUpdating)
+            {
+                owner.stateMachine.ChangeState(
+                    new WaitSingleEvent(owner, unit, owner.e_onPathfindRequesterCountZero, nextState),
+                    StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+            }
+            else
+            {
+                owner.stateMachine.ChangeState(nextState, StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+            }
+        }
     }
 
     public override void Exit()

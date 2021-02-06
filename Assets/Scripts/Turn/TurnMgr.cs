@@ -16,12 +16,16 @@ public class TurnMgr : MonoBehaviour
     [SerializeField] public Event e_onUnitRunExit;
     [SerializeField] public Event e_onUnitAttackExit;
     [SerializeField] public Event e_onPathfindRequesterCountZero;
+    [SerializeField] public Event e_onPathUpdatingStart;
     [SerializeField] public Event e_onUnitDead;
     [SerializeField] public Event e_onClickMoveBtn;
     [SerializeField] public Event e_onClickAttackBtn;
     [SerializeField] public Event e_onClickItemBtn;
     [SerializeField] public Event e_onClickSkillBtn;
     private EventListener el_onUnitDead = new EventListener();
+    private EventListener el_onPathUpdatingStart = new EventListener();
+    private EventListener el_onPathfindRequesterCountZero = new EventListener();
+    public bool isAnyCubePathUpdating = false;
 
     public StateMachine<TurnMgr> stateMachine;
     public enum TMState { Nobody, PlayerTurnBegin, PlayerTurnMove, PlayerTurnAttack, AI, WaitEvent }
@@ -36,7 +40,10 @@ public class TurnMgr : MonoBehaviour
 
     public void Start()
     {
-        e_onUnitDead.Register(el_onUnitDead, OnUnitDead_RefreshQueue); 
+        e_onUnitDead.Register(el_onUnitDead, OnUnitDead_RefreshQueue);
+        e_onPathUpdatingStart.Register(el_onPathUpdatingStart, () => isAnyCubePathUpdating = true);
+        e_onPathfindRequesterCountZero.Register(el_onPathfindRequesterCountZero, () => isAnyCubePathUpdating = false);
+
         mapMgr = FindObjectOfType<MapMgr>();
         units.Clear();
         units.AddRange(FindObjectsOfType<Unit>());
