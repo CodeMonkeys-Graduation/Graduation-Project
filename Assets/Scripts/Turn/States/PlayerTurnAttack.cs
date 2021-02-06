@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,15 +11,14 @@ public class PlayerTurnAttack : TurnState
 
     public PlayerTurnAttack(TurnMgr owner, Unit unit) : base(owner, unit)
     {
+        // get all cubes in range
         cubesCanAttack = owner.mapMgr.GetCubes(
             unit.CubeOnPosition,
             unit.basicAttackRange);
 
+        // filter cubes
         cubesCanAttack = cubesCanAttack
-            .Where((cube) => 
-                cube != unit.CubeOnPosition &&
-                cube.GetUnit() != null && 
-                unit.team.enemyTeams.Contains(cube.GetUnit().team))
+            .Where(CubeCanAttackConditions)
             .ToList();
     }
 
@@ -33,23 +33,13 @@ public class PlayerTurnAttack : TurnState
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Cube")))
+            if (RaycastWithCubeMask(out hit))
             {
                 Cube cubeClicked = hit.transform.GetComponent<Cube>();
-                if (cubeClicked && cubesCanAttack.Contains(cubeClicked))
+                if (cubesCanAttack.Contains(cubeClicked))
                 {
-                    this.cubeClicked = cubeClicked;
-
-                    TurnState nextState = new PlayerTurnBegin(owner, unit);
-                    owner.stateMachine.ChangeState(
-                        new WaitSingleEvent(owner, unit, owner.e_onUnitAttackExit, nextState),
-                        StateMachine<TurnMgr>.StateChangeMethod.JustPush);
-
-                    unit.StopBlink();
-
-                    unit.Attack(cubeClicked);
+                    OnClickCubeCanAttack(cubeClicked);
                 }
             }
         }
@@ -60,5 +50,30 @@ public class PlayerTurnAttack : TurnState
         unit.StopBlink();
         owner.mapMgr.StopBlinkAll();
     }
+    private bool CubeCanAttackConditions(Cube cube)
+        => cube != unit.CubeOnPosition &&
+            cube.GetUnit() != null &&
+            unit.team.enemyTeams.Contains(cube.GetUnit().team);
+
+    private void OnClickCubeCanAttack(Cube cubeClicked)
+    {
+        this.cubeClicked = cubeClicked;
+
+        TurnState nextState = new PlayerTurnBegin(owner, unit);
+        owner.stateMachine.ChangeState(
+            new WaitSingleEvent(owner, unit, owner.e_onUnitAttackExit, nextState),
+            StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+
+        unit.StopBlink();
+
+        unit.Attack(cubeClicked);
+    }
+
+    private bool RaycastWithCubeMask(out RaycastHit hit)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        return Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Cube"));
+    }
+
 
 }

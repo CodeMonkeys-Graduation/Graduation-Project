@@ -24,7 +24,7 @@ public abstract class Unit : MonoBehaviour
     [Header ("Set in Editor (Unit)")]
     [SerializeField] public Animator anim;
     [SerializeField] public Transform body;
-    [SerializeField] public int health;
+    [SerializeField] public int health { get; private set; }
     [SerializeField] public int basicAttackDamage;
     [SerializeField] public int basicAttackRange;
     [SerializeField] public float moveSpeed;
@@ -63,8 +63,9 @@ public abstract class Unit : MonoBehaviour
 
     public void ResetActionPoint() => actionPointsRemain = actionPoints;
 
-    public bool FlatMove(Vector3 nextDestination)
+    public bool FlatMove(Cube nextDestinationCube)
     {
+        Vector3 nextDestination = nextDestinationCube.platform.position;
         float distanceRemain = Vector3.Distance(nextDestination, transform.position);
         Vector3 dir = (nextDestination - transform.position).normalized;
         Vector3 move = dir * moveSpeed * Time.deltaTime;
@@ -78,14 +79,20 @@ public abstract class Unit : MonoBehaviour
             return false;
     }
 
-    /// <returns>도착하면 OnJumpDone을 호출합니다.</returns>
-    public void JumpMove(Vector3 currCubePos, Vector3 nextDestination, Action OnJumpDone)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="currCubePos">현재 유닛의 position을 전달하세요.</param>
+    /// <param name="nextDestination">다음 큐브의 platform position을 전달하세요</param>
+    /// <param name="OnJumpDone">도착하면 OnJumpDone을 호출합니다.</param>
+    public void JumpMove(Cube nextDestinationCube, Action OnJumpDone)
     {
-        Vector3 dir = nextDestination - transform.position;
+        Vector3 currPos = transform.position;
+        Vector3 dir = nextDestinationCube.platform.position - transform.position;
         dir.y = 0f;
         LookDirection(dir);
         
-        StartCoroutine(JumpToDestination(currCubePos, nextDestination, OnJumpDone));
+        StartCoroutine(JumpToDestination(currPos, nextDestinationCube.platform.position, OnJumpDone));
     }
 
     public void Attack(Cube cubeToAttack)
@@ -97,7 +104,7 @@ public abstract class Unit : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        stateMachine.ChangeState(new UnitHit(this, damage), StateMachine<Unit>.StateChangeMethod.PopNPush);
+        stateMachine.ChangeState(new UnitHit(this, damage, (damage) => health -= damage), StateMachine<Unit>.StateChangeMethod.PopNPush);
     }
     public void GiveDamageOnTarget()
     {

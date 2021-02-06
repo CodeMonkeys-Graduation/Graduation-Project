@@ -27,21 +27,31 @@ public class PlayerTurnBegin : TurnState
         // 큐브의 경로를 업데이트해야함
         if (unit.CubeOnPosition.pathUpdateDirty)
         {
-            Debug.Log("PlayerTurnBegin unit.CubeOnPosition.pathUpdateDirty");
-            owner.stateMachine.ChangeState(
-                new WaitSingleEvent(owner, unit, owner.e_onPathfindRequesterCountZero, this),
-                StateMachine<TurnMgr>.StateChangeMethod.PopNPush);
-
-            unit.CubeOnPosition.UpdatePaths(
-                unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost, 
-                (cube) => cube.GetUnit() != null && cube.GetUnit().health > 0);
-
+            UpdateCurrentUnitPaths();
             return;
         }
 
+        // 유닛 깜빡임 효과 on
         unit.StartBlink();
 
+        SetUI();
+    }
+
+    public override void Execute()
+    {
+    }
+
+    public override void Exit()
+    {
+        // 유닛 깜빡임 효과 off
+        unit.StopBlink();
+
         // UI
+        UnsetUI();
+    }
+
+    private void SetUI()
+    {
         owner.testPlayBtn.SetActive(false);
         owner.testEndTurnBtn.SetActive(true);
 
@@ -53,26 +63,28 @@ public class PlayerTurnBegin : TurnState
 
         // TODO 
         // Register ItemBtn, SkillBtn
-
     }
 
-    public override void Execute()
+    private void UpdateCurrentUnitPaths()
     {
-        
+        owner.stateMachine.ChangeState(
+                        new WaitSingleEvent(owner, unit, owner.e_onPathfindRequesterCountZero, this),
+                        StateMachine<TurnMgr>.StateChangeMethod.PopNPush);
+
+        unit.CubeOnPosition.UpdatePaths(
+            unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost,
+            (cube) => cube.GetUnit() != null && cube.GetUnit().health > 0);
     }
 
-    private void OnClickMoveBtn()
-        => owner.stateMachine.ChangeState(new PlayerTurnMove(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
-    private void OnClickAttackBtn() 
-        =>  owner.stateMachine.ChangeState(new PlayerTurnAttack(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
-
-    public override void Exit()
+    private void UnsetUI()
     {
-        unit.StopBlink();
-
-        // UI
         owner.e_onClickMoveBtn.Unregister(el_onClickMoveBtn);
         owner.e_onClickMoveBtn.Unregister(el_onClickAttackBtn);
         owner.actionPanel.HidePanel();
     }
+
+    private void OnClickMoveBtn()
+    => owner.stateMachine.ChangeState(new PlayerTurnMove(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+    private void OnClickAttackBtn()
+        => owner.stateMachine.ChangeState(new PlayerTurnAttack(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
 }

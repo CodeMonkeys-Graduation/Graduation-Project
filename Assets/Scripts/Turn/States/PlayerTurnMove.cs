@@ -25,30 +25,47 @@ public class PlayerTurnMove : TurnState
     {
         if(Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if(Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Cube")))
+            if (RaycastWithCubeMask(out hit))
             {
                 Cube cubeClicked = hit.transform.GetComponent<Cube>();
-                if (cubeClicked && cubesCanGo.Contains(cubeClicked))
+                if (cubesCanGo.Contains(cubeClicked))
                 {
-                    // for wait state
-                    this.cubeClicked = cubeClicked;
-
-                    // chage state to wait state of unitRunExit, pathUpdateEnd Event
-                    ChangeStateToWaitState();
-
-                    // unit move
-                    unit.MoveTo(hit.transform.GetComponent<Cube>());
-
-                    // update paths in the destination cube
-                    cubeClicked.UpdatePaths(
-                        unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost,
-                        (cube) => (cube.GetUnit() != null && cube.GetUnit() == unit) || cube.GetUnit() != null);
-
+                    OnClickCubeCanGo(hit, cubeClicked);
                 }
             }
         }
+    }
+
+    public override void Exit()
+    {
+        unit.StopBlink();
+        owner.mapMgr.StopBlinkAll();
+        owner.testEndTurnBtn.SetActive(false);
+    }
+
+
+    private void OnClickCubeCanGo(RaycastHit hit, Cube cubeClicked)
+    {
+        // for wait state
+        this.cubeClicked = cubeClicked;
+
+        // chage state to wait state of unitRunExit, pathUpdateEnd Event
+        ChangeStateToWaitState();
+
+        // unit move
+        unit.MoveTo(hit.transform.GetComponent<Cube>());
+
+        // update paths in the destination cube
+        cubeClicked.UpdatePaths(
+            unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost,
+            (cube) => (cube.GetUnit() != null && cube.GetUnit() == unit) || cube.GetUnit() != null);
+    }
+
+    private bool RaycastWithCubeMask(out RaycastHit hit)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        return Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Cube"));
     }
 
     private void ChangeStateToWaitState()
@@ -64,16 +81,11 @@ public class PlayerTurnMove : TurnState
     {
         cubeClicked.StopBlink();
     }
+
     private void OnWaitEnter()
     {
         cubeClicked.SetBlink(0.5f);
         owner.testEndTurnBtn.SetActive(false);
     }
 
-    public override void Exit()
-    {
-        unit.StopBlink();
-        owner.mapMgr.StopBlinkAll();
-        owner.testEndTurnBtn.SetActive(false);
-    }
 }

@@ -1,19 +1,22 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class UnitHit : State<Unit>
 {
     int damage;
-    public UnitHit(Unit owner, int damage) : base(owner)
+    Action<int> takingDamage;
+    public UnitHit(Unit owner, int damage, Action<int> takingDamage) : base(owner)
     {
         this.damage = damage;
+        this.takingDamage = takingDamage;
     }
 
     public override void Enter()
     {
         owner.anim.SetTrigger("ToHit");
-        owner.health -= damage;
+        takingDamage.Invoke(damage);
     }
 
     public override void Execute()
@@ -29,6 +32,5 @@ public class UnitHit : State<Unit>
 
     public override void Exit()
     {
-        
     }
 }
