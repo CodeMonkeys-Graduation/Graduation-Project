@@ -13,20 +13,37 @@ public class PlayerTurnBegin : TurnState
 
     public override void Enter()
     {
-        owner.testPlayBtn.SetActive(false);
-        owner.testEndTurnBtn.SetActive(true);
-
         // 턴의 첫 액션임
         if (owner.stateMachine.StackCount == 1)
             unit.ResetActionPoint();
 
+        // 액션포인트가 남아있지않음
         if (unit.actionPointsRemain <= 0)
         {
             owner.NextTurn();
             return;
         }
 
+        // 큐브의 경로를 업데이트해야함
+        if (unit.CubeOnPosition.pathUpdateDirty)
+        {
+            Debug.Log("PlayerTurnBegin unit.CubeOnPosition.pathUpdateDirty");
+            owner.stateMachine.ChangeState(
+                new WaitSingleEvent(owner, unit, owner.e_onPathfindRequesterCountZero, this),
+                StateMachine<TurnMgr>.StateChangeMethod.PopNPush);
+
+            unit.CubeOnPosition.UpdatePaths(
+                unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost, 
+                (cube) => cube.GetUnit() != null && cube.GetUnit().health > 0);
+
+            return;
+        }
+
         unit.StartBlink();
+
+        // UI
+        owner.testPlayBtn.SetActive(false);
+        owner.testEndTurnBtn.SetActive(true);
 
         owner.actionPanel.SetPanel(unit.actionSlots, unit.actionPointsRemain);
         owner.actionPointText.text = $"{unit.gameObject.name} Turn\nActionPoint Remain :  {unit.actionPointsRemain}";
@@ -36,6 +53,7 @@ public class PlayerTurnBegin : TurnState
 
         // TODO 
         // Register ItemBtn, SkillBtn
+
     }
 
     public override void Execute()
@@ -44,39 +62,17 @@ public class PlayerTurnBegin : TurnState
     }
 
     private void OnClickMoveBtn()
-    {
-        // path를 업데이트중인 큐브가 있으므로 큐브가 업데이트 될때까지 기다려야함.
-        if (owner.isAnyCubePathUpdating)
-        {
-            owner.stateMachine.ChangeState(
-                new WaitSingleEvent(owner, unit, owner.e_onPathfindRequesterCountZero, new PlayerTurnMove(owner, unit)),
-                StateMachine<TurnMgr>.StateChangeMethod.JustPush);
-        }
-        else
-        {
-            owner.stateMachine.ChangeState(new PlayerTurnMove(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
-        }
-    }
-    private void OnClickAttackBtn()
-    {
-        // path를 업데이트중인 큐브가 있으므로 큐브가 업데이트 될때까지 기다려야함.
-        if(owner.isAnyCubePathUpdating)
-        {
-            owner.stateMachine.ChangeState(
-                new WaitSingleEvent(owner, unit, owner.e_onPathfindRequesterCountZero, new PlayerTurnAttack(owner, unit)),
-                StateMachine<TurnMgr>.StateChangeMethod.JustPush);
-        }
-        else
-        {
-            owner.stateMachine.ChangeState(new PlayerTurnAttack(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
-        }
-    }
+        => owner.stateMachine.ChangeState(new PlayerTurnMove(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+    private void OnClickAttackBtn() 
+        =>  owner.stateMachine.ChangeState(new PlayerTurnAttack(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
 
     public override void Exit()
     {
+        unit.StopBlink();
+
+        // UI
         owner.e_onClickMoveBtn.Unregister(el_onClickMoveBtn);
         owner.e_onClickMoveBtn.Unregister(el_onClickAttackBtn);
         owner.actionPanel.HidePanel();
-        unit.StopBlink();
     }
 }

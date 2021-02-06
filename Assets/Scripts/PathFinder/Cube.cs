@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,12 +16,12 @@ public class Cube : MonoBehaviour
     // Set in Runtime
     [HideInInspector] public float groundHeight;
     private float neighborMaxDistance = 1.1f;
-    private EventListener eListener = new EventListener();
+    private EventListener el_onUnitDead = new EventListener();
+    [HideInInspector] public bool pathUpdateDirty = true;
 
     [Header("Set in Editor")]
     [SerializeField] float maxNeighborHeightDiff = 0.6f;
     [SerializeField] Event e_onUnitDead;
-    private EventListener el_onUnitDead = new EventListener();
 
 
     /// <summary>
@@ -48,10 +49,8 @@ public class Cube : MonoBehaviour
         pathFinder = FindObjectOfType<Pathfinder>();
         mapMgr = FindObjectOfType<MapMgr>();
 
-        e_onUnitDead.Register(el_onUnitDead, UpdatePathsOnUnitDead);
-
-        if (GetUnit() != null)
-            UpdatePathsOnUnitRun(GetUnit().actionPoints, null, null);
+        e_onUnitDead.Register(el_onUnitDead, () => pathUpdateDirty = true);
+        pathUpdateDirty = true;
     }
 
     public Unit GetUnit()
@@ -76,30 +75,16 @@ public class Cube : MonoBehaviour
             renderer.material.SetFloat("_ColorIntensity", 0f);
     }
 
-    private void UpdatePathsOnUnitDead()
+    public void UpdatePaths(int maxRange, Func<Cube, bool> cubeExclusion)
     {
-        if(GetUnit() != null)
-        {
-            pathFinder.RequestAsync(this, GetUnit().actionPoints, OnPathServe,
-                (cube) => cube.GetUnit() != null && cube.GetUnit().health > 0);    // 살아있는 유닛이 있는 큐브는 제외
-        }
-
-    }
-
-    public void UpdatePathsOnUnitRun(int maxDistance, Unit movingUnit, Cube destination)
-    { // unitExclusion, cubeInculsion
-        //e_onPathServeEnd.Register(eListener);
-        pathFinder.RequestAsync(this, maxDistance, OnPathServe, 
-            (cube) => cube == destination ||                            // movingUnit의 도착지는 제외
-            cube == this ||
-            (cube.GetUnit() != null && cube.GetUnit() != movingUnit));    // movingUnit이 아닌 다른 유닛이 있는 큐브 제외
+        pathFinder.RequestAsync(this, maxRange, OnPathServe, cubeExclusion);
     }
 
     private void OnPathServe(List<Path> paths)
     {
         this.paths.Clear();
         this.paths.AddRange(paths);
-        //e_onPathServeEnd.Unregister(eListener);
+        pathUpdateDirty = false;
     }
 
     private List<Cube> GetNeighbors()

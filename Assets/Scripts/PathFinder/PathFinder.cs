@@ -294,6 +294,8 @@ public class Pathfinder : MonoBehaviour
         Queue<Node> queue = new Queue<Node>();
         queue.Enqueue(table[start]);
 
+        int maxLoop = 50;
+        int currLoop = 0;
         while (queue.Count > 0)
         {
             Node currNode = queue.Dequeue();
@@ -311,12 +313,19 @@ public class Pathfinder : MonoBehaviour
                 neighborNode.prevNode = currNode;
                 queue.Enqueue(neighborNode);
             }
-            yield return null;
+            currLoop++;
+
+            if(currLoop >= maxLoop)
+            {
+                currLoop = 0;
+                yield return null;
+            }
         }
 
         List<Node> destinations = table.Where(node => node.cost <= maxDistance);
 
         List<Path> paths = new List<Path>();
+        currLoop = 0;
         foreach (var destination in destinations)
         {
             Path path = new Path(start, destination);
@@ -327,11 +336,17 @@ public class Pathfinder : MonoBehaviour
             {
                 path.Add(currNode.prevNode);
                 currNode = currNode.prevNode;
-                yield return null;
             }
             path.Reverse();
 
             paths.Add(path);
+
+            currLoop++;
+            if (currLoop >= maxLoop)
+            {
+                currLoop = 0;
+                yield return null;
+            }
         }
 
         OnServe(paths);
