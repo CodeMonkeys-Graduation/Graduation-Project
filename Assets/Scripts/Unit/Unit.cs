@@ -6,6 +6,12 @@ using UnityEngine;
 
 public enum ActionType { Move, Attack, Item, Skill }
 
+[System.Serializable]
+public class ItemBag
+{
+    public List<Item> items = new List<Item>(); 
+}
+
 public abstract class Unit : MonoBehaviour
 {
     [System.Serializable]
@@ -32,11 +38,13 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] public Event e_onUnitAttackExit;
     [SerializeField] public Event e_onUnitDead;
     [SerializeField] public List<ActionSlot> actionSlots;
+    [SerializeField] public ItemBag itemBag;
 
     [Header ("Set in Runtime")]
     [HideInInspector] public int actionPointsRemain;
     [HideInInspector] public Cube CubeOnPosition { get => GetCubeOnPosition(); }
     [HideInInspector] public StateMachine<Unit> stateMachine;
+
     private Cube cubeToAttack;
     private bool isJumping;
 

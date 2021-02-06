@@ -30,6 +30,7 @@ public class PlayerTurnBegin : TurnState
 
         owner.actionPanel.SetPanel(unit.actionSlots, unit.actionPointsRemain);
         owner.actionPointText.text = $"{unit.gameObject.name} Turn\nActionPoint Remain :  {unit.actionPointsRemain}";
+
         owner.e_onClickMoveBtn.Register(el_onClickMoveBtn, OnClickMoveBtn);
         owner.e_onClickAttackBtn.Register(el_onClickAttackBtn, OnClickAttackBtn);
 
