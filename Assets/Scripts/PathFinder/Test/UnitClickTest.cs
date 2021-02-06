@@ -21,7 +21,6 @@ public class UnitClickTest : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Unit")))
             {
-                hit.transform.GetComponent<IClickable>()?.OnClick();
                 selectedUnit = hit.transform.GetComponent<Unit>();
                 cameraMove.SetTarget(selectedUnit);
                 List<Path> paths = selectedUnit.CubeOnPosition.paths.Where((p) => p.path.Count <= selectedUnit.actionPointsRemain).ToList();
