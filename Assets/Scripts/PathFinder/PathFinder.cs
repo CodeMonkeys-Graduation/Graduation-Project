@@ -92,7 +92,7 @@ public class Pathfinder : MonoBehaviour
         }
 
     }
-    
+
 
     public enum FinderState { Idle, Process }
     public FinderState sState = FinderState.Idle;
@@ -102,7 +102,7 @@ public class Pathfinder : MonoBehaviour
 
     private void Start()
     {
-        if(mapMgr == null)
+        if (mapMgr == null)
             mapMgr = FindObjectOfType<MapMgr>();
         if (e_pathfindRequesterCountZero == null)
             Debug.LogError("[Pathfinder] e_pathfindRequesterCountZero == null");
@@ -122,7 +122,7 @@ public class Pathfinder : MonoBehaviour
     private void OnSearchEnd()
     {
         requesterCounts--;
-        if(requesterCounts == 0)
+        if (requesterCounts == 0)
         {
             sState = FinderState.Idle;
             e_pathfindRequesterCountZero.Invoke();
@@ -141,7 +141,7 @@ public class Pathfinder : MonoBehaviour
             Debug.LogError("MapMgr Should be Resetted");
             return null;
         }
-            
+
 
         OnSearchBegin();
 
@@ -190,7 +190,7 @@ public class Pathfinder : MonoBehaviour
 
             paths.Add(path);
         }
-        
+
         OnSearchEnd();
 
         return paths;
@@ -292,7 +292,7 @@ public class Pathfinder : MonoBehaviour
         Queue<Node> queue = new Queue<Node>();
         queue.Enqueue(table[start]);
 
-        while(queue.Count > 0)
+        while (queue.Count > 0)
         {
             Node currNode = queue.Dequeue();
             if (currNode.cost >= maxDistance) continue;
@@ -302,7 +302,7 @@ public class Pathfinder : MonoBehaviour
 
             foreach (var neighborNode in table.Find(neighborCubes))
             {
-                if (cubeExculsion(neighborNode.cube)) continue; 
+                if (cubeExculsion(neighborNode.cube)) continue;
                 if (neighborNode.cost <= maxDistance) continue; // 이미 다른 Path에 있음
 
                 neighborNode.cost = currNode.cost + 1;
@@ -315,13 +315,13 @@ public class Pathfinder : MonoBehaviour
         List<Node> destinations = table.Where(node => node.cost <= maxDistance);
 
         List<Path> paths = new List<Path>();
-        foreach(var destination in destinations)
+        foreach (var destination in destinations)
         {
             Path path = new Path(start, destination);
             path.Add(destination);
 
             Node currNode = destination;
-            while(currNode.prevNode != null)
+            while (currNode.prevNode != null)
             {
                 path.Add(currNode.prevNode);
                 currNode = currNode.prevNode;
