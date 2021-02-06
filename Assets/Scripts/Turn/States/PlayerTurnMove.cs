@@ -32,30 +32,32 @@ public class PlayerTurnMove : TurnState
                 Cube cubeClicked = hit.transform.GetComponent<Cube>();
                 if (cubeClicked && cubesCanGo.Contains(cubeClicked))
                 {
+                    // for wait state
                     this.cubeClicked = cubeClicked;
 
-                    TurnState nextState = new PlayerTurnBegin(owner, unit);
-                    List<Event> eList = new List<Event>() { owner.e_onUnitRunExit, owner.e_onPathfindRequesterCountZero };
-                    owner.stateMachine.ChangeState(
-                        new WaitMultipleEvents(owner, unit, eList, nextState, OnWaitEnter, null, OnWaitExit),
-                        StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+                    // chage state to wait state of unitRunExit, pathUpdateEnd Event
+                    ChangeStateToWaitState();
 
+                    // unit move
                     unit.MoveTo(hit.transform.GetComponent<Cube>());
 
-                    owner.mapMgr.UpdateCubesPaths(
-                        // Predicate<Cube> shouldUpdate 
-                        cube => cube == cubeClicked || (cube.GetUnit() != null && cube.GetUnit() != unit), // hitCube와 unit이 아닌 유닛이있는 큐브는 업데이트 필요
-                        // Func<Cube, int> moveRangeGetter
-                        cube => cube == cubeClicked ? 
-                            unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost : 
-                            cube.GetUnit().actionPoints / cube.GetUnit().GetActionSlot(ActionType.Move).cost, // destination이면 unit의 AP에, 아니라면 cube위의 유닛의 AP에 Move cost를 나눈 값을 리턴
-                        // Unit movingUnit
-                        unit,
-                        // Cube destination
-                        cubeClicked);
+                    // update paths in the destination cube
+                    cubeClicked.UpdatePaths(
+                        unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost,
+                        (cube) => (cube.GetUnit() != null && cube.GetUnit() == unit) || cube.GetUnit() != null);
+
                 }
             }
         }
+    }
+
+    private void ChangeStateToWaitState()
+    {
+        TurnState nextState = new PlayerTurnBegin(owner, unit);
+        List<Event> eList = new List<Event>() { owner.e_onUnitRunExit, owner.e_onPathfindRequesterCountZero };
+        owner.stateMachine.ChangeState(
+            new WaitMultipleEvents(owner, unit, eList, nextState, OnWaitEnter, null, OnWaitExit),
+            StateMachine<TurnMgr>.StateChangeMethod.JustPush);
     }
 
     private void OnWaitExit()

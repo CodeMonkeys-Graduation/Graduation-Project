@@ -52,13 +52,6 @@ public class MapMgr : MonoBehaviour
         return result;
     }
 
-    public void UpdateCubesPaths(Predicate<Cube> shouldUpdate, Func<Cube, int> moveRangeGetter, Unit movingUnit, Cube destination)
-    {
-        foreach (var cube in map.Cubes)
-            if (shouldUpdate(cube))
-                cube.UpdatePathsOnUnitRun(moveRangeGetter(cube), movingUnit, destination);
-    }
-
     public void BlinkCube(Cube cubeToBlink, float intensity)
     {
         foreach (var cube in map.Cubes)
