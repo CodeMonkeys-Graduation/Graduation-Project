@@ -10,7 +10,6 @@ public class UnitDead : State<Unit>
 
     public override void Enter()
     {
-        owner.health = 0;
         owner.anim.SetTrigger("ToDead");
         owner.StartCoroutine(DestroyDelay(2f));
         owner.e_onUnitDead.Invoke();

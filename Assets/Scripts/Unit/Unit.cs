@@ -104,7 +104,7 @@ public abstract class Unit : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        stateMachine.ChangeState(new UnitHit(this, damage, (damage) => health -= damage), StateMachine<Unit>.StateChangeMethod.PopNPush);
+        stateMachine.ChangeState(new UnitHit(this, damage, (amount) => health -= amount), StateMachine<Unit>.StateChangeMethod.PopNPush);
     }
     public void GiveDamageOnTarget()
     {
