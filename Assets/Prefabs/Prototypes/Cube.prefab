@@ -225,7 +225,7 @@ MonoBehaviour:
   mapMgr: {fileID: 0}
   groundHeight: 0
   maxNeighborHeightDiff: 0.6
-  e_onPathServeEnd: {fileID: 11400000, guid: 9ff65ca66f58723409b2a13e08bbbed5, type: 2}
+  e_onUnitDead: {fileID: 11400000, guid: 66ff86eb3d1dceb47a03c6d50e4a3a26, type: 2}
 --- !u!1 &7028660774964400377
 GameObject:
   m_ObjectHideFlags: 0

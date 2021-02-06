@@ -49,7 +49,7 @@ public class PlayerTurnAttack : TurnState
 
                     unit.StopBlink();
 
-                    unit.Attack(hit.transform.GetComponent<Cube>());
+                    unit.Attack(cubeClicked);
                 }
             }
         }
