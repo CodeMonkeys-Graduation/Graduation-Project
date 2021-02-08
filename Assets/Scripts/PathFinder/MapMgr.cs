@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -18,6 +17,40 @@ public class MapMgr : MonoBehaviour
     void Awake()
     {
         InitializeMapData();
+    }
+
+    public List<Cube> GetCubes(int[,] range, int centerXIndex, int centerZIndex, Cube center)
+    {
+        float centerXPos = center.transform.position.x;
+        float centerZPos = center.transform.position.z;
+        float minYPos = map.Cubes.Aggregate((acc, curr) => acc.transform.position.y < curr.transform.position.y ? acc : curr).transform.position.y;
+        float RaycastYPos = minYPos - 5f;
+
+        float minXPos = centerXPos - centerXIndex; // 큐브 크기는 1*1*1이라는 전제
+        float minZPos = centerZPos - centerZIndex;
+
+        List<Cube> result = new List<Cube>();
+        for(int z = 0; z < range.GetLength(0); z++)
+        {
+            for(int x = 0; x < range.GetLength(1); x++)
+            {
+                // 범위안임
+                if(range[z, x] != 0)
+                {
+                    Ray ray = new Ray(new Vector3(minXPos + x, RaycastYPos, minZPos + z), Vector3.up);
+                    RaycastHit hit;
+                    // 해당 위치에 큐브가 있음
+                    if(Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Cube")))
+                    {
+                        Debug.Log(hit.transform.GetComponent<Cube>().gameObject.name);
+                        result.Add(hit.transform.GetComponent<Cube>());
+                    }
+                    //Debug.DrawLine(ray.origin, ray.origin + ray.direction * 1000f, Color.red, 10f);
+                }
+            }
+        }
+
+        return result;
     }
 
     public List<Cube> GetCubes(Cube fromCube, Func<Cube, bool> cubeCondition = null, Func<Path, bool> pathCondition = null)

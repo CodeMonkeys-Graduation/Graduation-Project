@@ -19,8 +19,8 @@ public class UnitRun : State<Unit>
 
     public override void Enter()
     {
+        owner.e_onUnitRunEnter.Invoke();
         owner.anim.SetTrigger("ToRun");
-        //Debug.Log("UnitRun Enter");
     }
 
     public override void Execute()

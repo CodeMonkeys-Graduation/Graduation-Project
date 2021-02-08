@@ -224,8 +224,10 @@ MonoBehaviour:
   pathFinder: {fileID: 0}
   mapMgr: {fileID: 0}
   groundHeight: 0
+  pathUpdateDirty: 1
   maxNeighborHeightDiff: 0.6
   e_onUnitDead: {fileID: 11400000, guid: 66ff86eb3d1dceb47a03c6d50e4a3a26, type: 2}
+  e_onUnitRunEnter: {fileID: 11400000, guid: 247a2c00413a2024fb34c43a4e4f3a42, type: 2}
 --- !u!1 &7028660774964400377
 GameObject:
   m_ObjectHideFlags: 0

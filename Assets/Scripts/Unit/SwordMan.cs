@@ -10,10 +10,20 @@ public class SwordMan : Unit
         base.Start();
     }
 
+
     // Update is called once per frame
     void Update()
     {
         stateMachine.Run();
+    }
+    protected override void SetRange()
+    {
+        basicAttackRange = new Range(new int[3, 3]{
+            {   0,1,0 },
+            {   1,1,1 },
+            {   0,1,0 }
+        });
+        skillRange = null;
     }
 
 }

@@ -17,11 +17,13 @@ public class Cube : MonoBehaviour
     [HideInInspector] public float groundHeight;
     private float neighborMaxDistance = 1.1f;
     private EventListener el_onUnitDead = new EventListener();
+    private EventListener el_onUnitRunEnter = new EventListener();
     [HideInInspector] public bool pathUpdateDirty = true;
 
     [Header("Set in Editor")]
     [SerializeField] float maxNeighborHeightDiff = 0.6f;
     [SerializeField] Event e_onUnitDead;
+    [SerializeField] Event e_onUnitRunEnter;
 
 
     /// <summary>
@@ -38,18 +40,18 @@ public class Cube : MonoBehaviour
         
         groundHeight = platform.position.y;
 
-        paths.Clear();
         pathFinder = FindObjectOfType<Pathfinder>();
         mapMgr = FindObjectOfType<MapMgr>();
-        paths.AddRange(pathFinder.RequestSync(this));
     }
 
     private void Start()
     {
         pathFinder = FindObjectOfType<Pathfinder>();
         mapMgr = FindObjectOfType<MapMgr>();
+        groundHeight = platform.position.y;
 
         e_onUnitDead.Register(el_onUnitDead, () => pathUpdateDirty = true);
+        e_onUnitRunEnter.Register(el_onUnitRunEnter, () => pathUpdateDirty = true);
         pathUpdateDirty = true;
     }
 
