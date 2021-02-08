@@ -15,6 +15,14 @@ public class TurtleShell : Unit
     {
         stateMachine.Run();
     }
-
+    protected override void SetRange()
+    {
+        basicAttackRange = new Range(new int[3, 3]{
+            {   0,  1,  0   },
+            {   1,  1,  1   },
+            {   0,  1,  0   }
+        });
+        skillRange = null;
+    }
 
 }

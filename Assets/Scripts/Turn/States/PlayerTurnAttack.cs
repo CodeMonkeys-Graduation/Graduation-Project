@@ -13,8 +13,11 @@ public class PlayerTurnAttack : TurnState
     {
         // get all cubes in range
         cubesCanAttack = owner.mapMgr.GetCubes(
-            unit.CubeOnPosition,
-            unit.basicAttackRange);
+            unit.basicAttackRange.range,
+            unit.basicAttackRange.centerX,
+            unit.basicAttackRange.centerZ,
+            unit.CubeOnPosition
+            );
 
         // filter cubes
         cubesCanAttack = cubesCanAttack

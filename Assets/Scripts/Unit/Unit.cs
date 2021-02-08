@@ -12,6 +12,23 @@ public class ItemBag
     public List<Item> items = new List<Item>(); 
 }
 
+public class Range
+{
+    public int[,] range;
+    public int centerX;
+    public int centerZ;
+
+    public Range(int[,] range, int x = -1, int z = -1)
+    {
+        if (x == -1) x = range.GetLength(1) / 2;
+        if (z == -1) z = range.GetLength(0) / 2;
+
+        this.centerX = x;
+        this.centerZ = z;
+        this.range = range;
+    }
+}
+
 public abstract class Unit : MonoBehaviour
 {
     [System.Serializable]
@@ -24,9 +41,8 @@ public abstract class Unit : MonoBehaviour
     [Header ("Set in Editor (Unit)")]
     [SerializeField] public Animator anim;
     [SerializeField] public Transform body;
-    [SerializeField] public int health { get; private set; }
+    [SerializeField] public int health;
     [SerializeField] public int basicAttackDamage;
-    [SerializeField] public int basicAttackRange;
     [SerializeField] public float moveSpeed;
     [SerializeField] public int actionPoints;
     [SerializeField] public int agility;
@@ -35,6 +51,7 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] [Range(0.1f, 0.3f)] public float cubeHeightToJump; // 유닛이 점프로 큐브를 이동할 큐브높이 최소차이.
     [SerializeField] public Team team;
     [SerializeField] public Event e_onUnitRunExit;
+    [SerializeField] public Event e_onUnitRunEnter;
     [SerializeField] public Event e_onUnitAttackExit;
     [SerializeField] public Event e_onUnitDead;
     [SerializeField] public List<ActionSlot> actionSlots;
@@ -44,13 +61,18 @@ public abstract class Unit : MonoBehaviour
     [HideInInspector] public int actionPointsRemain;
     [HideInInspector] public Cube CubeOnPosition { get => GetCubeOnPosition(); }
     [HideInInspector] public StateMachine<Unit> stateMachine;
+    public Range basicAttackRange;
+    public Range skillRange;
 
     private Cube cubeToAttack;
     private bool isJumping;
 
+    protected abstract void SetRange();
+
     public virtual void Start()
     {
         ResetActionPoint();
+        SetRange();
         stateMachine = new StateMachine<Unit>(new UnitIdle(this));
     }
 

@@ -63,7 +63,6 @@ MonoBehaviour:
   body: {fileID: 1957010317608653711}
   health: 10
   basicAttackDamage: 5
-  basicAttackRange: 1
   moveSpeed: 2
   actionPoints: 5
   agility: 5
@@ -72,6 +71,7 @@ MonoBehaviour:
   cubeHeightToJump: 0.2
   team: {fileID: 11400000, guid: e0bf86c813c46794fb0e8b0c72897d22, type: 2}
   e_onUnitRunExit: {fileID: 11400000, guid: d08eea7cc7367e647ba2486a6e4af064, type: 2}
+  e_onUnitRunEnter: {fileID: 11400000, guid: 247a2c00413a2024fb34c43a4e4f3a42, type: 2}
   e_onUnitAttackExit: {fileID: 11400000, guid: 2079106fc3680b44ba8b64dcc785cf18, type: 2}
   e_onUnitDead: {fileID: 11400000, guid: 66ff86eb3d1dceb47a03c6d50e4a3a26, type: 2}
   actionSlots:
@@ -81,6 +81,8 @@ MonoBehaviour:
     cost: 3
   - type: 2
     cost: 3
+  itemBag:
+    items: []
   actionPointsRemain: 0
 --- !u!114 &4758579248401208343
 MonoBehaviour:
