@@ -15,8 +15,13 @@ public class UnitHit : State<Unit>
 
     public override void Enter()
     {
-        owner.anim.SetTrigger("ToHit");
         takingDamage.Invoke(damage);
+        if(owner.health <= 0)
+        {
+            owner.stateMachine.ChangeState(new UnitDead(owner), StateMachine<Unit>.StateChangeMethod.JustPush);
+            return;
+        }
+        owner.anim.SetTrigger("ToHit");
     }
 
     public override void Execute()
