@@ -2,7 +2,7 @@
 
 > 이 리포지토리는 홍익대학교 컴퓨터공학과 4학년 [원동현](https://github.com/wonAdam)과 [박솔휘](https://github.com/solhwi)의 졸업 프로젝트 저장소입니다.
 
-> 에디터상에서 보고 싶은 경우 에셋들을 임포트해야합니다. 아래는 저희가 사용중인 에셋들입니다.
+> 에디터상에서 보고 싶은 경우 에셋들을 임포트해야합니다. 아래 에셋들을 임포트하여 "Assets/_AssetStore" 경로에 넣어주세요.
 - [Toony Tiny RTS Set](https://assetstore.unity.com/packages/3d/characters/toony-tiny-rts-set-135258)
 - [RPG Monster Wave Polyart](https://assetstore.unity.com/packages/3d/characters/creatures/rpg-monster-wave-polyart-157652)
 - [Cube World - Proto Series](https://assetstore.unity.com/packages/3d/environments/cube-world-proto-series-144159)
