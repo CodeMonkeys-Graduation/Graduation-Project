@@ -38,12 +38,11 @@ public class PlayerTurnItem : TurnState
         for (int i = 0; i < owner.ItemPanel.transform.childCount; i++) // 앞에서부터 슬롯 갯수만큼만 삽입시킬 것
         {
             Transform itemSlot = owner.ItemPanel.transform.GetChild(i); // 아이템 슬롯들을 가져옴
-
-            Debug.Log(ItemsCanDrink.Count);
+            int temp = i;
 
             if (ItemsCanDrink.Count > i)
             {
-                itemSlot.GetComponent<Button>().onClick.AddListener(() => OnClickButton(i)); // 아이템 슬롯을 누르면 사용
+                itemSlot.GetComponent<Button>().onClick.AddListener(() => OnClickButton(temp)); // 아이템 슬롯을 누르면 사용
                 itemSlot.GetChild(0).GetComponent<Image>().sprite = ItemsCanDrink[i].itemImage; // 아이템 슬롯의 이미지 체인지
                 itemSlot.GetComponentInChildren<Text>().text = ItemsCanDrink[i].itemCount.ToString(); // 아이템 갯수 표시
             }
@@ -56,12 +55,19 @@ public class PlayerTurnItem : TurnState
     }
     void OnClickButton(int idx)
     {
-        if (idx >= ItemsCanDrink.Count) return; // idx를 넘어가는 경우 리턴
+        if (idx > ItemsCanDrink.Count) return; // idx를 넘어가는 경우 리턴
+
+        ItemsCanDrink[idx].Use(unit); // 아이템을 사용
 
         if (ItemsCanDrink[idx].itemCount > 1) unit.itemBag.items[idx].itemCount--; // 갯수가 2개 이상이면 카운트 내리기
         else if (ItemsCanDrink[idx].itemCount == 1) unit.itemBag.items.RemoveAt(idx); // 갯수가 1개면 삭제 
 
         SetItemBag(); // 리로드
+
+
+        // item 갯수 로직이 좀 애매한 거 같음
+
+        // itembag에 아이템을 넣을 때도 계산을 해야할 거 같다
     }
 
 
