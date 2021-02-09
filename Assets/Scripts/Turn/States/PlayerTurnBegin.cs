@@ -7,6 +7,7 @@ public class PlayerTurnBegin : TurnState
 {
     EventListener el_onClickMoveBtn = new EventListener();
     EventListener el_onClickAttackBtn = new EventListener();
+    EventListener el_onClickItemBtn = new EventListener();
     public PlayerTurnBegin(TurnMgr owner, Unit unit) : base(owner, unit)
     {
     }
@@ -60,6 +61,7 @@ public class PlayerTurnBegin : TurnState
 
         owner.e_onClickMoveBtn.Register(el_onClickMoveBtn, OnClickMoveBtn);
         owner.e_onClickAttackBtn.Register(el_onClickAttackBtn, OnClickAttackBtn);
+        owner.e_onClickItemBtn.Register(el_onClickItemBtn, OnClickItemBtn); // 아이템 클릭 이벤트를 등록합니다.
 
         // TODO 
         // Register ItemBtn, SkillBtn
@@ -87,4 +89,6 @@ public class PlayerTurnBegin : TurnState
     => owner.stateMachine.ChangeState(new PlayerTurnMove(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
     private void OnClickAttackBtn()
         => owner.stateMachine.ChangeState(new PlayerTurnAttack(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+    private void OnClickItemBtn() //아이템 클릭 시 적용되는 이벤트
+        => owner.stateMachine.ChangeState(new PlayerTurnItem(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
 }
