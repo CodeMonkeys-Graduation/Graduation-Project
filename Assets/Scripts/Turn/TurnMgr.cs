@@ -8,6 +8,7 @@ public class TurnMgr : MonoBehaviour
 {
     [Header ("Set in Editor")]
     [SerializeField] public ActionPanel actionPanel;
+    [SerializeField] public GameObject ItemPanel;
     [SerializeField] public GameObject testPlayBtn;
     [SerializeField] public GameObject testEndTurnBtn;
     [SerializeField] public TextMeshProUGUI actionPointText;
@@ -33,7 +34,7 @@ public class TurnMgr : MonoBehaviour
     [HideInInspector] public Queue<Unit> turns = new Queue<Unit>();
 
     public StateMachine<TurnMgr> stateMachine;
-    public enum TMState { Nobody, PlayerTurnBegin, PlayerTurnMove, PlayerTurnAttack, AITurnBegin, WaitSingleEvent, WaitMultipleEvent }
+    public enum TMState { Nobody, PlayerTurnBegin, PlayerTurnMove, PlayerTurnAttack, PlayerTurnItem, AITurnBegin, WaitSingleEvent, WaitMultipleEvent }
     public TMState tmState;
 
     private void Reset()
@@ -123,6 +124,9 @@ public class TurnMgr : MonoBehaviour
 
         else if (stateMachine.IsStateType(typeof(PlayerTurnAttack)))
             tmState = TMState.PlayerTurnAttack;
+
+        else if (stateMachine.IsStateType(typeof(PlayerTurnItem)))
+            tmState = TMState.PlayerTurnItem;
 
         else if (stateMachine.IsStateType(typeof(WaitSingleEvent)))
             tmState = TMState.WaitSingleEvent;
