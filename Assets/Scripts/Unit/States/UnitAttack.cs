@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class UnitAttack : State<Unit>
 {
-    Cube attackTarget;
-    public UnitAttack(Unit owner, Cube attackTarget) : base(owner) 
+    List<Cube> attackTargets;
+    Cube centerCube;
+    public UnitAttack(Unit owner, List<Cube> attackTargets, Cube centerCube) : base(owner) 
     {
-        this.attackTarget = attackTarget;
+        this.attackTargets = attackTargets;
+        this.centerCube = centerCube;
     }
 
     public override void Enter()
     {
         owner.anim.SetTrigger("ToAttack");
-        owner.body.LookAt(attackTarget.platform.transform, Vector3.up);
+        owner.body.LookAt(centerCube.platform.transform, Vector3.up);
     }
 
     public override void Execute()
