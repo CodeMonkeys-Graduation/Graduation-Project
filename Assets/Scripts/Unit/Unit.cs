@@ -63,11 +63,16 @@ public abstract class Unit : MonoBehaviour
     [HideInInspector] public StateMachine<Unit> stateMachine;
     /*[HideInInspector]*/[SerializeField] public int currHealth;
     public Range basicAttackRange;
+    public Range basicAttackSplash;
     public Range skillRange;
+    public Range skillSplash;
 
     private Cube cubeToAttack;
     private bool isJumping;
 
+    /// <summary>
+    /// basicAttackRange, basicAttackSplash, skillRange, skillSplash 네 변수를 꼭 유닛별로 초기화해주세요.
+    /// </summary>
     protected abstract void SetRange();
 
     public virtual void Start()
