@@ -32,7 +32,7 @@ public class Range
 public abstract class Unit : MonoBehaviour
 {
     [System.Serializable]
-    public struct ActionSlot
+    public class ActionSlot
     {
         public ActionType type;
         public int cost;
@@ -61,13 +61,13 @@ public abstract class Unit : MonoBehaviour
     [HideInInspector] public int actionPointsRemain;
     [HideInInspector] public Cube CubeOnPosition { get => GetCubeOnPosition(); }
     [HideInInspector] public StateMachine<Unit> stateMachine;
-    /*[HideInInspector]*/[SerializeField] public int currHealth;
+    public int currHealth { get; private set; }
     public Range basicAttackRange;
     public Range basicAttackSplash;
     public Range skillRange;
     public Range skillSplash;
 
-    private Cube cubeToAttack;
+    private List<Cube> cubesToAttack;
     private bool isJumping;
 
     /// <summary>
@@ -81,6 +81,15 @@ public abstract class Unit : MonoBehaviour
         ResetActionPoint();
         SetRange();
         stateMachine = new StateMachine<Unit>(new UnitIdle(this));
+
+        if (basicAttackRange == null && GetActionSlot(ActionType.Attack) != null)
+            Debug.LogError("Action Attack을 갖고 있지만 basicAttackRange를 설정하지 않았습니다.");
+        if (basicAttackSplash == null && GetActionSlot(ActionType.Attack) != null)
+            Debug.LogError("Action Attack을 갖고 있지만 basicAttackSplash를 설정하지 않았습니다.");
+        if (skillRange == null && GetActionSlot(ActionType.Skill) != null)
+            Debug.LogError("Action Skill을 갖고 있지만 skillRange를 설정하지 않았습니다.");
+        if (skillSplash == null && GetActionSlot(ActionType.Skill) != null)
+            Debug.LogError("Action Skill을 갖고 있지만 skillSplash를 설정하지 않았습니다.");
     }
 
     public void MoveTo(Cube destination)
@@ -108,11 +117,7 @@ public abstract class Unit : MonoBehaviour
             return false;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="currCubePos">현재 유닛의 position을 전달하세요.</param>
-    /// <param name="nextDestination">다음 큐브의 platform position을 전달하세요</param>
+    /// <param name="nextDestinationCube">도착지 Cube</param>
     /// <param name="OnJumpDone">도착하면 OnJumpDone을 호출합니다.</param>
     public void JumpMove(Cube nextDestinationCube, Action OnJumpDone)
     {
@@ -124,22 +129,34 @@ public abstract class Unit : MonoBehaviour
         StartCoroutine(JumpToDestination(currPos, nextDestinationCube.platform.position, OnJumpDone));
     }
 
-    public void Attack(Cube cubeToAttack)
+    public void Attack(List<Cube> cubesToAttack, Cube centerCube)
     {
-        this.cubeToAttack = cubeToAttack;
+        this.cubesToAttack = cubesToAttack;
         actionPointsRemain -= GetActionSlot(ActionType.Attack).cost;
-        stateMachine.ChangeState(new UnitAttack(this, cubeToAttack), StateMachine<Unit>.StateChangeMethod.PopNPush);
+        stateMachine.ChangeState(new UnitAttack(this, cubesToAttack, centerCube), StateMachine<Unit>.StateChangeMethod.PopNPush);
     }
 
     public void TakeDamage(int damage)
     {
         stateMachine.ChangeState(new UnitHit(this, damage, (amount) => currHealth -= amount), StateMachine<Unit>.StateChangeMethod.PopNPush);
     }
-    public void GiveDamageOnTarget()
+
+    public void Heal(int amount)
     {
-        Unit targetUnit = cubeToAttack.GetUnit();
-        if (targetUnit)
-            targetUnit.TakeDamage(basicAttackDamage);
+        if (amount < 0) return; // 양수만 받습니다. 데미지를 주고 싶을 땐 UnitAttack State를 이용하세요.
+
+        currHealth = Mathf.Clamp(currHealth + amount, 0, health);
+    }
+
+
+    public void GiveDamageOnTargets()
+    {
+        foreach(var cube in cubesToAttack)
+        {
+            Unit targetUnit = cube.GetUnit();
+            if (targetUnit)
+                targetUnit.TakeDamage(basicAttackDamage);
+        }
     }
 
     public ActionSlot GetActionSlot(ActionType type) => actionSlots.Find((slot) => slot.type == type);

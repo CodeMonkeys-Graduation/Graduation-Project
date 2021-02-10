@@ -11,6 +11,6 @@ public class UnitAttackHelper : MonoBehaviour
         unit = GetComponentInParent<Unit>();
     }
 
-    public void OnAttackMotion() => unit.GiveDamageOnTarget();
+    public void OnAttackMotion() => unit.GiveDamageOnTargets();
 
 }
