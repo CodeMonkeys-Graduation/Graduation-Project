@@ -61,6 +61,7 @@ public abstract class Unit : MonoBehaviour
     [HideInInspector] public int actionPointsRemain;
     [HideInInspector] public Cube CubeOnPosition { get => GetCubeOnPosition(); }
     [HideInInspector] public StateMachine<Unit> stateMachine;
+    /*[HideInInspector]*/[SerializeField] public int currHealth;
     public Range basicAttackRange;
     public Range skillRange;
 
@@ -71,6 +72,7 @@ public abstract class Unit : MonoBehaviour
 
     public virtual void Start()
     {
+        currHealth = health;
         ResetActionPoint();
         SetRange();
         stateMachine = new StateMachine<Unit>(new UnitIdle(this));
@@ -126,7 +128,7 @@ public abstract class Unit : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        stateMachine.ChangeState(new UnitHit(this, damage, (amount) => health -= amount), StateMachine<Unit>.StateChangeMethod.PopNPush);
+        stateMachine.ChangeState(new UnitHit(this, damage, (amount) => currHealth -= amount), StateMachine<Unit>.StateChangeMethod.PopNPush);
     }
     public void GiveDamageOnTarget()
     {
