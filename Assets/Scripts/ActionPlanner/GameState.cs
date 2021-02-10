@@ -13,7 +13,7 @@ public class UnitState
     public UnitState(Unit unit, bool isSelf)
     {
         this.isSelf = isSelf;
-        this.health = unit.health;
+        this.health = unit.currHealth;
         this.position = unit.CubeOnPosition;
         this.team = unit.team;
         this.actionPoint = unit.actionPointsRemain;

@@ -106,7 +106,7 @@ public class TurnMgr : MonoBehaviour
         for (int i = 0; i < turnCount; i++)
         {
             Unit u = turns.Dequeue();
-            if (u != null && u.gameObject.activeInHierarchy && u.health > 0)
+            if (u != null && u.gameObject.activeInHierarchy && u.currHealth > 0)
                 turns.Enqueue(u);
         }
 
