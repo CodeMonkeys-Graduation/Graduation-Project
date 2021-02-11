@@ -5,12 +5,13 @@ using UnityEngine;
 public class PlayerTurnAttack : TurnState
 {
     List<Cube> cubesCanAttack;
+    List<Cube> cubesAttackRange;
     Cube cubeClicked;
 
     public PlayerTurnAttack(TurnMgr owner, Unit unit) : base(owner, unit)
     {
         // get all cubes in range
-        cubesCanAttack = owner.mapMgr.GetCubes(
+        cubesAttackRange = owner.mapMgr.GetCubes(
             unit.basicAttackRange.range,
             unit.basicAttackRange.centerX,
             unit.basicAttackRange.centerZ,
@@ -18,14 +19,15 @@ public class PlayerTurnAttack : TurnState
             );
 
         // filter cubes
-        cubesCanAttack = cubesCanAttack
+        cubesCanAttack = cubesAttackRange
             .Where(CubeCanAttackConditions)
             .ToList();
     }
 
     public override void Enter()
     {
-        owner.mapMgr.BlinkCubes(cubesCanAttack, 0.5f);
+        owner.mapMgr.BlinkCubes(cubesAttackRange,0.3f);
+        owner.mapMgr.BlinkCubes(cubesCanAttack, 0.7f);
         unit.StartBlink();
         owner.testEndTurnBtn.SetActive(true);
     }

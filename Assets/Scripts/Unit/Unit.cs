@@ -9,7 +9,64 @@ public enum ActionType { Move, Attack, Item, Skill }
 [System.Serializable]
 public class ItemBag
 {
-    public List<Item> items = new List<Item>(); 
+    public List<Item> items = new List<Item>();
+    public Dictionary<string, int> itemFinder = new Dictionary<string, int>();
+
+    public void ResetItemFinder()
+    {
+        foreach (Item i in items)
+        {
+            SetItemFinder(i.itemCode);
+        }
+    }
+
+    public void AddItem(Item item)
+    {
+        items.Add(item);
+        SetItemFinder(item.itemCode);
+    }
+
+    public Item GetItembyCode(string code)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i].itemCode == code) return items[i];
+        }
+
+        return null;
+    }
+    public void RemoveItemByCode(string code)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i].itemCode == code)
+            {
+                items.RemoveAt(i);
+                return;
+            }
+        }
+    }
+    public void SetItemFinder(string code)
+    {
+        int count = 0;
+
+        foreach (KeyValuePair<string, int> dic in itemFinder) // 현재 가방 탐색기에 존재하는 아이템은 그냥 리턴
+        {
+            if (code == dic.Key) return;
+        }
+
+        for (int i = 0; i < items.Count; i++) // 아이템 갯수 세기
+        {
+            if (items[i].itemCode == code)
+            {
+                count++;
+            }
+        }
+
+        if (count == 0) return; // 갯수가 0개면 리턴
+
+        itemFinder.Add(code, count);
+    }
 }
 
 public class Range
