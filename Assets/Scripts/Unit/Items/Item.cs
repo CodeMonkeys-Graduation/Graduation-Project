@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 
-[System.Serializable]
 public abstract class Item : ScriptableObject
 {
-    public string itemCode;
-    public int itemCount;
-    public string itemName;
-    public Sprite itemImage;
+    [SerializeField] public string itemCode;
+    [SerializeField] public int itemCount;
+    [SerializeField] public string itemName;
+    [SerializeField] public Sprite itemImage;
     public abstract void Use(Unit user);
     
 }

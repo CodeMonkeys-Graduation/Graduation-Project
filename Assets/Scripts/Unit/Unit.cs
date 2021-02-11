@@ -41,7 +41,7 @@ public abstract class Unit : MonoBehaviour
     [Header ("Set in Editor (Unit)")]
     [SerializeField] public Animator anim;
     [SerializeField] public Transform body;
-    [SerializeField] public int health;
+    [SerializeField] public int maxHealth;
     [SerializeField] public int basicAttackDamage;
     [SerializeField] public float moveSpeed;
     [SerializeField] public int actionPoints;
@@ -50,26 +50,29 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] [Range(0f, 3f)] float jumpHeight; // 점프 높이
     [SerializeField] [Range(0.1f, 0.3f)] public float cubeHeightToJump; // 유닛이 점프로 큐브를 이동할 큐브높이 최소차이.
     [SerializeField] public Team team;
-    [SerializeField] public Event e_onUnitRunExit;
-    [SerializeField] public Event e_onUnitRunEnter;
     [SerializeField] public Event e_onUnitAttackExit;
     [SerializeField] public Event e_onUnitDead;
-    [SerializeField] public List<ActionSlot> actionSlots;
+    [SerializeField] public Event e_onUnitRunEnter;
+    [SerializeField] public Event e_onUnitRunExit;
+    [SerializeField] public Event e_onUnitSkillExit;
     [SerializeField] public Skill skill;
+    [SerializeField] public List<ActionSlot> actionSlots;
     [SerializeField] public ItemBag itemBag;
+
 
     [Header ("Set in Runtime")]
     [HideInInspector] public int actionPointsRemain;
     [HideInInspector] public Cube GetCube { get => GetCubeOnPosition(); }
     [HideInInspector] public StateMachine<Unit> stateMachine;
-    public int currHealth { get; private set; }
+    /*[HideInInspector]*/ [SerializeField] private int currHealth;
+    public int Health { get { return currHealth; } } 
     public Range basicAttackRange;
     public Range basicAttackSplash;
     public Range skillRange;
     public Range skillSplash;
 
 
-    private List<Cube> cubesToAttack;
+    private List<Cube> targetCubes;
     private bool isJumping;
 
     /// <summary>
@@ -79,7 +82,7 @@ public abstract class Unit : MonoBehaviour
 
     public virtual void Start()
     {
-        currHealth = health;
+        currHealth = maxHealth;
         ResetActionPoint();
         SetRange();
         stateMachine = new StateMachine<Unit>(new UnitIdle(this));
@@ -180,19 +183,22 @@ public abstract class Unit : MonoBehaviour
 
     public void Attack(List<Cube> cubesToAttack, Cube centerCube)
     {
-        this.cubesToAttack = cubesToAttack;
+        this.targetCubes = cubesToAttack;
         actionPointsRemain -= GetActionSlot(ActionType.Attack).cost;
         stateMachine.ChangeState(new UnitAttack(this, cubesToAttack, centerCube), StateMachine<Unit>.StateChangeMethod.PopNPush);
     }
 
+    // 공격을 받는 유닛입장에서 호출당하는 함수
     public void TakeDamage(int damage)
     {
         stateMachine.ChangeState(new UnitHit(this, damage, (amount) => currHealth -= amount), StateMachine<Unit>.StateChangeMethod.PopNPush);
     }
 
+    // 공격자 입장에서 호출하는 함수
+    // AnimationHelper에 의해 Attack Animation 도중에 호출됩니다.
     public void GiveDamageOnTargets()
     {
-        foreach (var cube in cubesToAttack)
+        foreach (var cube in targetCubes)
         {
             Unit targetUnit = cube.GetUnit();
             if (targetUnit)
@@ -208,12 +214,33 @@ public abstract class Unit : MonoBehaviour
     {
         if (amount < 0) return; // 양수만 받습니다. 데미지를 주고 싶을 땐 UnitAttack State를 이용하세요.
 
-        currHealth = Mathf.Clamp(currHealth + amount, 0, health);
+        currHealth = Mathf.Clamp(currHealth + amount, 0, maxHealth);
     }
 
     #endregion
 
+    #region Skill Methods
 
+    // TurnMgr에 의해 호출됩니다.
+    public void CastSkill(List<Cube> cubesToCastSkill, Cube centerCube)
+    {
+        this.targetCubes = cubesToCastSkill;
+        actionPointsRemain -= GetActionSlot(ActionType.Skill).cost;
+        stateMachine.ChangeState(new UnitSkill(this, targetCubes, centerCube), StateMachine<Unit>.StateChangeMethod.PopNPush);
+    }
+
+    // AnimationHelper에 의해 Attack Animation 도중에 호출됩니다.
+    public void CastSkillOnTargets()
+    {
+        foreach (var cube in targetCubes)
+        {
+            Unit targetUnit = cube.GetUnit();
+            if (targetUnit)
+                skill.Cast(targetUnit);
+        }
+    }
+
+    #endregion
 
     public ActionSlot GetActionSlot(ActionType type) => actionSlots.Find((slot) => slot.type == type);
 

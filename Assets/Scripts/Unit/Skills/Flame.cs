@@ -5,10 +5,14 @@ using UnityEngine;
 [CreateAssetMenu(order = 3, fileName = "FlameSkill", menuName = "Skill/Flame")]
 public class Flame : Skill
 {
-    public override void Cast(Unit targetUnit)
+    public override void ShowVFX(List<Cube> targetCubes, Cube centerCube)
     {
-        targetUnit.TakeDamage(amount);
-        GameObject vfxGO = MonoBehaviour.Instantiate(skillVFX, targetUnit.GetCube.platform.position, Quaternion.identity).gameObject;
-        MonoBehaviour.Destroy(vfxGO, 3f);
+        GameObject vfxGO = Instantiate(
+            skillVFX, centerCube.platform.position, Quaternion.identity).gameObject;
+
+        Destroy(vfxGO, 3f);
     }
+
+    public override void Cast(Unit targetUnit) => targetUnit.TakeDamage(amount);
+    
 }

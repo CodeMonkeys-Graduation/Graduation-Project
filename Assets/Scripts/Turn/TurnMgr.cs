@@ -14,6 +14,7 @@ public class TurnMgr : MonoBehaviour
     [SerializeField] public TextMeshProUGUI actionPointText;
 
     //--- Events ---//
+    [SerializeField] public Event e_onUnitSkillExit;
     [SerializeField] public Event e_onUnitRunExit;
     [SerializeField] public Event e_onUnitAttackExit;
     [SerializeField] public Event e_onPathfindRequesterCountZero;
@@ -36,13 +37,6 @@ public class TurnMgr : MonoBehaviour
     public StateMachine<TurnMgr> stateMachine;
     public enum TMState { Nobody, PlayerTurnBegin, PlayerTurnMove, PlayerTurnAttack, PlayerTurnItem, AITurnBegin, WaitSingleEvent, WaitMultipleEvent }
     public TMState tmState;
-
-    private void Reset()
-    {
-        units.Clear();
-        units.AddRange(FindObjectsOfType<Unit>());
-        mapMgr = FindObjectOfType<MapMgr>();
-    }
 
     public void Start()
     {
@@ -106,7 +100,7 @@ public class TurnMgr : MonoBehaviour
         for (int i = 0; i < turnCount; i++)
         {
             Unit u = turns.Dequeue();
-            if (u != null && u.gameObject.activeInHierarchy && u.currHealth > 0)
+            if (u != null && u.gameObject.activeInHierarchy && u.Health > 0)
                 turns.Enqueue(u);
         }
 

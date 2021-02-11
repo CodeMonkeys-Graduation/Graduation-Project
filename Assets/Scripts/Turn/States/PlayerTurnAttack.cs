@@ -67,7 +67,13 @@ public class PlayerTurnAttack : TurnState
 
         unit.StopBlink();
 
-        unit.Attack(owner.mapMgr.GetCubes(unit.basicAttackSplash.range, unit.basicAttackSplash.centerX, unit.basicAttackSplash.centerX, cubeClicked), cubeClicked);
+        List<Cube> cubesToAttack = owner.mapMgr.GetCubes(
+            unit.basicAttackSplash.range, 
+            unit.basicAttackSplash.centerX, 
+            unit.basicAttackSplash.centerX, 
+            cubeClicked);
+
+        unit.Attack(cubesToAttack, cubeClicked);
     }
 
     private bool RaycastWithCubeMask(out RaycastHit hit)
