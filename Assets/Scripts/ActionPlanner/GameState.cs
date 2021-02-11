@@ -14,7 +14,7 @@ public class UnitState
     {
         this.isSelf = isSelf;
         this.health = unit.currHealth;
-        this.position = unit.CubeOnPosition;
+        this.position = unit.GetCube;
         this.team = unit.team;
         this.actionPoint = unit.actionPointsRemain;
     }

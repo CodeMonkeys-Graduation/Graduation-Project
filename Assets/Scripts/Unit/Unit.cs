@@ -55,17 +55,19 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] public Event e_onUnitAttackExit;
     [SerializeField] public Event e_onUnitDead;
     [SerializeField] public List<ActionSlot> actionSlots;
+    [SerializeField] public Skill skill;
     [SerializeField] public ItemBag itemBag;
 
     [Header ("Set in Runtime")]
     [HideInInspector] public int actionPointsRemain;
-    [HideInInspector] public Cube CubeOnPosition { get => GetCubeOnPosition(); }
+    [HideInInspector] public Cube GetCube { get => GetCubeOnPosition(); }
     [HideInInspector] public StateMachine<Unit> stateMachine;
     public int currHealth { get; private set; }
     public Range basicAttackRange;
     public Range basicAttackSplash;
     public Range skillRange;
     public Range skillSplash;
+
 
     private List<Cube> cubesToAttack;
     private bool isJumping;
@@ -92,14 +94,30 @@ public abstract class Unit : MonoBehaviour
             Debug.LogError("Action Skill을 갖고 있지만 skillSplash를 설정하지 않았습니다.");
     }
 
+    public void ResetActionPoint() => actionPointsRemain = actionPoints;
+
+
+
+    #region Move Methods
+
     public void MoveTo(Cube destination)
     {
-        Path pathToDest = CubeOnPosition.paths.Find((p) => p.destination == destination);
+        Path pathToDest = GetCube.paths.Find((p) => p.destination == destination);
         actionPointsRemain -= (pathToDest.path.Count - 1) * GetActionSlot(ActionType.Move).cost;
         stateMachine.ChangeState(new UnitRun(this, pathToDest), StateMachine<Unit>.StateChangeMethod.PopNPush);
     }
 
-    public void ResetActionPoint() => actionPointsRemain = actionPoints;
+    /// <param name="nextDestinationCube">도착지 Cube</param>
+    /// <param name="OnJumpDone">도착하면 OnJumpDone을 호출합니다.</param>
+    public void JumpMove(Cube nextDestinationCube, Action OnJumpDone)
+    {
+        Vector3 currPos = transform.position;
+        Vector3 dir = nextDestinationCube.platform.position - transform.position;
+        dir.y = 0f;
+        LookDirection(dir);
+        
+        StartCoroutine(JumpToDestination(currPos, nextDestinationCube.platform.position, OnJumpDone));
+    }
 
     public bool FlatMove(Cube nextDestinationCube)
     {
@@ -115,81 +133,6 @@ public abstract class Unit : MonoBehaviour
             return true;
         else
             return false;
-    }
-
-    /// <param name="nextDestinationCube">도착지 Cube</param>
-    /// <param name="OnJumpDone">도착하면 OnJumpDone을 호출합니다.</param>
-    public void JumpMove(Cube nextDestinationCube, Action OnJumpDone)
-    {
-        Vector3 currPos = transform.position;
-        Vector3 dir = nextDestinationCube.platform.position - transform.position;
-        dir.y = 0f;
-        LookDirection(dir);
-        
-        StartCoroutine(JumpToDestination(currPos, nextDestinationCube.platform.position, OnJumpDone));
-    }
-
-    public void Attack(List<Cube> cubesToAttack, Cube centerCube)
-    {
-        this.cubesToAttack = cubesToAttack;
-        actionPointsRemain -= GetActionSlot(ActionType.Attack).cost;
-        stateMachine.ChangeState(new UnitAttack(this, cubesToAttack, centerCube), StateMachine<Unit>.StateChangeMethod.PopNPush);
-    }
-
-    public void TakeDamage(int damage)
-    {
-        stateMachine.ChangeState(new UnitHit(this, damage, (amount) => currHealth -= amount), StateMachine<Unit>.StateChangeMethod.PopNPush);
-    }
-
-    public void Heal(int amount)
-    {
-        if (amount < 0) return; // 양수만 받습니다. 데미지를 주고 싶을 땐 UnitAttack State를 이용하세요.
-
-        currHealth = Mathf.Clamp(currHealth + amount, 0, health);
-    }
-
-
-    public void GiveDamageOnTargets()
-    {
-        foreach(var cube in cubesToAttack)
-        {
-            Unit targetUnit = cube.GetUnit();
-            if (targetUnit)
-                targetUnit.TakeDamage(basicAttackDamage);
-        }
-    }
-
-    public ActionSlot GetActionSlot(ActionType type) => actionSlots.Find((slot) => slot.type == type);
-
-    public bool HasAction(ActionType type) => actionSlots.Any((a) => a.type == type);
-
-    public void StartBlink() => TraverseChild((tr) => { if (tr.GetComponent<Renderer>()) tr.GetComponent<Renderer>().material.SetInt("_IsFresnel", 1); });
-    
-    public void StopBlink() => TraverseChild((tr) => { if (tr.GetComponent<Renderer>()) tr.GetComponent<Renderer>()?.material.SetInt("_IsFresnel", 0); });
-    
-    public Cube GetCubeOnPosition()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out hit, 0.2f, LayerMask.GetMask("Cube")))
-        {
-            return hit.transform.GetComponent<Cube>();
-        }
-        return null;
-    }
-
-    private void TraverseChild(Action<Transform> action)
-    {
-        Queue<Transform> queue = new Queue<Transform>();
-        queue.Enqueue(transform);
-
-        while (queue.Count > 0)
-        {
-            Transform currTr = queue.Dequeue();
-            action.Invoke(currTr);
-
-            foreach (var child in currTr.GetComponentsInChildren<Transform>().Where(tr => tr != currTr))
-                queue.Enqueue(child);
-        }
     }
 
     private void LookDirection(Vector3 dir)
@@ -230,4 +173,80 @@ public abstract class Unit : MonoBehaviour
 
         OnJumpDone();
     }
+
+    #endregion
+
+    #region Attack Methods
+
+    public void Attack(List<Cube> cubesToAttack, Cube centerCube)
+    {
+        this.cubesToAttack = cubesToAttack;
+        actionPointsRemain -= GetActionSlot(ActionType.Attack).cost;
+        stateMachine.ChangeState(new UnitAttack(this, cubesToAttack, centerCube), StateMachine<Unit>.StateChangeMethod.PopNPush);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        stateMachine.ChangeState(new UnitHit(this, damage, (amount) => currHealth -= amount), StateMachine<Unit>.StateChangeMethod.PopNPush);
+    }
+
+    public void GiveDamageOnTargets()
+    {
+        foreach (var cube in cubesToAttack)
+        {
+            Unit targetUnit = cube.GetUnit();
+            if (targetUnit)
+                targetUnit.TakeDamage(basicAttackDamage);
+        }
+    }
+
+    #endregion
+
+    #region Item Methods
+
+    public void Heal(int amount)
+    {
+        if (amount < 0) return; // 양수만 받습니다. 데미지를 주고 싶을 땐 UnitAttack State를 이용하세요.
+
+        currHealth = Mathf.Clamp(currHealth + amount, 0, health);
+    }
+
+    #endregion
+
+
+
+    public ActionSlot GetActionSlot(ActionType type) => actionSlots.Find((slot) => slot.type == type);
+
+    public bool HasAction(ActionType type) => actionSlots.Any((a) => a.type == type);
+
+    public void StartBlink() => TraverseChild((tr) => { if (tr.GetComponent<Renderer>()) tr.GetComponent<Renderer>().material.SetInt("_IsFresnel", 1); });
+    
+    public void StopBlink() => TraverseChild((tr) => { if (tr.GetComponent<Renderer>()) tr.GetComponent<Renderer>()?.material.SetInt("_IsFresnel", 0); });
+    
+    private Cube GetCubeOnPosition()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out hit, 0.2f, LayerMask.GetMask("Cube")))
+        {
+            return hit.transform.GetComponent<Cube>();
+        }
+        return null;
+    }
+
+    private void TraverseChild(Action<Transform> action)
+    {
+        Queue<Transform> queue = new Queue<Transform>();
+        queue.Enqueue(transform);
+
+        while (queue.Count > 0)
+        {
+            Transform currTr = queue.Dequeue();
+            action.Invoke(currTr);
+
+            foreach (var child in currTr.GetComponentsInChildren<Transform>().Where(tr => tr != currTr))
+                queue.Enqueue(child);
+        }
+    }
+
+    
 }
