@@ -23,7 +23,7 @@ public class UnitClickTest : MonoBehaviour
             {
                 selectedUnit = hit.transform.GetComponent<Unit>();
                 cameraMove.SetTarget(selectedUnit);
-                List<Path> paths = selectedUnit.CubeOnPosition.paths.Where((p) => p.path.Count <= selectedUnit.actionPointsRemain).ToList();
+                List<Path> paths = selectedUnit.GetCube.paths.Where((p) => p.path.Count <= selectedUnit.actionPointsRemain).ToList();
                 HashSet<Cube> cubesToBlink = new HashSet<Cube>();
                 foreach (var p in paths)
                 {
@@ -37,7 +37,7 @@ public class UnitClickTest : MonoBehaviour
 
             else if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Cube")) && selectedUnit)
             {
-                Path path = selectedUnit.CubeOnPosition.paths.Find((p) => p.destination == hit.transform.GetComponent<Cube>());
+                Path path = selectedUnit.GetCube.paths.Find((p) => p.destination == hit.transform.GetComponent<Cube>());
                 selectedUnit.stateMachine.ChangeState(new UnitRun(selectedUnit, path), StateMachine<Unit>.StateChangeMethod.PopNPush);
                 selectedUnit = null;
                 mapMgr.StopBlinkAll();

@@ -12,7 +12,7 @@ public class UnitRun : State<Unit>
     public UnitRun(Unit owner, Path path) : base(owner) 
     {
         this.path = path;
-        this.currCube = owner.CubeOnPosition;
+        this.currCube = owner.GetCube;
         if (path != null)
             cubeToGo = new Queue<Cube>(path.path);
     }

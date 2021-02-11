@@ -14,7 +14,7 @@ public class PlayerTurnAttack : TurnState
             unit.basicAttackRange.range,
             unit.basicAttackRange.centerX,
             unit.basicAttackRange.centerZ,
-            unit.CubeOnPosition
+            unit.GetCube
             );
 
         // filter cubes
@@ -52,7 +52,7 @@ public class PlayerTurnAttack : TurnState
         owner.mapMgr.StopBlinkAll();
     }
     private bool CubeCanAttackConditions(Cube cube)
-        => cube != unit.CubeOnPosition &&
+        => cube != unit.GetCube &&
             cube.GetUnit() != null &&
             unit.team.enemyTeams.Contains(cube.GetUnit().team);
 

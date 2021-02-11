@@ -26,7 +26,7 @@ public class PlayerTurnBegin : TurnState
         }
 
         // 큐브의 경로를 업데이트해야함
-        if (unit.CubeOnPosition.pathUpdateDirty)
+        if (unit.GetCube.pathUpdateDirty)
         {
             UpdateCurrentUnitPaths();
             return;
@@ -73,7 +73,7 @@ public class PlayerTurnBegin : TurnState
                         new WaitSingleEvent(owner, unit, owner.e_onPathfindRequesterCountZero, this),
                         StateMachine<TurnMgr>.StateChangeMethod.PopNPush);
 
-        unit.CubeOnPosition.UpdatePaths(
+        unit.GetCube.UpdatePaths(
             unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost,
             (cube) => cube.GetUnit() != null && cube.GetUnit().currHealth > 0);
     }
