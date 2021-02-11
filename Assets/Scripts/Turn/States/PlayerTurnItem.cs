@@ -7,7 +7,11 @@ using UnityEngine.UI;
 
 public class PlayerTurnItem : TurnState
 {
+    ItemBag unitItemBag;
+
     List<Item> ItemsCanDrink = new List<Item>();
+    Dictionary<string, int> ItemFinder = new Dictionary<string, int>();
+
     Item ItemClicked;
 
     public PlayerTurnItem(TurnMgr owner, Unit unit) : base(owner, unit)
@@ -26,30 +30,47 @@ public class PlayerTurnItem : TurnState
     }
 
     public override void Exit()
-    { 
+    {
         owner.ItemPanel.SetActive(false); //아이템 판넬 끔
     }
 
     private void SetItemBag()
     {
-        ItemsCanDrink.Clear(); // 가용 리스트를 비움 
-        ItemsCanDrink = unit.itemBag.items; // 가용 리스트에 가방 정보를 삽입
+        unit.itemBag.ResetItemFinder(); // 우선 유닛의 가방과 탐색기를 동기화
+
+        unitItemBag = unit.itemBag; // 유닛의 가방
+        ItemFinder = unitItemBag.itemFinder; // 유닛의 가방 탐색기
+        ItemsCanDrink.Clear();
+
+        foreach (KeyValuePair<string, int> dic in ItemFinder) // 가방 탐색기를 이용해 중복을 제거한 가방 세팅
+        {
+            Item item = unitItemBag.GetItembyCode(dic.Key);
+            if (item == null) return;
+            ItemsCanDrink.Add(item);
+        }
 
         for (int i = 0; i < owner.ItemPanel.transform.childCount; i++) // 앞에서부터 슬롯 갯수만큼만 삽입시킬 것
         {
             Transform itemSlot = owner.ItemPanel.transform.GetChild(i); // 아이템 슬롯들을 가져옴
+
+            Button itemButton = itemSlot.GetComponent<Button>();
+            Image itemImage = itemSlot.GetChild(0).GetComponent<Image>();
+            Text itemCount = itemSlot.GetComponentInChildren<Text>();
+
             int temp = i;
 
-            if (ItemsCanDrink.Count > i)
+            itemButton.onClick.RemoveAllListeners();
+
+            if (ItemsCanDrink.Count > temp)
             {
-                itemSlot.GetComponent<Button>().onClick.AddListener(() => OnClickButton(temp)); // 아이템 슬롯을 누르면 사용
-                itemSlot.GetChild(0).GetComponent<Image>().sprite = ItemsCanDrink[i].itemImage; // 아이템 슬롯의 이미지 체인지
-                itemSlot.GetComponentInChildren<Text>().text = ItemsCanDrink[i].itemCount.ToString(); // 아이템 갯수 표시
+                itemButton.onClick.AddListener(() => OnClickButton(temp)); // 아이템 슬롯을 누르면 사용
+                itemImage.sprite = ItemsCanDrink[temp].itemImage; // 아이템 슬롯의 이미지 체인지
+                itemCount.text = ItemFinder[ItemsCanDrink[temp].itemCode].ToString(); // 아이템 갯수 표시
             }
             else
             {
-                itemSlot.GetChild(0).GetComponent<Image>().sprite = null;
-                itemSlot.GetComponentInChildren<Text>().text = null;
+                itemImage.sprite = null;
+                itemCount.text = null;
             }
         }
     }
@@ -59,16 +80,19 @@ public class PlayerTurnItem : TurnState
 
         ItemsCanDrink[idx].Use(unit); // 아이템을 사용
 
-        if (ItemsCanDrink[idx].itemCount > 1) unit.itemBag.items[idx].itemCount--; // 갯수가 2개 이상이면 카운트 내리기
-        else if (ItemsCanDrink[idx].itemCount == 1) unit.itemBag.items.RemoveAt(idx); // 갯수가 1개면 삭제 
+        string code = ItemsCanDrink[idx].itemCode;
 
+        if (ItemFinder[code] > 1)
+        {
+            unit.itemBag.itemFinder[code]--; // 갯수가 2개 이상이면 카운트 내리기
+        }
+        else if (ItemFinder[code] == 1)
+        {
+            unit.itemBag.itemFinder.Remove(code);
+        }
+
+        unit.itemBag.RemoveItemByCode(code);
         SetItemBag(); // 리로드
 
-
-        // item 갯수 로직이 좀 애매한 거 같음
-
-        // itembag에 아이템을 넣을 때도 계산을 해야할 거 같다
     }
-
-
 }
