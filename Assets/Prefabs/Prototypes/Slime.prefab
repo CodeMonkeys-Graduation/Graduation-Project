@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 4599049032506668762}
   body: {fileID: 4507898142122615048}
-  health: 5
+  maxHealth: 6
   basicAttackDamage: 5
   moveSpeed: 3
   actionPoints: 8
@@ -56,10 +56,12 @@ MonoBehaviour:
   jumpHeight: 0.5
   cubeHeightToJump: 0.1
   team: {fileID: 11400000, guid: 6ab3a43f4bd34d64a921d43e54c4f25c, type: 2}
-  e_onUnitRunExit: {fileID: 11400000, guid: d08eea7cc7367e647ba2486a6e4af064, type: 2}
-  e_onUnitRunEnter: {fileID: 11400000, guid: 247a2c00413a2024fb34c43a4e4f3a42, type: 2}
   e_onUnitAttackExit: {fileID: 11400000, guid: 2079106fc3680b44ba8b64dcc785cf18, type: 2}
   e_onUnitDead: {fileID: 11400000, guid: 66ff86eb3d1dceb47a03c6d50e4a3a26, type: 2}
+  e_onUnitRunEnter: {fileID: 11400000, guid: 247a2c00413a2024fb34c43a4e4f3a42, type: 2}
+  e_onUnitRunExit: {fileID: 11400000, guid: d08eea7cc7367e647ba2486a6e4af064, type: 2}
+  e_onUnitSkillExit: {fileID: 11400000, guid: fdcb3b5fa987bd648a833a522ec80cf2, type: 2}
+  skill: {fileID: 0}
   actionSlots:
   - type: 0
     cost: 1
@@ -70,6 +72,7 @@ MonoBehaviour:
   itemBag:
     items: []
   actionPointsRemain: 0
+  currHealth: 0
 --- !u!65 &2682655144533879949
 BoxCollider:
   m_ObjectHideFlags: 0

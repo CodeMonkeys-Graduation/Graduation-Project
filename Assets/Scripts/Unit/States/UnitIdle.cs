@@ -13,7 +13,7 @@ public class UnitIdle : State<Unit>
 
     public override void Execute()
     {
-        if (owner.currHealth <= 0) 
+        if (owner.Health <= 0) 
             owner.stateMachine.ChangeState(new UnitDead(owner), StateMachine<Unit>.StateChangeMethod.PopNPush);
     }
 

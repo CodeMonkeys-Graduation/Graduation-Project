@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05029eaee7f956d4482f40bdb60ff114, type: 3}
   m_Name: FlameSkill
   m_EditorClassIdentifier: 
-  skillVFX: {fileID: 0}
-  amount: 0
+  skillVFX: {fileID: 661307058896348757, guid: 348affcb6fd9af84bab10dc1f235ecc1, type: 3}
+  amount: 8

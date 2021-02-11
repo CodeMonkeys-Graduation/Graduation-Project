@@ -8,6 +8,7 @@ public class PlayerTurnBegin : TurnState
     EventListener el_onClickMoveBtn = new EventListener();
     EventListener el_onClickAttackBtn = new EventListener();
     EventListener el_onClickItemBtn = new EventListener();
+    EventListener el_onClickSkillBtn = new EventListener();
     public PlayerTurnBegin(TurnMgr owner, Unit unit) : base(owner, unit)
     {
     }
@@ -32,7 +33,6 @@ public class PlayerTurnBegin : TurnState
             return;
         }
 
-        // 유닛 깜빡임 효과 on
         unit.StartBlink();
 
         SetUI();
@@ -44,10 +44,8 @@ public class PlayerTurnBegin : TurnState
 
     public override void Exit()
     {
-        // 유닛 깜빡임 효과 off
         unit.StopBlink();
 
-        // UI
         UnsetUI();
     }
 
@@ -61,10 +59,8 @@ public class PlayerTurnBegin : TurnState
 
         owner.e_onClickMoveBtn.Register(el_onClickMoveBtn, OnClickMoveBtn);
         owner.e_onClickAttackBtn.Register(el_onClickAttackBtn, OnClickAttackBtn);
-        owner.e_onClickItemBtn.Register(el_onClickItemBtn, OnClickItemBtn); // 아이템 클릭 이벤트를 등록합니다.
-
-        // TODO 
-        // Register ItemBtn, SkillBtn
+        owner.e_onClickItemBtn.Register(el_onClickItemBtn, OnClickItemBtn); 
+        owner.e_onClickSkillBtn.Register(el_onClickSkillBtn, OnClickSkillBtn); 
     }
 
     private void UpdateCurrentUnitPaths()
@@ -75,13 +71,15 @@ public class PlayerTurnBegin : TurnState
 
         unit.GetCube.UpdatePaths(
             unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost,
-            (cube) => cube.GetUnit() != null && cube.GetUnit().currHealth > 0);
+            (cube) => cube.GetUnit() != null && cube.GetUnit().Health > 0);
     }
 
     private void UnsetUI()
     {
         owner.e_onClickMoveBtn.Unregister(el_onClickMoveBtn);
-        owner.e_onClickMoveBtn.Unregister(el_onClickAttackBtn);
+        owner.e_onClickAttackBtn.Unregister(el_onClickAttackBtn);
+        owner.e_onClickItemBtn.Unregister(el_onClickItemBtn);
+        owner.e_onClickSkillBtn.Unregister(el_onClickSkillBtn);
         owner.actionPanel.HidePanel();
     }
 
@@ -91,4 +89,8 @@ public class PlayerTurnBegin : TurnState
         => owner.stateMachine.ChangeState(new PlayerTurnAttack(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
     private void OnClickItemBtn() //아이템 클릭 시 적용되는 이벤트
         => owner.stateMachine.ChangeState(new PlayerTurnItem(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+    private void OnClickSkillBtn() //아이템 클릭 시 적용되는 이벤트
+    => owner.stateMachine.ChangeState(new PlayerTurnSkill(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+
+
 }

@@ -10,7 +10,7 @@ public class PlayerTurnMove : TurnState
     {
         cubesCanGo = owner.mapMgr.GetCubes(
             unit.GetCube,
-            cube => cube != unit.GetCube && (cube.GetUnit() == null || cube.GetUnit().currHealth <= 0),
+            cube => cube != unit.GetCube && (cube.GetUnit() == null || cube.GetUnit().Health <= 0),
             path => path.path.Count <= unit.actionPointsRemain + 1);
     }
 

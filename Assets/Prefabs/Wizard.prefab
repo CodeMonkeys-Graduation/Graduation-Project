@@ -61,7 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 6622911835041802792}
   body: {fileID: 6622911835051104924}
-  health: 8
+  maxHealth: 10
   basicAttackDamage: 2
   moveSpeed: 1.5
   actionPoints: 5
@@ -70,10 +70,12 @@ MonoBehaviour:
   jumpHeight: 0.1
   cubeHeightToJump: 0.2
   team: {fileID: 11400000, guid: e0bf86c813c46794fb0e8b0c72897d22, type: 2}
-  e_onUnitRunExit: {fileID: 11400000, guid: d08eea7cc7367e647ba2486a6e4af064, type: 2}
-  e_onUnitRunEnter: {fileID: 11400000, guid: 247a2c00413a2024fb34c43a4e4f3a42, type: 2}
   e_onUnitAttackExit: {fileID: 11400000, guid: 2079106fc3680b44ba8b64dcc785cf18, type: 2}
   e_onUnitDead: {fileID: 11400000, guid: 66ff86eb3d1dceb47a03c6d50e4a3a26, type: 2}
+  e_onUnitRunEnter: {fileID: 11400000, guid: 247a2c00413a2024fb34c43a4e4f3a42, type: 2}
+  e_onUnitRunExit: {fileID: 11400000, guid: d08eea7cc7367e647ba2486a6e4af064, type: 2}
+  e_onUnitSkillExit: {fileID: 11400000, guid: fdcb3b5fa987bd648a833a522ec80cf2, type: 2}
+  skill: {fileID: 11400000, guid: 0e1feb1d8c8c43848a99ded4ac5e3096, type: 2}
   actionSlots:
   - type: 0
     cost: 1
@@ -83,10 +85,22 @@ MonoBehaviour:
     cost: 3
   - type: 3
     cost: 4
-  skill: {fileID: 11400000, guid: 0e1feb1d8c8c43848a99ded4ac5e3096, type: 2}
   itemBag:
     items: []
   actionPointsRemain: 0
+  currHealth: 0
+--- !u!114 &3171880355811491493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6622911835051353522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce96a66cdce78f54bb4de0dc2d5f4553, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6622911835051220256
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -264,6 +278,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1854a3b64b66724429ff0b04e0891fc1, type: 3}
+--- !u!1 &6622911835051353522 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 145554, guid: 1854a3b64b66724429ff0b04e0891fc1,
+    type: 3}
+  m_PrefabInstance: {fileID: 6622911835051220256}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6622911835051104924 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 444348, guid: 1854a3b64b66724429ff0b04e0891fc1,
