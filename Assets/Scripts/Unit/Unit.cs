@@ -12,12 +12,19 @@ public class ItemBag
     public List<Item> items = new List<Item>();
     public Dictionary<string, int> itemFinder = new Dictionary<string, int>();
 
-    public void ResetItemFinder()
+
+    public Dictionary<Item, int> GetItem()
     {
-        foreach (Item i in items)
+        Dictionary<Item, int> itemDictionary = new Dictionary<Item, int>();
+        foreach(var item in items)
         {
-            SetItemFinder(i.itemCode);
+            if(itemDictionary.ContainsKey(item))
+                itemDictionary[item]++;
+
+            else
+                itemDictionary.Add(item, 1);
         }
+        return itemDictionary;
     }
 
     public void AddItem(Item item)
@@ -35,17 +42,17 @@ public class ItemBag
 
         return null;
     }
-    public void RemoveItemByCode(string code)
+
+    public void RemoveItem(Item item)
     {
-        for (int i = 0; i < items.Count; i++)
-        {
-            if (items[i].itemCode == code)
-            {
-                items.RemoveAt(i);
-                return;
-            }
-        }
+        items.Remove(items.Find(i => i == item));
     }
+
+    public void RemoveItem(string code)
+    {
+        items.Remove(items.Find(item => item.itemCode == code));
+    }
+
     public void SetItemFinder(string code)
     {
         int count = 0;
@@ -243,6 +250,8 @@ public abstract class Unit : MonoBehaviour
         this.targetCubes = cubesToAttack;
         actionPointsRemain -= GetActionSlot(ActionType.Attack).cost;
         stateMachine.ChangeState(new UnitAttack(this, cubesToAttack, centerCube), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+
+        
     }
 
     // 공격을 받는 유닛입장에서 호출당하는 함수
