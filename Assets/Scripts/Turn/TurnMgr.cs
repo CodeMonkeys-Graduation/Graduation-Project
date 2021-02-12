@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class TurnMgr : MonoBehaviour
 {
@@ -10,7 +10,8 @@ public class TurnMgr : MonoBehaviour
     [SerializeField] public ActionPanel actionPanel;
     [SerializeField] public GameObject ItemPanel;
     [SerializeField] public GameObject testPlayBtn;
-    [SerializeField] public GameObject testEndTurnBtn;
+    [SerializeField] public GameObject endTurnBtn;
+    [SerializeField] public GameObject backBtn;
     [SerializeField] public TextMeshProUGUI actionPointText;
 
     //--- Events ---//
@@ -20,10 +21,6 @@ public class TurnMgr : MonoBehaviour
     [SerializeField] public Event e_onPathfindRequesterCountZero;
     [SerializeField] public Event e_onPathUpdatingStart;
     [SerializeField] public Event e_onUnitDead;
-    [SerializeField] public Event e_onClickMoveBtn;
-    [SerializeField] public Event e_onClickAttackBtn;
-    [SerializeField] public Event e_onClickItemBtn;
-    [SerializeField] public Event e_onClickSkillBtn;
     private EventListener el_onUnitDead = new EventListener();
     private EventListener el_onPathUpdatingStart = new EventListener();
     private EventListener el_onPathfindRequesterCountZero = new EventListener();
@@ -80,11 +77,11 @@ public class TurnMgr : MonoBehaviour
 
         // 플레이어가 컨트롤하는 팀의 유닛이라면
         if(unitForNextTurn.team.controller == Team.Controller.Player)
-            stateMachine.ChangeState(new PlayerTurnBegin(this, unitForNextTurn), StateMachine<TurnMgr>.StateChangeMethod.ClearNPush);
+            stateMachine.ChangeState(new PlayerTurnBegin(this, unitForNextTurn), StateMachine<TurnMgr>.StateTransitionMethod.ClearNPush);
 
         // AI가 컨트롤하는 팀의 유닛이라면
         else if(unitForNextTurn.team.controller == Team.Controller.AI)
-            stateMachine.ChangeState(new AITurnBegin(this, unitForNextTurn), StateMachine<TurnMgr>.StateChangeMethod.ClearNPush);
+            stateMachine.ChangeState(new AITurnBegin(this, unitForNextTurn), StateMachine<TurnMgr>.StateTransitionMethod.ClearNPush);
     }
 
     private void RegisterEvents()

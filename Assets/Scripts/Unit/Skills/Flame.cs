@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(order = 3, fileName = "FlameSkill", menuName = "Skill/Flame")]
 public class Flame : Skill
 {
-    public override void ShowVFX(List<Cube> targetCubes, Cube centerCube)
+    public override void OnUnitSkillEnter(List<Cube> targetCubes, Cube centerCube)
     {
         GameObject vfxGO = Instantiate(
             skillVFX, centerCube.platform.position, Quaternion.identity).gameObject;
@@ -13,6 +13,6 @@ public class Flame : Skill
         Destroy(vfxGO, 3f);
     }
 
-    public override void Cast(Unit targetUnit) => targetUnit.TakeDamage(amount);
+    public override void OnSkillAnimation(Unit targetUnit) => targetUnit.TakeDamage(amount);
     
 }

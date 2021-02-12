@@ -34,7 +34,7 @@ public class UnitRun : State<Unit>
         else
         {
             owner.e_onUnitRunExit.Invoke();
-            owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateChangeMethod.JustPush);
+            owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateTransitionMethod.JustPush);
         }
     }
 

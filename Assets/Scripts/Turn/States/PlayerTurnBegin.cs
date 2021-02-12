@@ -1,14 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class PlayerTurnBegin : TurnState
 {
-    EventListener el_onClickMoveBtn = new EventListener();
-    EventListener el_onClickAttackBtn = new EventListener();
-    EventListener el_onClickItemBtn = new EventListener();
-    EventListener el_onClickSkillBtn = new EventListener();
     public PlayerTurnBegin(TurnMgr owner, Unit unit) : base(owner, unit)
     {
     }
@@ -52,22 +47,24 @@ public class PlayerTurnBegin : TurnState
     private void SetUI()
     {
         owner.testPlayBtn.SetActive(false);
-        owner.testEndTurnBtn.SetActive(true);
+        owner.endTurnBtn.SetActive(true);
+        owner.backBtn.SetActive(false);
 
-        owner.actionPanel.SetPanel(unit.actionSlots, unit.actionPointsRemain);
+        Dictionary<ActionType, UnityAction> btnEvents = new Dictionary<ActionType, UnityAction>();
+        btnEvents.Add(ActionType.Move, OnClickMoveBtn);
+        btnEvents.Add(ActionType.Attack, OnClickAttackBtn);
+        btnEvents.Add(ActionType.Item, OnClickItemBtn);
+        btnEvents.Add(ActionType.Skill, OnClickSkillBtn);
+
+        owner.actionPanel.SetPanel(unit.actionSlots, unit.actionPointsRemain, btnEvents);
         owner.actionPointText.text = $"{unit.gameObject.name} Turn\nActionPoint Remain :  {unit.actionPointsRemain}";
-
-        owner.e_onClickMoveBtn.Register(el_onClickMoveBtn, OnClickMoveBtn);
-        owner.e_onClickAttackBtn.Register(el_onClickAttackBtn, OnClickAttackBtn);
-        owner.e_onClickItemBtn.Register(el_onClickItemBtn, OnClickItemBtn); 
-        owner.e_onClickSkillBtn.Register(el_onClickSkillBtn, OnClickSkillBtn); 
     }
 
     private void UpdateCurrentUnitPaths()
     {
         owner.stateMachine.ChangeState(
                         new WaitSingleEvent(owner, unit, owner.e_onPathfindRequesterCountZero, this),
-                        StateMachine<TurnMgr>.StateChangeMethod.PopNPush);
+                        StateMachine<TurnMgr>.StateTransitionMethod.PopNPush);
 
         unit.GetCube.UpdatePaths(
             unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost,
@@ -76,21 +73,17 @@ public class PlayerTurnBegin : TurnState
 
     private void UnsetUI()
     {
-        owner.e_onClickMoveBtn.Unregister(el_onClickMoveBtn);
-        owner.e_onClickAttackBtn.Unregister(el_onClickAttackBtn);
-        owner.e_onClickItemBtn.Unregister(el_onClickItemBtn);
-        owner.e_onClickSkillBtn.Unregister(el_onClickSkillBtn);
-        owner.actionPanel.HidePanel();
+        owner.actionPanel.UnsetPanel();
     }
 
     private void OnClickMoveBtn()
-    => owner.stateMachine.ChangeState(new PlayerTurnMove(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+    => owner.stateMachine.ChangeState(new PlayerTurnMove(owner, unit), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     private void OnClickAttackBtn()
-        => owner.stateMachine.ChangeState(new PlayerTurnAttack(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
-    private void OnClickItemBtn() //아이템 클릭 시 적용되는 이벤트
-        => owner.stateMachine.ChangeState(new PlayerTurnItem(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
-    private void OnClickSkillBtn() //아이템 클릭 시 적용되는 이벤트
-    => owner.stateMachine.ChangeState(new PlayerTurnSkill(owner, unit), StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+        => owner.stateMachine.ChangeState(new PlayerTurnAttack(owner, unit), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+    private void OnClickItemBtn()
+        => owner.stateMachine.ChangeState(new PlayerTurnItem(owner, unit), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+    private void OnClickSkillBtn()
+    => owner.stateMachine.ChangeState(new PlayerTurnSkill(owner, unit), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
 
 
 }

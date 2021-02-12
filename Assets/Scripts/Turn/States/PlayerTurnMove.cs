@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerTurnMove : TurnState
@@ -18,7 +17,9 @@ public class PlayerTurnMove : TurnState
     {
         owner.mapMgr.BlinkCubes(cubesCanGo, 0.5f);
         unit.StartBlink();
-        owner.testEndTurnBtn.SetActive(true);
+
+        owner.endTurnBtn.SetActive(true);
+        owner.backBtn.SetActive(true);
     }
 
     public override void Execute()
@@ -41,7 +42,9 @@ public class PlayerTurnMove : TurnState
     {
         unit.StopBlink();
         owner.mapMgr.StopBlinkAll();
-        owner.testEndTurnBtn.SetActive(false);
+
+        owner.endTurnBtn.SetActive(false);
+        owner.backBtn.SetActive(false);
     }
 
 
@@ -74,7 +77,7 @@ public class PlayerTurnMove : TurnState
         List<Event> eList = new List<Event>() { owner.e_onUnitRunExit, owner.e_onPathfindRequesterCountZero };
         owner.stateMachine.ChangeState(
             new WaitMultipleEvents(owner, unit, eList, nextState, OnWaitEnter, null, OnWaitExit),
-            StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+            StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     }
 
     private void OnWaitExit()
@@ -85,7 +88,9 @@ public class PlayerTurnMove : TurnState
     private void OnWaitEnter()
     {
         cubeClicked.SetBlink(0.5f);
-        owner.testEndTurnBtn.SetActive(false);
+        owner.endTurnBtn.SetActive(false);
+        owner.backBtn.SetActive(false);
+
     }
 
 }

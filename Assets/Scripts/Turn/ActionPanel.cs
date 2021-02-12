@@ -1,11 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class ActionPanel : MonoBehaviour
 {
     [SerializeField] List<ActionBtn> actionBtns;
-    public void SetPanel(List<Unit.ActionSlot> actionSlots, int actionPointRemain)
+    public void SetPanel(List<Unit.ActionSlot> actionSlots, int actionPointRemain, Dictionary<ActionType, UnityAction> btnEvents)
     {
         actionBtns.ForEach(b => b.SetBtnActive(false));
 
@@ -19,8 +21,16 @@ public class ActionPanel : MonoBehaviour
                 btn.SetBtnActive(true);
         }
 
+        foreach(var (type, e) in btnEvents.Select(d => (d.Key, d.Value)))
+            actionBtns.Find(b => b.actionType == type).GetComponent<Button>().onClick.AddListener(e);
+
         gameObject.SetActive(true);
     }
 
-    public void HidePanel() => gameObject.SetActive(false);
+    public void UnsetPanel()
+    {
+        foreach (var btn in actionBtns)
+            btn.Unset();
+        gameObject.SetActive(false);
+    }
 }

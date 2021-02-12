@@ -55,11 +55,11 @@ public class WaitSingleEvent : TurnState
         {
             owner.stateMachine.ChangeState(
                 new WaitSingleEvent(owner, unit, owner.e_onPathfindRequesterCountZero, nextState),
-                StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+                StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
         }
         else
         {
-            owner.stateMachine.ChangeState(nextState, StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+            owner.stateMachine.ChangeState(nextState, StateMachine<TurnMgr>.StateTransitionMethod.PopNPush);
         }
     }
 

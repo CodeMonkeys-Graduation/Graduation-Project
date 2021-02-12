@@ -45,7 +45,7 @@ public class WaitMultipleEvents : TurnState
         // EventListener들이 전부 OnNotify를 호출받으면 elList는 비워집니다.
         if (elList.Count == 0)
         {
-            owner.stateMachine.ChangeState(nextState, StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+            owner.stateMachine.ChangeState(nextState, StateMachine<TurnMgr>.StateTransitionMethod.PopNPush);
         }
     }
 
