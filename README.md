@@ -7,7 +7,6 @@
 - [RPG Monster Wave Polyart](https://assetstore.unity.com/packages/3d/characters/creatures/rpg-monster-wave-polyart-157652)
 - [Cube World - Proto Series](https://assetstore.unity.com/packages/3d/environments/cube-world-proto-series-144159)
 - [RPG Monster Duo PBR Polyart](https://assetstore.unity.com/packages/3d/characters/creatures/rpg-monster-duo-pbr-polyart-157762)
-- [Cube World Brick Blocks - Proto Series](https://assetstore.unity.com/packages/3d/environments/cube-world-brick-blocks-proto-series-153993)
 
 
 ## 기본 설명
