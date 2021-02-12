@@ -15,20 +15,24 @@ public class UnitSkill : State<Unit>
     public override void Enter()
     {
         owner.anim.SetTrigger("ToSkill");
-        owner.body.LookAt(centerCube.platform.transform, Vector3.up);
-        owner.skill.ShowVFX(castTargets, centerCube);
+
+        Vector3 lookPos = centerCube.platform.position;
+        lookPos.y = owner.transform.position.y;
+        owner.body.LookAt(lookPos, Vector3.up);
+
+        owner.skill.OnUnitSkillEnter(castTargets, centerCube);
     }
 
     public override void Execute()
     {
         if (!owner.anim.GetCurrentAnimatorStateInfo(0).IsName("Skill"))
         {
-            owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateChangeMethod.PopNPush);
+            owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
         }
     }
 
     public override void Exit()
     {
-        owner.e_onUnitAttackExit.Invoke();
+        owner.e_onUnitSkillExit.Invoke();
     }
 }

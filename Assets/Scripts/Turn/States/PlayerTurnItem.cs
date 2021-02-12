@@ -22,6 +22,9 @@ public class PlayerTurnItem : TurnState
     public override void Enter()
     {
         owner.ItemPanel.SetActive(true); // 아이템 판넬을 켬
+
+        owner.endTurnBtn.SetActive(true);
+        owner.backBtn.SetActive(true);
     }
 
     public override void Execute() //클릭 시 해당 아이템의 효과를 실행, 아이템을 리스트에서 삭제하거나 count--, 리스트 갱신
@@ -32,6 +35,9 @@ public class PlayerTurnItem : TurnState
     public override void Exit()
     {
         owner.ItemPanel.SetActive(false); //아이템 판넬 끔
+
+        owner.endTurnBtn.SetActive(false);
+        owner.backBtn.SetActive(false);
     }
 
     private void SetItemBag()

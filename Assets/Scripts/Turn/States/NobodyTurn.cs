@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class NobodyTurn : State<TurnMgr>
 {
@@ -8,9 +6,10 @@ public class NobodyTurn : State<TurnMgr>
 
     public override void Enter()
     {
-        owner.actionPanel.HidePanel();
+        owner.actionPanel.UnsetPanel();
         owner.testPlayBtn.SetActive(true);
-        owner.testEndTurnBtn.SetActive(false);
+        owner.endTurnBtn.SetActive(false);
+        owner.backBtn.SetActive(false);
     }
 
     public override void Execute()

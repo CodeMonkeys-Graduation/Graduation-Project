@@ -27,7 +27,7 @@ public class UnitDead : State<Unit>
     private IEnumerator DestroyDelay(float sec)
     {
         yield return new WaitForSeconds(sec);
-        owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateChangeMethod.JustPush);
+        owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateTransitionMethod.JustPush);
     }
 
 }

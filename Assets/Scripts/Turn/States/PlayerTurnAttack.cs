@@ -29,7 +29,8 @@ public class PlayerTurnAttack : TurnState
         owner.mapMgr.BlinkCubes(cubesAttackRange,0.3f);
         owner.mapMgr.BlinkCubes(cubesCanAttack, 0.7f);
         unit.StartBlink();
-        owner.testEndTurnBtn.SetActive(true);
+        owner.endTurnBtn.SetActive(true);
+        owner.backBtn.SetActive(true);
     }
 
     public override void Execute()
@@ -52,6 +53,9 @@ public class PlayerTurnAttack : TurnState
     {
         unit.StopBlink();
         owner.mapMgr.StopBlinkAll();
+
+        owner.endTurnBtn.SetActive(false);
+        owner.backBtn.SetActive(false);
     }
     private bool CubeCanAttackConditions(Cube cube)
         => cube != unit.GetCube &&
@@ -65,7 +69,7 @@ public class PlayerTurnAttack : TurnState
         TurnState nextState = new PlayerTurnBegin(owner, unit);
         owner.stateMachine.ChangeState(
             new WaitSingleEvent(owner, unit, owner.e_onUnitAttackExit, nextState),
-            StateMachine<TurnMgr>.StateChangeMethod.JustPush);
+            StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
 
         unit.StopBlink();
 

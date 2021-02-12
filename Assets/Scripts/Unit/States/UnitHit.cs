@@ -18,7 +18,7 @@ public class UnitHit : State<Unit>
         takingDamage.Invoke(damage);
         if(owner.Health <= 0)
         {
-            owner.stateMachine.ChangeState(new UnitDead(owner), StateMachine<Unit>.StateChangeMethod.JustPush);
+            owner.stateMachine.ChangeState(new UnitDead(owner), StateMachine<Unit>.StateTransitionMethod.JustPush);
             return;
         }
         owner.anim.SetTrigger("ToHit");
@@ -29,9 +29,9 @@ public class UnitHit : State<Unit>
         if (!owner.anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
         {
             if(owner.Health > 0)
-                owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateChangeMethod.PopNPush);
+                owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
             else
-                owner.stateMachine.ChangeState(new UnitDead(owner), StateMachine<Unit>.StateChangeMethod.PopNPush);
+                owner.stateMachine.ChangeState(new UnitDead(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
         }
     }
 

@@ -14,7 +14,7 @@ public class UnitIdle : State<Unit>
     public override void Execute()
     {
         if (owner.Health <= 0) 
-            owner.stateMachine.ChangeState(new UnitDead(owner), StateMachine<Unit>.StateChangeMethod.PopNPush);
+            owner.stateMachine.ChangeState(new UnitDead(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
 
     public override void Exit()

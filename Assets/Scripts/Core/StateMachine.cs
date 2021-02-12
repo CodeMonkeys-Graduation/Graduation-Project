@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class StateMachine<T>
 {
     public T owner;
 
-    public enum StateChangeMethod { PopNPush, JustPush, ReturnToPrev, ClearNPush }
+    public enum StateTransitionMethod { PopNPush, JustPush, ReturnToPrev, ClearNPush }
 
     private volatile Stack<State<T>> stateStack = new Stack<State<T>>();
     public int StackCount { get => stateStack.Count; }
@@ -25,11 +24,11 @@ public class StateMachine<T>
 
     public bool IsStateType(System.Type type) => stateStack.Peek().GetType() == type;
 
-    public void ChangeState(State<T> nextState, StateChangeMethod method)
+    public void ChangeState(State<T> nextState, StateTransitionMethod method)
     {
         switch (method)
         {
-            case StateChangeMethod.PopNPush:
+            case StateTransitionMethod.PopNPush:
                 {
                     State<T> prevState = stateStack.Pop();
                     prevState.Exit();
@@ -38,7 +37,7 @@ public class StateMachine<T>
                     break;
                 }
                 
-            case StateChangeMethod.JustPush:
+            case StateTransitionMethod.JustPush:
                 {
                     State<T> prevState = stateStack.Peek();
                     prevState.Exit();
@@ -47,7 +46,7 @@ public class StateMachine<T>
                     break;
                 }
 
-            case StateChangeMethod.ReturnToPrev:
+            case StateTransitionMethod.ReturnToPrev:
                 {
                     State<T> currState = stateStack.Pop();
                     currState.Exit();
@@ -56,7 +55,7 @@ public class StateMachine<T>
                     break;
                 }
 
-            case StateChangeMethod.ClearNPush:
+            case StateTransitionMethod.ClearNPush:
                 {
                     State<T> currState = stateStack.Pop();
                     currState.Exit();

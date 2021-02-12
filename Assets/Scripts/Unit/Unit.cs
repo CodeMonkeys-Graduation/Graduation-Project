@@ -164,7 +164,7 @@ public abstract class Unit : MonoBehaviour
     {
         Path pathToDest = GetCube.paths.Find((p) => p.destination == destination);
         actionPointsRemain -= (pathToDest.path.Count - 1) * GetActionSlot(ActionType.Move).cost;
-        stateMachine.ChangeState(new UnitRun(this, pathToDest), StateMachine<Unit>.StateChangeMethod.PopNPush);
+        stateMachine.ChangeState(new UnitRun(this, pathToDest), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
 
     /// <param name="nextDestinationCube">도착지 Cube</param>
@@ -242,13 +242,13 @@ public abstract class Unit : MonoBehaviour
     {
         this.targetCubes = cubesToAttack;
         actionPointsRemain -= GetActionSlot(ActionType.Attack).cost;
-        stateMachine.ChangeState(new UnitAttack(this, cubesToAttack, centerCube), StateMachine<Unit>.StateChangeMethod.PopNPush);
+        stateMachine.ChangeState(new UnitAttack(this, cubesToAttack, centerCube), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
 
     // 공격을 받는 유닛입장에서 호출당하는 함수
     public void TakeDamage(int damage)
     {
-        stateMachine.ChangeState(new UnitHit(this, damage, (amount) => currHealth -= amount), StateMachine<Unit>.StateChangeMethod.PopNPush);
+        stateMachine.ChangeState(new UnitHit(this, damage, (amount) => currHealth -= amount), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
 
     // 공격자 입장에서 호출하는 함수
@@ -283,7 +283,7 @@ public abstract class Unit : MonoBehaviour
     {
         this.targetCubes = cubesToCastSkill;
         actionPointsRemain -= GetActionSlot(ActionType.Skill).cost;
-        stateMachine.ChangeState(new UnitSkill(this, targetCubes, centerCube), StateMachine<Unit>.StateChangeMethod.PopNPush);
+        stateMachine.ChangeState(new UnitSkill(this, targetCubes, centerCube), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
 
     // AnimationHelper에 의해 Attack Animation 도중에 호출됩니다.
@@ -293,7 +293,7 @@ public abstract class Unit : MonoBehaviour
         {
             Unit targetUnit = cube.GetUnit();
             if (targetUnit)
-                skill.Cast(targetUnit);
+                skill.OnSkillAnimation(targetUnit);
         }
     }
 

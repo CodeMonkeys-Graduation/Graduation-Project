@@ -38,7 +38,7 @@ public class UnitClickTest : MonoBehaviour
             else if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Cube")) && selectedUnit)
             {
                 Path path = selectedUnit.GetCube.paths.Find((p) => p.destination == hit.transform.GetComponent<Cube>());
-                selectedUnit.stateMachine.ChangeState(new UnitRun(selectedUnit, path), StateMachine<Unit>.StateChangeMethod.PopNPush);
+                selectedUnit.stateMachine.ChangeState(new UnitRun(selectedUnit, path), StateMachine<Unit>.StateTransitionMethod.PopNPush);
                 selectedUnit = null;
                 mapMgr.StopBlinkAll();
             }
