@@ -5,12 +5,13 @@ using UnityEngine;
 public class PlayerTurnSkill : TurnState
 {
     List<Cube> cubesCanCast;
+    List<Cube> cubesCastRange;
     Cube cubeClicked;
 
     public PlayerTurnSkill(TurnMgr owner, Unit unit) : base(owner, unit)
     {
         // get all cubes in range
-        cubesCanCast = owner.mapMgr.GetCubes(
+        cubesCastRange = owner.mapMgr.GetCubes(
             unit.skillRange.range,
             unit.skillRange.centerX,
             unit.skillRange.centerZ,
@@ -18,13 +19,15 @@ public class PlayerTurnSkill : TurnState
             );
 
         // filter cubes
-        cubesCanCast = cubesCanCast
+        cubesCanCast = cubesCastRange
             .Where(CubeCanCastConditions)
             .ToList();
     }
     public override void Enter()
     {
-        owner.mapMgr.BlinkCubes(cubesCanCast, 0.5f);
+        owner.mapMgr.BlinkCubes(cubesCastRange, 0.3f);
+        owner.mapMgr.BlinkCubes(cubesCanCast, 0.7f);
+
         unit.StartBlink();
         owner.endTurnBtn.SetActive(true);
         owner.backBtn.SetActive(true);

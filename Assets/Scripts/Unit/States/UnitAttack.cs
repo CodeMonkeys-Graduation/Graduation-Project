@@ -18,6 +18,12 @@ public class UnitAttack : State<Unit>
         Vector3 lookPos = centerCube.platform.position;
         lookPos.y = owner.transform.position.y;
         owner.body.LookAt(lookPos, Vector3.up);
+
+
+        // if(owner.projectile != null)
+        //{
+            //StartCoroutine(ProcessProjectile())
+        //}
     }
 
     public override void Execute()
@@ -26,10 +32,13 @@ public class UnitAttack : State<Unit>
         {
             owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
         }
+        
     }
 
     public override void Exit()
     {
         owner.e_onUnitAttackExit.Invoke();
     }
+
+
 }
