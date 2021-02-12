@@ -13,6 +13,6 @@ public class Flame : Skill
         Destroy(vfxGO, 3f);
     }
 
-    public override void OnSkillAnimation(Unit targetUnit) => targetUnit.TakeDamage(amount);
+    public override void OnSkillAnimation(Unit ownerUnit, Unit targetUnit) => targetUnit.TakeDamage(amount, ownerUnit.transform);
     
 }

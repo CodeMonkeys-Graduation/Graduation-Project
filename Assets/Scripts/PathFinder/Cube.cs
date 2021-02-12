@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
 public class Cube : MonoBehaviour
 {
-    [Header ("Reset Before Play")]
+    [Header("Reset Before Play")]
     [SerializeField] public List<Cube> neighbors = new List<Cube>();
-    [SerializeField] public List<Path> paths; // Dictionary<destination, Path>
+    [SerializeField] public List<PFPath> paths; // Dictionary<destination, Path>
     [SerializeField] public Transform platform;
     [SerializeField] public Pathfinder pathFinder;
     [SerializeField] public MapMgr mapMgr;
@@ -37,7 +38,7 @@ public class Cube : MonoBehaviour
 
         neighbors.Clear();
         neighbors = GetNeighbors();
-        
+
         groundHeight = platform.position.y;
 
         pathFinder = FindObjectOfType<Pathfinder>();
@@ -59,30 +60,32 @@ public class Cube : MonoBehaviour
     {
         RaycastHit hit;
         Ray ray = new Ray(transform.position, Vector3.up);
-        if(Physics.Raycast(ray, out hit, 3f, LayerMask.GetMask("Unit")))
+        if (Physics.Raycast(ray, out hit, 3f, LayerMask.GetMask("Unit")))
             return hit.transform.GetComponent<Unit>();
         else
             return null;
     }
 
-    public void SetBlink(float intensity)
-    {
-        foreach (var renderer in GetComponentsInChildren<Renderer>())
-            renderer.material.SetFloat("_ColorIntensity", intensity);
-    }
+    public void SetBlink(float intensity) 
+        => TraverseChildren(
+            tr => { 
+                if (tr.GetComponent<Renderer>()) 
+                    tr.GetComponent<Renderer>().material.SetFloat("_ColorIntensity", intensity); 
+            });
 
     public void StopBlink()
-    {
-        foreach (var renderer in GetComponentsInChildren<Renderer>())
-            renderer.material.SetFloat("_ColorIntensity", 0f);
-    }
+        => TraverseChildren(
+            tr => { 
+                if (tr.GetComponent<Renderer>()) 
+                    tr.GetComponent<Renderer>().material.SetFloat("_ColorIntensity", 0f); 
+            });
 
     public void UpdatePaths(int maxRange, Func<Cube, bool> cubeExclusion)
     {
         pathFinder.RequestAsync(this, maxRange, OnPathServe, cubeExclusion);
     }
 
-    private void OnPathServe(List<Path> paths)
+    private void OnPathServe(List<PFPath> paths)
     {
         this.paths.Clear();
         this.paths.AddRange(paths);
@@ -109,5 +112,21 @@ public class Cube : MonoBehaviour
             Mathf.Abs(candidate.platform.position.y - platform.position.y) <= maxNeighborHeightDiff && // Cube끼리 높이가 너무 차이나진 않는지
             candidate != this; // 자기자신은 아닌지
     }
+
+    private void TraverseChildren(Action<Transform> action)
+    {
+        Queue<Transform> queue = new Queue<Transform>();
+        queue.Enqueue(transform);
+
+        while (queue.Count > 0)
+        {
+            Transform currTr = queue.Dequeue();
+            action.Invoke(currTr);
+
+            foreach (var child in currTr.GetComponentsInChildren<Transform>().Where(tr => tr != currTr))
+                queue.Enqueue(child);
+        }
+    }
+
 
 }

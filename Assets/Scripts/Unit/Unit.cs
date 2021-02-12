@@ -169,7 +169,7 @@ public abstract class Unit : MonoBehaviour
 
     public void MoveTo(Cube destination)
     {
-        Path pathToDest = GetCube.paths.Find((p) => p.destination == destination);
+        PFPath pathToDest = GetCube.paths.Find((p) => p.destination == destination);
         actionPointsRemain -= (pathToDest.path.Count - 1) * GetActionSlot(ActionType.Move).cost;
         stateMachine.ChangeState(new UnitRun(this, pathToDest), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
@@ -255,9 +255,9 @@ public abstract class Unit : MonoBehaviour
     }
 
     // 공격을 받는 유닛입장에서 호출당하는 함수
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Transform opponent)
     {
-        stateMachine.ChangeState(new UnitHit(this, damage, (amount) => currHealth -= amount), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+        stateMachine.ChangeState(new UnitHit(this, damage, opponent, (amount) => currHealth -= amount), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
 
     // 공격자 입장에서 호출하는 함수
@@ -268,7 +268,7 @@ public abstract class Unit : MonoBehaviour
         {
             Unit targetUnit = cube.GetUnit();
             if (targetUnit)
-                targetUnit.TakeDamage(basicAttackDamage);
+                targetUnit.TakeDamage(basicAttackDamage, transform);
         }
     }
 
@@ -302,19 +302,26 @@ public abstract class Unit : MonoBehaviour
         {
             Unit targetUnit = cube.GetUnit();
             if (targetUnit)
-                skill.OnSkillAnimation(targetUnit);
+                skill.OnSkillAnimation(this, targetUnit);
         }
     }
 
     #endregion
 
+    public void LookAt(Transform pos)
+    {
+        Vector3 lookPos = pos.position;
+        lookPos.y = transform.position.y;
+        body.LookAt(lookPos, Vector3.up);
+    }
+
     public ActionSlot GetActionSlot(ActionType type) => actionSlots.Find((slot) => slot.type == type);
 
     public bool HasAction(ActionType type) => actionSlots.Any((a) => a.type == type);
 
-    public void StartBlink() => TraverseChild((tr) => { if (tr.GetComponent<Renderer>()) tr.GetComponent<Renderer>().material.SetInt("_IsFresnel", 1); });
+    public void StartBlink() => TraverseChildren((tr) => { if (tr.GetComponent<Renderer>()) tr.GetComponent<Renderer>().material.SetInt("_IsFresnel", 1); });
     
-    public void StopBlink() => TraverseChild((tr) => { if (tr.GetComponent<Renderer>()) tr.GetComponent<Renderer>()?.material.SetInt("_IsFresnel", 0); });
+    public void StopBlink() => TraverseChildren((tr) => { if (tr.GetComponent<Renderer>()) tr.GetComponent<Renderer>()?.material.SetInt("_IsFresnel", 0); });
     
     private Cube GetCubeOnPosition()
     {
@@ -326,7 +333,7 @@ public abstract class Unit : MonoBehaviour
         return null;
     }
 
-    private void TraverseChild(Action<Transform> action)
+    private void TraverseChildren(Action<Transform> action)
     {
         Queue<Transform> queue = new Queue<Transform>();
         queue.Enqueue(transform);

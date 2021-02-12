@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class UnitRun : State<Unit>
 {
-    Path path;
+    PFPath path;
     Queue<Cube> cubeToGo;
     Cube currCube;
     private bool isJumping = false;
-    public UnitRun(Unit owner, Path path) : base(owner) 
+    public UnitRun(Unit owner, PFPath path) : base(owner) 
     {
         this.path = path;
         this.currCube = owner.GetCube;
