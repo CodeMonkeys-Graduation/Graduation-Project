@@ -6,10 +6,12 @@ using UnityEngine;
 public class UnitHit : State<Unit>
 {
     int damage;
+    Transform opponent;
     Action<int> takingDamage;
-    public UnitHit(Unit owner, int damage, Action<int> takingDamage) : base(owner)
+    public UnitHit(Unit owner, int damage, Transform opponent,Action<int> takingDamage) : base(owner)
     {
         this.damage = damage;
+        this.opponent = opponent;
         this.takingDamage = takingDamage;
     }
 
@@ -22,6 +24,7 @@ public class UnitHit : State<Unit>
             return;
         }
         owner.anim.SetTrigger("ToHit");
+        owner.LookAt(opponent);
     }
 
     public override void Execute()

@@ -15,9 +15,8 @@ public class UnitAttack : State<Unit>
     {
         owner.anim.SetTrigger("ToAttack");
 
-        Vector3 lookPos = centerCube.platform.position;
-        lookPos.y = owner.transform.position.y;
-        owner.body.LookAt(lookPos, Vector3.up);
+        owner.LookAt(centerCube.platform);
+        
 
 
         // if(owner.projectile != null)

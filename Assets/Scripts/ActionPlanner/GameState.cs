@@ -24,12 +24,12 @@ public class CubeState
 {
     public Unit unitOnCube;
     public List<Cube> neighbors;
-    public List<Path> paths;
+    public List<PFPath> paths;
     public CubeState(Cube cube)
     {
         this.unitOnCube = cube.GetUnit();
         this.neighbors = new List<Cube>(cube.neighbors);
-        this.paths = new List<Path>(cube.paths);
+        this.paths = new List<PFPath>(cube.paths);
     }
 }
 

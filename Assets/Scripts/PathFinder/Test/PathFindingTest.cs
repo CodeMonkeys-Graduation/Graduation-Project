@@ -50,7 +50,7 @@ public class PathFindingTest : MonoBehaviour
         }
     }
 
-    private void PathVisualize(Path path)
+    private void PathVisualize(PFPath path)
     {
         foreach (var cube in path.path)
         {
