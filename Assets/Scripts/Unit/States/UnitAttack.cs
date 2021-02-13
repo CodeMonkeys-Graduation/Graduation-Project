@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
+using System;
 using UnityEngine;
 
 public class UnitAttack : State<Unit>
@@ -17,13 +19,17 @@ public class UnitAttack : State<Unit>
 
         owner.LookAt(centerCube.platform);
         
-
-
-        // if(owner.projectile != null)
+        //if(owner.projectile != null)
         //{
-            //StartCoroutine(ProcessProjectile())
+            //StartCoroutine(ProcessProjectile());
         //}
     }
+
+    //public IEnumerator ProcessProjectile()
+    //{
+        //Instantiate(owner.projectile);
+        //yield return 0f;
+    //}
 
     public override void Execute()
     {

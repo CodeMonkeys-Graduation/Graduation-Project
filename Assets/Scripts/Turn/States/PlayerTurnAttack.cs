@@ -29,8 +29,9 @@ public class PlayerTurnAttack : TurnState
 
     public override void Enter()
     {
+        popup = owner.attackPopup;
         SetButtons();
-
+        
         owner.mapMgr.BlinkCubes(cubesAttackRange,0.3f);
         owner.mapMgr.BlinkCubes(cubesCanAttack, 0.7f);
         unit.StartBlink();
@@ -48,7 +49,7 @@ public class PlayerTurnAttack : TurnState
                 cubeClicked = hit.transform.GetComponent<Cube>();
                 if (cubesCanAttack.Contains(cubeClicked))
                 {
-                    SetUI();
+                    SetUI(cubeClicked.GetUnit().name);
                 }
             }
         }
@@ -57,6 +58,7 @@ public class PlayerTurnAttack : TurnState
     public override void Exit()
     {
         unit.StopBlink();
+        FreeButtons();
         owner.mapMgr.StopBlinkAll();
 
         owner.endTurnBtn.SetActive(false);
@@ -69,26 +71,31 @@ public class PlayerTurnAttack : TurnState
             cube.GetUnit() != null &&
             unit.team.enemyTeams.Contains(cube.GetUnit().team);
 
-    private void SetUI()
+    private void SetUI(string unitname)
     {
-        Transform popup = owner.attackPopup;
         TextMeshProUGUI text = popup.Find("Text").GetComponent<TextMeshProUGUI>();
+        text.text = "It is " + unitname + ", r u Attack?";
 
         popup.localPosition = Input.mousePosition;
-        text.text = "It is " + unit.name + ", r u Attack?";
-
         popup.gameObject.SetActive(true);
     }
 
     private void SetButtons()
     {
-        popup = owner.attackPopup;
-
         Button attack = popup.Find("Attack").GetComponent<Button>();
         Button cancel = popup.Find("Cancel").GetComponent<Button>();
 
         attack.onClick.AddListener(() => OnClickCubeCanAttack());
         cancel.onClick.AddListener(() => owner.stateMachine.ChangeState(new PlayerTurnBegin(owner, unit), StateMachine<TurnMgr>.StateTransitionMethod.JustPush));
+    }
+
+    private void FreeButtons()
+    {
+        Button attack = popup.Find("Attack").GetComponent<Button>();
+        Button cancel = popup.Find("Cancel").GetComponent<Button>();
+
+        attack.onClick.RemoveAllListeners();
+        cancel.onClick.RemoveAllListeners();
     }
 
     private void OnClickCubeCanAttack()

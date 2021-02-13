@@ -122,6 +122,7 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] public Skill skill;
     [SerializeField] public List<ActionSlot> actionSlots;
     [SerializeField] public ItemBag itemBag;
+    [SerializeField] public GameObject projectile;
 
 
     [Header ("Set in Runtime")]
