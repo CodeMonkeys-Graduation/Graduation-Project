@@ -42,10 +42,9 @@ public class MapMgr : MonoBehaviour
                     // 해당 위치에 큐브가 있음
                     if(Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Cube")))
                     {
-                        Debug.Log(hit.transform.GetComponent<Cube>().gameObject.name);
-                        result.Add(hit.transform.GetComponent<Cube>());
+                        if(hit.transform.GetComponent<Cube>())
+                            result.Add(hit.transform.GetComponent<Cube>());
                     }
-                    //Debug.DrawLine(ray.origin, ray.origin + ray.direction * 1000f, Color.red, 10f);
                 }
             }
         }
