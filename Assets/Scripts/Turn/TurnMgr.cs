@@ -9,6 +9,7 @@ public class TurnMgr : MonoBehaviour
     [Header ("Set in Editor")]
     [SerializeField] public ActionPanel actionPanel;
     [SerializeField] public GameObject ItemPanel;
+    [SerializeField] public Transform attackPopup;
     [SerializeField] public GameObject testPlayBtn;
     [SerializeField] public GameObject endTurnBtn;
     [SerializeField] public GameObject backBtn;

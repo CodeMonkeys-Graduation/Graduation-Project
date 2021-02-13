@@ -251,7 +251,7 @@ public abstract class Unit : MonoBehaviour
         actionPointsRemain -= GetActionSlot(ActionType.Attack).cost;
         stateMachine.ChangeState(new UnitAttack(this, cubesToAttack, centerCube), StateMachine<Unit>.StateTransitionMethod.PopNPush);
 
-        
+        // 여기서 투사체가 존재할 경우, 추가적인 조치
     }
 
     // 공격을 받는 유닛입장에서 호출당하는 함수
