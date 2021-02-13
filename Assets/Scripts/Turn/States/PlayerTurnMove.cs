@@ -62,7 +62,7 @@ public class PlayerTurnMove : TurnState
         // update paths in the destination cube
         cubeClicked.UpdatePaths(
             unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost,
-            (cube) => (cube.GetUnit() != null && cube.GetUnit() == unit) || cube.GetUnit() != null);
+            cube => cube.GetUnit() != null && cube.GetUnit() != unit);
     }
 
     private bool RaycastWithCubeMask(out RaycastHit hit)
