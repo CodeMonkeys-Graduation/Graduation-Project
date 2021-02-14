@@ -9,7 +9,7 @@ public class Team : ScriptableObject
     public enum Controller { Player, AI }
     [SerializeField] public Controller controller;
     [SerializeField] public string name;
-
+    [SerializeField] public Sprite teamTurnSlotFrame;
     [SerializeField] public List<Team> enemyTeams;
 }
 

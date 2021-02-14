@@ -8,15 +8,20 @@ public class CameraMove : MonoBehaviour
         NonTargeting,
         Targeting
     }
-    CameraState cameraState; // 디버그용
+    public CameraState cameraState; // 디버그용
 
-    [SerializeField] Vector3 offset;
-    Transform target;
     [SerializeField] float lerpTime = 1f; // lerpTime만에 Target으로 갑니다.
-    float lerp = 0f;
+
+    private Vector3 offset;
+    Transform target;
+    private float lerp = 0f;
     void Awake()
     {
         cameraState = CameraState.NonTargeting;
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        float height = transform.position.y;
+        Vector3 posFromScreenCenter = ray.GetPoint(height / Mathf.Cos(transform.rotation.x));
+        offset = transform.position - posFromScreenCenter;
     }
     void LateUpdate()
     {
@@ -40,6 +45,10 @@ public class CameraMove : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, desiredCameraPos, lerp);
     }
 
-    public void SetTarget(Unit unit) => target = unit.transform;
+    public void SetTarget(Unit unit)
+    {
+        lerp = 0f;
+        target = unit.transform;
+    }
     public void UnsetTarget(Unit unit) => target = null;
 }
