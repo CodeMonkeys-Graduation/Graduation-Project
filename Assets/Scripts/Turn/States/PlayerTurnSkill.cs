@@ -25,6 +25,8 @@ public class PlayerTurnSkill : TurnState
     }
     public override void Enter()
     {
+        owner.cameraMove.SetTarget(unit);
+
         owner.mapMgr.BlinkCubes(cubesCastRange, 0.3f);
         owner.mapMgr.BlinkCubes(cubesCanCast, 0.7f);
 

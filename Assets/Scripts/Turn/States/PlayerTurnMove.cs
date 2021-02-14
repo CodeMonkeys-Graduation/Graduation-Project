@@ -15,6 +15,8 @@ public class PlayerTurnMove : TurnState
 
     public override void Enter()
     {
+        owner.cameraMove.SetTarget(unit);
+
         owner.mapMgr.BlinkCubes(cubesCanGo, 0.5f);
         unit.StartBlink();
 
@@ -76,7 +78,7 @@ public class PlayerTurnMove : TurnState
         TurnState nextState = new PlayerTurnBegin(owner, unit);
         List<Event> eList = new List<Event>() { owner.e_onUnitRunExit, owner.e_onPathfindRequesterCountZero };
         owner.stateMachine.ChangeState(
-            new WaitMultipleEvents(owner, unit, eList, nextState, OnWaitEnter, null, OnWaitExit),
+            new WaitMultipleEvents(owner, unit, eList, nextState, OnWaitEnter, OnWaitExecute, OnWaitExit),
             StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     }
 
@@ -85,12 +87,16 @@ public class PlayerTurnMove : TurnState
         cubeClicked.StopBlink();
     }
 
+    private void OnWaitExecute()
+    {
+        owner.actionPointPanel.SetText(unit.actionPointsRemain);
+    }
+
     private void OnWaitEnter()
     {
         cubeClicked.SetBlink(0.5f);
         owner.endTurnBtn.SetActive(false);
         owner.backBtn.SetActive(false);
-
     }
 
 }

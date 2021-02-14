@@ -33,7 +33,7 @@ public class PlayerTurnBegin : TurnState
 
         SetUI();
 
-        if(owner.cameraMove)
+        if(owner.cameraMove != null)
             owner.cameraMove.SetTarget(unit);
     }
 
@@ -61,9 +61,12 @@ public class PlayerTurnBegin : TurnState
         btnEvents.Add(ActionType.Skill, OnClickSkillBtn);
 
         owner.actionPanel.SetPanel(unit.actionSlots, unit.actionPointsRemain, btnEvents);
-        owner.actionPointText.text = $"{unit.gameObject.name} Turn\nActionPoint Remain :  {unit.actionPointsRemain}";
+
+        owner.actionPointPanel.SetText(unit.actionPointsRemain);
         owner.turnPanel.gameObject.SetActive(true);
-        owner.turnPanel.SetSlots(owner.turns.ToList());
+
+        if(owner.turnPanel.ShouldUpdateSlots(owner.turns.ToList()))
+            owner.turnPanel.SetSlots(owner.turns.ToList(), owner.cameraMove);
     }
 
     private void UpdateCurrentUnitPaths()

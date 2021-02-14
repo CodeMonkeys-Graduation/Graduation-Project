@@ -7,13 +7,11 @@ using UnityEngine.UI;
 public class TurnMgr : MonoBehaviour
 {
     [Header ("Set in Editor")]
-    [SerializeField] public ActionPanel actionPanel;
     [SerializeField] public GameObject ItemPanel;
     [SerializeField] public Transform attackPopup;
     [SerializeField] public GameObject testPlayBtn;
     [SerializeField] public GameObject endTurnBtn;
     [SerializeField] public GameObject backBtn;
-    [SerializeField] public TextMeshProUGUI actionPointText;
 
     //--- Events ---//
     [SerializeField] public Event e_onUnitSkillExit;
@@ -32,6 +30,8 @@ public class TurnMgr : MonoBehaviour
     [HideInInspector] public MapMgr mapMgr;
     [HideInInspector] public TurnPanel turnPanel;
     [HideInInspector] public CameraMove cameraMove;
+    [HideInInspector] public ActionPanel actionPanel;
+    [HideInInspector] public ActionPointPanel actionPointPanel;
     [HideInInspector] public Queue<Unit> turns = new Queue<Unit>();
 
     public StateMachine<TurnMgr> stateMachine;
@@ -45,6 +45,8 @@ public class TurnMgr : MonoBehaviour
         mapMgr = FindObjectOfType<MapMgr>();
         turnPanel = FindObjectOfType<TurnPanel>();
         cameraMove = FindObjectOfType<CameraMove>();
+        actionPanel = FindObjectOfType<ActionPanel>();
+        actionPointPanel = FindObjectOfType<ActionPointPanel>();
 
         // get all units in the scene
         units.Clear();

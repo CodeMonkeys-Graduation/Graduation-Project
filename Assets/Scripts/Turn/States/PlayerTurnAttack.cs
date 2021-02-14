@@ -29,6 +29,8 @@ public class PlayerTurnAttack : TurnState
 
     public override void Enter()
     {
+        owner.cameraMove.SetTarget(unit);
+
         popup = owner.attackPopup;
         SetButtons();
         

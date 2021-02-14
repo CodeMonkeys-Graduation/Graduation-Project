@@ -172,8 +172,8 @@ public abstract class Unit : MonoBehaviour
     public void MoveTo(Cube destination)
     {
         PFPath pathToDest = GetCube.paths.Find((p) => p.destination == destination);
-        actionPointsRemain -= (pathToDest.path.Count - 1) * GetActionSlot(ActionType.Move).cost;
-        stateMachine.ChangeState(new UnitRun(this, pathToDest), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+        int apCost = (pathToDest.path.Count - 1) * GetActionSlot(ActionType.Move).cost;
+        stateMachine.ChangeState(new UnitMove(this, pathToDest, apCost), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
 
     /// <param name="nextDestinationCube">도착지 Cube</param>
