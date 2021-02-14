@@ -35,7 +35,7 @@ public class TurnMgr : MonoBehaviour
     [HideInInspector] public Queue<Unit> turns = new Queue<Unit>();
 
     public StateMachine<TurnMgr> stateMachine;
-    public enum TMState { Nobody, PlayerTurnBegin, PlayerTurnMove, PlayerTurnAttack, PlayerTurnItem, AITurnBegin, WaitSingleEvent, WaitMultipleEvent }
+    public enum TMState { Nobody, PlayerTurnBegin, PlayerTurnMove, PlayerTurnAttack, PlayerTurnItem, PlayerTurnPopup, AITurnBegin, WaitSingleEvent, WaitMultipleEvent }
     public TMState tmState;
 
     public void Start()
@@ -125,6 +125,9 @@ public class TurnMgr : MonoBehaviour
 
         else if (stateMachine.IsStateType(typeof(PlayerTurnItem)))
             tmState = TMState.PlayerTurnItem;
+
+        else if (stateMachine.IsStateType(typeof(PlayerTurnPopup)))
+            tmState = TMState.PlayerTurnPopup;
 
         else if (stateMachine.IsStateType(typeof(WaitSingleEvent)))
             tmState = TMState.WaitSingleEvent;
