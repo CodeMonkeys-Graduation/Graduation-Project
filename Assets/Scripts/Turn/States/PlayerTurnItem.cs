@@ -18,6 +18,8 @@ public class PlayerTurnItem : TurnState
 
     public override void Enter()
     {
+        owner.cameraMove.SetTarget(unit);
+
         owner.ItemPanel.SetActive(true); // 아이템 판넬을 켬
 
         owner.endTurnBtn.SetActive(true);

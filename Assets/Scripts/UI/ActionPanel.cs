@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class ActionPanel : MonoBehaviour
+public class ActionPanel : MonoBehaviour, IPanel
 {
     [SerializeField] List<ActionBtn> actionBtns;
     public void SetPanel(List<Unit.ActionSlot> actionSlots, int actionPointRemain, Dictionary<ActionType, UnityAction> btnEvents)
