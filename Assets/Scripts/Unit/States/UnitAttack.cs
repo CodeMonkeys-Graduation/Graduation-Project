@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
-using System;
 using UnityEngine;
 
 public class UnitAttack : State<Unit>
@@ -19,17 +18,48 @@ public class UnitAttack : State<Unit>
 
         owner.LookAt(centerCube.platform);
         
-        //if(owner.projectile != null)
-        //{
-            //StartCoroutine(ProcessProjectile());
-        //}
+        if(owner.projectile != null)
+        {
+            owner.StartCoroutine(ProcessProjectile());
+        }
     }
 
-    //public IEnumerator ProcessProjectile()
-    //{
-        //Instantiate(owner.projectile);
-        //yield return 0f;
-    //}
+    public IEnumerator ProcessProjectile()
+    {
+        GameObject projectile = Object.Instantiate(owner.projectile, owner.transform.position, owner.transform.rotation);
+        Vector3 nextDestination = owner.attackTargetCube.transform.position;
+
+        float currLerpTime = 0f;
+        float lerpTime = 1f;
+        //float lerpTime = owner.anim.GetCurrentAnimatorStateInfo(0).length;
+
+        float ShootingHeight = 1f;
+
+        while (Vector3.Distance(projectile.transform.position, nextDestination) > Mathf.Epsilon)
+        {
+            currLerpTime += Time.deltaTime;
+            if (currLerpTime > lerpTime)
+            {
+                currLerpTime = lerpTime;
+                projectile.transform.position = nextDestination;
+                break;
+            }
+            float lerp = currLerpTime / lerpTime;
+
+            /*  LERP   */
+
+            // Linear Lerp
+            Vector3 LinearLerp = Vector3.Lerp(projectile.transform.position, nextDestination, lerp);
+
+            // Sin Lerp
+            float ShootingLerpY = Mathf.Sin(lerp * Mathf.PI) * ShootingHeight;
+            Vector3 ShootingLerp = new Vector3(0f, ShootingLerpY, 0f);
+
+            projectile.transform.position = LinearLerp + ShootingLerp;
+
+            yield return 0f;
+        }
+    }
 
     public override void Execute()
     {

@@ -86,9 +86,10 @@ MonoBehaviour:
     cost: 3
   itemBag:
     items: []
-  projectile: {fileID: 0}
+  projectile: {fileID: 100000, guid: aa6419f48f4fbc84c9ec864a8468f57e, type: 3}
   actionPointsRemain: 0
   currHealth: 0
+  attackTargetCube: {fileID: 0}
 --- !u!114 &1459455313474009208
 MonoBehaviour:
   m_ObjectHideFlags: 0
