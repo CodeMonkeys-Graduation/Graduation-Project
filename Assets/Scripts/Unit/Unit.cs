@@ -136,8 +136,8 @@ public abstract class Unit : MonoBehaviour
     public Range basicAttackSplash;
     public Range skillRange;
     public Range skillSplash;
-
-
+    public Cube attackTargetCube;
+    
     private List<Cube> targetCubes;
     private bool isJumping;
 
