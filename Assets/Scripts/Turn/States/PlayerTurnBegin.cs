@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -31,6 +32,9 @@ public class PlayerTurnBegin : TurnState
         unit.StartBlink();
 
         SetUI();
+
+        if(owner.cameraMove)
+            owner.cameraMove.SetTarget(unit);
     }
 
     public override void Execute()
@@ -58,6 +62,8 @@ public class PlayerTurnBegin : TurnState
 
         owner.actionPanel.SetPanel(unit.actionSlots, unit.actionPointsRemain, btnEvents);
         owner.actionPointText.text = $"{unit.gameObject.name} Turn\nActionPoint Remain :  {unit.actionPointsRemain}";
+        owner.turnPanel.gameObject.SetActive(true);
+        owner.turnPanel.SetSlots(owner.turns.ToList());
     }
 
     private void UpdateCurrentUnitPaths()

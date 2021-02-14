@@ -30,6 +30,8 @@ public class TurnMgr : MonoBehaviour
     private List<Unit> units = new List<Unit>(); // all alive units on the scene
     [HideInInspector] public bool isAnyCubePathUpdating = false; // checking if any path is updating
     [HideInInspector] public MapMgr mapMgr;
+    [HideInInspector] public TurnPanel turnPanel;
+    [HideInInspector] public CameraMove cameraMove;
     [HideInInspector] public Queue<Unit> turns = new Queue<Unit>();
 
     public StateMachine<TurnMgr> stateMachine;
@@ -41,6 +43,8 @@ public class TurnMgr : MonoBehaviour
         RegisterEvents();
 
         mapMgr = FindObjectOfType<MapMgr>();
+        turnPanel = FindObjectOfType<TurnPanel>();
+        cameraMove = FindObjectOfType<CameraMove>();
 
         // get all units in the scene
         units.Clear();
