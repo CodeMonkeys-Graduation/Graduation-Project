@@ -45,8 +45,8 @@ public class PlayerTurnAttack : TurnState
                 cubeClicked = hit.transform.GetComponent<Cube>();
                 if (cubesCanAttack.Contains(cubeClicked))
                 {
-                    unit.attackTargetCube = cubeClicked;
-                    owner.stateMachine.ChangeState(new PlayerTurnPopup(owner, unit), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+                    //unit.attackTargetCube = cubeClicked;
+                    //owner.stateMachine.ChangeState(new PlayerTurnPopup(owner, unit), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
                 }
             }
         }

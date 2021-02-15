@@ -3,12 +3,16 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
+using UnityEngine.Events;
 
 public class PlayerTurnPopup : PlayerTurnAttack
 {
     Transform popup;
 
-    public PlayerTurnPopup(TurnMgr owner, Unit unit) : base(owner, unit)
+
+    public PlayerTurnPopup(TurnMgr owner, Unit unit, 
+        Transform popup, Vector2 popupPos, string popupContent, UnityAction yes, UnityAction no) : base(owner, unit)
     {
 
     }
@@ -16,7 +20,7 @@ public class PlayerTurnPopup : PlayerTurnAttack
     public override void Enter() // �˾��� ����, 
     {
         popup = owner.attackPopup;
-        cubeClicked = unit.attackTargetCube;
+        //cubeClicked = unit.attackTargetCube; // popupPos
 
         SetButtons();
         SetUI(cubeClicked.GetUnit().name);

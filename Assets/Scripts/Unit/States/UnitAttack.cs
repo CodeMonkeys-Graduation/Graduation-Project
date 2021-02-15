@@ -27,7 +27,7 @@ public class UnitAttack : State<Unit>
     public IEnumerator ProcessProjectile()
     {
         GameObject projectile = Object.Instantiate(owner.projectile, owner.transform.position, owner.transform.rotation);
-        Vector3 nextDestination = owner.attackTargetCube.transform.position;
+        Vector3 nextDestination = centerCube.transform.position;
 
         float currLerpTime = 0f;
         float lerpTime = 1f;
