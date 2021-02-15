@@ -4,16 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class PlayerTurnAttackPopup : PlayerTurnAttack
+public class PlayerTurnPopup : PlayerTurnAttack
 {
     Transform popup;
 
-    public PlayerTurnAttackPopup(TurnMgr owner, Unit unit) : base(owner, unit)
+    public PlayerTurnPopup(TurnMgr owner, Unit unit) : base(owner, unit)
     {
-       
+
     }
 
-    public override void Enter() // ÆË¾÷À» ¼ÂÆÃ, 
+    public override void Enter() // ï¿½Ë¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, 
     {
         popup = owner.attackPopup;
         cubeClicked = unit.attackTargetCube;
@@ -24,12 +24,12 @@ public class PlayerTurnAttackPopup : PlayerTurnAttack
 
     public override void Execute()
     {
-        
+
     }
 
     public override void Exit()
     {
-        FreeButtons();  
+        FreeButtons();
         owner.attackPopup.gameObject.SetActive(false);
     }
 
