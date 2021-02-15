@@ -5,19 +5,19 @@ using UnityEngine;
 
 public class UnitMove : State<Unit>
 {
-    PFPath path;
-    Queue<Cube> cubeToGo;
-    Cube currCube;
+    PFPath<Cube, Unit> path;
+    Queue<Navigatable<Unit>> cubeToGo;
+    Navigatable<Unit> currCube;
     int cost;
     int currCost = 0;
     private bool isJumping = false;
-    public UnitMove(Unit owner, PFPath path, int apCost) : base(owner) 
+    public UnitMove(Unit owner, PFPath<Cube, Unit> path, int apCost) : base(owner) 
     {
         this.path = path;
         this.cost = apCost;
         this.currCube = owner.GetCube;
         if (path != null)
-            cubeToGo = new Queue<Cube>(path.path);
+            cubeToGo = new Queue<Navigatable<Unit>>(path.path);
     }
 
     public override void Enter()
@@ -47,7 +47,7 @@ public class UnitMove : State<Unit>
 
     private void ProcessCubeToGo()
     {
-        Cube nextCubeToGo = cubeToGo.Peek();
+        Cube nextCubeToGo = cubeToGo.Peek() as Cube;
         Vector3 nextDestination = nextCubeToGo.platform.position;
         float cubeHeightDiff = Mathf.Abs(currCube.platform.position.y - nextDestination.y);
 

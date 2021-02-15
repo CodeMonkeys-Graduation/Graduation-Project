@@ -9,7 +9,7 @@ public class PlayerTurnMove : TurnState
     {
         cubesCanGo = owner.mapMgr.GetCubes(
             unit.GetCube,
-            cube => cube != unit.GetCube && (cube.GetUnit() == null || cube.GetUnit().Health <= 0),
+            cube => cube != unit.GetCube && (cube.WhoAccupied() == null || cube.WhoAccupied().Health <= 0),
             path => path.path.Count <= unit.actionPointsRemain + 1);
     }
 
@@ -64,7 +64,7 @@ public class PlayerTurnMove : TurnState
         // update paths in the destination cube
         cubeClicked.UpdatePaths(
             unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost,
-            cube => cube.GetUnit() != null && cube.GetUnit() != unit);
+            cube => cube.WhoAccupied() != null && cube.WhoAccupied() != unit);
     }
 
     private bool RaycastWithCubeMask(out RaycastHit hit)

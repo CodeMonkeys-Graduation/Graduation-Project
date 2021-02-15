@@ -52,8 +52,8 @@ public class MapMgr : MonoBehaviour
         return result;
     }
 
-    public List<Cube> GetCubes(Cube fromCube, Func<Cube, bool> cubeCondition = null, Func<PFPath, bool> pathCondition = null)
-        => fromCube.paths.Where(pathCondition).Select((p) => p.destination).Where(cubeCondition).ToList();
+    public List<Cube> GetCubes(Cube fromCube, Func<Cube, bool> cubeCondition = null, Func<PFPath<Cube, Unit>, bool> pathCondition = null)
+        => fromCube.paths.Where(pathCondition).Select((p) => p.destination as Cube).Where(cubeCondition).ToList();
 
     public List<Cube> GetCubes(Cube fromCube, int range)
     {
@@ -73,7 +73,7 @@ public class MapMgr : MonoBehaviour
                 {
                     if (!result.Contains(neighbor) && !queue.Contains(neighbor) && !secondQueue.Contains(neighbor))
                     {
-                        secondQueue.Enqueue(neighbor);
+                        secondQueue.Enqueue(neighbor as Cube);
                     }
                 }
             }
@@ -89,7 +89,7 @@ public class MapMgr : MonoBehaviour
         foreach (var cube in map.Cubes)
             if (cube == cubeToBlink)
             {
-                cube.SetBlink(intensity);
+                (cube as Cube).SetBlink(intensity);
                 return;
             }                
     }
@@ -103,7 +103,7 @@ public class MapMgr : MonoBehaviour
     public void StopBlinkAll()
     {
         foreach(var cube in map.Cubes)
-            cube.StopBlink();
+            (cube as Cube).StopBlink();
     }
 
     public Cube GetNearestCube(Vector3 pos)
@@ -115,7 +115,7 @@ public class MapMgr : MonoBehaviour
             float cubeFromPos = Vector3.Distance(cube.transform.position, pos);
             if (distance > cubeFromPos)
             {
-                returnCube = cube;
+                returnCube = cube as Cube;
                 distance = cubeFromPos;
             }
         }
@@ -134,7 +134,7 @@ public class MapMgr : MonoBehaviour
         {
             foreach(var neighbor in cube.neighbors)
             {
-                Debug.DrawLine(cube.platform.position + slightlyUp, neighbor.platform.position + slightlyUp, Color.yellow);
+                Debug.DrawLine(cube.platform.position + slightlyUp, (neighbor as Cube).platform.position + slightlyUp, Color.yellow);
             }
         }
     }

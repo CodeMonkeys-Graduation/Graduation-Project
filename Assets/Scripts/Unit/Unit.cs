@@ -168,16 +168,16 @@ public abstract class Unit : MonoBehaviour
 
     #region Move Methods
 
-    public void MoveTo(Cube destination)
+    public void MoveTo(Navigatable<Unit> destination)
     {
-        PFPath pathToDest = GetCube.paths.Find((p) => p.destination == destination);
+        PFPath<Cube, Unit> pathToDest = GetCube.paths.Find((p) => p.destination == destination);
         int apCost = (pathToDest.path.Count - 1) * GetActionSlot(ActionType.Move).cost;
         stateMachine.ChangeState(new UnitMove(this, pathToDest, apCost), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
 
     /// <param name="nextDestinationCube">도착지 Cube</param>
     /// <param name="OnJumpDone">도착하면 OnJumpDone을 호출합니다.</param>
-    public void JumpMove(Cube nextDestinationCube, Action OnJumpDone)
+    public void JumpMove(Navigatable<Unit> nextDestinationCube, Action OnJumpDone)
     {
         Vector3 currPos = transform.position;
         Vector3 dir = nextDestinationCube.platform.position - transform.position;
@@ -187,7 +187,7 @@ public abstract class Unit : MonoBehaviour
         StartCoroutine(JumpToDestination(currPos, nextDestinationCube.platform.position, OnJumpDone));
     }
 
-    public bool FlatMove(Cube nextDestinationCube)
+    public bool FlatMove(Navigatable<Unit> nextDestinationCube)
     {
         Vector3 nextDestination = nextDestinationCube.platform.position;
         float distanceRemain = Vector3.Distance(nextDestination, transform.position);
@@ -267,7 +267,7 @@ public abstract class Unit : MonoBehaviour
     {
         foreach (var cube in targetCubes)
         {
-            Unit targetUnit = cube.GetUnit();
+            Unit targetUnit = cube.WhoAccupied();
             if (targetUnit)
                 targetUnit.TakeDamage(basicAttackDamage, transform);
         }
@@ -301,7 +301,7 @@ public abstract class Unit : MonoBehaviour
     {
         foreach (var cube in targetCubes)
         {
-            Unit targetUnit = cube.GetUnit();
+            Unit targetUnit = cube.WhoAccupied();
             if (targetUnit)
                 skill.OnSkillAnimation(this, targetUnit);
         }
