@@ -5,10 +5,10 @@ using System.Linq;
 using UnityEngine;
 
 
-public class Cube : Navigatable<Unit>
+public class Cube : Navable<Unit>
 {
     [Header("Reset Before Play")]
-    [SerializeField] public List<PFPath<Cube, Unit>> paths = new List<PFPath<Cube, Unit>>(); // Dictionary<destination, Path>
+    [SerializeField] public List<PFPath<Unit>> paths = new List<PFPath<Unit>>();
     [SerializeField] public Pathfinder pathFinder;
     [SerializeField] public MapMgr mapMgr;
 
@@ -80,22 +80,22 @@ public class Cube : Navigatable<Unit>
                     tr.GetComponent<Renderer>().material.SetFloat("_ColorIntensity", 0f); 
             });
 
-    public void UpdatePaths(int maxRange, Func<Navigatable<Unit>, bool> cubeExclusion)
+    public void UpdatePaths(int maxRange, Func<Navable<Unit>, bool> cubeExclusion)
     {
-        pathFinder.RequestAsync<Cube, Unit>(this, maxRange, OnPathServe, cubeExclusion);
+        pathFinder.RequestAsync(this, maxRange, OnPathServe, cubeExclusion);
     }
 
-    private void OnPathServe(List<PFPath<Cube, Unit>> paths)
+    private void OnPathServe(List<PFPath<Unit>> paths)
     {
         this.paths.Clear();
         this.paths.AddRange(paths);
         pathUpdateDirty = false;
     }
 
-    public List<Navigatable<Unit>> GetNeighbors()
+    public List<Navable<Unit>> GetNeighbors()
     {
-        List<Navigatable<Unit>> neighbors = new List<Navigatable<Unit>>();
-        Navigatable<Unit>[] cubes = FindObjectsOfType<Cube>();
+        List<Navable<Unit>> neighbors = new List<Navable<Unit>>();
+        Navable<Unit>[] cubes = FindObjectsOfType<Cube>();
         foreach (var c in cubes)
             if (NeighborCondition(c as Cube))
                 neighbors.Add(c);

@@ -64,6 +64,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5592680835824236329, guid: cd51aa45e4b339d4492b2e5d5d06c6da,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7025990094714437955, guid: cd51aa45e4b339d4492b2e5d5d06c6da,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -123,6 +128,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Sand_Vase
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027995579611356079, guid: cd51aa45e4b339d4492b2e5d5d06c6da,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -8065024636235403933, guid: cd51aa45e4b339d4492b2e5d5d06c6da, type: 3}

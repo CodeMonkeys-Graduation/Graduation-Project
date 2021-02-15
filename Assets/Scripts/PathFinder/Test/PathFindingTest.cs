@@ -50,11 +50,11 @@ public class PathFindingTest : MonoBehaviour
         }
     }
 
-    private void PathVisualize(PFPath<Cube, Unit> path) 
+    private void PathVisualize(PFPath<Unit> path) 
     {
         foreach (var cube in path.path)
         {
-            cube.SetBlink(1f);
+            (cube as Cube).SetBlink(1f);
         }
     }
 }

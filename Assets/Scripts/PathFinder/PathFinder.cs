@@ -5,46 +5,46 @@ using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
-public class PFPath<N, T> where N : Navigatable<T>
+public class PFPath<T>
 {
-    public N start;
-    public N destination;
-    public List<N> path;
+    public Navable<T> start;
+    public Navable<T> destination;
+    public List<Navable<T>> path;
     public int cost;
     public int Length { get => path.Count; }
 
-    public PFPath(N start, N destination, int cost = 0)
+    public PFPath(Navable<T> start, Navable<T> destination, int cost = 0)
     {
         this.start = start;
         this.destination = destination;
-        path = new List<N>();
+        path = new List<Navable<T>>();
         this.cost = cost;
     }
 
-    public PFPath(N start, Pathfinder.PFNode<N, T> destination, int cost = 0)
+    public PFPath(Navable<T> start, Pathfinder.PFNode<T> destination, int cost = 0)
     {
         this.start = start;
-        this.destination = destination.cube as N;
-        path = new List<N>();
+        this.destination = destination.cube as Navable<T>;
+        path = new List<Navable<T>>();
         this.cost = cost;
     }
 
-    public void Add(N cube) => path.Add(cube);
-    public void Add(Pathfinder.PFNode<N, T> node) => path.Add(node.cube as N);
-    public void Remove(N cube) => path.Remove(cube);
-    public bool Contains(N cube) => path.Contains(cube);
+    public void Add(Navable<T> cube) => path.Add(cube);
+    public void Add(Pathfinder.PFNode<T> node) => path.Add(node.cube);
+    public void Remove(Navable<T> cube) => path.Remove(cube);
+    public bool Contains(Navable<T> cube) => path.Contains(cube);
     public void Reverse() => path.Reverse();
 }
 
 
 public class Pathfinder : MonoBehaviour
 {
-    public class PFNode<N, T> where N : Navigatable<T>
+    public class PFNode<T>
     {
-        public N cube;
-        public PFNode<N, T> prevNode;
+        public Navable<T> cube;
+        public PFNode<T> prevNode;
         public int cost;
-        public PFNode(N cube, PFNode<N, T> prevNode, int cost)
+        public PFNode(Navable<T> cube, PFNode<T> prevNode, int cost)
         {
             this.cube = cube;
             this.prevNode = prevNode;
@@ -53,25 +53,26 @@ public class Pathfinder : MonoBehaviour
 
     }
 
-    private class PFTable<N, T> where N : Navigatable<T>
+    private class PFTable<T>
     {
-        public List<PFNode<N, T>> nodes;
+        public List<PFNode<T>> nodes;
 
-        public PFTable(List<N> cubes)
+        public PFTable(List<Navable<T>> cubes)
         {
-            nodes = new List<PFNode<N, T>>();
+            nodes = new List<PFNode<T>>();
             foreach (var cube in cubes)
-                nodes.Add(new PFNode<N, T>(cube, null, int.MaxValue));
+                nodes.Add(new PFNode<T>(cube, null, int.MaxValue));
         }
 
-        public void Add(PFNode<N, T> node) => nodes.Add(node);
-        public void Remove(PFNode<N, T> node) => nodes.Remove(node);
-        public PFNode<N, T> Find(N cube) => nodes.Find((node) => node.cube.Equals(cube));
-        public PFNode<N, T> Find(PFNode<N, T> node) => nodes.Find((n) => n == node);
-        public List<PFNode<N, T>> Find(List<Navigatable<T>> cubes) => nodes.Where(n => cubes.Contains(n.cube)).ToList();
-        public List<PFNode<N, T>> Where(Func<PFNode<N, T>, bool> condition) => nodes.Where(condition).ToList();
 
-        public PFNode<N, T> this[N cube]
+        public void Add(PFNode<T> node) => nodes.Add(node);
+        public void Remove(PFNode<T> node) => nodes.Remove(node);
+        public PFNode<T> Find(Navable<T> cube) => nodes.Find((node) => node.cube.Equals(cube));
+        public PFNode<T> Find(PFNode<T> node) => nodes.Find((n) => n == node);
+        public List<PFNode<T>> Find(List<Navable<T>> cubes) => nodes.Where(n => cubes.Contains(n.cube)).ToList();
+        public List<PFNode<T>> Where(Func<PFNode<T>, bool> condition) => nodes.Where(condition).ToList();
+
+        public PFNode<T> this[Navable<T> cube]
         {
             get => nodes.Find((e) => e.cube.Equals(cube));
             set
@@ -81,7 +82,7 @@ public class Pathfinder : MonoBehaviour
             }
         }
 
-        public PFNode<N, T> this[PFNode<N, T> node]
+        public PFNode<T> this[PFNode<T> node]
         {
             get => nodes.Find((e) => e == node);
             set
@@ -109,22 +110,22 @@ public class Pathfinder : MonoBehaviour
             Debug.LogError("[Pathfinder] e_pathfindRequesterCountZero == null");
     }
 
-    public void RequestAsync<N, T>(N start, Action<List<PFPath<N, T>>> OnServe) where N : Navigatable<T>
+    public void RequestAsync<T>(Navable<T> start, Action<List<PFPath<T>>> OnServe)
     {
-        List<N> cubes = mapMgr.map.Cubes.ToList() as List<N>;
-        StartCoroutine(DijkstraPathfinding(start, cubes, OnServe));
+        List<Navable<T>> navables = new List<Navable<T>>(mapMgr.map.Cubes.Select(c => c as Navable<T>));
+        StartCoroutine(DijkstraPathfinding(start, navables, OnServe));
         // Action<List<PFPath<T>>> OnServe
     }
 
-    public void RequestAsync<N, T>(N start, int maxDistance, Action<List<PFPath<N, T>>> OnServe, Func<N, bool> cubeExculsion) where N : Navigatable<T>
+    public void RequestAsync<T>(Navable<T> start, int maxDistance, Action<List<PFPath<T>>> OnServe, Func<Navable<T>, bool> cubeExculsion)
     {
-        List<N> cubes = mapMgr.map.Cubes.ToList() as List<N>;
-        StartCoroutine(BFSPathfinding(start, cubes, maxDistance, OnServe, cubeExculsion));
+        List<Navable<T>> navables = new List<Navable<T>>(mapMgr.map.Cubes.Select(c => c as Navable<T>));
+        StartCoroutine(BFSPathfinding(start, navables, maxDistance, OnServe, cubeExculsion));
     }
-    public List<PFPath<N, T>> RequestSync<N, T>(N start) where N : Navigatable<T>
+    public List<PFPath<T>> RequestSync<T>(Navable<T> start)
     {
-        List<N> cubes = mapMgr.map.Cubes.ToList() as List<N>;
-        return DijkstraPathfinding<N, T>(start, cubes);
+        List<Navable<T>> navables = new List<Navable<T>>(mapMgr.map.Cubes.Select(c => c as Navable<T>));
+        return DijkstraPathfinding(start, navables);
     }
 
     private void OnSearchBegin()
@@ -147,40 +148,31 @@ public class Pathfinder : MonoBehaviour
     /// 에디터 상에서만 호출할 함수입니다.
     /// </summary>
     /// <returns>Path 자료구조를 확인하세요.</returns>
-    private List<PFPath<N, T>> DijkstraPathfinding<N, T>(N start, List<N> cubes) where N : Navigatable<T>
+    private List<PFPath<T>> DijkstraPathfinding<T>(Navable<T> start, List<Navable<T>> navables)
     {
 
         OnSearchBegin();
 
         // Dijkstra
-        PFTable<N, T> table = new PFTable<N, T>(cubes);
+        PFTable<T> table = new PFTable<T>(navables);
         table[start].cost = 0;
 
-        Dictionary<N, bool> visited = new Dictionary<N, bool>();
-        foreach (var cube in cubes)
+        Dictionary<Navable<T>, bool> visited = new Dictionary<Navable<T>, bool>();
+        foreach (var cube in navables)
             visited.Add(cube, false);
 
 
         while (true)
         {
             // find least cost && unvisited node from table
-            PFNode<N, T> currNode;
+            PFNode<T> currNode;
             GetUnvisitedNLeastCostFromTable(table, visited, out currNode);
             if (currNode == null) break;
 
-            visited[currNode.cube as N] = true;
+            visited[currNode.cube] = true;
 
             // update via currNode
-            //UpdateTable(table, currNode.cube.neighbors, currNode);
-            foreach (var neighbor in currNode.cube.neighbors)
-            {
-                PFNode<N, T> neighborNode = table.Find(neighbor as N);
-                if (currNode.cost + 1 < neighborNode.cost)
-                {
-                    neighborNode.prevNode = table.Find(currNode.cube as N);
-                    neighborNode.cost = currNode.cost + 1;
-                }
-            }
+            UpdateTable(table, currNode);
 
             // check if visited all nodes
             if (!visited.ContainsValue(false)) break;
@@ -189,17 +181,17 @@ public class Pathfinder : MonoBehaviour
         // Make All Pathes 
         // to Each Cube 
         // from the Start Cube
-        List<PFPath<N, T>> paths = new List<PFPath<N, T>>();
+        List<PFPath<T>> paths = new List<PFPath<T>>();
         foreach (var node in table.nodes)
         {
-            PFPath<N, T> path = new PFPath<N, T>(start, node.cube as N);
-            path.Add(node.cube as N); // add destination first
+            PFPath<T> path = new PFPath<T>(start, node.cube);
+            path.Add(node.cube); // add destination first
 
             // construct a path
-            PFNode<N, T> currNode = node;
+            PFNode<T> currNode = node;
             while (currNode.prevNode != null)
             {
-                path.Add(currNode.prevNode.cube as N);
+                path.Add(currNode.prevNode.cube);
                 currNode = currNode.prevNode;
             }
             path.Reverse();
@@ -216,45 +208,35 @@ public class Pathfinder : MonoBehaviour
     /// 오래걸리는 함수이므로 런타임에는 코루틴인 이 함수를 사용하여야 합니다.
     /// </summary>
     /// <param name="OnServe">함수가 끝나면 호출할 함수를 전달하세요.</param>
-    private IEnumerator DijkstraPathfinding<N, T>(N start, List<N> cubes, Action<List<PFPath<N, T>>> OnServe) where N : Navigatable<T>
+    private IEnumerator DijkstraPathfinding<T>(Navable<T> start, List<Navable<T>> navables, Action<List<PFPath<T>>> OnServe)
     {
 
         OnSearchBegin();
 
         // Dijkstra
-        PFTable<N, T> table = new PFTable<N, T>(cubes);
+        PFTable<T> table = new PFTable<T>(navables);
         table[start].cost = 0;
 
-        Dictionary<N, bool> visited = new Dictionary<N, bool>();
-        foreach (var cube in cubes)
+        Dictionary<Navable<T>, bool> visited = new Dictionary<Navable<T>, bool>();
+        foreach (var cube in navables)
             visited.Add(cube, false);
 
 
         while (true)
         {
-            PFNode<N, T> currNode;
+            PFNode<T> currNode;
             GetUnvisitedNLeastCostFromTable(table, visited, out currNode);
             if (currNode == null) break;
 
-            visited[currNode.cube as N] = true;
+            visited[currNode.cube] = true;
 
             // update via currNode
-            //UpdateTable(table, currNode);
-            foreach (var neighbor in currNode.cube.neighbors)
-            {
-                PFNode<N, T> neighborNode = table.Find(neighbor as N);
-                if (currNode.cost + 1 < neighborNode.cost)
-                {
-                    neighborNode.prevNode = table.Find(currNode.cube as N);
-                    neighborNode.cost = currNode.cost + 1;
-                }
-            }
-
+            UpdateTable(table, currNode);
 
             // check if visited all nodes
             if (!visited.ContainsValue(false)) break;
 
-            //Debug.Log($"{currNode.cube.gameObject.name} finding");
+            Debug.Log($"{currNode.cube.gameObject.name} finding");
 
             yield return null;
         }
@@ -262,20 +244,20 @@ public class Pathfinder : MonoBehaviour
         // Make All Pathes 
         // to Each Cube 
         // from the Start Cube
-        List<PFPath<N, T>> paths = new List<PFPath<N, T>>();
+        List<PFPath<T>> paths = new List<PFPath<T>>();
         foreach (var node in table.nodes)
         {
-            PFPath<N, T> path = new PFPath<N, T>(start, node);
+            PFPath<T> path = new PFPath<T>(start, node);
             path.Add(node); // add destination first
 
             // construct a path
-            PFNode<N, T> currNode = node;
+            PFNode<T> currNode = node;
             while (currNode.prevNode != null)
             {
                 path.Add(currNode.prevNode);
                 currNode = currNode.prevNode;
 
-                //Debug.Log($"{currNode.cube.gameObject.name} finding");
+                Debug.Log($"{currNode.cube.gameObject.name} finding");
                 yield return null;
             }
             path.Reverse();
@@ -295,29 +277,30 @@ public class Pathfinder : MonoBehaviour
     /// <param name="OnServe">함수가 끝나면 호출할 함수를 전달하세요.</param>
     /// <param name="cubeExculsion">Path에 포함시키지 않을 Predicate</param>
     /// <returns></returns>
-    private IEnumerator BFSPathfinding<N, T>(
-        N start, List<N> cubes, int maxDistance, Action<List<PFPath<N, T>>> OnServe, Func<N, bool> cubeExculsion) where N : Navigatable<T>
+    private IEnumerator BFSPathfinding<T>(
+        Navable<T> start, List<Navable<T>> navables, int maxDistance, 
+        Action<List<PFPath<T>>> OnServe, Func<Navable<T>, bool> cubeExculsion)
     {
         OnSearchBegin();
 
-        PFTable<N, T> table = new PFTable<N, T>(cubes);
+        PFTable<T> table = new PFTable<T>(navables);
         table[start].cost = 0;
-        Queue<PFNode<N, T>> queue = new Queue<PFNode<N, T>>();
+        Queue<PFNode<T>> queue = new Queue<PFNode<T>>();
         queue.Enqueue(table[start]);
 
         int maxLoop = 50;
         int currLoop = 0;
         while (queue.Count > 0)
         {
-            PFNode<N, T> currNode = queue.Dequeue();
+            PFNode<T> currNode = queue.Dequeue();
             if (currNode.cost >= maxDistance) continue;
             Debug.Log($"{currNode.cube.gameObject.name} finding");
 
-            List<Navigatable<T>> neighborCubes = currNode.cube.neighbors;
+            List<Navable<T>> neighborCubes = currNode.cube.neighbors;
 
             foreach (var neighborNode in table.Find(neighborCubes))
             {
-                if (cubeExculsion(neighborNode.cube as N)) continue;
+                if (cubeExculsion(neighborNode.cube)) continue;
                 if (neighborNode.cost <= maxDistance) continue; // 이미 다른 Path에 있음
 
                 neighborNode.cost = currNode.cost + 1;
@@ -333,16 +316,16 @@ public class Pathfinder : MonoBehaviour
             }
         }
 
-        List<PFNode<N, T>> destinations = table.Where(node => node.cost <= maxDistance);
+        List<PFNode<T>> destinations = table.Where(node => node.cost <= maxDistance);
 
-        List<PFPath<N, T>> paths = new List<PFPath<N, T>>();
+        List<PFPath<T>> paths = new List<PFPath<T>>();
         currLoop = 0;
         foreach (var destination in destinations)
         {
-            PFPath<N, T> path = new PFPath<N, T>(start, destination);
+            PFPath<T> path = new PFPath<T>(start, destination);
             path.Add(destination);
 
-            PFNode<N, T> currNode = destination;
+            PFNode<T> currNode = destination;
             while (currNode.prevNode != null)
             {
                 path.Add(currNode.prevNode);
@@ -365,13 +348,13 @@ public class Pathfinder : MonoBehaviour
 
     }
 
-    private void GetUnvisitedNLeastCostFromTable<N, T>(PFTable<N, T> table, Dictionary<N, bool> visited, out PFNode<N, T> currNode) where N : Navigatable<T>
+    private void GetUnvisitedNLeastCostFromTable<T>(PFTable<T> table, Dictionary<Navable<T>, bool> visited, out PFNode<T> currNode)
     {
         currNode = null;
         int currCost = int.MaxValue;
         foreach (var node in table.nodes)
         {
-            if (node.cost < currCost && visited[node.cube as N] == false)
+            if (node.cost < currCost && visited[node.cube] == false)
             {
                 currNode = node;
                 currCost = node.cost;
@@ -380,9 +363,17 @@ public class Pathfinder : MonoBehaviour
 
     }
 
-    //private void UpdateTable<T>(PFTable<T> Table, List<T> neighbors, PFNode<T> currNode) where T : Cube
-    //{
-        
-    //}
+    private void UpdateTable<T>(PFTable<T> table, PFNode<T> currNode)
+    {
+        foreach (var neighbor in currNode.cube.neighbors)
+        {
+            PFNode<T> neighborNode = table.Find(neighbor);
+            if (currNode.cost + 1 < neighborNode.cost)
+            {
+                neighborNode.prevNode = table.Find(currNode.cube);
+                neighborNode.cost = currNode.cost + 1;
+            }
+        }
+    }
 
 }

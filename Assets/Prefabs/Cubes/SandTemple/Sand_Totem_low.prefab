@@ -136,7 +136,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sand_Totem_low
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7027995579611356079, guid: cd51aa45e4b339d4492b2e5d5d06c6da,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -8065024636235403933, guid: cd51aa45e4b339d4492b2e5d5d06c6da, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: cd51aa45e4b339d4492b2e5d5d06c6da, type: 3}
 --- !u!4 &8625648277560276056 stripped
 Transform:
