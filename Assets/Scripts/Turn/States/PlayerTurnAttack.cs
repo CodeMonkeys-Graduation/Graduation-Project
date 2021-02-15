@@ -28,7 +28,7 @@ public class PlayerTurnAttack : TurnState
     {
         owner.cameraMove.SetTarget(unit);
 
-        owner.mapMgr.BlinkCubes(cubesAttackRange,0.3f);
+        owner.mapMgr.BlinkCubes(cubesAttackRange, 0.3f);
         owner.mapMgr.BlinkCubes(cubesCanAttack, 0.7f);
         unit.StartBlink();
         owner.endTurnBtn.SetActive(true);
@@ -36,7 +36,7 @@ public class PlayerTurnAttack : TurnState
     }
 
     public override void Execute()
-    { 
+    {
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
@@ -46,7 +46,7 @@ public class PlayerTurnAttack : TurnState
                 if (cubesCanAttack.Contains(cubeClicked))
                 {
                     unit.attackTargetCube = cubeClicked;
-                    owner.stateMachine.ChangeState(new PlayerTurnAttackPopup(owner, unit), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+                    owner.stateMachine.ChangeState(new PlayerTurnPopup(owner, unit), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
                 }
             }
         }

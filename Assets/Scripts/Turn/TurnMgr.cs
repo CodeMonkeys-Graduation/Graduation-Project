@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class TurnMgr : MonoBehaviour
 {
-    [Header ("Set in Editor")]
+    [Header("Set in Editor")]
     [SerializeField] public GameObject ItemPanel;
     [SerializeField] public Transform attackPopup;
     [SerializeField] public GameObject testPlayBtn;
@@ -35,7 +35,7 @@ public class TurnMgr : MonoBehaviour
     [HideInInspector] public Queue<Unit> turns = new Queue<Unit>();
 
     public StateMachine<TurnMgr> stateMachine;
-    public enum TMState { Nobody, PlayerTurnBegin, PlayerTurnMove, PlayerTurnAttack, PlayerTurnItem, PlayerTurnAttackPopup, AITurnBegin, WaitSingleEvent, WaitMultipleEvent }
+    public enum TMState { Nobody, PlayerTurnBegin, PlayerTurnMove, PlayerTurnAttack, PlayerTurnItem, PlayerTurnPopup, AITurnBegin, WaitSingleEvent, WaitMultipleEvent }
     public TMState tmState;
 
     public void Start()
@@ -83,11 +83,11 @@ public class TurnMgr : MonoBehaviour
         Unit unitForNextTurn = turns.Peek();
 
         // 플레이어가 컨트롤하는 팀의 유닛이라면
-        if(unitForNextTurn.team.controller == Team.Controller.Player)
+        if (unitForNextTurn.team.controller == Team.Controller.Player)
             stateMachine.ChangeState(new PlayerTurnBegin(this, unitForNextTurn), StateMachine<TurnMgr>.StateTransitionMethod.ClearNPush);
 
         // AI가 컨트롤하는 팀의 유닛이라면
-        else if(unitForNextTurn.team.controller == Team.Controller.AI)
+        else if (unitForNextTurn.team.controller == Team.Controller.AI)
             stateMachine.ChangeState(new AITurnBegin(this, unitForNextTurn), StateMachine<TurnMgr>.StateTransitionMethod.ClearNPush);
     }
 
@@ -126,8 +126,8 @@ public class TurnMgr : MonoBehaviour
         else if (stateMachine.IsStateType(typeof(PlayerTurnItem)))
             tmState = TMState.PlayerTurnItem;
 
-        else if (stateMachine.IsStateType(typeof(PlayerTurnAttackPopup)))
-            tmState = TMState.PlayerTurnAttackPopup;
+        else if (stateMachine.IsStateType(typeof(PlayerTurnPopup)))
+            tmState = TMState.PlayerTurnPopup;
 
         else if (stateMachine.IsStateType(typeof(WaitSingleEvent)))
             tmState = TMState.WaitSingleEvent;
