@@ -52,7 +52,7 @@ public class MapMgr : MonoBehaviour
         return result;
     }
 
-    public List<Cube> GetCubes(Cube fromCube, Func<Cube, bool> cubeCondition = null, Func<PFPath<Cube, Unit>, bool> pathCondition = null)
+    public List<Cube> GetCubes(Cube fromCube, Func<Cube, bool> cubeCondition = null, Func<PFPath<Unit>, bool> pathCondition = null)
         => fromCube.paths.Where(pathCondition).Select((p) => p.destination as Cube).Where(cubeCondition).ToList();
 
     public List<Cube> GetCubes(Cube fromCube, int range)

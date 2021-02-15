@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 870320578484474995}
   - component: {fileID: -8065024636235403933}
   m_Layer: 8
-  m_Name: Sand_Cube
+  m_Name: Sand_Cube_Walkable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -89,8 +89,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 565ba9ea69779d4448ea3861cbb0d3f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors: []
-  paths: []
   platform: {fileID: 4645231809078179430}
   pathFinder: {fileID: 0}
   mapMgr: {fileID: 0}

@@ -2,9 +2,9 @@
 using UnityEngine;
 
 [System.Serializable]
-public abstract class Navigatable<T> : MonoBehaviour
+public abstract class Navable<T> : MonoBehaviour
 {
-    public List<Navigatable<T>> neighbors = new List<Navigatable<T>>();
+    public List<Navable<T>> neighbors = new List<Navable<T>>();
     [SerializeField] public Transform platform;
     public abstract T WhoAccupied();
 }
