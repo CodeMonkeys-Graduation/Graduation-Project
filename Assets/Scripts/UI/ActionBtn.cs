@@ -1,16 +1,18 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
-[RequireComponent (typeof(Button))]
 public class ActionBtn : MonoBehaviour
 {
     [SerializeField] public ActionType actionType;
     [SerializeField] TextMeshProUGUI costText;
-
-    public void SetCost(int cost) => costText.text = cost.ToString();
-
-    public void SetBtnActive(bool active) => GetComponent<Button>().interactable = active;
-
-    public void Unset() => GetComponent<Button>().onClick.RemoveAllListeners();
+    [SerializeField] Button btn;
+    public void Set(int cost, UnityAction action)
+    {
+        costText.text = cost.ToString();
+        btn.onClick.AddListener(action);
+    }
+    public void SetBtnActive(bool active) => btn.interactable = active;
+    public void Unset() => btn.onClick.RemoveAllListeners();
 }

@@ -14,15 +14,13 @@ public class ActionPanel : MonoBehaviour, IPanel
         foreach (var slot in actionSlots)
         {
             ActionBtn btn = actionBtns.Find((actionBtn) => actionBtn.actionType == slot.type);
+            UnityAction onClick = btnEvents[slot.type];
 
-            btn.SetCost(slot.cost);
+            btn.Set(slot.cost, onClick);
             
             if (actionPointRemain >= slot.cost)
                 btn.SetBtnActive(true);
         }
-
-        foreach(var (type, e) in btnEvents.Select(d => (d.Key, d.Value)))
-            actionBtns.Find(b => b.actionType == type).GetComponent<Button>().onClick.AddListener(e);
 
         gameObject.SetActive(true);
     }
