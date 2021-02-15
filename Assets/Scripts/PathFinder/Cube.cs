@@ -5,12 +5,10 @@ using System.Linq;
 using UnityEngine;
 
 
-public class Cube : MonoBehaviour
+public class Cube : Navigatable<Unit>
 {
     [Header("Reset Before Play")]
-    [SerializeField] public List<Cube> neighbors = new List<Cube>();
-    [SerializeField] public List<PFPath> paths; // Dictionary<destination, Path>
-    [SerializeField] public Transform platform;
+    [SerializeField] public List<PFPath<Cube, Unit>> paths = new List<PFPath<Cube, Unit>>(); // Dictionary<destination, Path>
     [SerializeField] public Pathfinder pathFinder;
     [SerializeField] public MapMgr mapMgr;
 
@@ -25,7 +23,6 @@ public class Cube : MonoBehaviour
     [SerializeField] float maxNeighborHeightDiff = 0.6f;
     [SerializeField] Event e_onUnitDead;
     [SerializeField] Event e_onUnitRunEnter;
-
 
     /// <summary>
     /// 1. neighborMaxDistance안에 있는 다른 Cube들을 Neighbor로 저장합니다.
@@ -47,6 +44,9 @@ public class Cube : MonoBehaviour
 
     private void Start()
     {
+        neighbors.Clear();
+        neighbors = GetNeighbors();
+
         pathFinder = FindObjectOfType<Pathfinder>();
         mapMgr = FindObjectOfType<MapMgr>();
         groundHeight = platform.position.y;
@@ -56,7 +56,7 @@ public class Cube : MonoBehaviour
         pathUpdateDirty = true;
     }
 
-    public Unit GetUnit()
+    public override Unit WhoAccupied()
     {
         RaycastHit hit;
         Ray ray = new Ray(transform.position, Vector3.up);
@@ -80,24 +80,24 @@ public class Cube : MonoBehaviour
                     tr.GetComponent<Renderer>().material.SetFloat("_ColorIntensity", 0f); 
             });
 
-    public void UpdatePaths(int maxRange, Func<Cube, bool> cubeExclusion)
+    public void UpdatePaths(int maxRange, Func<Navigatable<Unit>, bool> cubeExclusion)
     {
-        pathFinder.RequestAsync(this, maxRange, OnPathServe, cubeExclusion);
+        pathFinder.RequestAsync<Cube, Unit>(this, maxRange, OnPathServe, cubeExclusion);
     }
 
-    private void OnPathServe(List<PFPath> paths)
+    private void OnPathServe(List<PFPath<Cube, Unit>> paths)
     {
         this.paths.Clear();
         this.paths.AddRange(paths);
         pathUpdateDirty = false;
     }
 
-    private List<Cube> GetNeighbors()
+    public List<Navigatable<Unit>> GetNeighbors()
     {
-        List<Cube> neighbors = new List<Cube>();
-        Cube[] cubes = FindObjectsOfType<Cube>();
+        List<Navigatable<Unit>> neighbors = new List<Navigatable<Unit>>();
+        Navigatable<Unit>[] cubes = FindObjectsOfType<Cube>();
         foreach (var c in cubes)
-            if (NeighborCondition(c))
+            if (NeighborCondition(c as Cube))
                 neighbors.Add(c);
 
         return neighbors;

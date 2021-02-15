@@ -8,7 +8,6 @@ public abstract class ActionNode
     public GameState gameState;
     public int score;
 
-    public abstract void Perform();
-    public abstract bool IsPerformable();
+    public abstract bool Perform();
 
 }
