@@ -60,6 +60,7 @@ public class APGameState
 {
     public List<APCube> _cubes;
     public List<APUnit> _units;
+    public APUnit self { get => _units.Find(u => u.isSelf); }
     public APGameState(Unit self, List<Unit> units, List<Cube> cubes)
     {
         _cubes = new List<APCube>();
