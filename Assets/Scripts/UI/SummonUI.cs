@@ -23,7 +23,7 @@ public class SummonUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
 
             if (currRaycastedCube == prevRaycastedCube) return; // 이전 큐브와 같은 큐브
 
-            if(currRaycastedCube.WhoAccupied() == null) // 비어있는 큐브
+            if(currRaycastedCube.IsAccupied() == null) // 비어있는 큐브
                 SetCubeNUnit(currRaycastedCube);
             else // 유닛이 있는 큐브
                 UnsetCubeNUnit();
@@ -45,9 +45,9 @@ public class SummonUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
     private void SetCubeNUnit(Cube cube)
     {
         // 드래깅하던 유닛이 어딘가 있음
-        if (currDraggingUnit != null) currDraggingUnit.transform.position = cube.platform.position;
+        if (currDraggingUnit != null) currDraggingUnit.transform.position = cube.Platform.position;
         // 드래깅하던 유닛이 없음
-        else currDraggingUnit = Instantiate(selectedUnit.gameObject, cube.platform.position, Quaternion.identity);
+        else currDraggingUnit = Instantiate(selectedUnit.gameObject, cube.Platform.position, Quaternion.identity);
 
         prevRaycastedCube = cube;
     }

@@ -52,7 +52,7 @@ public class MapMgr : MonoBehaviour
         return result;
     }
 
-    public List<Cube> GetCubes(Cube fromCube, Func<Cube, bool> cubeCondition = null, Func<PFPath<Unit>, bool> pathCondition = null)
+    public List<Cube> GetCubes(Cube fromCube, Func<Cube, bool> cubeCondition = null, Func<PFPath, bool> pathCondition = null)
         => fromCube.paths.Where(pathCondition).Select((p) => p.destination as Cube).Where(cubeCondition).ToList();
 
     public List<Cube> GetCubes(Cube fromCube, int range)
@@ -69,7 +69,7 @@ public class MapMgr : MonoBehaviour
             {
                 Cube currCube = queue.Dequeue();
                 result.Add(currCube);
-                foreach (var neighbor in currCube.neighbors)
+                foreach (var neighbor in currCube.Neighbors)
                 {
                     if (!result.Contains(neighbor) && !queue.Contains(neighbor) && !secondQueue.Contains(neighbor))
                     {
@@ -124,18 +124,18 @@ public class MapMgr : MonoBehaviour
     }
 
     private void InitializeMapData() => map = new Map(FindObjectsOfType<Cube>().ToList());
-    private void OnDrawGizmos()
-    {
-        if (!showPaths) return;
+    //private void OnDrawGizmos()
+    //{
+    //    if (!showPaths) return;
 
-        List<Cube> cubes = FindObjectsOfType<Cube>().ToList();
-        Vector3 slightlyUp = new Vector3(0f, 0.2f, 0f);
-        foreach (var cube in cubes)
-        {
-            foreach(var neighbor in cube.neighbors)
-            {
-                Debug.DrawLine(cube.platform.position + slightlyUp, (neighbor as Cube).platform.position + slightlyUp, Color.yellow);
-            }
-        }
-    }
+    //    List<Cube> cubes = FindObjectsOfType<Cube>().ToList();
+    //    Vector3 slightlyUp = new Vector3(0f, 0.2f, 0f);
+    //    foreach (var cube in cubes)
+    //    {
+    //        foreach(var neighbor in cube.neighbors)
+    //        {
+    //            Debug.DrawLine(cube.platform.position + slightlyUp, neighbor.platform.position + slightlyUp, Color.yellow);
+    //        }
+    //    }
+    //}
 }

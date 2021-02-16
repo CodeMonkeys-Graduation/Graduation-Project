@@ -16,7 +16,7 @@ public class UnitSkill : State<Unit>
     {
         owner.anim.SetTrigger("ToSkill");
 
-        owner.LookAt(centerCube.platform);
+        owner.LookAt(centerCube.Platform);
 
         owner.skill.OnUnitSkillEnter(castTargets, centerCube);
     }

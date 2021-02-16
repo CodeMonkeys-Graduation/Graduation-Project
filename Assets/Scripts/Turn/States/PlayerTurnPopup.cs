@@ -23,7 +23,7 @@ public class PlayerTurnPopup : PlayerTurnAttack
         //cubeClicked = unit.attackTargetCube; // popupPos
 
         SetButtons();
-        SetUI(cubeClicked.WhoAccupied().name);
+        SetUI(cubeClicked.GetUnit().name);
     }
 
     public override void Execute()
