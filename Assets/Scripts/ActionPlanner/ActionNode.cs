@@ -20,12 +20,12 @@ public class ActionNode_Move : ActionNode
     }
     public override bool Perform()
     {
-
+        return true;
     }
 
     public override bool Simulate()
     {
-
+        return true;
     }
 }
 
