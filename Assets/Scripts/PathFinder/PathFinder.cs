@@ -114,7 +114,6 @@ public class Pathfinder : MonoBehaviour
     {
         List<Navable<T>> navables = new List<Navable<T>>(mapMgr.map.Cubes.Select(c => c as Navable<T>));
         StartCoroutine(DijkstraPathfinding(start, navables, OnServe));
-        // Action<List<PFPath<T>>> OnServe
     }
 
     public void RequestAsync<T>(Navable<T> start, int maxDistance, Action<List<PFPath<T>>> OnServe, Func<Navable<T>, bool> cubeExculsion)
@@ -122,6 +121,12 @@ public class Pathfinder : MonoBehaviour
         List<Navable<T>> navables = new List<Navable<T>>(mapMgr.map.Cubes.Select(c => c as Navable<T>));
         StartCoroutine(BFSPathfinding(start, navables, maxDistance, OnServe, cubeExculsion));
     }
+
+    public void RequestAsync(APGameState gameState, Action<List<PFPath<APUnit>>> OnServe)
+    {
+        StartCoroutine(BFSPathfinding(gameState, OnServe));
+    }
+
     public List<PFPath<T>> RequestSync<T>(Navable<T> start)
     {
         List<Navable<T>> navables = new List<Navable<T>>(mapMgr.map.Cubes.Select(c => c as Navable<T>));
@@ -326,6 +331,90 @@ public class Pathfinder : MonoBehaviour
             path.Add(destination);
 
             PFNode<T> currNode = destination;
+            while (currNode.prevNode != null)
+            {
+                path.Add(currNode.prevNode);
+                currNode = currNode.prevNode;
+            }
+            path.Reverse();
+
+            paths.Add(path);
+
+            currLoop++;
+            if (currLoop >= maxLoop)
+            {
+                currLoop = 0;
+                yield return null;
+            }
+        }
+
+        OnServe(paths);
+        OnSearchEnd();
+
+    }
+
+    /// <summary>
+    /// 오래걸리는 함수이므로 런타임에는 코루틴인 이 함수를 사용하여야 합니다.
+    /// </summary>
+    /// <param name="gameState">시뮬레이션할 게임 상태</param>
+    /// <param name="OnServe">Path를 전달할 콜백함수</param>
+    /// <returns></returns>
+    private IEnumerator BFSPathfinding(APGameState gameState, Action<List<PFPath<APUnit>>> OnServe)
+    {
+        List<Navable<APUnit>> navables = gameState._cubes.Select(c => c as Navable<APUnit>).ToList();
+        APUnit unit = gameState._units.Find(u => u.isSelf);
+        int maxDistance = gameState._units.Find(u => u.isSelf).actionPoint;
+        Navable<APUnit> start = unit.cube;
+        Func<Navable<APUnit>, bool> cubeExculsion = (cube) =>
+        {
+            return cube.WhoAccupied() != null;
+        };
+
+        OnSearchBegin();
+
+        PFTable<APUnit> table = new PFTable<APUnit>(navables);
+        table[start].cost = 0;
+        Queue<PFNode<APUnit>> queue = new Queue<PFNode<APUnit>>();
+        queue.Enqueue(table[start]);
+
+        int maxLoop = 50;
+        int currLoop = 0;
+        while (queue.Count > 0)
+        {
+            PFNode<APUnit> currNode = queue.Dequeue();
+            if (currNode.cost >= maxDistance) continue;
+            Debug.Log($"{currNode.cube.gameObject.name} finding");
+
+            List<Navable<APUnit>> neighborCubes = currNode.cube.neighbors;
+
+            foreach (var neighborNode in table.Find(neighborCubes))
+            {
+                if (cubeExculsion(neighborNode.cube)) continue;
+                if (neighborNode.cost <= maxDistance) continue; // 이미 다른 Path에 있음
+
+                neighborNode.cost = currNode.cost + 1;
+                neighborNode.prevNode = currNode;
+                queue.Enqueue(neighborNode);
+            }
+            currLoop++;
+
+            if (currLoop >= maxLoop)
+            {
+                currLoop = 0;
+                yield return null;
+            }
+        }
+
+        List<PFNode<APUnit>> destinations = table.Where(node => node.cost <= maxDistance);
+
+        List<PFPath<APUnit>> paths = new List<PFPath<APUnit>>();
+        currLoop = 0;
+        foreach (var destination in destinations)
+        {
+            PFPath<APUnit> path = new PFPath<APUnit>(start, destination);
+            path.Add(destination);
+
+            PFNode<APUnit> currNode = destination;
             while (currNode.prevNode != null)
             {
                 path.Add(currNode.prevNode);
