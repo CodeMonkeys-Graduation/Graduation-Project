@@ -58,10 +58,16 @@ public class MovePlanner : Planner
         // 가능한 곳으로 이동하는 모든 경우의 수는 List로 생성
         List<ActionNode_Move> moveNodes = new List<ActionNode_Move>();
         APCube origin = _gameState.self.cube;
+        int originActionPoint = _gameState.self.actionPoint;
         foreach (var path in paths)
         {
+            // path에 따라 이동 및 actionPoint 소모
             _gameState.self.MoveTo(path.destination as APCube);
+            _gameState.self.actionPoint -= path.path.Count - 1;
             moveNodes.Add(new ActionNode_Move(_gameState.Clone()));
+
+            // 원상복구
+            _gameState.self.actionPoint = originActionPoint;
             _gameState.self.MoveTo(origin);
             yield return null;
         }
