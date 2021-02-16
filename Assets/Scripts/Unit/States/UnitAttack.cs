@@ -16,7 +16,7 @@ public class UnitAttack : State<Unit>
     {
         owner.anim.SetTrigger("ToAttack");
 
-        owner.LookAt(centerCube.platform);
+        owner.LookAt(centerCube.Platform);
         
         if(owner.projectile != null)
         {

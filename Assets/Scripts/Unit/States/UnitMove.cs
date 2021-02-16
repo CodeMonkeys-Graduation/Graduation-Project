@@ -5,19 +5,25 @@ using UnityEngine;
 
 public class UnitMove : State<Unit>
 {
-    PFPath<Unit> path;
-    Queue<Navable<Unit>> cubeToGo;
-    Navable<Unit> currCube;
+    PFPath path;
+    Queue<Cube> cubeToGo;
+    Cube currCube;
     int cost;
     int currCost = 0;
     private bool isJumping = false;
-    public UnitMove(Unit owner, PFPath<Unit> path, int apCost) : base(owner) 
+    public UnitMove(Unit owner, PFPath path, int apCost) : base(owner) 
     {
         this.path = path;
         this.cost = apCost;
         this.currCube = owner.GetCube;
+        cubeToGo = new Queue<Cube>();
         if (path != null)
-            cubeToGo = new Queue<Navable<Unit>>(path.path);
+        {
+            foreach(var nav in path.path)
+            {
+                cubeToGo.Enqueue(nav as Cube);
+            }
+        }
     }
 
     public override void Enter()
@@ -47,9 +53,9 @@ public class UnitMove : State<Unit>
 
     private void ProcessCubeToGo()
     {
-        Cube nextCubeToGo = cubeToGo.Peek() as Cube;
-        Vector3 nextDestination = nextCubeToGo.platform.position;
-        float cubeHeightDiff = Mathf.Abs(currCube.platform.position.y - nextDestination.y);
+        Cube nextCubeToGo = cubeToGo.Peek();
+        Vector3 nextDestination = nextCubeToGo.Platform.position;
+        float cubeHeightDiff = Mathf.Abs(currCube.Platform.position.y - nextDestination.y);
 
         if (cubeHeightDiff < owner.cubeHeightToJump)  // 걷기로 이동 : 다음 큐브가 유닛이 점프로 이동하는 큐브높이 미만이라면 
         {

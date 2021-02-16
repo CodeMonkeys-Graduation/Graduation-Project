@@ -25,10 +25,12 @@ public class APUnit
     public APUnit(APUnit apUnit)
     {
         owner = apUnit.owner;
+        //cube = apUnit.cube;
         team = apUnit.team;
         health = apUnit.health;
         actionPoint = apUnit.actionPoint;
         isSelf = apUnit.isSelf;
+
     }
 
     public void MoveTo(APCube cube)
@@ -38,10 +40,16 @@ public class APUnit
     }
 }
 
-public class APCube : Navable<APUnit>
+public class APCube : INavable
 {
     public Cube owner;
     public APUnit unit;
+
+    private List<INavable> neighbors = new List<INavable>();
+    private Transform platform;
+    public List<INavable> Neighbors { get => neighbors; set => neighbors = value; }
+    public Transform Platform { get => null; set => platform = null; }
+
 
     public APCube(Cube cube)
     {
@@ -51,9 +59,11 @@ public class APCube : Navable<APUnit>
     public APCube(APCube apCube)
     {
         owner = apCube.owner;
+        //unit = apCube.unit;
+        //neighbors = new List<INavable>(apCube.Neighbors);
     }
 
-    public override APUnit WhoAccupied() => unit;
+    public bool IsAccupied() => unit != null;
 }
 
 public class APGameState
@@ -77,12 +87,12 @@ public class APGameState
         // set neighbors
         foreach(var cube in cubes)
         {
-            foreach(var neighbor in cube.neighbors)
+            foreach(var neighbor in cube.Neighbors)
             {
-                APCube apNeighbor = APFind(neighbor as Cube);
+                APCube apNeighbor = APFind(neighbor);
                 APCube apCube = APFind(cube);
 
-                apCube.neighbors.Add(apNeighbor);
+                apCube.Neighbors.Add(apNeighbor);
             }
         }
 
@@ -112,32 +122,29 @@ public class APGameState
             _cubes.Add(new APCube(cube));
         }
 
-        // set neighbors
-        foreach (var cube in cubes)
-        {
-            foreach (var neighbor in cube.neighbors)
-            {
-                APCube apCube = APFind(cube.owner);
-                APCube apNeighbor = _cubes.Find(_c => _c.owner == (neighbor as APCube).owner);
-                apCube.neighbors.Add(apNeighbor);
-            }
-        }
-
         // set position
-        foreach (var unit in units)
+        foreach(var unit in units)
         {
-            Cube cube = unit.cube.owner;
-            APCube apCube = APFind(cube);
-            APUnit apUnit = _units.Find(_u => _u.owner == unit.owner);
+            APUnit _apUnit = _units.Find(_u => _u.owner == unit.owner);
+            APCube apCube = cubes.Find(c => c.unit != null && c.unit.owner == _apUnit.owner);
+            APCube _apCube = _cubes.Find(_c => _c.owner == apCube.owner);
 
-            SetPos(apUnit, apCube);
+            SetPos(_apUnit, _apCube);
         }
 
+        // set neighbors
+        foreach(var cubeOwner in cubes.Select(c => c.owner))
+        {
+            APCube _apCube = _cubes.Find(_c => _c.owner == cubeOwner);
+
+            List<APCube> _apNeighbor = _cubes.Where(c => cubeOwner.Neighbors.Contains(c.owner)).ToList();
+            _apCube.Neighbors.AddRange(_apNeighbor);
+        }
     }
 
     public APGameState Clone() => new APGameState(_units, _cubes);
 
-    public APCube APFind(Cube cube) => _cubes.Find(c => c.owner == cube);
+    public APCube APFind(INavable cube) => _cubes.Find(c => c.owner == cube);
     public APUnit APFind(Unit unit) => _units.Find(u => u.owner == unit);
 
     private void SetPos(APUnit unit, APCube cube)

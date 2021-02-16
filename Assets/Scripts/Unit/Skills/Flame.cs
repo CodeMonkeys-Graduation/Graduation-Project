@@ -8,7 +8,7 @@ public class Flame : Skill
     public override void OnUnitSkillEnter(List<Cube> targetCubes, Cube centerCube)
     {
         GameObject vfxGO = Instantiate(
-            skillVFX, centerCube.platform.position, Quaternion.identity).gameObject;
+            skillVFX, centerCube.Platform.position, Quaternion.identity).gameObject;
 
         Destroy(vfxGO, 3f);
     }

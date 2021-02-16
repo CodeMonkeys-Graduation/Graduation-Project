@@ -5,14 +5,16 @@ using System.Linq;
 using UnityEngine;
 
 
-public class Cube : Navable<Unit>
+public class Cube : MonoBehaviour, INavable
 {
     [Header("Reset Before Play")]
-    [SerializeField] public List<PFPath<Unit>> paths = new List<PFPath<Unit>>();
+    [SerializeField] public List<PFPath> paths = new List<PFPath>();
     [SerializeField] public Pathfinder pathFinder;
     [SerializeField] public MapMgr mapMgr;
 
     // Set in Runtime
+    private List<INavable> neighbors = new List<INavable>();
+    [SerializeField] private Transform platform;
     [HideInInspector] public float groundHeight;
     private float neighborMaxDistance = 1.1f;
     private EventListener el_onUnitDead = new EventListener();
@@ -24,6 +26,9 @@ public class Cube : Navable<Unit>
     [SerializeField] Event e_onUnitDead;
     [SerializeField] Event e_onUnitRunEnter;
 
+    public List<INavable> Neighbors { get => neighbors; set => neighbors = value; }
+    public Transform Platform { get => platform; set => platform = value; }
+
     /// <summary>
     /// 1. neighborMaxDistance안에 있는 다른 Cube들을 Neighbor로 저장합니다.
     /// 2. PathRequester에게 Path를 요청하여 저장합니다.
@@ -31,12 +36,12 @@ public class Cube : Navable<Unit>
     /// </summary>
     public void Reset()
     {
-        platform = transform.Find("Platform");
+        Platform = transform.Find("Platform");
 
         neighbors.Clear();
         neighbors = GetNeighbors();
 
-        groundHeight = platform.position.y;
+        groundHeight = Platform.position.y;
 
         pathFinder = FindObjectOfType<Pathfinder>();
         mapMgr = FindObjectOfType<MapMgr>();
@@ -49,14 +54,19 @@ public class Cube : Navable<Unit>
 
         pathFinder = FindObjectOfType<Pathfinder>();
         mapMgr = FindObjectOfType<MapMgr>();
-        groundHeight = platform.position.y;
+        groundHeight = Platform.position.y;
 
         e_onUnitDead.Register(el_onUnitDead, () => pathUpdateDirty = true);
         e_onUnitRunEnter.Register(el_onUnitRunEnter, () => pathUpdateDirty = true);
         pathUpdateDirty = true;
     }
 
-    public override Unit WhoAccupied()
+    public bool IsAccupied()
+    {
+        return GetUnit() != null;
+    }
+
+    public Unit GetUnit()
     {
         RaycastHit hit;
         Ray ray = new Ray(transform.position, Vector3.up);
@@ -80,22 +90,22 @@ public class Cube : Navable<Unit>
                     tr.GetComponent<Renderer>().material.SetFloat("_ColorIntensity", 0f); 
             });
 
-    public void UpdatePaths(int maxRange, Func<Navable<Unit>, bool> cubeExclusion)
+    public void UpdatePaths(int maxRange, Func<INavable, bool> cubeExclusion)
     {
         pathFinder.RequestAsync(this, maxRange, OnPathServe, cubeExclusion);
     }
 
-    private void OnPathServe(List<PFPath<Unit>> paths)
+    private void OnPathServe(List<PFPath> paths)
     {
         this.paths.Clear();
         this.paths.AddRange(paths);
         pathUpdateDirty = false;
     }
 
-    public List<Navable<Unit>> GetNeighbors()
+    public List<INavable> GetNeighbors()
     {
-        List<Navable<Unit>> neighbors = new List<Navable<Unit>>();
-        Navable<Unit>[] cubes = FindObjectsOfType<Cube>();
+        List<INavable> neighbors = new List<INavable>();
+        INavable[] cubes = FindObjectsOfType<Cube>();
         foreach (var c in cubes)
             if (NeighborCondition(c as Cube))
                 neighbors.Add(c);
@@ -109,7 +119,7 @@ public class Cube : Navable<Unit>
         Vector2 myPlanePos = new Vector2(transform.position.x, transform.position.z);
 
         return Vector2.Distance(registererPlanePos, myPlanePos) < neighborMaxDistance && // Cube끼리 충분히 가까운지
-            Mathf.Abs(candidate.platform.position.y - platform.position.y) <= maxNeighborHeightDiff && // Cube끼리 높이가 너무 차이나진 않는지
+            Mathf.Abs(candidate.Platform.position.y - Platform.position.y) <= maxNeighborHeightDiff && // Cube끼리 높이가 너무 차이나진 않는지
             candidate != this; // 자기자신은 아닌지
     }
 

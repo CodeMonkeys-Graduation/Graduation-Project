@@ -29,6 +29,7 @@ public class TurnMgr : MonoBehaviour
     [HideInInspector] public bool isAnyCubePathUpdating = false; // checking if any path is updating
     [HideInInspector] public MapMgr mapMgr;
     [HideInInspector] public TurnPanel turnPanel;
+    [HideInInspector] public ActionPlanner actionPlanner;
     [HideInInspector] public CameraMove cameraMove;
     [HideInInspector] public ActionPanel actionPanel;
     [HideInInspector] public ActionPointPanel actionPointPanel;
@@ -44,6 +45,7 @@ public class TurnMgr : MonoBehaviour
 
         mapMgr = FindObjectOfType<MapMgr>();
         turnPanel = FindObjectOfType<TurnPanel>();
+        actionPlanner = FindObjectOfType<ActionPlanner>();
         cameraMove = FindObjectOfType<CameraMove>();
         actionPanel = FindObjectOfType<ActionPanel>();
         actionPointPanel = FindObjectOfType<ActionPointPanel>();
@@ -88,7 +90,7 @@ public class TurnMgr : MonoBehaviour
 
         // AI가 컨트롤하는 팀의 유닛이라면
         else if (unitForNextTurn.team.controller == Team.Controller.AI)
-            stateMachine.ChangeState(new AITurnBegin(this, unitForNextTurn), StateMachine<TurnMgr>.StateTransitionMethod.ClearNPush);
+            stateMachine.ChangeState(new AITurnBegin(this, unitForNextTurn, actionPlanner), StateMachine<TurnMgr>.StateTransitionMethod.ClearNPush);
     }
 
     private void RegisterEvents()

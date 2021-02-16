@@ -63,8 +63,8 @@ public class PlayerTurnAttack : TurnState
 
     private bool CubeCanAttackConditions(Cube cube)
         => cube != unit.GetCube &&
-            cube.WhoAccupied() != null &&
-            unit.team.enemyTeams.Contains(cube.WhoAccupied().team);
+            cube.GetUnit() != null &&
+            unit.team.enemyTeams.Contains(cube.GetUnit().team);
 
     private bool RaycastWithCubeMask(out RaycastHit hit)
     {

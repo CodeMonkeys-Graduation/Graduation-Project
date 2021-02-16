@@ -77,7 +77,7 @@ public class PlayerTurnBegin : TurnState
 
         unit.GetCube.UpdatePaths(
             unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost,
-            (cube) => cube.WhoAccupied() != null && cube.WhoAccupied().Health > 0);
+            (cube) => (cube as Cube).GetUnit() != null && (cube as Cube).GetUnit().Health > 0);
     }
 
     private void UnsetUI()

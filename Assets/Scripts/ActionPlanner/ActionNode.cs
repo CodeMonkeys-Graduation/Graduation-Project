@@ -48,7 +48,7 @@ public class MovePlanner : Planner
     {
         // pathfind
         bool pathServed = false;
-        List<PFPath<APUnit>> paths = new List<PFPath<APUnit>>();
+        List<PFPath> paths = new List<PFPath>();
         pathfinder.RequestAsync(_gameState, (p) => { paths = p; pathServed = true; });
 
         // pathfind가 끝날때까지 대기

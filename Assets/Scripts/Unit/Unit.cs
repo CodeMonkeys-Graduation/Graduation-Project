@@ -168,28 +168,28 @@ public abstract class Unit : MonoBehaviour
 
     #region Move Methods
 
-    public void MoveTo(Navable<Unit> destination)
+    public void MoveTo(Cube destination)
     {
-        PFPath<Unit> pathToDest = GetCube.paths.Find((p) => p.destination == destination);
+        PFPath pathToDest = GetCube.paths.Find((p) => p.destination == destination);
         int apCost = (pathToDest.path.Count - 1) * GetActionSlot(ActionType.Move).cost;
         stateMachine.ChangeState(new UnitMove(this, pathToDest, apCost), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
 
     /// <param name="nextDestinationCube">도착지 Cube</param>
     /// <param name="OnJumpDone">도착하면 OnJumpDone을 호출합니다.</param>
-    public void JumpMove(Navable<Unit> nextDestinationCube, Action OnJumpDone)
+    public void JumpMove(Cube nextDestinationCube, Action OnJumpDone)
     {
         Vector3 currPos = transform.position;
-        Vector3 dir = nextDestinationCube.platform.position - transform.position;
+        Vector3 dir = nextDestinationCube.Platform.position - transform.position;
         dir.y = 0f;
         LookDirection(dir);
         
-        StartCoroutine(JumpToDestination(currPos, nextDestinationCube.platform.position, OnJumpDone));
+        StartCoroutine(JumpToDestination(currPos, nextDestinationCube.Platform.position, OnJumpDone));
     }
 
-    public bool FlatMove(Navable<Unit> nextDestinationCube)
+    public bool FlatMove(Cube nextDestinationCube)
     {
-        Vector3 nextDestination = nextDestinationCube.platform.position;
+        Vector3 nextDestination = nextDestinationCube.Platform.position;
         float distanceRemain = Vector3.Distance(nextDestination, transform.position);
         Vector3 dir = (nextDestination - transform.position).normalized;
         Vector3 move = dir * moveSpeed * Time.deltaTime;
@@ -267,7 +267,7 @@ public abstract class Unit : MonoBehaviour
     {
         foreach (var cube in targetCubes)
         {
-            Unit targetUnit = cube.WhoAccupied();
+            Unit targetUnit = cube.GetUnit();
             if (targetUnit)
                 targetUnit.TakeDamage(basicAttackDamage, transform);
         }
@@ -301,7 +301,7 @@ public abstract class Unit : MonoBehaviour
     {
         foreach (var cube in targetCubes)
         {
-            Unit targetUnit = cube.WhoAccupied();
+            Unit targetUnit = cube.GetUnit();
             if (targetUnit)
                 skill.OnSkillAnimation(this, targetUnit);
         }
