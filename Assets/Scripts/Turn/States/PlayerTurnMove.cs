@@ -34,7 +34,7 @@ public class PlayerTurnMove : TurnState
                 Cube cubeClicked = hit.transform.GetComponent<Cube>();
                 if (cubesCanGo.Contains(cubeClicked))
                 {
-                    OnClickCubeCanGo(hit, cubeClicked);
+                    OnClickCubeCanGo(cubeClicked);
                 }
             }
         }
@@ -50,7 +50,7 @@ public class PlayerTurnMove : TurnState
     }
 
 
-    private void OnClickCubeCanGo(RaycastHit hit, Cube cubeClicked)
+    private void OnClickCubeCanGo(Cube cubeClicked)
     {
         // for wait state
         this.cubeClicked = cubeClicked;
@@ -59,10 +59,11 @@ public class PlayerTurnMove : TurnState
         ChangeStateToWaitState();
 
         // unit move
-        unit.MoveTo(hit.transform.GetComponent<Cube>());
+        PFPath pathToDest = unit.GetCube.paths.Find((p) => p.destination == cubeClicked);
+        unit.MoveTo(pathToDest);
 
         // update paths in the destination cube
-        cubeClicked.UpdatePaths(
+        (cubeClicked as Cube).UpdatePaths(
             unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost,
             cube => (cube as Cube).GetUnit() != null && (cube as Cube).GetUnit() != unit);
     }
