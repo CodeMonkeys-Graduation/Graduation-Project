@@ -126,7 +126,7 @@ public class Pathfinder : MonoBehaviour
     {
         List<INavable> navables = new List<INavable>(gameState._cubes);
         APUnit unit = gameState._units.Find(u => u.isSelf);
-        int maxDistance = gameState._units.Find(u => u.isSelf).actionPoint;
+        int maxDistance = unit.actionPoint / unit.owner.GetActionSlot(ActionType.Move).cost;
         APCube start = unit.cube;
         StartCoroutine(BFSPathfinding(start, navables, unit.actionPoint, OnServe));
     }

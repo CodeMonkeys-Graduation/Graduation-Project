@@ -15,6 +15,7 @@ public class TurnMgr : MonoBehaviour
 
     //--- Events ---//
     [SerializeField] public Event e_onUnitSkillExit;
+    [SerializeField] public Event e_onUnitItemExit;
     [SerializeField] public Event e_onUnitRunExit;
     [SerializeField] public Event e_onUnitAttackExit;
     [SerializeField] public Event e_onPathfindRequesterCountZero;

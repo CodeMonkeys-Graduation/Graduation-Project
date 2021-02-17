@@ -68,11 +68,11 @@ public class PlayerTurnItem : TurnState
 
     void OnClickButton(Item item)
     {
-        item.Use(unit); 
+        TurnState nextState = new PlayerTurnBegin(owner, unit);
+        owner.stateMachine.ChangeState(
+            new WaitSingleEvent(owner, unit, owner.e_onUnitItemExit, nextState),
+            StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
 
-        unit.itemBag.RemoveItem(item);
-        unit.actionPointsRemain -= unit.GetActionSlot(ActionType.Item).cost;
-
-        owner.stateMachine.ChangeState(new PlayerTurnBegin(owner, unit), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+        unit.UseItem(item);
     }
 }

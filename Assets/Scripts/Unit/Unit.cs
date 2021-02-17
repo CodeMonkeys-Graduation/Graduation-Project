@@ -117,6 +117,7 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] public Team team;
     [SerializeField] public Event e_onUnitAttackExit;
     [SerializeField] public Event e_onUnitDead;
+    [SerializeField] public Event e_onUnitItemExit;
     [SerializeField] public Event e_onUnitRunEnter;
     [SerializeField] public Event e_onUnitRunExit;
     [SerializeField] public Event e_onUnitSkillExit;
@@ -168,9 +169,8 @@ public abstract class Unit : MonoBehaviour
 
     #region Move Methods
 
-    public void MoveTo(Cube destination)
+    public void MoveTo(PFPath pathToDest)
     {
-        PFPath pathToDest = GetCube.paths.Find((p) => p.destination == destination);
         int apCost = (pathToDest.path.Count - 1) * GetActionSlot(ActionType.Move).cost;
         stateMachine.ChangeState(new UnitMove(this, pathToDest, apCost), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
@@ -276,6 +276,13 @@ public abstract class Unit : MonoBehaviour
     #endregion
 
     #region Item Methods
+
+    public void UseItem(Item item)
+    {
+        itemBag.RemoveItem(item);
+        actionPointsRemain -= GetActionSlot(ActionType.Item).cost;
+        stateMachine.ChangeState(new UnitItem(this, item), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+    }
 
     public void Heal(int amount)
     {
