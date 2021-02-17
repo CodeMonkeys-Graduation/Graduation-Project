@@ -83,6 +83,9 @@ public class MovePlanner : Planner
         List<ActionNode_Move> moveNodes = new List<ActionNode_Move>();
         foreach (var path in paths)
         {
+            // 움직이지 않는 Move Action은 예외처리
+            if (path.destination == path.start) continue;
+
             // path에 따라 이동하고 actionPoint를 소모하는 MoveActionNode
             moveNodes.Add(new ActionNode_Move(_gameState, e_onUnitActionExit, path, _actionPointPanel));
 
