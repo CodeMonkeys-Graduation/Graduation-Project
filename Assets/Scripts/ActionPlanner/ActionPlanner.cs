@@ -9,12 +9,19 @@ public class ActionPlanner : MonoBehaviour
     [SerializeField] MapMgr mapMgr;
     [SerializeField] TurnMgr turnMgr;
     [SerializeField] Pathfinder pathfinder;
+    [SerializeField] ActionPointPanel actionPointPanel;
+
+    [SerializeField] public Event e_onUnitMoveExit;
+    [SerializeField] public Event e_onUnitAttackExit;
+    [SerializeField] public Event e_onUnitItemExit;
+    [SerializeField] public Event e_onUnitSkillExit;
 
     private void Start()
     {
         mapMgr = FindObjectOfType<MapMgr>();
         turnMgr = FindObjectOfType<TurnMgr>();
         pathfinder = FindObjectOfType<Pathfinder>();
+        actionPointPanel = FindObjectOfType<ActionPointPanel>();
     }
 
     public void Plan(Unit requester, Action<List<ActionNode>> OnPlanCompleted)
@@ -51,7 +58,7 @@ public class ActionPlanner : MonoBehaviour
                 };
 
                 // 시뮬레이션 시작
-                MovePlanner movePlanner = new MovePlanner(gameState);
+                MovePlanner movePlanner = new MovePlanner(gameState, e_onUnitMoveExit, actionPointPanel);
                 movePlanner.Simulate(this, pathfinder, OnSimulationCompleted);
 
                 // 시뮬레이션이 끝날때까지 대기

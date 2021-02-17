@@ -9,13 +9,22 @@ public abstract class ActionNode
     public ActionNode _parent;
     public APGameState _gameState;
     public int _score;
+    public Event e_onUnitActionExit;
 
-    public abstract bool Perform();
+    public abstract void Perform(Unit unit);
+
+    public abstract void OnWaitEnter();
+
+    public abstract void OnWaitExecute();
+
+    public abstract void OnWaitExit();
 }
 
 public abstract class Planner 
 {
     public APGameState _gameState;
+    public Event e_onUnitActionExit;
+
     public abstract IEnumerator Simulate_Coroutine(Pathfinder pathfinder, Action<List<ActionNode>> OnSimulationCompleted);
 }
 
@@ -27,16 +36,32 @@ public class RootNode : ActionNode
         _gameState = gameState;
         _score = 0;
     }
-    public override bool Perform() => true;
+
+    public override void OnWaitEnter()
+    {
+    }
+
+    public override void OnWaitExecute()
+    {
+    }
+
+    public override void OnWaitExit()
+    {
+    }
+
+    public override void Perform(Unit unit) { }
 }
 
 
 
 public class MovePlanner : Planner
 {
-    public MovePlanner(APGameState gameState)
+    ActionPointPanel _actionPointPanel;
+    public MovePlanner(APGameState gameState, Event e_onUnitMoveExit, ActionPointPanel actionPointPanel)
     {
         _gameState = gameState.Clone();
+        e_onUnitActionExit = e_onUnitMoveExit;
+        _actionPointPanel = actionPointPanel;
     }
 
     public void Simulate(MonoBehaviour coroutineOwner, Pathfinder pathfinder, Action<List<ActionNode>> OnSimulationCompleted)
@@ -54,21 +79,13 @@ public class MovePlanner : Planner
         // pathfind가 끝날때까지 대기
         while (!pathServed) yield return null;
 
-
         // 가능한 곳으로 이동하는 모든 경우의 수는 List로 생성
         List<ActionNode_Move> moveNodes = new List<ActionNode_Move>();
-        APCube origin = _gameState.self.cube;
-        int originActionPoint = _gameState.self.actionPoint;
         foreach (var path in paths)
         {
-            // path에 따라 이동 및 actionPoint 소모
-            _gameState.self.MoveTo(path.destination as APCube);
-            _gameState.self.actionPoint -= path.path.Count - 1;
-            moveNodes.Add(new ActionNode_Move(_gameState.Clone()));
+            // path에 따라 이동하고 actionPoint를 소모하는 MoveActionNode
+            moveNodes.Add(new ActionNode_Move(_gameState, e_onUnitActionExit, path, _actionPointPanel));
 
-            // 원상복구
-            _gameState.self.actionPoint = originActionPoint;
-            _gameState.self.MoveTo(origin);
             yield return null;
         }
 
@@ -79,15 +96,39 @@ public class MovePlanner : Planner
 
 public class ActionNode_Move : ActionNode
 {
-
-    public ActionNode_Move(APGameState gameState)
+    PFPath _path;
+    ActionPointPanel _actionPointPanel;
+    public ActionNode_Move(APGameState prevGameState, Event e_onUnitMoveExit, PFPath path, ActionPointPanel actionPointPanel)
     {
-        _gameState = gameState.Clone();
+        _gameState = prevGameState.Clone();
+        _gameState.self.actionPoint -= path.path.Count - 1;
+        _gameState.self.MoveTo(path.destination as APCube);
+
+        PFPath realPath = new PFPath((path.start as APCube).owner, (path.destination as APCube).owner);
+        realPath.path = path.path.ConvertAll(new Converter<INavable, INavable>(nav => (nav as APCube).owner));
+        _path = realPath;
+        e_onUnitActionExit = e_onUnitMoveExit;
+        _actionPointPanel = actionPointPanel;
     }
 
-    public override bool Perform()
+    public override void Perform(Unit unit)
     {
-        return true;
+        unit.MoveTo(_path);
+    }
+
+    public override void OnWaitEnter()
+    {
+        (_path.destination as Cube).SetBlink(0.5f);
+    }
+
+    public override void OnWaitExecute()
+    {
+        _actionPointPanel.SetText(_gameState.self.owner.actionPointsRemain);
+    }
+
+    public override void OnWaitExit()
+    {
+        (_path.destination as Cube).StopBlink();
     }
 
 }

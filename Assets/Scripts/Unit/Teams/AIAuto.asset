@@ -15,4 +15,5 @@ MonoBehaviour:
   controller: 1
   name: AIAuto
   teamTurnSlotFrame: {fileID: 21300000, guid: 186645ba07ea64608abc3eadef21858d, type: 3}
-  enemyTeams: []
+  enemyTeams:
+  - {fileID: 11400000, guid: e0bf86c813c46794fb0e8b0c72897d22, type: 2}

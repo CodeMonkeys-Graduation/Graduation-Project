@@ -13,8 +13,13 @@ public class AITurnBegin : TurnState
 
     public override void Enter()
     {
-        SetUI();
+        owner.cameraMove.SetTarget(unit);
+        unit.StartBlink();
 
+        if (owner.stateMachine.StackCount == 1)
+            unit.ResetActionPoint();
+
+        SetUI();
 
         owner.stateMachine.ChangeState(new AITurnPlan(owner, unit, actionPlanner), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     }
@@ -26,7 +31,7 @@ public class AITurnBegin : TurnState
 
     public override void Exit()
     {
-        
+        unit.StopBlink();
     }
 
     private void SetUI()
