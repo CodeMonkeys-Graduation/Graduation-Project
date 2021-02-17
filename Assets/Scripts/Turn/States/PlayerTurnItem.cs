@@ -68,6 +68,15 @@ public class PlayerTurnItem : TurnState
 
     void OnClickButton(Item item)
     {
+        string popupContent = "It is " + item.name + " u Use?";
+        owner.stateMachine.ChangeState(new PlayerTurnPopup(owner, unit, owner.Popup, Input.mousePosition, popupContent, ()=>UseItem(item)),
+                        StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+
+        
+    }
+
+    void UseItem(Item item)
+    {
         TurnState nextState = new PlayerTurnBegin(owner, unit);
         owner.stateMachine.ChangeState(
             new WaitSingleEvent(owner, unit, owner.e_onUnitItemExit, nextState),

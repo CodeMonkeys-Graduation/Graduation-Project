@@ -45,7 +45,11 @@ public class PlayerTurnSkill : TurnState
                 Cube cubeClicked = hit.transform.GetComponent<Cube>();
                 if (cubesCanCast.Contains(cubeClicked))
                 {
-                    OnClickCubeCanCast(cubeClicked);
+                    string popupContent = "It is " + cubeClicked.GetUnit().name + " u use Skill?";
+
+                    owner.stateMachine.ChangeState(new PlayerTurnPopup(owner, unit, owner.Popup, Input.mousePosition, popupContent, ()=>OnClickCubeCanCast(cubeClicked)),
+                        StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+   
                 }
             }
         }
