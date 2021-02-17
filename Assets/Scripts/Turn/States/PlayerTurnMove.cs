@@ -82,10 +82,11 @@ public class PlayerTurnMove : TurnState
             new WaitMultipleEvents(owner, unit, eList, nextState, OnWaitEnter, OnWaitExecute, OnWaitExit),
             StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     }
-
-    private void OnWaitExit()
+    private void OnWaitEnter()
     {
-        cubeClicked.StopBlink();
+        cubeClicked.SetBlink(0.5f);
+        owner.endTurnBtn.SetActive(false);
+        owner.backBtn.SetActive(false);
     }
 
     private void OnWaitExecute()
@@ -93,11 +94,9 @@ public class PlayerTurnMove : TurnState
         owner.actionPointPanel.SetText(unit.actionPointsRemain);
     }
 
-    private void OnWaitEnter()
+    private void OnWaitExit()
     {
-        cubeClicked.SetBlink(0.5f);
-        owner.endTurnBtn.SetActive(false);
-        owner.backBtn.SetActive(false);
+        cubeClicked.StopBlink();
     }
 
 }

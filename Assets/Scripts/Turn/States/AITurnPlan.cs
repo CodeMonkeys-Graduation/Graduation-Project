@@ -12,9 +12,11 @@ public class AITurnPlan : TurnState
 
     public override void Enter()
     {
+        unit.StartBlink();
+
         actionPlanner.Plan(
             unit, 
-            (actions) => owner.stateMachine.ChangeState(new AITurnAction(owner, unit, actions), StateMachine<TurnMgr>.StateTransitionMethod.JustPush));
+            actions => owner.stateMachine.ChangeState(new AITurnAction(owner, unit, actions), StateMachine<TurnMgr>.StateTransitionMethod.JustPush));
     }
 
     public override void Execute()
@@ -24,6 +26,6 @@ public class AITurnPlan : TurnState
 
     public override void Exit()
     {
-
+        unit.StopBlink();
     }
 }

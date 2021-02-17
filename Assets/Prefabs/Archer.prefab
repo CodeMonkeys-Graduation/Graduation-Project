@@ -73,6 +73,7 @@ MonoBehaviour:
   team: {fileID: 11400000, guid: e0bf86c813c46794fb0e8b0c72897d22, type: 2}
   e_onUnitAttackExit: {fileID: 11400000, guid: 2079106fc3680b44ba8b64dcc785cf18, type: 2}
   e_onUnitDead: {fileID: 11400000, guid: 66ff86eb3d1dceb47a03c6d50e4a3a26, type: 2}
+  e_onUnitItemExit: {fileID: 11400000, guid: 379654bbf98e9984d8ff400469dded0a, type: 2}
   e_onUnitRunEnter: {fileID: 11400000, guid: 247a2c00413a2024fb34c43a4e4f3a42, type: 2}
   e_onUnitRunExit: {fileID: 11400000, guid: d08eea7cc7367e647ba2486a6e4af064, type: 2}
   e_onUnitSkillExit: {fileID: 11400000, guid: fdcb3b5fa987bd648a833a522ec80cf2, type: 2}
@@ -89,7 +90,6 @@ MonoBehaviour:
   projectile: {fileID: 100000, guid: aa6419f48f4fbc84c9ec864a8468f57e, type: 3}
   actionPointsRemain: 0
   currHealth: 0
-  attackTargetCube: {fileID: 0}
 --- !u!114 &1459455313474009208
 MonoBehaviour:
   m_ObjectHideFlags: 0
