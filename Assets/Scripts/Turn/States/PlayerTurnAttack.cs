@@ -45,8 +45,10 @@ public class PlayerTurnAttack : TurnState
                 cubeClicked = hit.transform.GetComponent<Cube>();
                 if (cubesCanAttack.Contains(cubeClicked))
                 {
-                    //unit.attackTargetCube = cubeClicked;
-                    //owner.stateMachine.ChangeState(new PlayerTurnPopup(owner, unit), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+                    string popupContent = "It is " + cubeClicked.GetUnit().name + " r u Attack?";
+
+                    owner.stateMachine.ChangeState(new PlayerTurnPopup(owner, unit, owner.Popup, Input.mousePosition, popupContent, OnClickCubeCanAttack),
+                        StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
                 }
             }
         }
@@ -70,6 +72,24 @@ public class PlayerTurnAttack : TurnState
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         return Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Cube"));
+    }
+
+    private void OnClickCubeCanAttack()
+    {
+        TurnState nextState = new PlayerTurnBegin(owner, unit);
+        owner.stateMachine.ChangeState(
+            new WaitSingleEvent(owner, unit, owner.e_onUnitAttackExit, nextState),
+            StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+
+        unit.StopBlink();
+
+        List<Cube> cubesToAttack = owner.mapMgr.GetCubes(
+            unit.basicAttackSplash.range,
+            unit.basicAttackSplash.centerX,
+            unit.basicAttackSplash.centerX,
+            cubeClicked);
+
+        unit.Attack(cubesToAttack, cubeClicked);
     }
 
 
