@@ -45,9 +45,15 @@ public class PlayerTurnSkill : TurnState
                 Cube cubeClicked = hit.transform.GetComponent<Cube>();
                 if (cubesCanCast.Contains(cubeClicked))
                 {
-                    string popupContent = "It is " + cubeClicked.GetUnit().name + " u use Skill?";
+                    // 스킬은 유닛이 없는 곳에 구사가능
+                    string popupContent = "r u sure you wanna use Skill here?";
 
-                    owner.stateMachine.ChangeState(new PlayerTurnPopup(owner, unit, owner.Popup, Input.mousePosition, popupContent, ()=>OnClickCubeCanCast(cubeClicked)),
+                    List<Cube> cubesInSkillSplash = owner.mapMgr.GetCubes(
+                        unit.skillSplash.range, unit.skillSplash.centerX, unit.skillSplash.centerZ, cubeClicked);
+
+                    owner.stateMachine.ChangeState(
+                        new PlayerTurnPopup(owner, unit, owner.Popup, Input.mousePosition, popupContent, 
+                        ()=>CastSkillOnCube(cubeClicked), OnClickNo, () => cubesInSkillSplash.ForEach(c => c.SetBlink(0.7f))),
                         StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
    
                 }
@@ -63,11 +69,9 @@ public class PlayerTurnSkill : TurnState
         owner.backBtn.SetActive(false);
     }
     private bool CubeCanCastConditions(Cube cube)
-        => cube != unit.GetCube;
-        //&& cube.GetUnit() != null // 유닛이 있지않아도 사용가능합니다.
-            //&& unit.team.enemyTeams.Contains(cube.GetUnit().team); // 스킬은 범위로 팀 관계없이 영향을 줍니다.
+        => true; // 범위내의 모든 큐브에 Cast가능합니다.
 
-    private void OnClickCubeCanCast(Cube cubeClicked)
+    private void CastSkillOnCube(Cube cubeClicked)
     {
         this.cubeClicked = cubeClicked;
 
@@ -86,6 +90,8 @@ public class PlayerTurnSkill : TurnState
 
         unit.CastSkill(cubesToCast, cubeClicked);
     }
+
+    private void OnClickNo() => owner.stateMachine.ChangeState(null, StateMachine<TurnMgr>.StateTransitionMethod.ReturnToPrev);
 
     private bool RaycastWithCubeMask(out RaycastHit hit)
     {

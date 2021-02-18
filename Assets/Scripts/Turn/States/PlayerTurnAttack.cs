@@ -47,7 +47,12 @@ public class PlayerTurnAttack : TurnState
                 {
                     string popupContent = "It is " + cubeClicked.GetUnit().name + " r u Attack?";
 
-                    owner.stateMachine.ChangeState(new PlayerTurnPopup(owner, unit, owner.Popup, Input.mousePosition, popupContent, OnClickCubeCanAttack),
+                    List<Cube> cubesInAttackSplash = owner.mapMgr.GetCubes(
+                        unit.basicAttackSplash.range, unit.basicAttackSplash.centerX, unit.basicAttackSplash.centerZ, cubeClicked);
+
+                    owner.stateMachine.ChangeState(
+                        new PlayerTurnPopup(owner, unit, owner.Popup, Input.mousePosition, 
+                        popupContent, AttackOnClickedCube, OnClickNo, () => cubesInAttackSplash.ForEach(c => c.SetBlink(0.7f))),
                         StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
                 }
             }
@@ -64,9 +69,9 @@ public class PlayerTurnAttack : TurnState
     }
 
     private bool CubeCanAttackConditions(Cube cube)
-        => cube != unit.GetCube &&
-            cube.GetUnit() != null &&
-            unit.team.enemyTeams.Contains(cube.GetUnit().team);
+        => cube != unit.GetCube && // 자신이 서있는 큐브 제외
+            cube.GetUnit() != null && // 아무도 없는 큐브 제외
+            unit.team.enemyTeams.Contains(cube.GetUnit().team); // 자신의 적이 서있는 큐브
 
     private bool RaycastWithCubeMask(out RaycastHit hit)
     {
@@ -74,7 +79,7 @@ public class PlayerTurnAttack : TurnState
         return Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Cube"));
     }
 
-    private void OnClickCubeCanAttack()
+    private void AttackOnClickedCube()
     {
         TurnState nextState = new PlayerTurnBegin(owner, unit);
         owner.stateMachine.ChangeState(
@@ -91,6 +96,8 @@ public class PlayerTurnAttack : TurnState
 
         unit.Attack(cubesToAttack, cubeClicked);
     }
+
+    private void OnClickNo() => owner.stateMachine.ChangeState(null, StateMachine<TurnMgr>.StateTransitionMethod.ReturnToPrev);
 
 
 }
