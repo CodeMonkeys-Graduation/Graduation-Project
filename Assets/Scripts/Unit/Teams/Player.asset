@@ -17,3 +17,4 @@ MonoBehaviour:
   teamTurnSlotFrame: {fileID: 21300000, guid: 0b1d9b606e5a748ab98dd3ebe174161b, type: 3}
   enemyTeams:
   - {fileID: 11400000, guid: 6ab3a43f4bd34d64a921d43e54c4f25c, type: 2}
+  - {fileID: 11400000, guid: 157136e1c92388342b8f678cabad00c3, type: 2}

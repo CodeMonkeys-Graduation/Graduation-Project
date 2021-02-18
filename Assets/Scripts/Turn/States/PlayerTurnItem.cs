@@ -69,10 +69,9 @@ public class PlayerTurnItem : TurnState
     void OnClickButton(Item item)
     {
         string popupContent = "It is " + item.name + " u Use?";
-        owner.stateMachine.ChangeState(new PlayerTurnPopup(owner, unit, owner.Popup, Input.mousePosition, popupContent, ()=>UseItem(item)),
-                        StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
-
-        
+        owner.stateMachine.ChangeState(
+            new PlayerTurnPopup(owner, unit, owner.Popup, Input.mousePosition, popupContent, ()=>UseItem(item), OnClickNo),
+            StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     }
 
     void UseItem(Item item)
@@ -84,4 +83,6 @@ public class PlayerTurnItem : TurnState
 
         unit.UseItem(item);
     }
+    private void OnClickNo() => owner.stateMachine.ChangeState(null, StateMachine<TurnMgr>.StateTransitionMethod.ReturnToPrev);
+
 }

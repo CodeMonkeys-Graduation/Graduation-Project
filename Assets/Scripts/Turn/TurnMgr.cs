@@ -37,7 +37,11 @@ public class TurnMgr : MonoBehaviour
     [HideInInspector] public Queue<Unit> turns = new Queue<Unit>();
 
     public StateMachine<TurnMgr> stateMachine;
-    public enum TMState { Nobody, PlayerTurnBegin, PlayerTurnMove, PlayerTurnAttack, PlayerTurnItem, PlayerTurnPopup, AITurnBegin, WaitSingleEvent, WaitMultipleEvent }
+    public enum TMState { 
+        Nobody, 
+        PlayerTurnBegin, PlayerTurnMove, PlayerTurnAttack, PlayerTurnItem, PlayerTurnSkill, PlayerTurnPopup, 
+        AITurnBegin, AITurnPlan, AITurnAction,
+        WaitSingleEvent, WaitMultipleEvent }
     public TMState tmState;
 
     public void Start()
@@ -117,7 +121,10 @@ public class TurnMgr : MonoBehaviour
     // 디버깅용
     private void CheckTurnState()
     {
-        if (stateMachine.IsStateType(typeof(PlayerTurnBegin)))
+        if (stateMachine.IsStateType(typeof(NobodyTurn)))
+            tmState = TMState.Nobody;
+
+        else if (stateMachine.IsStateType(typeof(PlayerTurnBegin)))
             tmState = TMState.PlayerTurnBegin;
 
         else if (stateMachine.IsStateType(typeof(PlayerTurnMove)))
@@ -128,6 +135,9 @@ public class TurnMgr : MonoBehaviour
 
         else if (stateMachine.IsStateType(typeof(PlayerTurnItem)))
             tmState = TMState.PlayerTurnItem;
+
+        else if (stateMachine.IsStateType(typeof(PlayerTurnSkill)))
+            tmState = TMState.PlayerTurnSkill;
 
         else if (stateMachine.IsStateType(typeof(PlayerTurnPopup)))
             tmState = TMState.PlayerTurnPopup;
@@ -140,6 +150,12 @@ public class TurnMgr : MonoBehaviour
 
         else if (stateMachine.IsStateType(typeof(AITurnBegin)))
             tmState = TMState.AITurnBegin;
+
+        else if (stateMachine.IsStateType(typeof(AITurnPlan)))
+            tmState = TMState.AITurnPlan;
+
+        else if (stateMachine.IsStateType(typeof(AITurnAction)))
+            tmState = TMState.AITurnAction;
 
         else
             tmState = TMState.Nobody;

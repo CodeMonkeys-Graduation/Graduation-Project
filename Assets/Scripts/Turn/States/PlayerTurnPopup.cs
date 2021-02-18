@@ -12,34 +12,51 @@ public class PlayerTurnPopup : PlayerTurnAttack
     Vector2 popupPos;
     string popupContent;
 
-    UnityAction OnClickYes;
-    UnityAction OnClickNo;
+    UnityAction onClickYes;
+    UnityAction onClickNo;
+
+    Action onPopupEnter; 
+    Action onPopupExecute; 
+    Action onPopupExit;
 
     public PlayerTurnPopup(TurnMgr owner, Unit unit, 
-        Transform popup, Vector2 popupPos, string popupContent, UnityAction yes, UnityAction no = null) : base(owner, unit)
+        Transform popup, Vector2 popupPos, 
+        string popupContent, UnityAction onClickYes, UnityAction onClickNo,
+        Action onPopupEnter = null, Action onPopupExecute = null, Action onPopupExit = null) : base(owner, unit)
     {
         this.popup = popup;
         this.popupPos = popupPos;
         this.popupContent = popupContent;
-        OnClickYes = yes;
-        OnClickNo = no;
+        this.onClickYes = onClickYes;
+        this.onClickNo = onClickNo;
+
+        this.onPopupEnter = onPopupEnter;
+        this.onPopupExecute = onPopupExecute;
+        this.onPopupExit = onPopupExit;
     }
 
     public override void Enter() // �˾��� ����, 
     {
         SetButtons();
         SetUI();
+
+        if (onPopupEnter != null)
+            onPopupEnter.Invoke();
     }
 
     public override void Execute()
     {
-
+        if (onPopupExecute != null)
+            onPopupExecute.Invoke();
     }
 
     public override void Exit()
     {
         FreeButtons();
         UnSetUI();
+
+        if (onPopupExit != null)
+            onPopupExit.Invoke();
     }
 
     private void SetUI()
@@ -61,7 +78,7 @@ public class PlayerTurnPopup : PlayerTurnAttack
         Button YesButton = popup.Find("Yes").GetComponent<Button>();
         Button NoButton = popup.Find("No").GetComponent<Button>();
 
-        YesButton.onClick.AddListener(() => OnClickYes());
+        YesButton.onClick.AddListener(() => onClickYes());
         NoButton.onClick.AddListener(() => owner.stateMachine.ChangeState(new PlayerTurnAttack(owner, unit), StateMachine<TurnMgr>.StateTransitionMethod.ReturnToPrev));
     }
 
