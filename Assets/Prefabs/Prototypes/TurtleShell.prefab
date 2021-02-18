@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cb61669615c17d4db646b7ff94d24ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 0}
-  body: {fileID: 0}
+  anim: {fileID: 7910912124819041995}
+  body: {fileID: 7821930193384949071}
   maxHealth: 12
   basicAttackDamageMax: 5
   basicAttackDamageMin: 3
@@ -173,6 +173,12 @@ PrefabInstance:
 --- !u!4 &7821930193384949071 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4544219117696442, guid: ad121b684e3934947a2d412b4202d8fd,
+    type: 3}
+  m_PrefabInstance: {fileID: 7826465470312509685}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &7910912124819041995 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 95706204029656638, guid: ad121b684e3934947a2d412b4202d8fd,
     type: 3}
   m_PrefabInstance: {fileID: 7826465470312509685}
   m_PrefabAsset: {fileID: 0}

@@ -7,8 +7,7 @@ using UnityEngine.UI;
 public class TurnMgr : MonoBehaviour
 {
     [Header("Set in Editor")]
-    [SerializeField] public GameObject ItemPanel;
-    [SerializeField] public Transform Popup;
+    [SerializeField] public Transform popupPanel;
     [SerializeField] public GameObject testPlayBtn;
     [SerializeField] public GameObject endTurnBtn;
     [SerializeField] public GameObject backBtn;
@@ -34,6 +33,7 @@ public class TurnMgr : MonoBehaviour
     [HideInInspector] public CameraMove cameraMove;
     [HideInInspector] public ActionPanel actionPanel;
     [HideInInspector] public ActionPointPanel actionPointPanel;
+    [HideInInspector] public ItemPanel itemPanel;
     [HideInInspector] public Queue<Unit> turns = new Queue<Unit>();
 
     public StateMachine<TurnMgr> stateMachine;
@@ -54,6 +54,7 @@ public class TurnMgr : MonoBehaviour
         cameraMove = FindObjectOfType<CameraMove>();
         actionPanel = FindObjectOfType<ActionPanel>();
         actionPointPanel = FindObjectOfType<ActionPointPanel>();
+        itemPanel = FindObjectOfType<ItemPanel>();
 
         // get all units in the scene
         units.Clear();

@@ -10,7 +10,9 @@ public class NobodyTurn : State<TurnMgr>
         owner.testPlayBtn.SetActive(true);
         owner.endTurnBtn.SetActive(false);
         owner.backBtn.SetActive(false);
-        owner.turnPanel.gameObject.SetActive(false);
+        owner.turnPanel.UnsetPanel();
+        owner.itemPanel.UnsetPanel();
+        owner.actionPointPanel.UnsetPanel();
     }
 
     public override void Execute()
