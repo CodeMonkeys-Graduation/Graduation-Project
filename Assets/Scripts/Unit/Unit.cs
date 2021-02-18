@@ -106,7 +106,9 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] public Animator anim;
     [SerializeField] public Transform body;
     [SerializeField] public int maxHealth;
-    [SerializeField] public int basicAttackDamage;
+    [SerializeField] public int BasicAttackDamageAvg { get => (basicAttackDamageMax + basicAttackDamageMin) / 2; }
+    [SerializeField] public int basicAttackDamageMax;
+    [SerializeField] public int basicAttackDamageMin;
     [SerializeField] public float moveSpeed;
     [SerializeField] public int actionPoints;
     [SerializeField] public int agility;
@@ -269,7 +271,7 @@ public abstract class Unit : MonoBehaviour
         {
             Unit targetUnit = cube.GetUnit();
             if (targetUnit)
-                targetUnit.TakeDamage(basicAttackDamage, transform);
+                targetUnit.TakeDamage(BasicAttackDamageAvg, transform);
         }
     }
 
