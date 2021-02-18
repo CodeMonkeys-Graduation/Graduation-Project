@@ -51,7 +51,7 @@ public class PlayerTurnAttack : TurnState
                         unit.basicAttackSplash.range, unit.basicAttackSplash.centerX, unit.basicAttackSplash.centerZ, cubeClicked);
 
                     owner.stateMachine.ChangeState(
-                        new PlayerTurnPopup(owner, unit, owner.Popup, Input.mousePosition, 
+                        new PlayerTurnPopup(owner, unit, owner.popupPanel, Input.mousePosition, 
                         popupContent, AttackOnClickedCube, OnClickNo, () => cubesInAttackSplash.ForEach(c => c.SetBlink(0.7f)), null, () => owner.mapMgr.StopBlinkAll()),
                         StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
                 }

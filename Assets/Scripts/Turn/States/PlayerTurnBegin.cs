@@ -61,7 +61,6 @@ public class PlayerTurnBegin : TurnState
         btnEvents.Add(ActionType.Skill, OnClickSkillBtn);
 
         owner.actionPanel.SetPanel(unit.actionSlots, unit.actionPointsRemain, btnEvents);
-
         owner.actionPointPanel.SetText(unit.actionPointsRemain);
         owner.turnPanel.gameObject.SetActive(true);
 
@@ -90,7 +89,7 @@ public class PlayerTurnBegin : TurnState
     private void OnClickAttackBtn()
         => owner.stateMachine.ChangeState(new PlayerTurnAttack(owner, unit), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     private void OnClickItemBtn()
-        => owner.stateMachine.ChangeState(new PlayerTurnItem(owner, unit), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+        => owner.stateMachine.ChangeState(new PlayerTurnItem(owner, unit, owner.itemPanel), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     private void OnClickSkillBtn()
     => owner.stateMachine.ChangeState(new PlayerTurnSkill(owner, unit), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
 
