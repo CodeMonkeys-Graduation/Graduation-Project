@@ -62,7 +62,8 @@ MonoBehaviour:
   anim: {fileID: 6878338979494816921}
   body: {fileID: 6878338979487583057}
   maxHealth: 10
-  basicAttackDamage: 4
+  basicAttackDamageMax: 6
+  basicAttackDamageMin: 4
   moveSpeed: 2
   actionPoints: 8
   agility: 4

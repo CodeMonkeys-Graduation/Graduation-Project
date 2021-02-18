@@ -35,7 +35,7 @@ public class PlayerTurnPopup : PlayerTurnAttack
         this.onPopupExit = onPopupExit;
     }
 
-    public override void Enter() // �˾��� ����, 
+    public override void Enter() 
     {
         SetButtons();
         SetUI();
@@ -78,8 +78,8 @@ public class PlayerTurnPopup : PlayerTurnAttack
         Button YesButton = popup.Find("Yes").GetComponent<Button>();
         Button NoButton = popup.Find("No").GetComponent<Button>();
 
-        YesButton.onClick.AddListener(() => onClickYes());
-        NoButton.onClick.AddListener(() => owner.stateMachine.ChangeState(new PlayerTurnAttack(owner, unit), StateMachine<TurnMgr>.StateTransitionMethod.ReturnToPrev));
+        YesButton.onClick.AddListener(onClickYes);
+        NoButton.onClick.AddListener(onClickNo);
     }
 
     private void FreeButtons()

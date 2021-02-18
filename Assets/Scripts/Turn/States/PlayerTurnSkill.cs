@@ -53,7 +53,7 @@ public class PlayerTurnSkill : TurnState
 
                     owner.stateMachine.ChangeState(
                         new PlayerTurnPopup(owner, unit, owner.Popup, Input.mousePosition, popupContent, 
-                        ()=>CastSkillOnCube(cubeClicked), OnClickNo, () => cubesInSkillSplash.ForEach(c => c.SetBlink(0.7f))),
+                        ()=>CastSkillOnCube(cubeClicked), OnClickNo, () => cubesInSkillSplash.ForEach(c => c.SetBlink(0.7f)), null, () => owner.mapMgr.StopBlinkAll()),
                         StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
    
                 }
