@@ -24,23 +24,23 @@ public class ActionPlanner : MonoBehaviour
         actionPointPanel = FindObjectOfType<ActionPointPanel>();
     }
 
-    public void Plan(Unit requester, Action<List<ActionNode>> OnPlanCompleted)
+    public void Plan(Unit requester, Action<List<APActionNode>> OnPlanCompleted)
     {
         StartCoroutine(Plan_Coroutine(requester, OnPlanCompleted));
     }
 
-    public IEnumerator Plan_Coroutine(Unit requester, Action<List<ActionNode>> OnPlanCompleted)
+    public IEnumerator Plan_Coroutine(Unit requester, Action<List<APActionNode>> OnPlanCompleted)
     {
         APGameState gameState = new APGameState(requester, turnMgr.turns.ToList(), mapMgr.map.Cubes.ToList());
-        List<ActionNode> leafNodes = new List<ActionNode>();
+        List<APActionNode> leafNodes = new List<APActionNode>();
 
-        Queue<ActionNode> queue = new Queue<ActionNode>();
+        Queue<APActionNode> queue = new Queue<APActionNode>();
 
         queue.Enqueue(new RootNode(gameState));
 
         while(queue.Count > 0)
         {
-            ActionNode currPlannigNode = queue.Dequeue();
+            APActionNode currPlannigNode = queue.Dequeue();
             int childCount = 0;
 
             //************** MOVE NODES **************// 
@@ -51,7 +51,7 @@ public class ActionPlanner : MonoBehaviour
                 bool simulCompleted = false;
 
                 // 시뮬레이션이 끝나면 호출할 콜백함수
-                Action<List<ActionNode>> OnSimulationCompleted = (nodes) =>
+                Action<List<APActionNode>> OnSimulationCompleted = (nodes) =>
                 {
                     nodes.ForEach(n => moveNodes.Add(n as ActionNode_Move));
                     simulCompleted = true;
@@ -107,9 +107,9 @@ public class ActionPlanner : MonoBehaviour
 
 
         // Construct Best Action List
-        ActionNode bestLeaf = leafNodes.Aggregate((acc, curr) => curr._score > acc._score ? curr : acc);
-        List<ActionNode> bestSequence = new List<ActionNode>();
-        ActionNode currNode = bestLeaf;
+        APActionNode bestLeaf = leafNodes.Aggregate((acc, curr) => curr._score > acc._score ? curr : acc);
+        List<APActionNode> bestSequence = new List<APActionNode>();
+        APActionNode currNode = bestLeaf;
         while (currNode != null)
         {
             bestSequence.Add(currNode);

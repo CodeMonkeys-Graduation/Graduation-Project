@@ -105,18 +105,23 @@ public abstract class Unit : MonoBehaviour
     [Header ("Set in Editor (Unit)")]
     [SerializeField] public Animator anim;
     [SerializeField] public Transform body;
+
+    //*** Stat ***//
     [SerializeField] public int maxHealth;
-    [SerializeField] public int BasicAttackDamageAvg { get => (basicAttackDamageMax + basicAttackDamageMin) / 2; }
     [SerializeField] public int basicAttackDamageMax;
     [SerializeField] public int basicAttackDamageMin;
-    [SerializeField] public float moveSpeed;
     [SerializeField] public int actionPoints;
     [SerializeField] public int agility;
+    [SerializeField] public Sprite icon;
+    [SerializeField] public Team team;
+
+    //*** 움직임이 자연스러운 수치 기입 ***//
+    [SerializeField] public float moveSpeed;
     [SerializeField] [Range(0f, 2f)] float jumpTime; // 점프를 실행할 timespan
     [SerializeField] [Range(0f, 3f)] float jumpHeight; // 점프 높이
     [SerializeField] [Range(0.1f, 0.3f)] public float cubeHeightToJump; // 유닛이 점프로 큐브를 이동할 큐브높이 최소차이.
-    [SerializeField] public Sprite icon;
-    [SerializeField] public Team team;
+
+    //*** Events ***//
     [SerializeField] public Event e_onUnitAttackExit;
     [SerializeField] public Event e_onUnitDead;
     [SerializeField] public Event e_onUnitItemExit;
@@ -134,14 +139,14 @@ public abstract class Unit : MonoBehaviour
     [HideInInspector] public Cube GetCube { get => GetCubeOnPosition(); }
     [HideInInspector] public StateMachine<Unit> stateMachine;
     /*[HideInInspector]*/ [SerializeField] private int currHealth;
-    public int Health { get { return currHealth; } } 
+    public int Health { get { return currHealth; } }
+    public int BasicAttackDamageAvg { get => (basicAttackDamageMax + basicAttackDamageMin) / 2; }
     public Range basicAttackRange;
     public Range basicAttackSplash;
     public Range skillRange;
     public Range skillSplash;
     
     private List<Cube> targetCubes;
-    private bool isJumping;
 
     /// <summary>
     /// basicAttackRange, basicAttackSplash, skillRange, skillSplash 네 변수를 꼭 유닛별로 초기화해주세요.
@@ -168,12 +173,11 @@ public abstract class Unit : MonoBehaviour
     public void ResetActionPoint() => actionPointsRemain = actionPoints;
 
 
-
     #region Move Methods
 
     public void MoveTo(PFPath pathToDest)
     {
-        int apCost = (pathToDest.path.Count - 1) * GetActionSlot(ActionType.Move).cost;
+        int apCost = CalcMoveAPCost(pathToDest);
         stateMachine.ChangeState(new UnitMove(this, pathToDest, apCost), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
 
@@ -243,6 +247,8 @@ public abstract class Unit : MonoBehaviour
 
         OnJumpDone();
     }
+
+    public int CalcMoveAPCost(PFPath path) => (path.path.Count - 1) * GetActionSlot(ActionType.Move).cost;
 
     #endregion
 
