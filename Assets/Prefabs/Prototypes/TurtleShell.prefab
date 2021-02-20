@@ -50,14 +50,14 @@ MonoBehaviour:
   maxHealth: 12
   basicAttackDamageMax: 5
   basicAttackDamageMin: 3
-  moveSpeed: 2
   actionPoints: 4
   agility: 1
+  icon: {fileID: 21300000, guid: 35f8a494e4c3347a5854c5fbb81d623f, type: 3}
+  team: {fileID: 11400000, guid: 6ab3a43f4bd34d64a921d43e54c4f25c, type: 2}
+  moveSpeed: 2
   jumpTime: 0.5
   jumpHeight: 0.2
   cubeHeightToJump: 0.1
-  icon: {fileID: 21300000, guid: 35f8a494e4c3347a5854c5fbb81d623f, type: 3}
-  team: {fileID: 11400000, guid: 6ab3a43f4bd34d64a921d43e54c4f25c, type: 2}
   e_onUnitAttackExit: {fileID: 11400000, guid: 2079106fc3680b44ba8b64dcc785cf18, type: 2}
   e_onUnitDead: {fileID: 11400000, guid: 66ff86eb3d1dceb47a03c6d50e4a3a26, type: 2}
   e_onUnitItemExit: {fileID: 11400000, guid: 379654bbf98e9984d8ff400469dded0a, type: 2}
@@ -90,6 +90,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.6, y: 0.6, z: 0.6}
   m_Center: {x: 0, y: 0.3, z: 0}
+--- !u!114 &5624537936981601645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7825103933020336777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce96a66cdce78f54bb4de0dc2d5f4553, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7826465470312509685
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -170,6 +182,12 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 0bd70bff7f57a9240ab4ed10cf96e7cb, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad121b684e3934947a2d412b4202d8fd, type: 3}
+--- !u!1 &7825103933020336777 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1524411113276028, guid: ad121b684e3934947a2d412b4202d8fd,
+    type: 3}
+  m_PrefabInstance: {fileID: 7826465470312509685}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7821930193384949071 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4544219117696442, guid: ad121b684e3934947a2d412b4202d8fd,

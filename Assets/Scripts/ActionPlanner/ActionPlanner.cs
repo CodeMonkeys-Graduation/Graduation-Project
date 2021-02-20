@@ -44,54 +44,99 @@ public class ActionPlanner : MonoBehaviour
             int childCount = 0;
 
             //************** MOVE NODES **************// 
-            if(currPlannigNode.GetType() == typeof(RootNode) || 
-                currPlannigNode.GetType() != typeof(ActionNode_Move))
             {
-                List<ActionNode_Move> moveNodes = new List<ActionNode_Move>();
-                bool simulCompleted = false;
-
-                // 시뮬레이션이 끝나면 호출할 콜백함수
-                Action<List<APActionNode>> OnSimulationCompleted = (nodes) =>
+                if (requester.GetActionSlot(ActionType.Move) != null &&
+                    currPlannigNode.GetType() == typeof(RootNode) ||
+                    currPlannigNode.GetType() != typeof(ActionNode_Move))
                 {
-                    nodes.ForEach(n => moveNodes.Add(n as ActionNode_Move));
-                    simulCompleted = true;
-                };
+                    List<ActionNode_Move> moveNodes = new List<ActionNode_Move>();
+                    bool simulCompleted = false;
 
-                // 시뮬레이션 시작
-                MovePlanner movePlanner = new MovePlanner(gameState, e_onUnitMoveExit, actionPointPanel);
-                movePlanner.Simulate(this, pathfinder, OnSimulationCompleted);
+                    // 시뮬레이션이 끝나면 호출할 콜백함수
+                    Action<List<APActionNode>> OnSimulationCompleted = (nodes) =>
+                    {
+                        if(nodes != null)
+                            nodes.ForEach(n => { moveNodes.Add(n as ActionNode_Move); });
+                        simulCompleted = true;
+                    };
 
-                // 시뮬레이션이 끝날때까지 대기
-                while (!simulCompleted) yield return null;
+                    // 시뮬레이션 시작
+                    MovePlanner movePlanner = new MovePlanner(currPlannigNode._gameState, e_onUnitMoveExit, pathfinder, actionPointPanel);
+                    movePlanner.Simulate(this, OnSimulationCompleted);
 
-                // 부모노드 세팅 및 인큐
-                foreach (var node in moveNodes)
-                {
-                    node._parent = currPlannigNode;
-                    childCount++;
-                    queue.Enqueue(node);
+                    // 시뮬레이션이 끝날때까지 대기
+                    while (!simulCompleted) yield return null;
+
+                    // 부모노드 세팅 및 인큐
+                    foreach (var node in moveNodes)
+                    {
+                        node._parent = currPlannigNode;
+                        childCount++;
+                        queue.Enqueue(node);
+                    }
                 }
             }
-            
+
+
 
 
 
             //************** ATTACK NODES **************// 
+            {
+                if(requester.GetActionSlot(ActionType.Attack) != null)
+                {
+                    List<ActionNode_Attack> attackNodes = new List<ActionNode_Attack>();
+                    bool simulCompleted = false;
 
+                    // 시뮬레이션이 끝나면 호출할 콜백함수
+                    Action<List<APActionNode>> OnSimulationCompleted = (nodes) =>
+                    {
+                        if (nodes != null)
+                            nodes.ForEach(n => { attackNodes.Add(n as ActionNode_Attack); });
+                        simulCompleted = true;
+                    };
 
+                    // 시뮬레이션 시작
+                    AttackPlanner attackPlanner = new AttackPlanner(currPlannigNode._gameState, e_onUnitAttackExit, mapMgr);
+                    attackPlanner.Simulate(this, OnSimulationCompleted);
 
+                    // 시뮬레이션이 끝날때까지 대기
+                    while (!simulCompleted) yield return null;
+
+                    // 부모노드 세팅 및 인큐
+                    foreach (var node in attackNodes)
+                    {
+                        node._parent = currPlannigNode;
+                        childCount++;
+                        queue.Enqueue(node);
+                    }
+
+                }
+            }
 
 
 
             //************** ITEM NODES **************// 
-
+            {
+                if (requester.GetActionSlot(ActionType.Item) != null
+                    // currPlannigNode의 gameState의 self가 아이템을 가지고 있는지 // 아이템 자료구조 추가
+                    )
+                {
+                    
+                }
+            }
 
 
 
 
 
             //************** SKILL NODES **************// 
-
+            {
+                if (requester.GetActionSlot(ActionType.Skill) != null)
+                {
+                    
+                }
+            }
 
 
 
@@ -107,7 +152,12 @@ public class ActionPlanner : MonoBehaviour
 
 
         // Construct Best Action List
-        APActionNode bestLeaf = leafNodes.Aggregate((acc, curr) => curr._score > acc._score ? curr : acc);
+        int bestScore = leafNodes.Aggregate((acc, curr) => curr._score > acc._score ? curr : acc)._score;
+        List<APActionNode> bestLeaves = leafNodes.FindAll(ln => ln._score == bestScore);
+        int randomIdx = UnityEngine.Random.Range(0, bestLeaves.Count);
+
+        APActionNode bestLeaf = bestLeaves[randomIdx];
+
         List<APActionNode> bestSequence = new List<APActionNode>();
         APActionNode currNode = bestLeaf;
         while (currNode != null)
@@ -116,6 +166,7 @@ public class ActionPlanner : MonoBehaviour
             currNode = currNode._parent;
         }
 
+        bestSequence.Reverse();
         OnPlanCompleted(bestSequence);
     }
 }

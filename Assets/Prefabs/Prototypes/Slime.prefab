@@ -1,5 +1,17 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1415424211146058531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167835050285653870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce96a66cdce78f54bb4de0dc2d5f4553, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4503896969415816995
 GameObject:
   m_ObjectHideFlags: 0
@@ -50,14 +62,14 @@ MonoBehaviour:
   maxHealth: 6
   basicAttackDamageMax: 4
   basicAttackDamageMin: 3
-  moveSpeed: 3
   actionPoints: 8
   agility: 4
+  icon: {fileID: 21300000, guid: 35f8a494e4c3347a5854c5fbb81d623f, type: 3}
+  team: {fileID: 11400000, guid: 6ab3a43f4bd34d64a921d43e54c4f25c, type: 2}
+  moveSpeed: 3
   jumpTime: 0.5
   jumpHeight: 0.5
   cubeHeightToJump: 0.1
-  icon: {fileID: 21300000, guid: 35f8a494e4c3347a5854c5fbb81d623f, type: 3}
-  team: {fileID: 11400000, guid: 6ab3a43f4bd34d64a921d43e54c4f25c, type: 2}
   e_onUnitAttackExit: {fileID: 11400000, guid: 2079106fc3680b44ba8b64dcc785cf18, type: 2}
   e_onUnitDead: {fileID: 11400000, guid: 66ff86eb3d1dceb47a03c6d50e4a3a26, type: 2}
   e_onUnitItemExit: {fileID: 11400000, guid: 379654bbf98e9984d8ff400469dded0a, type: 2}
@@ -254,6 +266,12 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: e596d60b0cde5d443b5d801e751ce7d5, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5bf32a70c2e58f4f9ec61dad9659a4b, type: 3}
+--- !u!1 &167835050285653870 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1931298151966786, guid: e5bf32a70c2e58f4f9ec61dad9659a4b,
+    type: 3}
+  m_PrefabInstance: {fileID: 167365012895004460}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &170283617496341034 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4047972025199878, guid: e5bf32a70c2e58f4f9ec61dad9659a4b,
