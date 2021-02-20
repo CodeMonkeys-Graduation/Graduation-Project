@@ -26,51 +26,39 @@ public class UnitAttack : State<Unit>
 
     public IEnumerator ProcessProjectile()
     {
-        Vector3 startPos = owner.transform.position;
-        Vector3 endPos = centerCube.Platform.position;
-
-        Quaternion startRot = Quaternion.LookRotation(endPos - startPos, Vector3.up);
-        float startRotX = -30f;
-        float endRotX = 30f;
-
-        GameObject projectile = Object.Instantiate(owner.projectile, startPos, startRot);
+        GameObject projectile = Object.Instantiate(owner.projectile, owner.transform.position, owner.transform.rotation);
+        Vector3 nextDestination = centerCube.transform.position;
 
         float currLerpTime = 0f;
-        float fullLerpTime = 0.5f;
+        float lerpTime = 1f;
+        //float lerpTime = owner.anim.GetCurrentAnimatorStateInfo(0).length;
+
         float ShootingHeight = 1f;
 
-        float lerp = currLerpTime / fullLerpTime;
-        while (lerp <= 1f)
+        while (Vector3.Distance(projectile.transform.position, nextDestination) > Mathf.Epsilon)
         {
             currLerpTime += Time.deltaTime;
-            if (currLerpTime > fullLerpTime)
+            if (currLerpTime > lerpTime)
             {
-                projectile.transform.position = endPos;
+                currLerpTime = lerpTime;
+                projectile.transform.position = nextDestination;
                 break;
             }
+            float lerp = currLerpTime / lerpTime;
 
-            lerp = currLerpTime / fullLerpTime;
+            /*  LERP   */
 
-            /*  Position   */
             // Linear Lerp
-            Vector3 LinearLerp = Vector3.Lerp(startPos, endPos, lerp);
+            Vector3 LinearLerp = Vector3.Lerp(projectile.transform.position, nextDestination, lerp);
+
             // Sin Lerp
             float ShootingLerpY = Mathf.Sin(lerp * Mathf.PI) * ShootingHeight;
             Vector3 ShootingLerp = new Vector3(0f, ShootingLerpY, 0f);
 
             projectile.transform.position = LinearLerp + ShootingLerp;
 
-
-            /*  Rotation   */
-            float rotX = Mathf.Lerp(startRotX, endRotX, lerp);
-            float rotY = projectile.transform.rotation.eulerAngles.y;
-            float rotZ = projectile.transform.rotation.eulerAngles.z;
-            projectile.transform.localEulerAngles = new Vector3(rotX, rotY, rotZ);
-
-            yield return null;
+            yield return 0f;
         }
-
-        MonoBehaviour.Destroy(projectile);
     }
 
     public override void Execute()

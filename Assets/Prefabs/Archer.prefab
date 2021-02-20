@@ -64,14 +64,14 @@ MonoBehaviour:
   maxHealth: 10
   basicAttackDamageMax: 6
   basicAttackDamageMin: 4
+  moveSpeed: 2
   actionPoints: 8
   agility: 4
-  icon: {fileID: 21300000, guid: 7bfcd918b78534741bd28db3034fa467, type: 3}
-  team: {fileID: 11400000, guid: e0bf86c813c46794fb0e8b0c72897d22, type: 2}
-  moveSpeed: 2
   jumpTime: 0.5
   jumpHeight: 0.2
   cubeHeightToJump: 0.2
+  icon: {fileID: 21300000, guid: 7bfcd918b78534741bd28db3034fa467, type: 3}
+  team: {fileID: 11400000, guid: e0bf86c813c46794fb0e8b0c72897d22, type: 2}
   e_onUnitAttackExit: {fileID: 11400000, guid: 2079106fc3680b44ba8b64dcc785cf18, type: 2}
   e_onUnitDead: {fileID: 11400000, guid: 66ff86eb3d1dceb47a03c6d50e4a3a26, type: 2}
   e_onUnitItemExit: {fileID: 11400000, guid: 379654bbf98e9984d8ff400469dded0a, type: 2}
@@ -88,8 +88,7 @@ MonoBehaviour:
     cost: 3
   itemBag:
     items: []
-  projectile: {fileID: 7952017110644663971, guid: 3a8201fcc9218274281bae81be0865a0,
-    type: 3}
+  projectile: {fileID: 100000, guid: aa6419f48f4fbc84c9ec864a8468f57e, type: 3}
   actionPointsRemain: 0
   currHealth: 0
 --- !u!114 &1459455313474009208
