@@ -139,10 +139,26 @@ public class APGameState
     public APCube APFind(INavable cube) => _cubes.Find(c => c.owner == cube);
     public APUnit APFind(Unit unit) => _units.Find(u => u.owner == unit);
 
-    public void MoveTo(APCube cube)
+    public void MoveTo(APCube destination)
     {
         APCube prevAPCube = this.unitPos.FirstOrDefault(p => p.Value == self).Key;
-        this.unitPos.Add(cube, self);
+        this.unitPos.Add(destination, self);
         this.unitPos.Remove(prevAPCube);
+    }
+
+    public void Attack(APUnit target)
+    {
+        if (target == null)
+            return;
+
+        target.health -= self.owner.BasicAttackDamageAvg;
+
+        if(target.health <= 0)
+        {
+            APCube targetCube = unitPos.FirstOrDefault(p => p.Value == target).Key;
+            _units.Remove(target);
+            if(targetCube != null)
+                unitPos.Remove(targetCube);
+        }
     }
 }
