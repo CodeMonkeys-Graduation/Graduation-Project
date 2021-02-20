@@ -17,7 +17,6 @@ public class AITurnAction : TurnState
         unit.StartBlink();
         owner.cameraMove.SetTarget(unit);
 
-        // 이전 액션이 있고 
         // 이전 액션한 결과, ShouldReplan이라면 AITurnPlan로 돌아가서 Replan
         if (_currAction != null && _currAction.ShouldReplan(owner.turns.ToList(), owner.mapMgr.map.Cubes.ToList()))
         {
@@ -28,20 +27,21 @@ public class AITurnAction : TurnState
             return;
         }
 
-        // 다음 액션
-        _currAction = _actions.Dequeue();
-        if(_currAction == null || _currAction.GetType() == typeof(RootNode))
+        // 액션 고갈
+        if(_actions.Count == 0)
         {
             owner.NextTurn();
             return;
         }
 
+        // 다음 액션
+        _currAction = _actions.Dequeue();
+
         // 액션이 끝나는 이벤트를 wait
         owner.stateMachine.ChangeState(
-            new WaitSingleEvent(owner, unit, _currAction.e_onUnitActionExit, this,
-            null, _currAction.OnWaitEnter, _currAction.OnWaitExecute, _currAction.OnWaitExit
-            ),
-            StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+            new WaitSingleEvent(owner, unit, owner.e_onUnitIdleEnter, this, null,
+            _currAction.OnWaitEnter, _currAction.OnWaitExecute, _currAction.OnWaitExit),
+            StateMachine<TurnMgr>.StateTransitionMethod.PopNPush);
 
         // 액션 실행
         _currAction.Perform();

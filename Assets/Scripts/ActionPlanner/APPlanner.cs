@@ -9,7 +9,8 @@ public abstract class APPlanner
     public APGameState _gameState;
     public Event e_onUnitActionExit;
 
-    public abstract void Simulate(MonoBehaviour coroutineOwner, Action<List<APActionNode>> OnSimulationCompleted);
+    public abstract void Simulate(MonoBehaviour coroutineOwner, Action OnSimulationCompleted, out List<APActionNode> actionNodes);
+    public abstract bool IsAvailable(APActionNode prevNode);
 }
 
 public class MovePlanner : APPlanner
@@ -25,12 +26,16 @@ public class MovePlanner : APPlanner
         _pathfinder = pathfinder;
     }
 
-    public override void Simulate(MonoBehaviour coroutineOwner, Action<List<APActionNode>> OnSimulationCompleted)
+    public override bool IsAvailable(APActionNode prevNode) 
+        => prevNode.GetType() != typeof(ActionNode_Move) && _gameState.self.actionPoint > 0;
+
+    public override void Simulate(MonoBehaviour coroutineOwner, Action OnSimulationCompleted, out List<APActionNode> moveNodes)
     {
-        coroutineOwner.StartCoroutine(Simulate_Coroutine(OnSimulationCompleted));
+        moveNodes = new List<APActionNode>();
+        coroutineOwner.StartCoroutine(Simulate_Coroutine(OnSimulationCompleted, moveNodes));
     }
 
-    private IEnumerator Simulate_Coroutine(Action<List<APActionNode>> OnSimulationCompleted)
+    private IEnumerator Simulate_Coroutine(Action OnSimulationCompleted, List<APActionNode> moveNodes)
     {
         // pathfind
         bool pathServed = false;
@@ -41,7 +46,6 @@ public class MovePlanner : APPlanner
         while (!pathServed) yield return null;
 
         // 가능한 곳으로 이동하는 모든 경우의 수는 List로 생성
-        List<ActionNode_Move> moveNodes = new List<ActionNode_Move>();
         foreach (var path in paths)
         {
             // 움직이지 않는 Move Action은 예외처리
@@ -53,7 +57,7 @@ public class MovePlanner : APPlanner
             yield return null;
         }
 
-        OnSimulationCompleted(moveNodes.Select(n => n as APActionNode).ToList());
+        OnSimulationCompleted();
     }
 }
 
@@ -69,17 +73,26 @@ public class AttackPlanner : APPlanner
         _mapMgr = mapMgr;
     }
 
-    public override void Simulate(MonoBehaviour coroutineOwner, Action<List<APActionNode>> OnSimulationCompleted)
+    public override bool IsAvailable(APActionNode prevNode)
     {
-        coroutineOwner.StartCoroutine(Simulate_Coroutine(OnSimulationCompleted));
+        if (_gameState.self.actionPoint < _gameState.self.owner.GetActionSlot(ActionType.Attack).cost)
+            return false;
+        else
+            return true;
     }
 
-    private IEnumerator Simulate_Coroutine(Action<List<APActionNode>> OnSimulationCompleted)
+    public override void Simulate(MonoBehaviour coroutineOwner, Action OnSimulationCompleted, out List<APActionNode> attackNodes)
+    {
+        attackNodes = new List<APActionNode>();
+        coroutineOwner.StartCoroutine(Simulate_Coroutine(OnSimulationCompleted, attackNodes));
+    }
+
+    private IEnumerator Simulate_Coroutine(Action OnSimulationCompleted, List<APActionNode> attackNodes)
     {
         // 액션포인트가 충분한지부터 체크
         if(_gameState.self.actionPoint < _gameState.self.owner.GetActionSlot(ActionType.Attack).cost)
         {
-            OnSimulationCompleted(null);
+            OnSimulationCompleted();
             yield break;
         }
 
@@ -93,7 +106,6 @@ public class AttackPlanner : APPlanner
             );
 
         // 공격 가능한 모든 곳으로 공격하는 모든 경우의 수는 List로 생성
-        List<ActionNode_Attack> attackNodes = new List<ActionNode_Attack>();
         foreach (Cube cube in cubesInAttackRange)
         {
             // 자기 자신의 위치를 공격하는 것은 예외처리
@@ -108,7 +120,7 @@ public class AttackPlanner : APPlanner
             yield return null;
         }
 
-        OnSimulationCompleted(attackNodes.Select(n => n as APActionNode).ToList());
+        OnSimulationCompleted();
     }
 }
 

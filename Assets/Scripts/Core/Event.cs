@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,6 +8,7 @@ using UnityEngine.Events;
 public class Event : ScriptableObject
 {
     List<EventListener> eListeners = new List<EventListener>();
+    List<Action> registeredActions = new List<Action>();
     [SerializeField] public int listenerCount = 0;
     
     public void Register(EventListener l, UnityAction action)
@@ -17,11 +19,9 @@ public class Event : ScriptableObject
         listenerCount = eListeners.Count;
     }
 
-    public void Register(EventListener l)
+    public void Register(Action action)
     {
-        eListeners.Add(l);
-
-        listenerCount = eListeners.Count;
+        registeredActions.Add(action);
     }
 
     public void Unregister(EventListener l)
@@ -37,6 +37,10 @@ public class Event : ScriptableObject
         foreach (var l in eListeners.ToArray())
             l.OnNotify.Invoke();
 
+        foreach(var action in registeredActions)
+            action?.Invoke();
+
+        registeredActions.Clear();
 
         listenerCount = eListeners.Count;
     }

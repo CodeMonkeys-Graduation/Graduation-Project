@@ -124,6 +124,7 @@ public abstract class Unit : MonoBehaviour
     //*** Events ***//
     [SerializeField] public Event e_onUnitAttackExit;
     [SerializeField] public Event e_onUnitDead;
+    [SerializeField] public Event e_onUnitIdleEnter;
     [SerializeField] public Event e_onUnitItemExit;
     [SerializeField] public Event e_onUnitRunEnter;
     [SerializeField] public Event e_onUnitRunExit;
@@ -259,8 +260,6 @@ public abstract class Unit : MonoBehaviour
         this.targetCubes = cubesToAttack;
         actionPointsRemain -= GetActionSlot(ActionType.Attack).cost;
         stateMachine.ChangeState(new UnitAttack(this, cubesToAttack, centerCube), StateMachine<Unit>.StateTransitionMethod.PopNPush);
-
-        // 여기서 투사체가 존재할 경우, 추가적인 조치
     }
 
     // 공격을 받는 유닛입장에서 호출당하는 함수

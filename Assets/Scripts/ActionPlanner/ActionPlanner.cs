@@ -34,109 +34,60 @@ public class ActionPlanner : MonoBehaviour
         APGameState gameState = new APGameState(requester, turnMgr.turns.ToList(), mapMgr.map.Cubes.ToList());
         List<APActionNode> leafNodes = new List<APActionNode>();
 
+        // BFS Tree Construction
         Queue<APActionNode> queue = new Queue<APActionNode>();
-
         queue.Enqueue(new RootNode(gameState));
 
         while(queue.Count > 0)
         {
-            APActionNode currPlannigNode = queue.Dequeue();
+            APActionNode parentNode = queue.Dequeue();
             int childCount = 0;
 
             //************** MOVE NODES **************// 
+            MovePlanner movePlanner = new MovePlanner(parentNode._gameState, e_onUnitMoveExit, pathfinder, actionPointPanel);
+            if (movePlanner.IsAvailable(parentNode))
             {
-                if (requester.GetActionSlot(ActionType.Move) != null &&
-                    currPlannigNode.GetType() == typeof(RootNode) ||
-                    currPlannigNode.GetType() != typeof(ActionNode_Move))
+                List<APActionNode> moveNodes;
+                bool simulCompleted = false;
+                movePlanner.Simulate(this, () => simulCompleted = true, out moveNodes);
+
+                while (!simulCompleted) yield return null;
+
+                // 부모노드 세팅 및 인큐
+                foreach (var node in moveNodes)
                 {
-                    List<ActionNode_Move> moveNodes = new List<ActionNode_Move>();
-                    bool simulCompleted = false;
-
-                    // 시뮬레이션이 끝나면 호출할 콜백함수
-                    Action<List<APActionNode>> OnSimulationCompleted = (nodes) =>
-                    {
-                        if(nodes != null)
-                            nodes.ForEach(n => { moveNodes.Add(n as ActionNode_Move); });
-                        simulCompleted = true;
-                    };
-
-                    // 시뮬레이션 시작
-                    MovePlanner movePlanner = new MovePlanner(currPlannigNode._gameState, e_onUnitMoveExit, pathfinder, actionPointPanel);
-                    movePlanner.Simulate(this, OnSimulationCompleted);
-
-                    // 시뮬레이션이 끝날때까지 대기
-                    while (!simulCompleted) yield return null;
-
-                    // 부모노드 세팅 및 인큐
-                    foreach (var node in moveNodes)
-                    {
-                        node._parent = currPlannigNode;
-                        childCount++;
-                        queue.Enqueue(node);
-                    }
+                    node._parent = parentNode;
+                    childCount++;
+                    queue.Enqueue(node);
                 }
             }
-
-
-
-
 
             //************** ATTACK NODES **************// 
+            AttackPlanner attackPlanner = new AttackPlanner(parentNode._gameState, e_onUnitAttackExit, mapMgr);
+            if (attackPlanner.IsAvailable(parentNode))
             {
-                if(requester.GetActionSlot(ActionType.Attack) != null)
+                List<APActionNode> attackNodes;
+                bool simulCompleted = false;
+                attackPlanner.Simulate(this, () => simulCompleted = true, out attackNodes);
+
+                while (!simulCompleted) yield return null;
+
+                // 부모노드 세팅 및 인큐
+                foreach (var node in attackNodes)
                 {
-                    List<ActionNode_Attack> attackNodes = new List<ActionNode_Attack>();
-                    bool simulCompleted = false;
-
-                    // 시뮬레이션이 끝나면 호출할 콜백함수
-                    Action<List<APActionNode>> OnSimulationCompleted = (nodes) =>
-                    {
-                        if (nodes != null)
-                            nodes.ForEach(n => { attackNodes.Add(n as ActionNode_Attack); });
-                        simulCompleted = true;
-                    };
-
-                    // 시뮬레이션 시작
-                    AttackPlanner attackPlanner = new AttackPlanner(currPlannigNode._gameState, e_onUnitAttackExit, mapMgr);
-                    attackPlanner.Simulate(this, OnSimulationCompleted);
-
-                    // 시뮬레이션이 끝날때까지 대기
-                    while (!simulCompleted) yield return null;
-
-                    // 부모노드 세팅 및 인큐
-                    foreach (var node in attackNodes)
-                    {
-                        node._parent = currPlannigNode;
-                        childCount++;
-                        queue.Enqueue(node);
-                    }
-
+                    node._parent = parentNode;
+                    childCount++;
+                    queue.Enqueue(node);
                 }
             }
-
 
 
             //************** ITEM NODES **************// 
-            {
-                if (requester.GetActionSlot(ActionType.Item) != null
-                    // currPlannigNode의 gameState의 self가 아이템을 가지고 있는지 // 아이템 자료구조 추가
-                    )
-                {
-                    
-                }
-            }
-
 
 
 
 
             //************** SKILL NODES **************// 
-            {
-                if (requester.GetActionSlot(ActionType.Skill) != null)
-                {
-                    
-                }
-            }
 
 
 
@@ -145,7 +96,7 @@ public class ActionPlanner : MonoBehaviour
             // Leaf Check
             if (childCount == 0)
             {
-                leafNodes.Add(currPlannigNode);
+                leafNodes.Add(parentNode);
             }
 
         }
@@ -167,6 +118,10 @@ public class ActionPlanner : MonoBehaviour
         }
 
         bestSequence.Reverse();
+        if(bestSequence[0].GetType() == typeof(RootNode))
+            bestSequence.RemoveAt(0); // Root는 제거
+
         OnPlanCompleted(bestSequence);
     }
+
 }

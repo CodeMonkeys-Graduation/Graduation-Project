@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.Events;
 
 public class WaitMultipleEvents : TurnState
@@ -23,14 +24,19 @@ public class WaitMultipleEvents : TurnState
         {
             EventListener el = new EventListener();
             elList.Add(el);
-            el.OnNotify.AddListener(() => { elList.Remove(el); e.Unregister(el); });
-            e.Register(el);
+            e.Register(el, () => { elList.Remove(el); e.Unregister(el); });
         }
         this.nextState = nextState;
 
         if (onWaitEnter != null) this.onWaitEnter = onWaitEnter;
         if (onWaitExecute != null) this.onWaitExecute = onWaitExecute;
         if (onWaitExit != null) this.onWaitExit = onWaitExit;
+    }
+
+    ~WaitMultipleEvents()
+    {
+        foreach(var (e, i) in events.Select((ev, i) => (ev, i)))
+            e.Unregister(elList[i]);
     }
 
     public override void Enter()
