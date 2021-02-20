@@ -3,7 +3,6 @@ using UnityEngine.Events;
 
 public class WaitSingleEvent : TurnState
 {
-    UnityEvent onEvent = new UnityEvent();
     EventListener el = new EventListener();
     Action onWaitEnter; Action onWaitExecute; Action onWaitExit;
     Event e;
@@ -14,26 +13,27 @@ public class WaitSingleEvent : TurnState
     /// <param name="e">기다릴 Event</param>
     /// <param name="nextState">Event발생시 Transition할 다음 State</param>
     /// <param name="onEvent">state를 바꾸기 전에 호출할 함수가 잇다면 추가하세요.</param>
-    public WaitSingleEvent(TurnMgr owner, Unit unit, Event e, 
-        TurnState nextState, UnityAction onEvent = null, 
+    public WaitSingleEvent(TurnMgr owner, Unit unit, Event e, TurnState nextState, UnityAction onEvent = null, 
         Action onWaitEnter = null, Action onWaitExecute = null, Action onWaitExit = null) : base(owner, unit) 
     {
         this.e = e;
-        this.onEvent.AddListener(onEvent);
         this.nextState = nextState;
-
-        if(onEvent != null) el.OnNotify.AddListener(onEvent);
+        
+        if (onEvent != null) el.OnNotify.AddListener(onEvent);
+        e.Register(el, OnEvent_TransitionToNextState);
 
         if (onWaitEnter != null) this.onWaitEnter = onWaitEnter;
         if (onWaitExecute != null) this.onWaitExecute = onWaitExecute;
         if (onWaitExit != null) this.onWaitExit = onWaitExit;
+    }
 
-        el.OnNotify.AddListener(OnEvent_TransitionToNextState);
+    ~WaitSingleEvent()
+    {
+        e.Unregister(el);
     }
 
     public override void Enter()
     {
-        e.Register(el);
         if (onWaitEnter != null) this.onWaitEnter.Invoke();
     }
 
@@ -55,7 +55,7 @@ public class WaitSingleEvent : TurnState
         {
             owner.stateMachine.ChangeState(
                 new WaitSingleEvent(owner, unit, owner.e_onPathfindRequesterCountZero, nextState),
-                StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+                StateMachine<TurnMgr>.StateTransitionMethod.PopNPush);
         }
         else
         {

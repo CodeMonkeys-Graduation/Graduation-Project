@@ -9,6 +9,7 @@ public class UnitIdle : State<Unit>
     public override void Enter()
     {
         owner.anim.SetTrigger("ToIdle");
+        owner.e_onUnitIdleEnter.Invoke();
     }
 
     public override void Execute()

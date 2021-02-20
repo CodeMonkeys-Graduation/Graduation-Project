@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 public class StateMachine<T>
@@ -7,18 +9,29 @@ public class StateMachine<T>
 
     public enum StateTransitionMethod { PopNPush, JustPush, ReturnToPrev, ClearNPush }
 
-    private volatile Stack<State<T>> stateStack = new Stack<State<T>>();
+    public Stack<State<T>> stateStack = new Stack<State<T>>();
     public int StackCount { get => stateStack.Count; }
+    Type defaultState;
 
     public StateMachine(State<T> initialState)
     {
         stateStack.Push(initialState);
         initialState.Enter();
+        defaultState = initialState.GetType();
     }
 
     public void Run()
     {
-        stateStack.Peek().Execute();
+        //if(stateStack.Count > 0)
+            stateStack.Peek().Execute();
+        //else
+        //{
+        //    ConstructorInfo ctor = defaultState.GetConstructor(new[] { typeof(T) });
+        //    State<T> newDefaultState = ctor.Invoke(new object[] { owner }) as State<T>;
+        //    newDefaultState.Enter();
+        //    stateStack.Push(newDefaultState);
+        //}
+
     }
 
 
@@ -30,8 +43,9 @@ public class StateMachine<T>
         {
             case StateTransitionMethod.PopNPush:
                 {
-                    State<T> prevState = stateStack.Pop();
+                    State<T> prevState = stateStack.Peek();
                     prevState.Exit();
+                    stateStack.Pop();
                     stateStack.Push(nextState);
                     nextState.Enter();
                     break;
@@ -48,8 +62,9 @@ public class StateMachine<T>
 
             case StateTransitionMethod.ReturnToPrev:
                 {
-                    State<T> currState = stateStack.Pop();
+                    State<T> currState = stateStack.Peek();
                     currState.Exit();
+                    stateStack.Pop();
                     State<T> prevState = stateStack.Peek();
                     prevState.Enter();
                     break;
@@ -57,7 +72,7 @@ public class StateMachine<T>
 
             case StateTransitionMethod.ClearNPush:
                 {
-                    State<T> currState = stateStack.Pop();
+                    State<T> currState = stateStack.Peek();
                     currState.Exit();
                     stateStack.Clear();
                     stateStack.Push(nextState);

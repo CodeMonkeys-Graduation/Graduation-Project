@@ -75,6 +75,7 @@ public class UnitAttack : State<Unit>
 
     public override void Execute()
     {
+        Debug.Log("UnitAttack: " + owner.anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"));
         if(!owner.anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
         {
             owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);

@@ -181,8 +181,6 @@ public class ActionNode_Attack : APActionNode
     {
         Unit unit = _gameState.self.owner;
 
-        // 공격하고자 했던 유닛이 범위내에 없다면 공격 실패
-        // 추후 Replan을 위해 couldntAttack = true;
         Cube targetCube = _target.GetCube;
         List<Cube> cubesInAttackRange = _mapMgr.GetCubes(
                 unit.basicAttackRange.range,
@@ -191,6 +189,8 @@ public class ActionNode_Attack : APActionNode
                 targetCube
             );
 
+        // 공격하고자 했던 유닛이 범위내에 없다면 공격 실패
+        // 추후 Replan을 위해 couldntAttack = true;
         if (targetCube == null || targetCube.GetUnit() == null || !cubesInAttackRange.Contains(targetCube))
         {
             couldntAttack = true;
