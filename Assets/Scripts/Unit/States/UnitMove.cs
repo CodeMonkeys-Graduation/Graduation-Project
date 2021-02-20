@@ -20,7 +20,7 @@ public class UnitMove : State<Unit>
 
     public override void Enter()
     {
-        owner.e_onUnitRunEnter.Invoke(owner);
+        owner.e_onUnitRunEnter.Invoke();
         owner.anim.SetTrigger("ToRun");
 
         prevCube = owner.GetCube;
@@ -40,7 +40,7 @@ public class UnitMove : State<Unit>
     {
         // 혹시나 못쓴 cost는 싹 써버리기
         owner.actionPointsRemain -= cost;
-        owner.e_onUnitRunExit.Invoke(owner);
+        owner.e_onUnitRunExit.Invoke();
     }
 
     private bool ProcessCubeToGo()

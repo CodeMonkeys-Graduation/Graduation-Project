@@ -44,7 +44,7 @@ public class AITurnAction : TurnState
             StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
 
         // 액션 실행
-        _currAction.Perform(unit);
+        _currAction.Perform();
     }
 
     public override void Execute()
