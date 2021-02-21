@@ -18,6 +18,7 @@ public class AITurnAction : TurnState
         owner.cameraMove.SetTarget(unit);
 
         // 이전 액션한 결과, ShouldReplan이라면 AITurnPlan로 돌아가서 Replan
+        // 첫 Enter는 _currAction == null
         if (_currAction != null && _currAction.ShouldReplan(owner.turns.ToList(), owner.mapMgr.map.Cubes.ToList()))
         {
             owner.stateMachine.ChangeState(

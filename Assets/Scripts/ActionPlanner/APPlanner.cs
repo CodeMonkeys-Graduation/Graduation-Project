@@ -97,7 +97,7 @@ public class AttackPlanner : APPlanner
         }
 
         // 현실 큐브로 기본공격 범위를 먼저 Get
-        Cube centerCube = _gameState.unitPos.FirstOrDefault(p => p.Value == _gameState.self).Key.owner;
+        Cube centerCube = _gameState._unitPos[_gameState.self];
         List<Cube> cubesInAttackRange = _mapMgr.GetCubes(
             _gameState.self.owner.basicAttackRange.range,
             _gameState.self.owner.basicAttackRange.centerX,
@@ -112,10 +112,16 @@ public class AttackPlanner : APPlanner
             if (cube == centerCube) continue;
 
             // cubesInAttackRange안의 적유닛이 있는 한 큐브를 공격하는 AttackActionNode
-            APUnit target;
-            _gameState.unitPos.TryGetValue(_gameState.APFind(cube), out target);
-            if(target != null && target != _gameState.self && _gameState.self.owner.team.enemyTeams.Contains(target.owner.team))
-                attackNodes.Add(new ActionNode_Attack(_gameState, e_onUnitActionExit, target.owner, _mapMgr));
+            if(_gameState._unitPos.ContainsValue(cube))
+            {
+                APUnit apUnit = _gameState._unitPos.FirstOrDefault(p => p.Value == cube).Key;
+                Cube gameStateCube = _gameState._unitPos[apUnit];
+                if (gameStateCube != null && 
+                    _gameState._unitPos[_gameState.self] != gameStateCube && 
+                    _gameState.self.owner.team.enemyTeams.Contains(apUnit.owner.team))
+                    attackNodes.Add(new ActionNode_Attack(_gameState, e_onUnitActionExit, apUnit.owner, _mapMgr));
+            }
+            
 
             yield return null;
         }

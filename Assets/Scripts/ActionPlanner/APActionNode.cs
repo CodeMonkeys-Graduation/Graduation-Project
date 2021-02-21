@@ -38,23 +38,27 @@ public abstract class APActionNode
     protected bool UnitPosValidation(List<Unit> units, List<Cube> cubes)
     {
         // 같은 큐브에 같은 유닛이 배치되어있는지 확인
-        foreach (Cube cube in cubes)
+        foreach (Unit unit in units)
         {
-            Unit realUnit = cube.GetUnit();
-            APCube simulCube = _gameState._cubes.Find((c) => c.owner == cube);
+            // plan속 유닛
+            APUnit apUnit = _gameState._units.Find(u => u.owner == unit);
 
-            // 둘다 유닛이 없는 큐브라면 스킵
-            if (_gameState.unitPos.TryGetValue(simulCube, out _) == false && realUnit == null)
-                continue;
-
-            // 한 쪽에만 유닛이 있다면
-            if ((_gameState.unitPos.TryGetValue(simulCube, out _) == false && realUnit != null) ||
-                (_gameState.unitPos.TryGetValue(simulCube, out _) != false && realUnit == null))
+            // plan에는 유닛이 있지만 실제론 없음
+            if (apUnit == null)
                 return false;
 
-            // 둘다 유닛이 있는데 다른 유닛이라면
-            if (_gameState.unitPos[simulCube].owner != realUnit)
+            // 실제론 unit이 존재하는 plan에는 없음
+            if (_gameState._unitPos.TryGetValue(apUnit, out _) == false)
                 return false;
+
+            // 실제와 plan 둘다 해당 유닛이 있는데 
+            Cube cubeInPlan;
+            if (_gameState._unitPos.TryGetValue(apUnit, out cubeInPlan))
+            {
+                // 다른 큐브에 있다면
+                if (cubeInPlan != unit.GetCube)
+                    return false;
+            }
         }
 
         return true;
@@ -65,10 +69,10 @@ public abstract class APActionNode
         foreach (Unit unit in units)
         {
             APUnit simulUnit = _gameState._units.Find(u => u.owner == unit);
-            if (simulUnit == null)
+            if (simulUnit == null) // 실제 유닛은 있지만 plan속 유닛이 없는 경우
                 return false;
 
-            if (simulUnit.health != unit.Health)
+            if (simulUnit.health != unit.Health) // 둘다 있지만 체력이 다른 경우
                 return false;
         }
         return true;
@@ -116,17 +120,16 @@ public class RootNode : APActionNode
 public class ActionNode_Move : APActionNode
 {
     PFPath _path;
-    APCube _destination;
+    Cube _destination;
     ActionPointPanel _actionPointPanel;
     public ActionNode_Move(APGameState prevGameState, Event e_onUnitMoveExit, PFPath path, ActionPointPanel actionPointPanel)
     {
         _gameState = prevGameState.Clone();
         e_onUnitActionExit = e_onUnitMoveExit;
 
-        PFPath realPath = new PFPath((path.start as APCube).owner, (path.destination as APCube).owner);
-        realPath.path = path.path.ConvertAll(new Converter<INavable, INavable>(nav => (nav as APCube).owner));
-        _path = realPath;
-        _destination = _gameState._cubes.Find(c => c.owner == (path.destination as APCube).owner);
+        _path = new PFPath(path.start, path.destination);
+        _path.path.AddRange(path.path);
+        _destination = _gameState._cubes.Find(c => c == path.destination as Cube);
         _actionPointPanel = actionPointPanel;
 
         // 가상 GameState도 바꿔주기
@@ -136,8 +139,7 @@ public class ActionNode_Move : APActionNode
 
     public override void Perform()
     {
-        Unit unit = _gameState.self.owner;
-        unit.MoveTo(_path);
+        _gameState.self.owner.MoveTo(_path);
     }
 
     public override void OnWaitEnter()

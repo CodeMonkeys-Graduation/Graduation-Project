@@ -93,7 +93,7 @@ public class ActionPlanner : MonoBehaviour
 
 
 
-            // Leaf Check
+            //*** Leaf Check ***// 
             if (childCount == 0)
             {
                 leafNodes.Add(parentNode);
@@ -102,25 +102,50 @@ public class ActionPlanner : MonoBehaviour
         }
 
 
-        // Construct Best Action List
+        //*** Construct Best Action List ***//
+        List<APActionNode> bestSequence = new List<APActionNode>(); ;
+
+        // 가장 높은 스코어 추출
         int bestScore = leafNodes.Aggregate((acc, curr) => curr._score > acc._score ? curr : acc)._score;
+
+        // 가장 높은 스코어의 시퀀스들을 추출
         List<APActionNode> bestLeaves = leafNodes.FindAll(ln => ln._score == bestScore);
-        int randomIdx = UnityEngine.Random.Range(0, bestLeaves.Count);
 
-        APActionNode bestLeaf = bestLeaves[randomIdx];
+        //// 추출한 시퀀스들중 랜덤하게 고르기위한 idx
+        //int randomIdx = UnityEngine.Random.Range(0, bestLeaves.Count);
 
-        List<APActionNode> bestSequence = new List<APActionNode>();
-        APActionNode currNode = bestLeaf;
-        while (currNode != null)
+        //// 결정한 시퀀스의 leaf노드
+        //APActionNode bestLeaf = bestLeaves[randomIdx];
+
+        // 시퀀스 생성 perent를 따라올라감
+        foreach(var (bestLeaf, i) in bestLeaves.Select((l, i) => (l, i)))
         {
-            bestSequence.Add(currNode);
-            currNode = currNode._parent;
+            bool hasAttack = false;
+            APActionNode currNode = bestLeaf;
+            while (currNode.GetType() != typeof(RootNode)) // 미자막 RootNode는 안넣을겁니다.
+            {
+                if (currNode.GetType() == typeof(ActionNode_Attack))
+                    hasAttack = true;
+
+                bestSequence.Add(currNode);
+                currNode = currNode._parent;
+            }
+
+            if(hasAttack)
+                break;
+            else
+                if(i < bestLeaves.Count - 1)
+                    bestSequence.Clear();
+
+            yield return null;
         }
+        
 
+        // leaf - {} - {} - {} - {}
+        // 를
+        // {} - {} - {} - {} - leaf
+        // 순으로 뒤집기
         bestSequence.Reverse();
-        if(bestSequence[0].GetType() == typeof(RootNode))
-            bestSequence.RemoveAt(0); // Root는 제거
-
         OnPlanCompleted(bestSequence);
     }
 
