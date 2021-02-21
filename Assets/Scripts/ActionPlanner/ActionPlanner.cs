@@ -44,7 +44,7 @@ public class ActionPlanner : MonoBehaviour
             int childCount = 0;
 
             //************** MOVE NODES **************// 
-            MovePlanner movePlanner = new MovePlanner(parentNode._gameState, e_onUnitMoveExit, pathfinder, actionPointPanel);
+            MovePlanner movePlanner = new MovePlanner(parentNode._gameState, parentNode._score, pathfinder, actionPointPanel);
             if (movePlanner.IsAvailable(parentNode))
             {
                 List<APActionNode> moveNodes;
@@ -63,7 +63,7 @@ public class ActionPlanner : MonoBehaviour
             }
 
             //************** ATTACK NODES **************// 
-            AttackPlanner attackPlanner = new AttackPlanner(parentNode._gameState, e_onUnitAttackExit, mapMgr);
+            AttackPlanner attackPlanner = new AttackPlanner(parentNode._gameState, parentNode._score, mapMgr);
             if (attackPlanner.IsAvailable(parentNode))
             {
                 List<APActionNode> attackNodes;
@@ -112,34 +112,18 @@ public class ActionPlanner : MonoBehaviour
         List<APActionNode> bestLeaves = leafNodes.FindAll(ln => ln._score == bestScore);
 
         //// 추출한 시퀀스들중 랜덤하게 고르기위한 idx
-        //int randomIdx = UnityEngine.Random.Range(0, bestLeaves.Count);
+        int randomIdx = UnityEngine.Random.Range(0, bestLeaves.Count);
 
         //// 결정한 시퀀스의 leaf노드
-        //APActionNode bestLeaf = bestLeaves[randomIdx];
+        APActionNode bestLeaf = bestLeaves[randomIdx];
 
         // 시퀀스 생성 perent를 따라올라감
-        foreach(var (bestLeaf, i) in bestLeaves.Select((l, i) => (l, i)))
+        APActionNode currNode = bestLeaf;
+        while (currNode.GetType() != typeof(RootNode)) // 미자막 RootNode는 안넣을겁니다.
         {
-            bool hasAttack = false;
-            APActionNode currNode = bestLeaf;
-            while (currNode.GetType() != typeof(RootNode)) // 미자막 RootNode는 안넣을겁니다.
-            {
-                if (currNode.GetType() == typeof(ActionNode_Attack))
-                    hasAttack = true;
-
-                bestSequence.Add(currNode);
-                currNode = currNode._parent;
-            }
-
-            if(hasAttack)
-                break;
-            else
-                if(i < bestLeaves.Count - 1)
-                    bestSequence.Clear();
-
-            yield return null;
+            bestSequence.Add(currNode);
+            currNode = currNode._parent;
         }
-        
 
         // leaf - {} - {} - {} - {}
         // 를

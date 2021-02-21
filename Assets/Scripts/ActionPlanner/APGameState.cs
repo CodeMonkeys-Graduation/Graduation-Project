@@ -7,7 +7,6 @@ public class APUnit
 {
     public Unit owner;
 
-    public Team team;
     public int health;
     public int actionPoint;
     public bool isSelf;
@@ -15,7 +14,6 @@ public class APUnit
     public APUnit(Unit unit, bool isSelf)
     {
         owner = unit;
-        team = unit.team;
         health = unit.Health;
         actionPoint = unit.actionPointsRemain;
         this.isSelf = isSelf;
@@ -25,7 +23,6 @@ public class APUnit
     {
         owner = apUnit.owner;
         //cube = apUnit.cube;
-        team = apUnit.team;
         health = apUnit.health;
         actionPoint = apUnit.actionPoint;
         isSelf = apUnit.isSelf;
