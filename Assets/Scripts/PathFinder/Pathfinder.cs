@@ -243,7 +243,6 @@ public class Pathfinder : MonoBehaviour
             // check if visited all nodes
             if (!visited.ContainsValue(false)) break;
 
-            //Debug.Log($"{currNode.cube.gameObject.name} finding");
 
             yield return null;
         }
@@ -264,7 +263,6 @@ public class Pathfinder : MonoBehaviour
                 path.Add(currNode.prevNode);
                 currNode = currNode.prevNode;
 
-                //Debug.Log($"{currNode.cube.gameObject.name} finding");
                 yield return null;
             }
             path.Reverse();
@@ -303,7 +301,6 @@ public class Pathfinder : MonoBehaviour
         {
             PFNode currNode = queue.Dequeue();
             if (currNode.cost >= maxDistance) continue;
-            //Debug.Log($"{currNode.cube.gameObject.name} finding");
 
             List<INavable> neighborCubes = currNode.cube.Neighbors;
 
@@ -389,7 +386,6 @@ public class Pathfinder : MonoBehaviour
         {
             PFNode currNode = queue.Dequeue();
             if (currNode.cost >= maxDistance) continue;
-            Debug.Log($"{currNode.cube} finding");
 
             List<INavable> neighborCubes = currNode.cube.Neighbors;
 

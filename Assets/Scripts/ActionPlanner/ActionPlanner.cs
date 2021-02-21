@@ -44,7 +44,7 @@ public class ActionPlanner : MonoBehaviour
             int childCount = 0;
 
             //************** MOVE NODES **************// 
-            MovePlanner movePlanner = new MovePlanner(parentNode._gameState, parentNode._score, pathfinder, actionPointPanel);
+            MovePlanner movePlanner = new MovePlanner(parentNode._gameState, parentNode._score, actionPointPanel, pathfinder);
             if (movePlanner.IsAvailable(parentNode))
             {
                 List<APActionNode> moveNodes;
@@ -63,7 +63,7 @@ public class ActionPlanner : MonoBehaviour
             }
 
             //************** ATTACK NODES **************// 
-            AttackPlanner attackPlanner = new AttackPlanner(parentNode._gameState, parentNode._score, mapMgr);
+            AttackPlanner attackPlanner = new AttackPlanner(parentNode._gameState, parentNode._score, actionPointPanel, mapMgr);
             if (attackPlanner.IsAvailable(parentNode))
             {
                 List<APActionNode> attackNodes;

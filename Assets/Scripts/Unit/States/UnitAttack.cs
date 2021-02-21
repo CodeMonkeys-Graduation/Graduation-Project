@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class UnitAttack : State<Unit>
@@ -24,7 +25,21 @@ public class UnitAttack : State<Unit>
         }
     }
 
-    public IEnumerator ProcessProjectile()
+    public override void Execute()
+    {
+        if(!owner.anim.GetCurrentAnimatorClipInfo(0).Any(clipInfo => clipInfo.clip.name.Contains("Attack")))
+        {
+            owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+        }
+        
+    }
+
+    public override void Exit()
+    {
+        owner.e_onUnitAttackExit.Invoke();
+    }
+
+    private IEnumerator ProcessProjectile()
     {
         Vector3 startPos = owner.transform.position;
         Vector3 endPos = centerCube.Platform.position;
@@ -71,21 +86,6 @@ public class UnitAttack : State<Unit>
         }
 
         MonoBehaviour.Destroy(projectile);
-    }
-
-    public override void Execute()
-    {
-        Debug.Log("UnitAttack: " + owner.anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"));
-        if(!owner.anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
-        {
-            owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
-        }
-        
-    }
-
-    public override void Exit()
-    {
-        owner.e_onUnitAttackExit.Invoke();
     }
 
 
