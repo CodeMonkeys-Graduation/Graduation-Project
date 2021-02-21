@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class UnitSkill : State<Unit>
 {
@@ -23,7 +24,7 @@ public class UnitSkill : State<Unit>
 
     public override void Execute()
     {
-        if (!owner.anim.GetCurrentAnimatorStateInfo(0).IsName("Skill"))
+        if (!owner.anim.GetCurrentAnimatorClipInfo(0).Any(clipInfo => clipInfo.clip.name.Contains("Skill")))
         {
             owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
         }

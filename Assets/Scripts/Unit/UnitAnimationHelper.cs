@@ -5,10 +5,15 @@ using UnityEngine;
 public class UnitAnimationHelper : MonoBehaviour
 {
     private Unit unit;
+    private Animator anim;
+
+    public int idleId, runId, hitId, attackId, itemId, skillId, deadId;
+    private AnimatorClipInfo[] clipInfo;
     // Start is called before the first frame update
     void Start()
     {
         unit = GetComponentInParent<Unit>();
+        anim = GetComponent<Animator>();
     }
 
     public void OnAttackMotion() => unit.GiveDamageOnTargets();

@@ -29,11 +29,36 @@ public class AITurnAction : TurnState
         }
 
         // 액션 고갈
-        if(_actions.Count == 0)
+        if (_actions.Count == 0)
         {
-            owner.NextTurn();
+            owner.StartCoroutine(SomeDelayBeforeNextTurn());
             return;
         }
+
+        owner.StartCoroutine(SomeDelayBeforeAction());
+    }
+
+    public override void Execute()
+    {
+    }
+
+    public override void Exit()
+    {
+        unit.StopBlink();
+    }
+
+    private IEnumerator SomeDelayBeforeNextTurn()
+    {
+        float sec = Random.Range(0.5f, 1.5f);
+        yield return new WaitForSeconds(sec);
+
+        owner.NextTurn();
+    }
+
+    private IEnumerator SomeDelayBeforeAction()
+    {
+        float sec = Random.Range(0.5f, 1.5f);
+        yield return new WaitForSeconds(sec);
 
         // 다음 액션
         _currAction = _actions.Dequeue();
@@ -46,15 +71,6 @@ public class AITurnAction : TurnState
 
         // 액션 실행
         _currAction.Perform();
-    }
-
-    public override void Execute()
-    {
-    }
-
-    public override void Exit()
-    {
-        unit.StopBlink();
     }
 
 }

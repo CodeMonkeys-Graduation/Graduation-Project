@@ -9,7 +9,7 @@ public abstract class APActionNode
     public APActionNode _parent;
     public APGameState _gameState;
     public int _score = 0;
-    public Event e_onUnitActionExit;
+    protected ActionPointPanel _actionPointPanel;
 
     public abstract void Perform();
     public abstract int GetScoreToAdd(APGameState prevState);
@@ -124,8 +124,7 @@ public class ActionNode_Move : APActionNode
 {
     PFPath _path;
     Cube _destination;
-    ActionPointPanel _actionPointPanel;
-    public ActionNode_Move(APGameState prevGameState, int prevScore, PFPath path, ActionPointPanel actionPointPanel)
+    public ActionNode_Move(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, PFPath path)
     {
         _gameState = prevGameState.Clone();
         _score = prevScore;
@@ -232,10 +231,11 @@ public class ActionNode_Attack : APActionNode
     Unit _target;
     MapMgr _mapMgr;
     bool couldntAttack = false;
-    public ActionNode_Attack(APGameState prevGameState, int prevScore, Unit target, MapMgr mapMgr)
+    public ActionNode_Attack(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, Unit target, MapMgr mapMgr)
     {
         _gameState = prevGameState.Clone();
         _score = prevScore;
+        _actionPointPanel = actionPointPanel;
 
         _target = target;
         _mapMgr = mapMgr;
@@ -288,6 +288,7 @@ public class ActionNode_Attack : APActionNode
 
     public override void OnWaitExecute()
     {
+        _actionPointPanel.SetText(_gameState.self.owner.actionPointsRemain);
     }
 
     public override void OnWaitExit()
