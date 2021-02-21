@@ -7,8 +7,7 @@ using UnityEngine;
 public abstract class APPlanner
 {
     public APGameState _gameState;
-    public Event e_onUnitActionExit;
-
+    protected int _prevScore;
     public abstract void Simulate(MonoBehaviour coroutineOwner, Action OnSimulationCompleted, out List<APActionNode> actionNodes);
     public abstract bool IsAvailable(APActionNode prevNode);
 }
@@ -17,10 +16,10 @@ public class MovePlanner : APPlanner
 {
     ActionPointPanel _actionPointPanel;
     Pathfinder _pathfinder;
-    public MovePlanner(APGameState gameState, Event e_onUnitMoveExit, Pathfinder pathfinder, ActionPointPanel actionPointPanel)
+    public MovePlanner(APGameState gameState, int prevScore, Pathfinder pathfinder, ActionPointPanel actionPointPanel)
     {
         _gameState = gameState.Clone();
-        e_onUnitActionExit = e_onUnitMoveExit;
+        _prevScore = prevScore;
 
         _actionPointPanel = actionPointPanel;
         _pathfinder = pathfinder;
@@ -52,7 +51,7 @@ public class MovePlanner : APPlanner
             if (path.destination == path.start) continue;
 
             // path에 따라 이동하고 actionPoint를 소모하는 MoveActionNode
-            moveNodes.Add(new ActionNode_Move(_gameState, e_onUnitActionExit, path, _actionPointPanel));
+            moveNodes.Add(new ActionNode_Move(_gameState, _prevScore, path, _actionPointPanel));
 
             yield return null;
         }
@@ -65,10 +64,10 @@ public class MovePlanner : APPlanner
 public class AttackPlanner : APPlanner
 {
     MapMgr _mapMgr;
-    public AttackPlanner(APGameState gameState, Event e_onUnitAttackExit, MapMgr mapMgr)
+    public AttackPlanner(APGameState gameState, int prevScore, MapMgr mapMgr)
     {
         _gameState = gameState.Clone();
-        e_onUnitActionExit = e_onUnitAttackExit;
+        _prevScore = prevScore;
 
         _mapMgr = mapMgr;
     }
@@ -119,7 +118,7 @@ public class AttackPlanner : APPlanner
                 if (gameStateCube != null && 
                     _gameState._unitPos[_gameState.self] != gameStateCube && 
                     _gameState.self.owner.team.enemyTeams.Contains(apUnit.owner.team))
-                    attackNodes.Add(new ActionNode_Attack(_gameState, e_onUnitActionExit, apUnit.owner, _mapMgr));
+                    attackNodes.Add(new ActionNode_Attack(_gameState, _prevScore, apUnit.owner, _mapMgr));
             }
             
 
