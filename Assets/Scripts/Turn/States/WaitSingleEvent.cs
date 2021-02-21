@@ -45,11 +45,13 @@ public class WaitSingleEvent : TurnState
     public override void Exit()
     {
         if (onWaitExit != null) this.onWaitExit.Invoke();
-        e.Unregister(el);
+        
     }
 
     private void OnEvent_TransitionToNextState()
     {
+        e.Unregister(el);
+
         // path를 업데이트중인 큐브가 있으므로 큐브가 업데이트 될때까지 기다려야함.
         if (owner.isAnyCubePathUpdating)
         {

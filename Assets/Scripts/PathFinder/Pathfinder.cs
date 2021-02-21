@@ -9,7 +9,7 @@ public class PFPath
 {
     public INavable start;
     public INavable destination;
-    public List<INavable> path;
+    public List<INavable> path = new List<INavable>();
     public int cost;
     public int Length { get => path.Count; }
 
@@ -17,7 +17,6 @@ public class PFPath
     {
         this.start = start;
         this.destination = destination;
-        path = new List<INavable>();
         this.cost = cost;
     }
 
@@ -25,7 +24,6 @@ public class PFPath
     {
         this.start = start;
         this.destination = destination.cube;
-        path = new List<INavable>();
         this.cost = cost;
     }
 
@@ -127,7 +125,7 @@ public class Pathfinder : MonoBehaviour
         List<INavable> navables = new List<INavable>(gameState._cubes);
         APUnit unit = gameState.self;
         int maxDistance = unit.actionPoint / unit.owner.GetActionSlot(ActionType.Move).cost;
-        APCube start = gameState.unitPos.FirstOrDefault(p => p.Value == unit).Key;
+        Cube start = gameState._unitPos[unit];
         StartCoroutine(BFSPathfinding(start, navables, unit.actionPoint, OnServe));
     }
 
@@ -290,6 +288,8 @@ public class Pathfinder : MonoBehaviour
         INavable start, List<INavable> navables, int maxDistance, 
         Action<List<PFPath>> OnServe, Func<INavable, bool> cubeExculsion)
     {
+        yield return null;
+
         OnSearchBegin();
 
         PFTable table = new PFTable(navables);
@@ -297,7 +297,7 @@ public class Pathfinder : MonoBehaviour
         Queue<PFNode> queue = new Queue<PFNode>();
         queue.Enqueue(table[start]);
 
-        int maxLoop = 50;
+        int maxLoop = 20;
         int currLoop = 0;
         while (queue.Count > 0)
         {
@@ -367,6 +367,7 @@ public class Pathfinder : MonoBehaviour
     ///Action<List<PFPath>> OnServe, Func<INavable, bool> cubeExculsion
     private IEnumerator BFSPathfinding(INavable start, List<INavable> navables, int maxDistance, Action<List<PFPath>> OnServe) 
     {
+        yield return null;
 
         Func<INavable, bool> cubeExculsion = (cube) =>
         {
@@ -382,7 +383,7 @@ public class Pathfinder : MonoBehaviour
         Queue<PFNode> queue = new Queue<PFNode>();
         queue.Enqueue(table[start]);
 
-        int maxLoop = 50;
+        int maxLoop = 20;
         int currLoop = 0;
         while (queue.Count > 0)
         {
