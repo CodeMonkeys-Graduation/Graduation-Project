@@ -41,7 +41,7 @@ public class PlayerTurnItem : TurnState
     {
         string popupContent = $"r u sure u wanna use {item.name}?";
         owner.stateMachine.ChangeState(
-            new PlayerTurnPopup(owner, unit, owner.popupPanel, Input.mousePosition, popupContent, 
+            new PlayerTurnPopup(owner, unit, Input.mousePosition, popupContent, 
             ()=>UseItem(item), OnClickNo, () => _itemPanel.SetPanel(_itemCounter, OnClickButton), null, () => _itemPanel.UnsetPanel()),
             StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     }

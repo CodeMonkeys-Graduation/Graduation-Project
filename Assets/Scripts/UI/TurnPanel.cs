@@ -8,9 +8,11 @@ using UnityEngine.UI;
 public class TurnPanel : MonoBehaviour, IPanel
 {
     public List<TurnSlot> slots;
+    [SerializeField] public StatusPanel statusPanel; // 여기에서 StatusPanel을 에디터 상에서 가져옴
     [SerializeField] TurnSlot slotPrefab;
     [SerializeField] GameObject glowFramePrefab;
     [SerializeField] Transform content;
+    
 
     public bool ShouldUpdateSlots(List<Unit> turns)
     {
