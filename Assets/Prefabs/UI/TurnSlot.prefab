@@ -94,6 +94,7 @@ MonoBehaviour:
   icon: {fileID: 742023647311695079}
   frame: {fileID: 742023646541627457}
   glowFrame: {fileID: 2796367202042909863}
+  turnPanel: {fileID: 0}
 --- !u!114 &5326878184111958350
 MonoBehaviour:
   m_ObjectHideFlags: 0

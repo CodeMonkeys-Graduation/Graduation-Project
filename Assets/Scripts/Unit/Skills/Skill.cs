@@ -3,10 +3,13 @@ using UnityEngine;
 
 public abstract class Skill : ScriptableObject
 {
-    [SerializeField] public string name;
+    [SerializeField] public string skillName;
     [SerializeField] public Sprite icon;
     [SerializeField] public ParticleSystem skillVFX;
-    [SerializeField] public int amount; // damage or heal amount anything
+    [SerializeField] public int amountMin; // damage or heal amount anything
+    [SerializeField] public int amountMax;
+    
+    [HideInInspector] public int amountAvg { get => (amountMax + amountMin) / 2; }
 
     /// <summary>
     /// UnitSkill Enter 에서 호출됩니다. 

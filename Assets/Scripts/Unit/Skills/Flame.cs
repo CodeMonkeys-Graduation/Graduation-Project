@@ -14,6 +14,6 @@ public class Flame : Skill
     }
 
     // skill damage variant
-    public override void OnSkillAnimation(Unit ownerUnit, Unit targetUnit) => targetUnit.TakeDamage(amount, ownerUnit.transform);
+    public override void OnSkillAnimation(Unit ownerUnit, Unit targetUnit) => targetUnit.TakeDamage(Random.Range(amountMin, amountMax + 1), ownerUnit.transform);
     
 }

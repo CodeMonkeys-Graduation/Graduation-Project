@@ -276,7 +276,11 @@ public abstract class Unit : MonoBehaviour
         {
             Unit targetUnit = cube.GetUnit();
             if (targetUnit)
-                targetUnit.TakeDamage(BasicAttackDamageAvg, transform);
+            {
+                int damage = new System.Random().Next(basicAttackDamageMin, basicAttackDamageMax + 1);
+                targetUnit.TakeDamage(damage, transform);
+            }
+                
         }
     }
 
@@ -317,7 +321,10 @@ public abstract class Unit : MonoBehaviour
         {
             Unit targetUnit = cube.GetUnit();
             if (targetUnit)
+            {
                 skill.OnSkillAnimation(this, targetUnit);
+            }
+                
         }
     }
 

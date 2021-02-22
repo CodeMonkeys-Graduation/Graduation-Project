@@ -6,9 +6,13 @@ using TMPro;
 using System;
 using UnityEngine.Events;
 
-public class PlayerTurnPopup : PlayerTurnAttack
+public class PlayerTurnPopup : TurnState
 {
     Transform popup;
+    Button popupYes;
+    Button popupNo;
+    TextMeshProUGUI popupText;
+
     Vector2 popupPos;
     string popupContent;
 
@@ -19,12 +23,14 @@ public class PlayerTurnPopup : PlayerTurnAttack
     Action onPopupExecute; 
     Action onPopupExit;
 
-    public PlayerTurnPopup(TurnMgr owner, Unit unit, 
-        Transform popup, Vector2 popupPos, 
+    public PlayerTurnPopup(TurnMgr owner, Unit unit, Vector2 popupPos, 
         string popupContent, UnityAction onClickYes, UnityAction onClickNo,
         Action onPopupEnter = null, Action onPopupExecute = null, Action onPopupExit = null) : base(owner, unit)
     {
-        this.popup = popup;
+        this.popup = owner.popupPanel;
+        this.popupYes = owner.popupYesBtn;
+        this.popupNo = owner.popupNoBtn;
+        this.popupText = owner.popupText;
         this.popupPos = popupPos;
         this.popupContent = popupContent;
         this.onClickYes = onClickYes;
@@ -61,9 +67,7 @@ public class PlayerTurnPopup : PlayerTurnAttack
 
     private void SetUI()
     {
-        TextMeshProUGUI text = popup.Find("Text").GetComponent<TextMeshProUGUI>();
-        text.text = popupContent;
-
+        popupText.text = popupContent;
         popup.localPosition = popupPos;
         popup.gameObject.SetActive(true);
     }
@@ -75,20 +79,14 @@ public class PlayerTurnPopup : PlayerTurnAttack
 
     private void SetButtons()
     {
-        Button YesButton = popup.Find("Yes").GetComponent<Button>();
-        Button NoButton = popup.Find("No").GetComponent<Button>();
-
-        YesButton.onClick.AddListener(onClickYes);
-        NoButton.onClick.AddListener(onClickNo);
+        popupYes.onClick.AddListener(onClickYes);
+        popupNo.onClick.AddListener(onClickNo);
     }
 
     private void FreeButtons()
     {
-        Button YesButton = popup.Find("Yes").GetComponent<Button>();
-        Button NoButton = popup.Find("No").GetComponent<Button>();
-
-        YesButton.onClick.RemoveAllListeners();
-        NoButton.onClick.RemoveAllListeners();
+        popupYes.onClick.RemoveAllListeners();
+        popupNo.onClick.RemoveAllListeners();
     }
 
 }
