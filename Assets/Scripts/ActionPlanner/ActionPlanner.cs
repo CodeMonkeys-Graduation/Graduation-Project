@@ -31,12 +31,12 @@ public class ActionPlanner : MonoBehaviour
 
     public IEnumerator Plan_Coroutine(Unit requester, Action<List<APActionNode>> OnPlanCompleted)
     {
-        APGameState gameState = new APGameState(requester, turnMgr.turns.ToList(), mapMgr.map.Cubes.ToList());
+        APGameState initialGameState = new APGameState(requester, turnMgr.turns.ToList(), mapMgr.map.Cubes.ToList());
         List<APActionNode> leafNodes = new List<APActionNode>();
 
         // BFS Tree Construction
         Queue<APActionNode> queue = new Queue<APActionNode>();
-        queue.Enqueue(new RootNode(gameState));
+        queue.Enqueue(new RootNode(initialGameState));
 
         while(queue.Count > 0)
         {
@@ -101,6 +101,10 @@ public class ActionPlanner : MonoBehaviour
 
         }
 
+        //*** 마지막 위치에 따른 점수 계산 ***//
+
+
+
 
         //*** Construct Best Action List ***//
         List<APActionNode> bestSequence = new List<APActionNode>(); ;
@@ -108,10 +112,17 @@ public class ActionPlanner : MonoBehaviour
         // 가장 높은 스코어 추출
         int bestScore = leafNodes.Aggregate((acc, curr) => curr._score > acc._score ? curr : acc)._score;
 
-        // 가장 높은 스코어의 시퀀스들을 추출
+        // high score leaf들을 추출
         List<APActionNode> bestLeaves = leafNodes.FindAll(ln => ln._score == bestScore);
 
-        //// 추출한 시퀀스들중 랜덤하게 고르기위한 idx
+        // high score leaf들의 마지막 self 위치에 따른 점수변동
+        CalcFinalPositionScore(bestLeaves, initialGameState);
+
+        // 점수 변동한 leaf들로 다시 순위매김
+        int secondBestScore = bestLeaves.Aggregate((acc, curr) => curr._score > acc._score ? curr : acc)._score;
+        bestLeaves = bestLeaves.FindAll(ln => ln._score == secondBestScore);
+
+        //// 추출한 leaf들중 랜덤하게 고르기위한 idx
         int randomIdx = UnityEngine.Random.Range(0, bestLeaves.Count);
 
         //// 결정한 시퀀스의 leaf노드
@@ -133,4 +144,46 @@ public class ActionPlanner : MonoBehaviour
         OnPlanCompleted(bestSequence);
     }
 
+
+
+    private void CalcFinalPositionScore(List<APActionNode> leaves, APGameState initialGameState)
+    {
+        foreach(var leaf in leaves)
+        {
+            APGameState finalGameState = leaf._gameState;
+
+            // 적 유닛들 중에
+            List<APUnit> eUnitCanAttackMe = new List<APUnit>();
+            foreach(var unit in finalGameState._units)
+            {
+                if (unit.isSelf) continue;
+                if (!finalGameState.self.owner.team.enemyTeams.Contains(unit.owner.team)) continue;
+
+                Cube unitPos = finalGameState._unitPos[unit];
+                Range attackRange = unit.owner.basicAttackRange;
+                List<Cube> cubesInRange = mapMgr.GetCubes(
+                    attackRange.range,
+                    attackRange.centerX,
+                    attackRange.centerZ,
+                    unitPos);
+
+
+                // 만약 일반공격 사정거리가 닿는 적이 있다면 우선 모아놓기
+                Cube selfPos = finalGameState._unitPos[finalGameState.self];
+                if (cubesInRange.Contains(selfPos))
+                    eUnitCanAttackMe.Add(unit);
+            }
+
+            // 그리고 적의 기본공격 몇방에 죽을수 있는지에 따라 점수 차감
+            // 적이 많을수록 조금만 깎기
+            foreach(var unit in eUnitCanAttackMe)
+            {
+                int attackDmg = unit.owner.BasicAttackDamageAvg;
+                int howManyHit = Mathf.Max(finalGameState.self.health / attackDmg, 1);
+                int scoreToSub = (500 / howManyHit) / eUnitCanAttackMe.Count;
+
+                leaf._score -= scoreToSub;
+            }
+        }
+    }
 }

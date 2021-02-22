@@ -164,63 +164,40 @@ public class ActionNode_Move : APActionNode
 
     public override int GetScoreToAdd(APGameState prevState)
     {
+        // 적과 가까워지면 +100
+
+        // 이전 거리들중 가장 가까운 적을 선택
+        Team selfTeam = prevState.self.owner.team;
+        List<APUnit> prevEUnits = new List<APUnit>(prevState._units.Where(u => u != prevState.self && u.owner.team.enemyTeams.Contains(selfTeam)));
         Vector3 prevSelfPos = prevState._unitPos[prevState.self].Platform.position;
-        prevSelfPos.y = 0f; // 높이는 제외
+        prevSelfPos.y = 0f;
+        APUnit prevClosestEUnit = prevEUnits.Aggregate((acc, cur) => {
+            Cube eCube_cur = prevState._unitPos[cur];
+            Vector3 ePos_cur = eCube_cur.Platform.position;
+            ePos_cur.y = 0f;
+            float curDist = Vector3.Distance(ePos_cur, prevSelfPos);
+
+            Cube eCube_acc = prevState._unitPos[acc];
+            Vector3 ePos_acc = eCube_acc.Platform.position;
+            ePos_acc.y = 0f;
+            float accDist = Vector3.Distance(ePos_acc, prevSelfPos);
+
+            return curDist < accDist ? cur : acc;
+        });
+        Vector3 prevCEUPos = prevState._unitPos[prevClosestEUnit].Platform.position;
+        prevCEUPos.y = 0f;
+        float prevDist = Vector3.Distance(prevSelfPos, prevCEUPos);
+
+        // 현재에서 얼마나 가까워졌는지
+        APUnit currClosestEUnit = _gameState._units.Find(u => u.owner == prevClosestEUnit.owner);
+        Vector3 currCEUPos = _gameState._unitPos[currClosestEUnit].Platform.position;
+        currCEUPos.y = 0f;
         Vector3 currSelfPos = _gameState._unitPos[_gameState.self].Platform.position;
-        currSelfPos.y = 0f; // 높이는 제외
-
-        // 이전의 거리점수
-        int prevDistScore = 0;
-        foreach (var unit in prevState._units)
-        {
-            // 적과의 거리만 계산
-            if (!unit.owner.team.enemyTeams.Contains(prevState.self.owner.team))
-                continue;
-
-            int eBasicDamage = unit.owner.BasicAttackDamageAvg;
-            int myBasicDamage = prevState.self.owner.BasicAttackDamageAvg;
-
-            // 서로의 거리에 대해
-            Vector3 ePos = prevState._unitPos[unit].Platform.position;
-            ePos.y = 0f;
-            float distance = Vector3.Distance(prevSelfPos, ePos);
-
-            // 정비례로 계산할 수치
-            int my_howManyHitToDie = (int)Math.Ceiling(prevState.self.health / (float)eBasicDamage);
-            // 반비례로 계산할 수치
-            int e_howManyHitToDie = (int)Math.Ceiling(unit.health / (float)myBasicDamage);
-
-            prevDistScore += (int)((e_howManyHitToDie - my_howManyHitToDie) / distance);
-        }
+        currSelfPos.y = 0f;
+        float currDist = Vector3.Distance(currSelfPos, currCEUPos);
 
 
-        // 지금의 거리점수
-        int currDistScore = 0;
-        foreach (var unit in _gameState._units)
-        {
-            // 적과의 거리만 계산
-            if (!unit.owner.team.enemyTeams.Contains(_gameState.self.owner.team))
-                continue;
-
-            int eBasicDamage = unit.owner.BasicAttackDamageAvg;
-            int myBasicDamage = _gameState.self.owner.BasicAttackDamageAvg;
-
-            // 서로의 거리에 대해
-            Vector3 ePos = _gameState._unitPos[unit].Platform.position;
-            ePos.y = 0f;
-            float distance = Vector3.Distance(currSelfPos, ePos);
-
-            // 정
-            int my_howManyHitToDie = (int)Math.Ceiling(_gameState.self.health / (float)eBasicDamage);
-            // 반
-            int e_howManyHitToDie = (int)Math.Ceiling(unit.health / (float)myBasicDamage);
-
-            currDistScore += (int)((e_howManyHitToDie - my_howManyHitToDie) / distance);
-        }
-
-
-        // 지금 - 이전
-        return currDistScore - prevDistScore;
+        return (int)(100 * Mathf.Max(0, prevDist - currDist));
     }
 }
 
@@ -307,11 +284,16 @@ public class ActionNode_Attack : APActionNode
     public override int GetScoreToAdd(APGameState prevState)
     {
         // 체력이 많은 적보다
-        // 체력이 조금 남은 적을 공격하기 (+ 200 * (자신의공격력/적의체력))
-        int score = 400 * (
-            _gameState.self.owner.BasicAttackDamageAvg / 
-            prevState._units.Find(u => u.owner == _target).health
-            );
+        // 체력이 조금 남은 적을 공격하기 (+ 2000 * (자신의공격력/적의체력))
+        int score = (int)(2000 * (
+            _gameState.self.owner.BasicAttackDamageAvg /
+            (float)prevState._units.Find(u => u.owner == _target).health
+            ));
+
+        // 적을 죽이는 plan이면 +2000
+        if (prevState._units.Count - 1 == _gameState._units.Count)
+            score += 2000;
+
         return score;
     }
 }
