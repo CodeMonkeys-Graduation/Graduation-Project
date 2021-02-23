@@ -9,7 +9,7 @@ public abstract class Skill : ScriptableObject
     [SerializeField] public int amountMin; // damage or heal amount anything
     [SerializeField] public int amountMax;
     
-    [HideInInspector] public int amountAvg { get => (amountMax + amountMin) / 2; }
+    public int amountAvg { get => (amountMax + amountMin) / 2; }
 
     /// <summary>
     /// UnitSkill Enter 에서 호출됩니다. 

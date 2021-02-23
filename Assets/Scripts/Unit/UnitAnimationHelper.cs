@@ -6,9 +6,8 @@ public class UnitAnimationHelper : MonoBehaviour
 {
     private Unit unit;
     private Animator anim;
-
-    public int idleId, runId, hitId, attackId, itemId, skillId, deadId;
     private AnimatorClipInfo[] clipInfo;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +17,5 @@ public class UnitAnimationHelper : MonoBehaviour
 
     public void OnAttackMotion() => unit.GiveDamageOnTargets();
     public void OnSkillMotion() => unit.CastSkillOnTargets();
-
 
 }

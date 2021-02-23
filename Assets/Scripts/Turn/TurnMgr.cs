@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class TurnMgr : MonoBehaviour
 {
     [Header("Set in Editor")]
-    [SerializeField] public Transform popupPanel;
+    [SerializeField] public Transform popupPanel; // TODO: delete
     [SerializeField] public TextMeshProUGUI popupText;
     [SerializeField] public Button popupYesBtn;
     [SerializeField] public Button popupNoBtn;
@@ -33,7 +33,10 @@ public class TurnMgr : MonoBehaviour
     private List<Unit> units = new List<Unit>(); // all alive units on the scene
     [HideInInspector] public bool isAnyCubePathUpdating = false; // checking if any path is updating
     [HideInInspector] public MapMgr mapMgr;
+
     [HideInInspector] public TurnPanel turnPanel;
+    [HideInInspector] public StatusPanel statusPanel;
+    //[HideInInspector] public PopupPanel popupPanel;
     [HideInInspector] public ActionPlanner actionPlanner;
     [HideInInspector] public CameraMove cameraMove;
     [HideInInspector] public ActionPanel actionPanel;
@@ -60,6 +63,8 @@ public class TurnMgr : MonoBehaviour
         actionPanel = FindObjectOfType<ActionPanel>();
         actionPointPanel = FindObjectOfType<ActionPointPanel>();
         itemPanel = FindObjectOfType<ItemPanel>();
+        statusPanel = FindObjectOfType<StatusPanel>();
+        //popupPanel = FindObjectOfType<Popup>();
 
         // get all units in the scene
         units.Clear();

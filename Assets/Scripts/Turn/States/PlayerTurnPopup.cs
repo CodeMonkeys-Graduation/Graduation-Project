@@ -23,7 +23,7 @@ public class PlayerTurnPopup : TurnState
     Action onPopupExecute; 
     Action onPopupExit;
 
-    public PlayerTurnPopup(TurnMgr owner, Unit unit, Vector2 popupPos, 
+    public PlayerTurnPopup(TurnMgr owner, Unit unit, Vector2 popupPos, // Popup popup
         string popupContent, UnityAction onClickYes, UnityAction onClickNo,
         Action onPopupEnter = null, Action onPopupExecute = null, Action onPopupExit = null) : base(owner, unit)
     {

@@ -46,6 +46,6 @@ public class AITurnBegin : TurnState
         owner.turnPanel.gameObject.SetActive(true);
 
         if (owner.turnPanel.ShouldUpdateSlots(owner.turns.ToList()))
-            owner.turnPanel.SetSlots(owner.turns.ToList(), owner.cameraMove);
+            owner.turnPanel.SetSlots(owner.statusPanel, owner.turns.ToList(), owner.cameraMove);
     }
 }

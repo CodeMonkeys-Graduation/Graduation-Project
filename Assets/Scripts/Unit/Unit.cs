@@ -277,7 +277,7 @@ public abstract class Unit : MonoBehaviour
             Unit targetUnit = cube.GetUnit();
             if (targetUnit)
             {
-                int damage = new System.Random().Next(basicAttackDamageMin, basicAttackDamageMax + 1);
+                int damage = UnityEngine.Random.Range(basicAttackDamageMin, basicAttackDamageMax + 1);
                 targetUnit.TakeDamage(damage, transform);
             }
                 

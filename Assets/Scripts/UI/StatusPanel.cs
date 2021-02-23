@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class StatusPanel : MonoBehaviour
+public class StatusPanel : MonoBehaviour, IPanel
 {
     [SerializeField] public TextMeshProUGUI unitName;
     [SerializeField] public TextMeshProUGUI unitDescription;
     [SerializeField] public TextMeshProUGUI unitDamage;
     [SerializeField] public Image unitcurrHealth;
     [SerializeField] public Image unitImage;
-    [SerializeField] public Image[] unitSkill = new Image[3];
+    [SerializeField] public Image unitSkill;
 
     public void SetStatusForUnit(Unit unit)
     {
@@ -22,15 +22,11 @@ public class StatusPanel : MonoBehaviour
         unitDamage.text = $"{unit.basicAttackDamageMin.ToString()} ~ {unit.basicAttackDamageMax.ToString()}";
         unitcurrHealth.fillAmount = unit.Health / unit.maxHealth;
         unitImage.sprite = unit.icon;
-        //for(int i=0; i < 3; i++)
-        //{
-         //   unitSkill[i].sprite = unit.skill.icon;
-        //}
 
         // -> skill은 아직 이미지가 없어서~
     }
 
-    public void UnsetStatus()
+    public void UnsetPanel()
     {
         gameObject.SetActive(false);
     }
