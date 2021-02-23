@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class TurnPanel : MonoBehaviour, IPanel
 {
     public List<TurnSlot> slots;
-    [SerializeField] public StatusPanel statusPanel; // 여기에서 StatusPanel을 에디터 상에서 가져옴
     [SerializeField] TurnSlot slotPrefab;
     [SerializeField] GameObject glowFramePrefab;
     [SerializeField] Transform content;
@@ -27,7 +26,7 @@ public class TurnPanel : MonoBehaviour, IPanel
         return false;
     }
 
-    public void SetSlots(List<Unit> turns, CameraMove cameraMove)
+    public void SetSlots(StatusPanel statusPanel, List<Unit> turns, CameraMove cameraMove)
     {
         TurnSlot[] currSlots = content.GetComponentsInChildren<TurnSlot>();
         if (turns.Count != currSlots.Length)
@@ -39,7 +38,7 @@ public class TurnPanel : MonoBehaviour, IPanel
             foreach (var (unit, i) in turns.Select((u,i) => (u, i)))
             {
                 TurnSlot slot = Instantiate(slotPrefab, content);
-                slot.SetSlot(unit, i == 0 ? true : false, cameraMove, content.GetComponent<ToggleGroup>());
+                slot.SetSlot(statusPanel, unit, i == 0 ? true : false, cameraMove, content.GetComponent<ToggleGroup>());
                 slots.Add(slot);
             }
         }
@@ -47,7 +46,7 @@ public class TurnPanel : MonoBehaviour, IPanel
         {
             foreach(var (slot, i) in currSlots.Select((s, i) => (s, i)))
             {
-                slot.SetSlot(turns[i], i == 0 ? true : false, cameraMove, content.GetComponent<ToggleGroup>());
+                slot.SetSlot(statusPanel, turns[i], i == 0 ? true : false, cameraMove, content.GetComponent<ToggleGroup>());
                 slots.Add(slot);
             }
         }

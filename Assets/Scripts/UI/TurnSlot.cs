@@ -8,21 +8,11 @@ using UnityEngine.Events;
 public class TurnSlot : MonoBehaviour
 {
     [HideInInspector] public Unit unit;
-    [HideInInspector] TurnPanel turnPanel;
     [SerializeField] Image icon;
     [SerializeField] Image frame;
     [SerializeField] GameObject glowFrame;
 
-    void Awake()
-    {
-        turnPanel = GameObject.Find("TurnPanel").GetComponent<TurnPanel>();
-        // 정말 찾아서 쓰고 싶지 않았는데...
-        // TurnSlot 프리팹에 StatusPanel 프리팹을 넣어 사용을 시도 -> 씬 하이어라키 안의 Status 인스턴스에 변화가 없었음
-        // StatusPanel은 비활성화 상태여서 우선 활성화 상태인 TurnPanel을 가져온 다음 -> TurnPanel의 StatusPanel을 사용하고자 함
-    }
-
-
-    public void SetSlot(Unit unit, bool isFirstTurn, CameraMove cameraMove, ToggleGroup group)
+    public void SetSlot(StatusPanel statusPanel, Unit unit, bool isFirstTurn, CameraMove cameraMove, ToggleGroup group)
     {
         icon.sprite = unit.icon;
         frame.sprite = unit.team.teamTurnSlotFrame;
@@ -30,12 +20,12 @@ public class TurnSlot : MonoBehaviour
         GetComponent<Toggle>().onValueChanged.AddListener((isOn) => {
             if (isOn)
             {
+                statusPanel.SetStatusForUnit(unit);
                 cameraMove.SetTarget(unit);
-                turnPanel.statusPanel.SetStatusForUnit(unit);
             }
             else
             {
-                turnPanel.statusPanel.UnsetStatus();
+                statusPanel.UnsetPanel();
             }
         });
         if (isFirstTurn)
