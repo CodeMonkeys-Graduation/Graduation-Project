@@ -9,6 +9,8 @@
 - [RPG Monster Duo PBR Polyart](https://assetstore.unity.com/packages/3d/characters/creatures/rpg-monster-duo-pbr-polyart-157762)
 - [GUI PRO Kit - Fantasy RPG](https://assetstore.unity.com/packages/2d/gui/gui-pro-kit-fantasy-rpg-170168)
 
+## 개발 일지: [Youtube](https://youtube.com/playlist?list=PLUnoDCtQAT-4vgxizujnRzX_ROiHMac2x)
+
 ## 기본 설명
 
 게임을 시작하면 자원의 양이 주어집니다.
