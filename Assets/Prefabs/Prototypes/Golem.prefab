@@ -631,6 +631,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4113686072974364172}
   - component: {fileID: 4113686072974364175}
+  - component: {fileID: 479535768128709763}
   m_Layer: 0
   m_Name: Golem
   m_TagString: Untagged
@@ -646,7 +647,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4113686072974364173}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3, y: 0, z: -3}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4113686074347014468}
@@ -660,38 +661,57 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4113686072974364173}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 047724d464d738b4fa48984d7b9c1db5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 0}
-  body: {fileID: 0}
-  maxHealth: 0
-  basicAttackDamageMax: 0
-  basicAttackDamageMin: 0
-  actionPoints: 0
-  agility: 0
+  anim: {fileID: 4113686074347014471}
+  body: {fileID: 4113686074347014468}
+  maxHealth: 17
+  basicAttackDamageMax: 10
+  basicAttackDamageMin: 8
+  actionPoints: 8
+  agility: 8
   icon: {fileID: 0}
-  team: {fileID: 0}
-  moveSpeed: 0
-  jumpTime: 0
-  jumpHeight: 0
-  cubeHeightToJump: 0
-  e_onUnitAttackExit: {fileID: 0}
-  e_onUnitDead: {fileID: 0}
-  e_onUnitIdleEnter: {fileID: 0}
-  e_onUnitItemExit: {fileID: 0}
-  e_onUnitRunEnter: {fileID: 0}
-  e_onUnitRunExit: {fileID: 0}
-  e_onUnitSkillExit: {fileID: 0}
+  team: {fileID: 11400000, guid: 157136e1c92388342b8f678cabad00c3, type: 2}
+  moveSpeed: 3
+  jumpTime: 0.4
+  jumpHeight: 0.6
+  cubeHeightToJump: 0.2
+  e_onUnitAttackExit: {fileID: 11400000, guid: 2079106fc3680b44ba8b64dcc785cf18, type: 2}
+  e_onUnitDead: {fileID: 11400000, guid: 66ff86eb3d1dceb47a03c6d50e4a3a26, type: 2}
+  e_onUnitIdleEnter: {fileID: 11400000, guid: 8e463aa40a1952a4fbd939eab2d1f7d4, type: 2}
+  e_onUnitItemExit: {fileID: 11400000, guid: 379654bbf98e9984d8ff400469dded0a, type: 2}
+  e_onUnitRunEnter: {fileID: 11400000, guid: 247a2c00413a2024fb34c43a4e4f3a42, type: 2}
+  e_onUnitRunExit: {fileID: 11400000, guid: d08eea7cc7367e647ba2486a6e4af064, type: 2}
+  e_onUnitSkillExit: {fileID: 11400000, guid: fdcb3b5fa987bd648a833a522ec80cf2, type: 2}
   skill: {fileID: 0}
-  actionSlots: []
+  actionSlots:
+  - type: 0
+    cost: 1
+  - type: 1
+    cost: 3
+  - type: 2
+    cost: 3
   itemBag:
     items: []
   projectile: {fileID: 0}
   actionPointsRemain: 0
   currHealth: 0
+--- !u!135 &479535768128709763
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4113686072974364173}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.71
+  m_Center: {x: 0, y: 0.93, z: 0}
 --- !u!1 &4113686073012540523
 GameObject:
   m_ObjectHideFlags: 0
@@ -1574,7 +1594,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 94d5d665d0a8c574597f451ca909d580, type: 2}
+  - {fileID: 2100000, guid: e596d60b0cde5d443b5d801e751ce7d5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1923,6 +1943,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4113686074347014468}
   - component: {fileID: 4113686074347014471}
+  - component: {fileID: 5939468813731698977}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -1938,8 +1959,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4113686074347014469}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.3, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4113686073452695654}
   - {fileID: 4113686074051287368}
@@ -1965,6 +1986,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5939468813731698977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4113686074347014469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce96a66cdce78f54bb4de0dc2d5f4553, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4113686074418005318
 GameObject:
   m_ObjectHideFlags: 0

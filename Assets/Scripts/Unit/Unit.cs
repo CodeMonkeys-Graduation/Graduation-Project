@@ -333,7 +333,7 @@ public abstract class Unit : MonoBehaviour
     public void LookAt(Transform pos)
     {
         Vector3 lookPos = pos.position;
-        lookPos.y = transform.position.y;
+        lookPos.y = body.position.y;
         body.LookAt(lookPos, Vector3.up);
     }
 
@@ -348,7 +348,7 @@ public abstract class Unit : MonoBehaviour
     private Cube GetCubeOnPosition()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out hit, 0.2f, LayerMask.GetMask("Cube")))
+        if (Physics.Raycast(transform.position + Vector3.up * 1f, Vector3.down, out hit, 4f, LayerMask.GetMask("Cube")))
         {
             return hit.transform.GetComponent<Cube>();
         }

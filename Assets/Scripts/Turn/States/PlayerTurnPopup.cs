@@ -8,18 +8,24 @@ using UnityEngine.Events;
 
 public class PlayerTurnPopup : TurnState
 {
-    PopupPanel popup;
-
     Action onPopupEnter; 
     Action onPopupExecute; 
     Action onPopupExit;
-
+    
+    PopupPanel _popup;
+    Vector2 _popupPos;
+    string _popupContent;
+    UnityAction _onClickYes;
+    UnityAction _onClickNo;
     public PlayerTurnPopup(TurnMgr owner, Unit unit, Vector2 popupPos, PopupPanel popupPanel,
         string popupContent, UnityAction onClickYes, UnityAction onClickNo,
         Action onPopupEnter = null, Action onPopupExecute = null, Action onPopupExit = null) : base(owner, unit)
     {
-        popup = popupPanel;
-        popup.SetPopup(popupContent, popupPos, onClickYes, onClickNo);
+        _popup = popupPanel;
+        _popupPos = popupPos;
+        _onClickNo = onClickNo;
+        _onClickYes = onClickYes;
+        _popupContent = popupContent;
 
         this.onPopupEnter = onPopupEnter;
         this.onPopupExecute = onPopupExecute;
@@ -28,6 +34,8 @@ public class PlayerTurnPopup : TurnState
 
     public override void Enter() 
     {
+        _popup.SetPopup(_popupContent, _popupPos, _onClickYes, _onClickNo);
+
         if (onPopupEnter != null)
             onPopupEnter.Invoke();
     }
@@ -40,7 +48,7 @@ public class PlayerTurnPopup : TurnState
 
     public override void Exit()
     {
-        popup.UnsetPanel();
+        _popup.UnsetPanel();
         
         if (onPopupExit != null)
             onPopupExit.Invoke();
