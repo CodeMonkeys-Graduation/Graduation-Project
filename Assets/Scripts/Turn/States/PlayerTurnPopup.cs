@@ -8,33 +8,18 @@ using UnityEngine.Events;
 
 public class PlayerTurnPopup : TurnState
 {
-    Transform popup;
-    Button popupYes;
-    Button popupNo;
-    TextMeshProUGUI popupText;
-
-    Vector2 popupPos;
-    string popupContent;
-
-    UnityAction onClickYes;
-    UnityAction onClickNo;
+    PopupPanel popup;
 
     Action onPopupEnter; 
     Action onPopupExecute; 
     Action onPopupExit;
 
-    public PlayerTurnPopup(TurnMgr owner, Unit unit, Vector2 popupPos, // Popup popup
+    public PlayerTurnPopup(TurnMgr owner, Unit unit, Vector2 popupPos, PopupPanel popupPanel,
         string popupContent, UnityAction onClickYes, UnityAction onClickNo,
         Action onPopupEnter = null, Action onPopupExecute = null, Action onPopupExit = null) : base(owner, unit)
     {
-        this.popup = owner.popupPanel;
-        this.popupYes = owner.popupYesBtn;
-        this.popupNo = owner.popupNoBtn;
-        this.popupText = owner.popupText;
-        this.popupPos = popupPos;
-        this.popupContent = popupContent;
-        this.onClickYes = onClickYes;
-        this.onClickNo = onClickNo;
+        popup = popupPanel;
+        popup.SetPopup(popupContent, popupPos, onClickYes, onClickNo);
 
         this.onPopupEnter = onPopupEnter;
         this.onPopupExecute = onPopupExecute;
@@ -43,9 +28,6 @@ public class PlayerTurnPopup : TurnState
 
     public override void Enter() 
     {
-        SetButtons();
-        SetUI();
-
         if (onPopupEnter != null)
             onPopupEnter.Invoke();
     }
@@ -58,35 +40,9 @@ public class PlayerTurnPopup : TurnState
 
     public override void Exit()
     {
-        FreeButtons();
-        UnSetUI();
-
+        popup.UnsetPanel();
+        
         if (onPopupExit != null)
             onPopupExit.Invoke();
     }
-
-    private void SetUI()
-    {
-        popupText.text = popupContent;
-        popup.localPosition = popupPos;
-        popup.gameObject.SetActive(true);
-    }
-
-    private void UnSetUI()
-    {
-        popup.gameObject.SetActive(false);
-    }
-
-    private void SetButtons()
-    {
-        popupYes.onClick.AddListener(onClickYes);
-        popupNo.onClick.AddListener(onClickNo);
-    }
-
-    private void FreeButtons()
-    {
-        popupYes.onClick.RemoveAllListeners();
-        popupNo.onClick.RemoveAllListeners();
-    }
-
 }

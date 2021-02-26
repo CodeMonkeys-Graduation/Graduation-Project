@@ -1,5 +1,17 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &5840080654941132343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960722885500794246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce96a66cdce78f54bb4de0dc2d5f4553, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6638419496133808957
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,6 +21,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6638419496133808956}
+  - component: {fileID: 1333058315349267003}
+  - component: {fileID: 3214579405347064847}
   m_Layer: 0
   m_Name: EvilMage
   m_TagString: Untagged
@@ -31,6 +45,59 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1333058315349267003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6638419496133808957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23aef31e492d83b46999fbf3a888c0bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 0}
+  body: {fileID: 0}
+  maxHealth: 0
+  basicAttackDamageMax: 0
+  basicAttackDamageMin: 0
+  actionPoints: 0
+  agility: 0
+  icon: {fileID: 0}
+  team: {fileID: 0}
+  moveSpeed: 0
+  jumpTime: 0
+  jumpHeight: 0
+  cubeHeightToJump: 0
+  e_onUnitAttackExit: {fileID: 0}
+  e_onUnitDead: {fileID: 0}
+  e_onUnitIdleEnter: {fileID: 0}
+  e_onUnitItemExit: {fileID: 0}
+  e_onUnitRunEnter: {fileID: 0}
+  e_onUnitRunExit: {fileID: 0}
+  e_onUnitSkillExit: {fileID: 0}
+  skill: {fileID: 0}
+  actionSlots: []
+  itemBag:
+    items: []
+  projectile: {fileID: 0}
+  actionPointsRemain: 0
+  currHealth: 0
+--- !u!136 &3214579405347064847
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6638419496133808957}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &8039924895962829594
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -100,6 +167,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02cb841492a9264468136e42ddfc57f4, type: 3}
+--- !u!1 &1960722885500794246 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8405526748089804444, guid: 02cb841492a9264468136e42ddfc57f4,
+    type: 3}
+  m_PrefabInstance: {fileID: 8039924895962829594}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1954980322833020226 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8409048602214147672, guid: 02cb841492a9264468136e42ddfc57f4,
