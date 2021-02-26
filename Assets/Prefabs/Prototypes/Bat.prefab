@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3812512240950220696}
+  - component: {fileID: 323415651321875448}
+  - component: {fileID: 1069024192388058658}
   m_Layer: 0
   m_Name: Bat
   m_TagString: Untagged
@@ -31,6 +33,71 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &323415651321875448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3812512240950220703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9335d63911b65844b9f1068cf18dbf24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 0}
+  body: {fileID: 0}
+  maxHealth: 0
+  basicAttackDamageMax: 0
+  basicAttackDamageMin: 0
+  actionPoints: 0
+  agility: 0
+  icon: {fileID: 0}
+  team: {fileID: 0}
+  moveSpeed: 0
+  jumpTime: 0
+  jumpHeight: 0
+  cubeHeightToJump: 0
+  e_onUnitAttackExit: {fileID: 0}
+  e_onUnitDead: {fileID: 0}
+  e_onUnitIdleEnter: {fileID: 0}
+  e_onUnitItemExit: {fileID: 0}
+  e_onUnitRunEnter: {fileID: 0}
+  e_onUnitRunExit: {fileID: 0}
+  e_onUnitSkillExit: {fileID: 0}
+  skill: {fileID: 0}
+  actionSlots: []
+  itemBag:
+    items: []
+  projectile: {fileID: 0}
+  actionPointsRemain: 0
+  currHealth: 0
+--- !u!136 &1069024192388058658
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3812512240950220703}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24
+  m_Height: 1.4
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3729270125418671810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5952833402649207219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce96a66cdce78f54bb4de0dc2d5f4553, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3812512239478856613
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -100,6 +167,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 687101d13f4002f4b98d749fb048ceeb, type: 3}
+--- !u!1 &5952833402649207219 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7382655285846555158, guid: 687101d13f4002f4b98d749fb048ceeb,
+    type: 3}
+  m_PrefabInstance: {fileID: 3812512239478856613}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5949692379008359561 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7384018948403169068, guid: 687101d13f4002f4b98d749fb048ceeb,

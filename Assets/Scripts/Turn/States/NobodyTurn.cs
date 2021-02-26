@@ -17,6 +17,7 @@ public class NobodyTurn : State<TurnMgr>
         owner.itemPanel.UnsetPanel();
         owner.actionPointPanel.UnsetPanel();
         owner.statusPanel.UnsetPanel();
+        owner.popupPanel.UnsetPanel();
     }
 
     public override void Execute()
