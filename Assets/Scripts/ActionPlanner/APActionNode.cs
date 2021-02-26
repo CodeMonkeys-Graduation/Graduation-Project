@@ -25,13 +25,13 @@ public abstract class APActionNode
         if (_gameState.self.actionPoint != units.Find(u => u == _gameState.self.owner).actionPointsRemain)
             return true;
 
-        // 유닛들의 체력이 같은지 확인
-        if (!UnitHealthValidation(units))
-            return true;
+        //// 유닛들의 체력이 같은지 확인
+        //if (!UnitHealthValidation(units))
+        //    return true;
 
-        // 같은 큐브에 같은 유닛이 배치되어있는지 확인
-        if (!UnitPosValidation(units, cubes))
-            return true;
+        //// 같은 큐브에 같은 유닛이 배치되어있는지 확인
+        //if (!UnitPosValidation(units, cubes))
+        //    return true;
 
         return false;
     }
@@ -171,6 +171,10 @@ public class ActionNode_Move : APActionNode
         List<APUnit> prevEUnits = new List<APUnit>(prevState._units.Where(u => u != prevState.self && u.owner.team.enemyTeams.Contains(selfTeam)));
         Vector3 prevSelfPos = prevState._unitPos[prevState.self].Platform.position;
         prevSelfPos.y = 0f;
+
+        if (prevEUnits.Count == 0)
+            return 0;
+
         APUnit prevClosestEUnit = prevEUnits.Aggregate((acc, cur) => {
             Cube eCube_cur = prevState._unitPos[cur];
             Vector3 ePos_cur = eCube_cur.Platform.position;
