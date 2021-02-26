@@ -50,7 +50,7 @@ public class PlayerTurnItem : TurnState
     {
         TurnState nextState = new PlayerTurnBegin(owner, unit);
         owner.stateMachine.ChangeState(
-            new WaitSingleEvent(owner, unit, owner.e_onUnitItemExit, nextState),
+            new WaitSingleEvent(owner, unit, owner.e_onUnitIdleEnter, nextState),
             StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
 
         unit.UseItem(item);

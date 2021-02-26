@@ -286,8 +286,6 @@ public class Pathfinder : MonoBehaviour
         INavable start, List<INavable> navables, int maxDistance, 
         Action<List<PFPath>> OnServe, Func<INavable, bool> cubeExculsion)
     {
-        yield return null;
-
         OnSearchBegin();
 
         PFTable table = new PFTable(navables);
@@ -295,7 +293,7 @@ public class Pathfinder : MonoBehaviour
         Queue<PFNode> queue = new Queue<PFNode>();
         queue.Enqueue(table[start]);
 
-        int maxLoop = 20;
+        int maxLoop = 40;
         int currLoop = 0;
         while (queue.Count > 0)
         {
@@ -364,8 +362,6 @@ public class Pathfinder : MonoBehaviour
     ///Action<List<PFPath>> OnServe, Func<INavable, bool> cubeExculsion
     private IEnumerator BFSPathfinding(INavable start, List<INavable> navables, int maxDistance, Action<List<PFPath>> OnServe) 
     {
-        yield return null;
-
         Func<INavable, bool> cubeExculsion = (cube) =>
         {
             return cube.IsAccupied() == true;
@@ -380,7 +376,7 @@ public class Pathfinder : MonoBehaviour
         Queue<PFNode> queue = new Queue<PFNode>();
         queue.Enqueue(table[start]);
 
-        int maxLoop = 20;
+        int maxLoop = 40;
         int currLoop = 0;
         while (queue.Count > 0)
         {

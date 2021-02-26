@@ -83,7 +83,7 @@ public class PlayerTurnAttack : TurnState
     {
         TurnState nextState = new PlayerTurnBegin(owner, unit);
         owner.stateMachine.ChangeState(
-            new WaitSingleEvent(owner, unit, owner.e_onUnitAttackExit, nextState),
+            new WaitSingleEvent(owner, unit, owner.e_onUnitIdleEnter, nextState),
             StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
 
         unit.StopBlink();

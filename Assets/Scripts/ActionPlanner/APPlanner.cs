@@ -49,6 +49,8 @@ public class MovePlanner : APPlanner
         while (!pathServed) yield return null;
 
         // 가능한 곳으로 이동하는 모든 경우의 수는 List로 생성
+        int loopsPerFrame = 50;
+        int cnt = 0;
         foreach (var path in paths)
         {
             // 움직이지 않는 Move Action은 예외처리
@@ -56,8 +58,13 @@ public class MovePlanner : APPlanner
 
             // path에 따라 이동하고 actionPoint를 소모하는 MoveActionNode
             moveNodes.Add(new ActionNode_Move(_gameState, _prevScore, _actionPointPanel, path));
+            cnt++;
 
-            yield return null;
+            if(loopsPerFrame <= cnt)
+            {
+                yield return null;
+                cnt = 0;
+            }
         }
 
         OnSimulationCompleted();
@@ -112,6 +119,8 @@ public class AttackPlanner : APPlanner
             );
 
         // 공격 가능한 모든 곳으로 공격하는 모든 경우의 수는 List로 생성
+        int loopsPerFrame = 50;
+        int cnt = 0;
         foreach (Cube cube in cubesInAttackRange)
         {
             // 자기 자신의 위치를 공격하는 것은 예외처리
@@ -127,9 +136,13 @@ public class AttackPlanner : APPlanner
                     _gameState.self.owner.team.enemyTeams.Contains(apUnit.owner.team))
                     attackNodes.Add(new ActionNode_Attack(_gameState, _prevScore, _actionPointPanel, apUnit.owner, _mapMgr));
             }
-            
 
-            yield return null;
+
+            if (loopsPerFrame <= cnt)
+            {
+                yield return null;
+                cnt = 0;
+            }
         }
 
         OnSimulationCompleted();

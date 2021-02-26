@@ -77,7 +77,7 @@ public class PlayerTurnSkill : TurnState
 
         TurnState nextState = new PlayerTurnBegin(owner, unit);
         owner.stateMachine.ChangeState(
-            new WaitSingleEvent(owner, unit, owner.e_onUnitSkillExit, nextState),
+            new WaitSingleEvent(owner, unit, owner.e_onUnitIdleEnter, nextState),
             StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
 
         unit.StopBlink();

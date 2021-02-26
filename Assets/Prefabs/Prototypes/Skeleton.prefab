@@ -847,7 +847,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7001721206711082109}
   - component: {fileID: 7001721206711082108}
-  m_Layer: 0
+  - component: {fileID: 1172936457500982084}
+  m_Layer: 9
   m_Name: Skeleton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -914,6 +915,19 @@ MonoBehaviour:
   projectile: {fileID: 0}
   actionPointsRemain: 0
   currHealth: 0
+--- !u!65 &1172936457500982084
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7001721206711082110}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.74, y: 0.82, z: 0.88}
+  m_Center: {x: 0, y: 0.43, z: 0}
 --- !u!1 &7001721206750175966
 GameObject:
   m_ObjectHideFlags: 0
