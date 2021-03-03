@@ -1,0 +1,19 @@
+﻿{
+  "talkDataContainer": [
+    {
+      "talkData": {
+        "id": 0,
+        "context": "How r u?",
+        "emotion": 0
+      }
+    },
+    {
+      "talkData": {
+        "id": 0,
+        "context": "I'm fine, thank you",
+        "emotion": 0
+      }
+    }
+    
+  ]
+}
