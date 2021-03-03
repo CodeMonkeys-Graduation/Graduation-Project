@@ -1,19 +1,15 @@
 ﻿{
-  "talkDataContainer": [
-    {
-      "talkData": {
+    "talkDataContainer": [
+      {
         "id": 0,
         "context": "How r u?",
-        "emotion": 0
-      }
-    },
-    {
-      "talkData": {
+        "emotion": 1
+      },
+      {
         "id": 0,
         "context": "I'm fine, thank you",
         "emotion": 0
       }
-    }
-    
-  ]
+
+    ]
 }

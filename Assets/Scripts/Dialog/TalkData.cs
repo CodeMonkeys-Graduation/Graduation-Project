@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class TalkDataContainer
 {
     public List<TalkData> talkDataContainer = new List<TalkData>();
@@ -11,7 +12,7 @@ public class TalkDataContainer
         talkDataContainer.Add(new TalkData());
     }
 }
-
+[System.Serializable]
 public class TalkData
 {
     public enum Emotion
@@ -26,10 +27,4 @@ public class TalkData
     public string context;
     public int emotion;
 
-    public TalkData()
-    {
-        id = 0;
-        context = null;
-        emotion = 0;
-    }
 }

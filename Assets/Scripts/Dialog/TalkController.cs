@@ -5,6 +5,7 @@ using UnityEngine;
 public class TalkController : MonoBehaviour
 {
     DialogController dialogController;
+    DialogEffect dialogEffect;
 
     TalkDataContainer talkSet;
     TalkData talkData;
@@ -14,6 +15,7 @@ public class TalkController : MonoBehaviour
     void Awake()
     {
         dialogController = FindObjectOfType<DialogController>();
+        dialogEffect = FindObjectOfType<DialogEffect>();
         LoadTalkData();
     }
 
@@ -21,14 +23,19 @@ public class TalkController : MonoBehaviour
     {
         int stageProgress = 0; // 현재 스테이지 인덱스를 가져옴 
         talkSet = TalkDataMgr.LoadTalkData(stageProgress);
+
     }
 
     public void OnClickNextTalk()
     {
-        talkData = talkSet.talkDataContainer[talkIndex++];
+        if (talkIndex >= talkSet.talkDataContainer.Count) return;
+        
+        talkData = talkSet.talkDataContainer[talkIndex];
         dialogController.SetTalk(talkData.id, talkData.context, talkData.emotion);
 
-        Debug.Log("$ 현재 talkIndex : {talkIndex}");
+        Debug.Log($"현재 talkIndex : {talkIndex}");
+
+        if (!dialogEffect.isTyping) talkIndex++;
     }
 
     public void OnClickSkipTalk()
