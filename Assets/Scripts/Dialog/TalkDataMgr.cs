@@ -9,7 +9,8 @@ public class TalkDataMgr
         string jsonFileName = "talkData-" + stageProgress.ToString();
         TextAsset jsonData = Resources.Load<TextAsset>(jsonFileName);
 
-        Debug.Log("StageDataMgr: DATA LOAD COMPLETE");
+        Debug.Log("TALKDATA LOAD COMPLETE");
+
         return JsonUtility.FromJson<TalkDataContainer>(jsonData.ToString());
     }
 }
