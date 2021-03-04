@@ -1,15 +1,34 @@
 ﻿{
-    "talkDataContainer": [
-      {
-        "id": 0,
-        "context": "How r u?",
-        "emotion": 1
-      },
-      {
-        "id": 0,
-        "context": "I'm fine, thank you",
-        "emotion": 0
-      }
-
-    ]
+  "talkDataContainer": [
+    {
+      "id": 0,
+      "context": "I wanna be a friend with you.",
+      "emotion": 0,
+      "hasSelection": false
+    },
+    {
+      "id": 0,
+      "context": "Will you join us? I want you",
+      "emotion": 0,
+      "hasSelection": true
+    },
+    {
+      "id": 0,
+      "context": "Thank you, I just want a friend.",
+      "emotion": 0,
+      "hasSelection": false
+    },
+    {
+      "id": 0,
+      "context": "That's so sad. Come on.",
+      "emotion": 0,
+      "hasSelection": false
+    }
+  ],
+  "selectionDataContainer": [
+    {
+      "yes": "Yes, we 're a friend.",
+      "no": "No, I'll fight with you."
+    }
+  ]
 }
