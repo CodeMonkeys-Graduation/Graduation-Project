@@ -13,7 +13,7 @@ public class TalkController : MonoBehaviour
     TalkData talkData;
     SelectionData selectionData;
 
-    int talkIndex = -1;
+    int talkIndex = -1; // 대화를 시작하면 0이 됨
     int selectionIndex = 0;
 
     void Awake()
@@ -22,11 +22,11 @@ public class TalkController : MonoBehaviour
         dialogEffect = FindObjectOfType<DialogEffect>();
         dialogPopup = FindObjectOfType<DialogPopup>();
         
-        InitDialog();
+        InitDialogUI();
         LoadTalkData(); 
     }
 
-    void InitDialog()
+    void InitDialogUI()
     {
         dialogPopup.UnsetPopup();
     }
@@ -34,10 +34,11 @@ public class TalkController : MonoBehaviour
     void LoadTalkData()
     {
         int stageProgress = 0; // 현재 스테이지 인덱스를 가져옴 
+        
         talkSet = TalkDataMgr.LoadTalkData(stageProgress);
+        
         talkData = talkSet.talkDataContainer[0];
         selectionData = talkSet.selectionDataContainer[0];
-
     }
 
     public void OnClickNextTalk()
