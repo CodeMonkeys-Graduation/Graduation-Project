@@ -6,10 +6,12 @@ using UnityEngine;
 public class TalkDataContainer
 {
     public List<TalkData> talkDataContainer = new List<TalkData>();
+    public List<SelectionData> selectionDataContainer = new List<SelectionData>();
 
     public TalkDataContainer()
     {
         talkDataContainer.Add(new TalkData());
+        selectionDataContainer.Add(new SelectionData());
     }
 }
 [System.Serializable]
@@ -26,5 +28,12 @@ public class TalkData
     public int id;
     public string context;
     public int emotion;
+    public bool hasSelection;
+}
 
+[System.Serializable]
+public class SelectionData
+{
+    public string yes;
+    public string no;
 }
