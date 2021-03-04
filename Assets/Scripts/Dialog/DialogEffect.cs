@@ -6,7 +6,7 @@ using TMPro;
 public class DialogEffect : MonoBehaviour
 {
     [Header("Set In Editor")]
-    [SerializeField] GameObject EndCursur;
+    [SerializeField] GameObject EndCursor;
     [SerializeField] int charPerSeconds;
 
     [Header("Set In Runtime")]
@@ -16,7 +16,6 @@ public class DialogEffect : MonoBehaviour
     [HideInInspector] float interval;
     [HideInInspector] int msgIndex;
     [HideInInspector] public bool isTyping = false;
-    
 
     public void SetMsg(TextMeshProUGUI context, string msg)
     {
@@ -40,7 +39,7 @@ public class DialogEffect : MonoBehaviour
         context.text = "";
         msgIndex = 0;
 
-        EndCursur.SetActive(false);
+        EndCursor.SetActive(false);
 
         interval = 1.0f / charPerSeconds;
 
@@ -64,7 +63,7 @@ public class DialogEffect : MonoBehaviour
     void EffectEnd()
     {
         isTyping = false;
-        EndCursur.SetActive(true);
+        EndCursor.SetActive(true);
     }
     
 }

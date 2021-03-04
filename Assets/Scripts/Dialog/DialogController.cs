@@ -10,6 +10,7 @@ public class DialogController : MonoBehaviour
 
     [Header("Set in Editor")]
     [SerializeField] DialogEffect dialogEffect;
+    [SerializeField] DialogPopup dialogPopup;
     [SerializeField] Animator illustAnim;
 
     [SerializeField] Image illust;
@@ -21,15 +22,16 @@ public class DialogController : MonoBehaviour
         unitDataContainer = UnitDataMgr.unitDataContainer;
     }
 
-    public void SetTalk(int id, string context, int emotion)
+    public void SetTalk(TalkData talkData, SelectionData selectionData)
     {
-        dialogEffect.SetMsg(this.context, context);
-
         illustAnim.SetTrigger("isTalk");
 
-        illust.sprite = unitDataContainer.GetSprite(id, emotion);
-        npcname.text = unitDataContainer.GetName(id);
+        illust.sprite = unitDataContainer.GetSprite(talkData.id, talkData.emotion);
+        npcname.text = unitDataContainer.GetName(talkData.id);
+        dialogEffect.SetMsg(this.context, talkData.context);
         
+        if (talkData.hasSelection && !dialogEffect.isTyping) dialogPopup.SetPopup(selectionData);
+
     }
 
 }

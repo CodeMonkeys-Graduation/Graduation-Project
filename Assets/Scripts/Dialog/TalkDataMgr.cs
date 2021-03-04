@@ -13,4 +13,5 @@ public class TalkDataMgr
 
         return JsonUtility.FromJson<TalkDataContainer>(jsonData.ToString());
     }
+
 }
