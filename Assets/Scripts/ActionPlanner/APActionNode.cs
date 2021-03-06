@@ -9,8 +9,18 @@ public abstract class APActionNode
     public APActionNode _parent;
     public APGameState _gameState;
     public int _score = 0;
-    protected ActionPointPanel _actionPointPanel;
+    public ActionPointPanel _actionPointPanel;
 
+    protected APActionNode(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel)
+    {
+        SetNode(prevGameState, prevScore, actionPointPanel);
+    }
+    protected void SetNode(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel)
+    {
+        _gameState = prevGameState.Clone();
+        _score = prevScore;
+        _actionPointPanel = actionPointPanel;
+    }
     public abstract void Perform();
     public abstract int GetScoreToAdd(APGameState prevState);
     public virtual bool ShouldReplan(List<Unit> units, List<Cube> cubes)
@@ -91,10 +101,9 @@ public abstract class APActionNode
 public class RootNode : APActionNode
 {
     public RootNode(APGameState gameState)
+        : base(gameState, 0, null)
     {
         _parent = null;
-        _gameState = gameState;
-        _score = 0;
     }
 
     public override void OnWaitEnter()
@@ -122,24 +131,56 @@ public class RootNode : APActionNode
 
 public class ActionNode_Move : APActionNode
 {
-    PFPath _path;
-    Cube _destination;
-    public ActionNode_Move(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, PFPath path)
+    public PFPath _path;
+    public Cube _destination;
+    private ActionNode_Move(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, PFPath path)
+        : base(prevGameState, prevScore, actionPointPanel)
     {
-        _gameState = prevGameState.Clone();
-        _score = prevScore;
+        // node의 정보 set
+        SetNode(path);
 
+        // 정보를 바탕으로 preform한후 예상되는 GameState로 Change
+        ChangeState(prevGameState);
+    }
+
+    private void SetNode(PFPath path)
+    {
         _path = new PFPath(path.start, path.destination);
         _path.path.AddRange(path.path);
         _destination = _gameState._cubes.Find(c => c == path.destination as Cube);
-        _actionPointPanel = actionPointPanel;
+    }
 
+    private void ChangeState(APGameState prevGameState)
+    {
         // 가상 GameState도 바꿔주기
         _gameState.self.actionPoint -= _gameState.self.owner.CalcMoveAPCost(_path);
         _gameState.MoveTo(_destination);
 
         // 바꾼 GameState와 prev를 비교하여 점수계산
         _score += GetScoreToAdd(prevGameState);
+    }
+
+    public static APActionNode Create(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, PFPath path)
+    {
+        APActionNode node;
+        // Pool에 남는 Node가 없을 경우 직접 만들어서 Add하고 return
+        if (!APNodePool.Instance.GetNode(APNodePool.NodeType.Move, out node))
+        {
+            node = new ActionNode_Move(prevGameState, prevScore, actionPointPanel, path);
+            APNodePool.Instance.AddNode(node);
+            APNodePool.Instance.GetNode(APNodePool.NodeType.Move, out node);
+
+            return node;
+        }
+        else
+        {
+            ActionNode_Move moveNode = node as ActionNode_Move;
+            moveNode.SetNode(prevGameState, prevScore, actionPointPanel);
+            moveNode.SetNode(path);
+            moveNode.ChangeState(prevGameState);
+
+            return moveNode;
+        }
     }
 
     public override void Perform()
@@ -209,24 +250,56 @@ public class ActionNode_Move : APActionNode
 
 public class ActionNode_Attack : APActionNode
 {
-    Unit _target;
-    MapMgr _mapMgr;
+    public Unit _target;
+    public MapMgr _mapMgr;
     bool couldntAttack = false;
-    public ActionNode_Attack(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, Unit target, MapMgr mapMgr)
+    private ActionNode_Attack(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, Unit target, MapMgr mapMgr)
+         : base(prevGameState, prevScore, actionPointPanel)
     {
-        _gameState = prevGameState.Clone();
-        _score = prevScore;
-        _actionPointPanel = actionPointPanel;
+        // node의 정보 set
+        SetNode(target, mapMgr);
 
+        // 정보를 바탕으로 preform한후 예상되는 GameState로 Change
+        ChangeState(prevGameState, target);
+    }
+    private void SetNode(Unit target, MapMgr mapMgr)
+    {
         _target = target;
         _mapMgr = mapMgr;
+    }
 
+    private void ChangeState(APGameState prevGameState, Unit target)
+    {
         // 가상 gameState 변경
         _gameState.self.actionPoint -= _gameState.self.owner.GetActionSlot(ActionType.Attack).cost;
         _gameState.Attack(_gameState.APFind(target));
 
         // 바꾼 GameState와 prev를 비교하여 점수계산
         _score += GetScoreToAdd(prevGameState);
+    }
+
+    public static APActionNode Create(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, Unit target, MapMgr mapMgr)
+    {
+        APActionNode node;
+        // Pool에 남는 Node가 없을 경우 직접 만들어서 Add하고 return
+        if (!APNodePool.Instance.GetNode(APNodePool.NodeType.Attack, out node))
+        {
+            node = new ActionNode_Attack(prevGameState, prevScore, actionPointPanel, target, mapMgr);
+            APNodePool.Instance.AddNode(node);
+            APNodePool.Instance.GetNode(APNodePool.NodeType.Attack, out node);
+
+            return node;
+        }
+        else
+        {
+            ActionNode_Attack attackNode = node as ActionNode_Attack;
+            attackNode.SetNode(prevGameState, prevScore, actionPointPanel);
+            attackNode.SetNode(target, mapMgr);
+            attackNode.ChangeState(prevGameState, target);
+
+            return attackNode;
+        }
+        
     }
 
     public override void Perform()

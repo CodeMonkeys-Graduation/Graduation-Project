@@ -34,6 +34,7 @@ public class WaitSingleEvent : TurnState
 
     public override void Enter()
     {
+        GC.Collect();
         if (onWaitEnter != null) this.onWaitEnter.Invoke();
     }
 

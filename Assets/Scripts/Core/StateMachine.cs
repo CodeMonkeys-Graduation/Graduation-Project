@@ -22,16 +22,7 @@ public class StateMachine<T>
 
     public void Run()
     {
-        //if(stateStack.Count > 0)
-            stateStack.Peek().Execute();
-        //else
-        //{
-        //    ConstructorInfo ctor = defaultState.GetConstructor(new[] { typeof(T) });
-        //    State<T> newDefaultState = ctor.Invoke(new object[] { owner }) as State<T>;
-        //    newDefaultState.Enter();
-        //    stateStack.Push(newDefaultState);
-        //}
-
+        stateStack.Peek().Execute();
     }
 
 
