@@ -31,7 +31,8 @@ public class ActionPlanner : MonoBehaviour
 
     public IEnumerator Plan_Coroutine(Unit requester, Action<List<APActionNode>> OnPlanCompleted)
     {
-        APGameState initialGameState = new APGameState(requester, turnMgr.turns.ToList(), mapMgr.map.Cubes.ToList());
+        APGameState initialGameState = APGameState.Create(requester, turnMgr.turns.ToList(), mapMgr.map.Cubes.ToList());
+
         List<APActionNode> leafNodes = new List<APActionNode>();
 
         // BFS Tree Construction
@@ -98,7 +99,7 @@ public class ActionPlanner : MonoBehaviour
             {
                 leafNodes.Add(parentNode);
             }
-
+            yield return null;
         }
 
         //*** 마지막 위치에 따른 점수 계산 ***//
@@ -134,6 +135,7 @@ public class ActionPlanner : MonoBehaviour
         {
             bestSequence.Add(currNode);
             currNode = currNode._parent;
+            yield return null;
         }
 
         // leaf - {} - {} - {} - {}

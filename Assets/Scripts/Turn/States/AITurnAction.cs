@@ -31,6 +31,7 @@ public class AITurnAction : TurnState
         // 액션 고갈
         if (_actions.Count == 0)
         {
+
             owner.StartCoroutine(SomeDelayBeforeNextTurn());
             return;
         }
@@ -49,8 +50,11 @@ public class AITurnAction : TurnState
 
     private IEnumerator SomeDelayBeforeNextTurn()
     {
+        APNodePool.Instance.Reset();
+        APGameStatePool.Instance.Reset();
+
         float sec = Random.Range(0.5f, 1.5f);
-        yield return new WaitForSeconds(sec);
+        yield return new WaitForSeconds(3f);
 
         owner.NextTurn();
     }

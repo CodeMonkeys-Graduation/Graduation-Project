@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public enum ActionType { Move, Attack, Item, Skill }
@@ -146,7 +147,8 @@ public abstract class Unit : MonoBehaviour
     public Range basicAttackSplash;
     public Range skillRange;
     public Range skillSplash;
-    
+
+    private List<Transform> allBodyPartRenderers = new List<Transform>();
     private List<Cube> targetCubes;
 
     /// <summary>
@@ -156,6 +158,7 @@ public abstract class Unit : MonoBehaviour
 
     public virtual void Start()
     {
+        TraverseChildren((tr) => { if (tr.GetComponent<Renderer>()) allBodyPartRenderers.Add(tr); });
         currHealth = maxHealth;
         ResetActionPoint();
         SetRange();
@@ -341,10 +344,10 @@ public abstract class Unit : MonoBehaviour
 
     public bool HasAction(ActionType type) => actionSlots.Any((a) => a.type == type);
 
-    public void StartBlink() => TraverseChildren((tr) => { if (tr.GetComponent<Renderer>()) tr.GetComponent<Renderer>().material.SetInt("_IsFresnel", 1); });
+    public void StartBlink() => allBodyPartRenderers.ForEach(part => { if (part.GetComponent<Renderer>()) part.GetComponent<Renderer>()?.material.SetInt("_IsFresnel", 1); });
     
-    public void StopBlink() => TraverseChildren((tr) => { if (tr.GetComponent<Renderer>()) tr.GetComponent<Renderer>()?.material.SetInt("_IsFresnel", 0); });
-    
+    public void StopBlink() => allBodyPartRenderers.ForEach(part => { if (part.GetComponent<Renderer>()) part.GetComponent<Renderer>()?.material.SetInt("_IsFresnel", 0); });
+
     private Cube GetCubeOnPosition()
     {
         RaycastHit hit;
