@@ -9,11 +9,14 @@ public class DialogPopup : MonoBehaviour
     [Header("Set In Editor")]
     [SerializeField] TextMeshProUGUI yesContext;
     [SerializeField] TextMeshProUGUI noContext;
+    
+    Animator dialogAnimator;
 
-    public void SetPopup(SelectionData selectionData)
+    public void SetPopup(Animator dialogAnimator, SelectionData selectionData)
     {
         yesContext.text = selectionData.yes;
         noContext.text = selectionData.no;
+        this.dialogAnimator = dialogAnimator;
 
         gameObject.SetActive(true);
     }
@@ -22,5 +25,18 @@ public class DialogPopup : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
+    public void OnClickYes()
+    {
+        dialogAnimator.SetInteger("Selected", 1);
+        UnsetPopup();
+    }
+
+    public void OnClickNo()
+    {
+        dialogAnimator.SetInteger("Selected", 0);
+        UnsetPopup();
+    }
+
 
 }

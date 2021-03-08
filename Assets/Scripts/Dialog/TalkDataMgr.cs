@@ -2,9 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TalkDataMgr
+public class TalkDataMgr : MonoBehaviour
 {
-    public static TalkDataContainer LoadTalkData(int stageProgress)
+    public TalkDataContainer talkSet;
+
+    [SerializeField] int stageProgress = 0;
+
+    void Awake()
+    {
+        talkSet = LoadTalkData(stageProgress);
+    }
+
+    public TalkDataContainer LoadTalkData(int stageProgress)
     {
         string jsonFileName = "talkData-" + stageProgress.ToString();
         TextAsset jsonData = Resources.Load<TextAsset>(jsonFileName);

@@ -28,7 +28,6 @@ public class TalkData
     public int id;
     public string context;
     public int emotion;
-    public bool hasSelection;
 }
 
 [System.Serializable]
