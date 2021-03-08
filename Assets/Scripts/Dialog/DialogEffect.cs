@@ -16,6 +16,7 @@ public class DialogEffect : MonoBehaviour
     [HideInInspector] float interval;
     [HideInInspector] int msgIndex;
     [HideInInspector] public bool isTyping = false;
+    [HideInInspector] public bool isEnded = false;
 
     public void SetMsg(TextMeshProUGUI context, string msg)
     {
@@ -43,6 +44,7 @@ public class DialogEffect : MonoBehaviour
 
         interval = 1.0f / charPerSeconds;
 
+        isEnded = false;
         isTyping = true;
         Invoke("Effecting", interval);
     }
@@ -63,6 +65,7 @@ public class DialogEffect : MonoBehaviour
     void EffectEnd()
     {
         isTyping = false;
+        isEnded = true;
         EndCursor.SetActive(true);
     }
     
