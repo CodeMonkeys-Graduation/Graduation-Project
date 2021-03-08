@@ -21,7 +21,7 @@ public class DialogController : MonoBehaviour
 
     void Awake()
     {
-        //dialogAnimator = Resources.Load("DialogSystem-" + stageProgress) as Animator;
+        dialogAnimator.runtimeAnimatorController  = Resources.Load("DialogSystem-" + stageProgress) as RuntimeAnimatorController;
         unitDataContainer = UnitDataMgr.unitDataContainer;
         InitDialogUI();
     }
