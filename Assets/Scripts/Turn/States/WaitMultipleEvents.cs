@@ -33,12 +33,6 @@ public class WaitMultipleEvents : TurnState
         if (onWaitExit != null) this.onWaitExit = onWaitExit;
     }
 
-    ~WaitMultipleEvents()
-    {
-        foreach(var (e, i) in events.Select((ev, i) => (ev, i)))
-            e.Unregister(elList[i]);
-    }
-
     public override void Enter()
     {
         GC.Collect();
@@ -59,6 +53,10 @@ public class WaitMultipleEvents : TurnState
     public override void Exit()
     {
         if (onWaitExit != null) this.onWaitExit.Invoke();
+
+        if(elList.Count > 0)
+            foreach (var (e, i) in events.Select((ev, i) => (ev, i)))
+                e.Unregister(elList[i]);
     }
 
 }

@@ -26,17 +26,29 @@ public class UnitHit : State<Unit>
         }
         owner.anim.SetTrigger("ToHit");
         owner.LookAt(opponent);
+
+        owner.StartCoroutine(Execute_Coroutine());
     }
 
     public override void Execute()
     {
-        if (!owner.anim.GetCurrentAnimatorClipInfo(0).Any(clipInfo => clipInfo.clip.name.Contains("Hit")))
+    }
+
+    private IEnumerator Execute_Coroutine()
+    {
+        yield return new WaitForSeconds(1f);
+        while (true)
         {
-            if(owner.Health > 0)
-                owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
-            else
-                owner.stateMachine.ChangeState(new UnitDead(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+            if (!owner.anim.GetBool("IsHit"))
+                break;
+
+            yield return new WaitForSeconds(0.1f);
         }
+
+        if (owner.Health > 0)
+            owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+        else
+            owner.stateMachine.ChangeState(new UnitDead(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
 
     public override void Exit()

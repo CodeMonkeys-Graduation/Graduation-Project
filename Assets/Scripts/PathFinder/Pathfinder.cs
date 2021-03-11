@@ -96,7 +96,7 @@ public class Pathfinder : MonoBehaviour
     public enum FinderState { Idle, Process }
     public FinderState sState = FinderState.Idle;
     [SerializeField] MapMgr mapMgr;
-    int requesterCounts = 0;
+    public static int requesterCounts = 0;
 
     private void Start()
     {

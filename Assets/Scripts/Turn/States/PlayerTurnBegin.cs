@@ -71,13 +71,14 @@ public class PlayerTurnBegin : TurnState
     private void UpdateCurrentUnitPaths()
     {
         owner.stateMachine.ChangeState(
-                        new WaitSingleEvent(owner, unit, EventMgr.Instance.onPathfindRequesterCountZero, this),
-                        StateMachine<TurnMgr>.StateTransitionMethod.PopNPush);
+                new WaitSingleEvent(owner, unit, EventMgr.Instance.onPathfindRequesterCountZero, this),
+                StateMachine<TurnMgr>.StateTransitionMethod.PopNPush);
 
         unit.GetCube.UpdatePaths(
             unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost,
             (cube) => (cube as Cube).GetUnit() != null && (cube as Cube).GetUnit().Health > 0);
     }
+
 
     private void UnsetUI()
     {
