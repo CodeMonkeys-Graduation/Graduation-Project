@@ -57,7 +57,7 @@ public class WaitSingleEvent : TurnState
         if (owner.isAnyCubePathUpdating)
         {
             owner.stateMachine.ChangeState(
-                new WaitSingleEvent(owner, unit, owner.e_onPathfindRequesterCountZero, nextState),
+                new WaitSingleEvent(owner, unit, EventMgr.Instance.onPathfindRequesterCountZero, nextState),
                 StateMachine<TurnMgr>.StateTransitionMethod.PopNPush);
         }
         else

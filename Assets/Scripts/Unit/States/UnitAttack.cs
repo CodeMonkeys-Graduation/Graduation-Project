@@ -36,7 +36,7 @@ public class UnitAttack : State<Unit>
 
     public override void Exit()
     {
-        owner.e_onUnitAttackExit.Invoke();
+        EventMgr.Instance.onUnitAttackExit.Invoke();
     }
 
     private IEnumerator ProcessProjectile()

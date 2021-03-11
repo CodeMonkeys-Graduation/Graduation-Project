@@ -77,7 +77,7 @@ public class PlayerTurnMove : TurnState
     private void ChangeStateToWaitState()
     {
         TurnState nextState = new PlayerTurnBegin(owner, unit);
-        List<Event> eList = new List<Event>() { owner.e_onUnitRunExit, owner.e_onPathfindRequesterCountZero };
+        List<Event> eList = new List<Event>() { EventMgr.Instance.onUnitRunExit, EventMgr.Instance.onPathfindRequesterCountZero };
         owner.stateMachine.ChangeState(
             new WaitMultipleEvents(owner, unit, eList, nextState, OnWaitEnter, OnWaitExecute, OnWaitExit),
             StateMachine<TurnMgr>.StateTransitionMethod.JustPush);

@@ -122,14 +122,6 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] [Range(0f, 3f)] float jumpHeight; // 점프 높이
     [SerializeField] [Range(0.1f, 0.3f)] public float cubeHeightToJump; // 유닛이 점프로 큐브를 이동할 큐브높이 최소차이.
 
-    //*** Events ***//
-    [SerializeField] public Event e_onUnitAttackExit;
-    [SerializeField] public Event e_onUnitDead;
-    [SerializeField] public Event e_onUnitIdleEnter;
-    [SerializeField] public Event e_onUnitItemExit;
-    [SerializeField] public Event e_onUnitRunEnter;
-    [SerializeField] public Event e_onUnitRunExit;
-    [SerializeField] public Event e_onUnitSkillExit;
     [SerializeField] public Skill skill;
     [SerializeField] public List<ActionSlot> actionSlots;
     [SerializeField] public ItemBag itemBag;

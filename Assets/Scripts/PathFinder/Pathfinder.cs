@@ -95,8 +95,6 @@ public class Pathfinder : MonoBehaviour
 
     public enum FinderState { Idle, Process }
     public FinderState sState = FinderState.Idle;
-    [SerializeField] Event e_pathfindRequesterCountZero;
-    [SerializeField] Event e_onPathUpdatingStart;
     [SerializeField] MapMgr mapMgr;
     int requesterCounts = 0;
 
@@ -104,7 +102,7 @@ public class Pathfinder : MonoBehaviour
     {
         if (mapMgr == null)
             mapMgr = FindObjectOfType<MapMgr>();
-        if (e_pathfindRequesterCountZero == null)
+        if (EventMgr.Instance.onPathfindRequesterCountZero == null)
             Debug.LogError("[Pathfinder] e_pathfindRequesterCountZero == null");
     }
 
@@ -139,7 +137,7 @@ public class Pathfinder : MonoBehaviour
     {
         requesterCounts++;
         sState = FinderState.Process;
-        e_onPathUpdatingStart.Invoke();
+        EventMgr.Instance.onPathUpdatingStart.Invoke();
     }
     private void OnSearchEnd()
     {
@@ -147,7 +145,7 @@ public class Pathfinder : MonoBehaviour
         if (requesterCounts == 0)
         {
             sState = FinderState.Idle;
-            e_pathfindRequesterCountZero.Invoke();
+            EventMgr.Instance.onPathfindRequesterCountZero.Invoke();
         }
     }
 
