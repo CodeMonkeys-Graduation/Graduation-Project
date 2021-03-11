@@ -20,14 +20,24 @@ public class UnitSkill : State<Unit>
         owner.LookAt(centerCube.Platform);
 
         owner.skill.OnUnitSkillEnter(castTargets, centerCube);
+
+        owner.StartCoroutine(Execute_Coroutine());
     }
 
     public override void Execute()
     {
-        if (!owner.anim.GetCurrentAnimatorClipInfo(0).Any(clipInfo => clipInfo.clip.name.Contains("Skill")))
+    }
+    private IEnumerator Execute_Coroutine()
+    {
+        yield return new WaitForSeconds(1f);
+        while (true)
         {
-            owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+            if (!owner.anim.GetBool("IsSkill"))
+                break;
+
+            yield return new WaitForSeconds(0.1f);
         }
+        owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
 
     public override void Exit()
