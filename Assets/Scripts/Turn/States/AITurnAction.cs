@@ -69,7 +69,7 @@ public class AITurnAction : TurnState
 
         // 액션이 끝나는 이벤트를 wait
         owner.stateMachine.ChangeState(
-            new WaitSingleEvent(owner, unit, owner.e_onUnitIdleEnter, this, null,
+            new WaitSingleEvent(owner, unit, EventMgr.Instance.onUnitIdleEnter, this, null,
             _currAction.OnWaitEnter, _currAction.OnWaitExecute, _currAction.OnWaitExit),
             StateMachine<TurnMgr>.StateTransitionMethod.PopNPush);
 

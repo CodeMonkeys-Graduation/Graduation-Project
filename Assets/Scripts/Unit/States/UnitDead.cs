@@ -12,7 +12,7 @@ public class UnitDead : State<Unit>
     {
         owner.anim.SetTrigger("ToDead");
         owner.StartCoroutine(DestroyDelay(2f));
-        owner.e_onUnitDead.Invoke();
+        EventMgr.Instance.onUnitDead.Invoke();
     }
 
     public override void Execute()

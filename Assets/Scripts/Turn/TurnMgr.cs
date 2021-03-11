@@ -12,14 +12,6 @@ public class TurnMgr : MonoBehaviour
     [SerializeField] public GameObject backBtn;
 
     //--- Events ---//
-    [SerializeField] public Event e_onUnitSkillExit;
-    [SerializeField] public Event e_onUnitIdleEnter;
-    [SerializeField] public Event e_onUnitItemExit;
-    [SerializeField] public Event e_onUnitRunExit;
-    [SerializeField] public Event e_onUnitAttackExit;
-    [SerializeField] public Event e_onPathfindRequesterCountZero;
-    [SerializeField] public Event e_onPathUpdatingStart;
-    [SerializeField] public Event e_onUnitDead;
     private EventListener el_onUnitDead = new EventListener();
     private EventListener el_onPathUpdatingStart = new EventListener();
     private EventListener el_onPathfindRequesterCountZero = new EventListener();
@@ -106,9 +98,9 @@ public class TurnMgr : MonoBehaviour
 
     private void RegisterEvents()
     {
-        e_onUnitDead.Register(el_onUnitDead, OnUnitDead_RefreshQueue);
-        e_onPathUpdatingStart.Register(el_onPathUpdatingStart, () => isAnyCubePathUpdating = true);
-        e_onPathfindRequesterCountZero.Register(el_onPathfindRequesterCountZero, () => isAnyCubePathUpdating = false);
+        EventMgr.Instance.onUnitDead.Register(el_onUnitDead, OnUnitDead_RefreshQueue);
+        EventMgr.Instance.onPathUpdatingStart.Register(el_onPathUpdatingStart, () => isAnyCubePathUpdating = true);
+        EventMgr.Instance.onPathfindRequesterCountZero.Register(el_onPathfindRequesterCountZero, () => isAnyCubePathUpdating = false);
     }
 
     private void OnUnitDead_RefreshQueue()

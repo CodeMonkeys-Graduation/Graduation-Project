@@ -23,8 +23,7 @@ public class Cube : MonoBehaviour, INavable
 
     [Header("Set in Editor")]
     [SerializeField] float maxNeighborHeightDiff = 0.6f;
-    [SerializeField] Event e_onUnitDead;
-    [SerializeField] Event e_onUnitRunEnter;
+
 
     public List<INavable> Neighbors { get => neighbors; set => neighbors = value; }
     public Transform Platform { get => platform; set => platform = value; }
@@ -56,8 +55,8 @@ public class Cube : MonoBehaviour, INavable
         mapMgr = FindObjectOfType<MapMgr>();
         groundHeight = Platform.position.y;
 
-        e_onUnitDead.Register(el_onUnitDead, () => pathUpdateDirty = true);
-        e_onUnitRunEnter.Register(el_onUnitRunEnter, () => pathUpdateDirty = true);
+        EventMgr.Instance.onUnitDead.Register(el_onUnitDead, () => pathUpdateDirty = true);
+        EventMgr.Instance.onUnitRunEnter.Register(el_onUnitRunEnter, () => pathUpdateDirty = true);
         pathUpdateDirty = true;
     }
 

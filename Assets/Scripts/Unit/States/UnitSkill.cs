@@ -32,6 +32,6 @@ public class UnitSkill : State<Unit>
 
     public override void Exit()
     {
-        owner.e_onUnitSkillExit.Invoke();
+        EventMgr.Instance.onUnitSkillExit.Invoke();
     }
 }

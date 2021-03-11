@@ -27,7 +27,7 @@ public class UnitItem : State<Unit>
 
     public override void Exit()
     {
-        owner.e_onUnitItemExit.Invoke();
+        EventMgr.Instance.onUnitItemExit.Invoke();
     }
 
 }

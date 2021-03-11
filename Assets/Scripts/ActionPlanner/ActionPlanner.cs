@@ -11,11 +11,6 @@ public class ActionPlanner : MonoBehaviour
     [SerializeField] Pathfinder pathfinder;
     [SerializeField] ActionPointPanel actionPointPanel;
 
-    [SerializeField] public Event e_onUnitMoveExit;
-    [SerializeField] public Event e_onUnitAttackExit;
-    [SerializeField] public Event e_onUnitItemExit;
-    [SerializeField] public Event e_onUnitSkillExit;
-
     private void Start()
     {
         mapMgr = FindObjectOfType<MapMgr>();
