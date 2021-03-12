@@ -29,7 +29,7 @@ public class UnitSkill : State<Unit>
     }
     private IEnumerator Execute_Coroutine()
     {
-        yield return new WaitForSeconds(1f);
+        yield return null;
         while (true)
         {
             if (!owner.anim.GetBool("IsSkill"))
