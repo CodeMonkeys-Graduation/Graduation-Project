@@ -169,9 +169,9 @@ public abstract class Unit : MonoBehaviour
     public void ResetActionPoint() => actionPointsRemain = actionPoints;
 
 
-    #region Move Methods
+#region Move Methods
 
-    public void MoveTo(PFPath pathToDest)
+public void MoveTo(PFPath pathToDest)
     {
         int apCost = CalcMoveAPCost(pathToDest);
         stateMachine.ChangeState(new UnitMove(this, pathToDest, apCost), StateMachine<Unit>.StateTransitionMethod.PopNPush);

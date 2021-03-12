@@ -18,6 +18,7 @@ public class DialogController : MonoBehaviour
     [SerializeField] TextMeshProUGUI npcname;
     [SerializeField] TextMeshProUGUI context;
     [SerializeField] int stageProgress;
+    [SerializeField] int talkDataSize;
 
     void Awake()
     {
@@ -48,6 +49,8 @@ public class DialogController : MonoBehaviour
     public void OnClickNext()
     {
         if (dialogPopup.gameObject.activeSelf) return;
+
+        // 여기서 애니메이터 exit 해야함
 
         if (dialogEffect.isTyping)
         {

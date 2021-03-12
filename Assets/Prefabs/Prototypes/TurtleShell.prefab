@@ -54,17 +54,11 @@ MonoBehaviour:
   agility: 1
   icon: {fileID: 21300000, guid: 35f8a494e4c3347a5854c5fbb81d623f, type: 3}
   team: {fileID: 11400000, guid: 6ab3a43f4bd34d64a921d43e54c4f25c, type: 2}
+  id: 15
   moveSpeed: 2
   jumpTime: 0.5
   jumpHeight: 0.2
   cubeHeightToJump: 0.1
-  e_onUnitAttackExit: {fileID: 11400000, guid: 2079106fc3680b44ba8b64dcc785cf18, type: 2}
-  e_onUnitDead: {fileID: 11400000, guid: 66ff86eb3d1dceb47a03c6d50e4a3a26, type: 2}
-  e_onUnitIdleEnter: {fileID: 11400000, guid: 8e463aa40a1952a4fbd939eab2d1f7d4, type: 2}
-  e_onUnitItemExit: {fileID: 11400000, guid: 379654bbf98e9984d8ff400469dded0a, type: 2}
-  e_onUnitRunEnter: {fileID: 11400000, guid: 247a2c00413a2024fb34c43a4e4f3a42, type: 2}
-  e_onUnitRunExit: {fileID: 11400000, guid: d08eea7cc7367e647ba2486a6e4af064, type: 2}
-  e_onUnitSkillExit: {fileID: 11400000, guid: fdcb3b5fa987bd648a833a522ec80cf2, type: 2}
   skill: {fileID: 0}
   actionSlots:
   - type: 0
