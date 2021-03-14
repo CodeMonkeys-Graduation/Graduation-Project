@@ -19,10 +19,8 @@ public class PlayerTurnItem : TurnState
     public override void Enter()
     {
         _itemPanel.SetPanel(_itemCounter, OnClickButton);
-
         owner.cameraMove.SetTarget(unit);
-        owner.uiMgr.endTurnBtn.SetActive(true);
-        owner.uiMgr.backBtn.SetActive(true);
+        EventMgr.Instance.onTurnActionEnter.Invoke();
     }
 
     public override void Execute() 
@@ -32,9 +30,7 @@ public class PlayerTurnItem : TurnState
     public override void Exit()
     {
         _itemPanel.UnsetPanel();
-
-        owner.uiMgr.endTurnBtn.SetActive(false);
-        owner.uiMgr.backBtn.SetActive(false);
+        EventMgr.Instance.onTurnActionExit.Invoke();
     }
 
     void OnClickButton(Item item)

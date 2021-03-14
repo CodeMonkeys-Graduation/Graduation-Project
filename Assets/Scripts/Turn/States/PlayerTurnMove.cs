@@ -20,8 +20,7 @@ public class PlayerTurnMove : TurnState
         owner.mapMgr.BlinkCubes(cubesCanGo, 0.5f);
         unit.StartBlink();
 
-        owner.uiMgr.endTurnBtn.SetActive(true);
-        owner.uiMgr.backBtn.SetActive(true);
+        EventMgr.Instance.onTurnActionEnter.Invoke();
     }
 
     public override void Execute()
@@ -44,9 +43,7 @@ public class PlayerTurnMove : TurnState
     {
         unit.StopBlink();
         owner.mapMgr.StopBlinkAll();
-
-        owner.uiMgr.endTurnBtn.SetActive(false);
-        owner.uiMgr.backBtn.SetActive(false);
+        EventMgr.Instance.onTurnActionExit.Invoke();
     }
 
 
@@ -85,8 +82,7 @@ public class PlayerTurnMove : TurnState
     private void OnWaitEnter()
     {
         cubeClicked.SetBlink(0.5f);
-        owner.uiMgr.endTurnBtn.SetActive(false);
-        owner.uiMgr.backBtn.SetActive(false);
+        EventMgr.Instance.onTurnActionExit.Invoke();
     }
 
     private void OnWaitExecute()

@@ -31,8 +31,8 @@ public class PlayerTurnAttack : TurnState
         owner.mapMgr.BlinkCubes(cubesAttackRange, 0.3f);
         owner.mapMgr.BlinkCubes(cubesCanAttack, 0.7f);
         unit.StartBlink();
-        owner.uiMgr.endTurnBtn.SetActive(true);
-        owner.uiMgr.backBtn.SetActive(true);
+
+        EventMgr.Instance.onTurnActionEnter.Invoke();
     }
 
     public override void Execute()
@@ -63,9 +63,7 @@ public class PlayerTurnAttack : TurnState
     {
         unit.StopBlink();
         owner.mapMgr.StopBlinkAll();
-
-        owner.uiMgr.endTurnBtn.SetActive(false);
-        owner.uiMgr.backBtn.SetActive(false);
+        EventMgr.Instance.onTurnActionExit.Invoke();
     }
 
     private bool CubeCanAttackConditions(Cube cube)

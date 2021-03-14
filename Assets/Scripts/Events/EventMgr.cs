@@ -34,12 +34,11 @@ public class EventMgr : MonoBehaviour
     [SerializeField] public Event onUnitSkillExit;
 
     //--- Turn ---//
-    [SerializeField] public Event onTurnAttack;
-    [SerializeField] public Event onTurnBegin;
-    [SerializeField] public Event onTurnItem;
+    [SerializeField] public Event onTurnActionEnter;
+    [SerializeField] public Event onTurnActionExit;
+    [SerializeField] public Event onTurnBeginEnter;
+    [SerializeField] public Event onTurnBeginExit;
     [SerializeField] public Event onTurnPlan;
-    [SerializeField] public Event onTurnPopup;
-    [SerializeField] public Event onTurnSkill;
 
 
 }

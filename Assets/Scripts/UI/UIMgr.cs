@@ -21,11 +21,10 @@ public class UIMgr : MonoBehaviour
     [HideInInspector] public ItemPanel itemPanel;
 
     //-- Event Listener --//
-    EventListener el_TurnBegin = new EventListener();
-    EventListener el_TurnAttack = new EventListener();
-    EventListener el_TurnSkill = new EventListener();
-    EventListener el_TurnItem = new EventListener();
-    EventListener el_TurnPopup = new EventListener();
+    EventListener el_TurnBeginEnter = new EventListener();
+    EventListener el_TurnBeginExit = new EventListener();
+    EventListener el_TurnActionEnter = new EventListener();
+    EventListener el_TurnActionExit = new EventListener();
     EventListener el_TurnPlan = new EventListener();
 
     void Start()
@@ -42,24 +41,29 @@ public class UIMgr : MonoBehaviour
 
     void RegisterEvent()
     {
-        EventMgr.Instance.onTurnBegin.Register(el_TurnBegin, SetUIBegin);
-        EventMgr.Instance.onTurnAttack.Register(el_TurnAttack, null);
-        EventMgr.Instance.onTurnSkill.Register(el_TurnSkill, null);
-        EventMgr.Instance.onTurnItem.Register(el_TurnItem, null);
-        EventMgr.Instance.onTurnPopup.Register(el_TurnPopup, null);
+        EventMgr.Instance.onTurnBeginEnter.Register(el_TurnBeginEnter, SetUIBeginEnter);
+        EventMgr.Instance.onTurnBeginExit.Register(el_TurnBeginExit, () => actionPanel.UnsetPanel());
+        EventMgr.Instance.onTurnActionEnter.Register(el_TurnActionEnter, SetUIActionEnter);
+        EventMgr.Instance.onTurnActionExit.Register(el_TurnActionExit, SetUIActionExit);
         EventMgr.Instance.onTurnPlan.Register(el_TurnPlan, null);
     }
     
-    void SetUIBegin()
+    void SetUIBeginEnter()
     {
         testPlayBtn.SetActive(false);
         endTurnBtn.SetActive(true);
         backBtn.SetActive(false);
     }
 
-    void SetUIAttack()
+    void SetUIActionEnter()
     {
-
+        endTurnBtn.SetActive(true);
+        backBtn.SetActive(true);
     }
-    
+
+    void SetUIActionExit()
+    {
+        endTurnBtn.SetActive(false);
+        backBtn.SetActive(false);
+    }
 }
