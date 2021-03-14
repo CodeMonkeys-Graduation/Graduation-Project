@@ -41,8 +41,9 @@ public class PlayerTurnBegin : TurnState
         unit.StartBlink();
 
         SetUI();
+        EventMgr.Instance.onTurnBeginEnter.Invoke();
 
-        if(owner.cameraMove != null)
+        if (owner.cameraMove != null)
             owner.cameraMove.SetTarget(unit);
     }
 
@@ -53,8 +54,7 @@ public class PlayerTurnBegin : TurnState
     public override void Exit()
     {
         unit.StopBlink();
-
-        UnsetUI();
+        EventMgr.Instance.onTurnBeginExit.Invoke();
     }
 
     private void SetUI()
@@ -64,8 +64,6 @@ public class PlayerTurnBegin : TurnState
         btnEvents.Add(ActionType.Attack, OnClickAttackBtn);
         btnEvents.Add(ActionType.Item, OnClickItemBtn);
         btnEvents.Add(ActionType.Skill, OnClickSkillBtn);
-
-        EventMgr.Instance.onTurnBegin.Invoke();
 
         owner.uiMgr.actionPanel.SetPanel(unit.actionSlots, unit.actionPointsRemain, btnEvents);
         owner.uiMgr.actionPointPanel.SetText(unit.actionPointsRemain);
@@ -84,12 +82,6 @@ public class PlayerTurnBegin : TurnState
         unit.GetCube.UpdatePaths(
             unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost,
             (cube) => (cube as Cube).GetUnit() != null && (cube as Cube).GetUnit().Health > 0);
-    }
-
-
-    private void UnsetUI()
-    {
-        owner.uiMgr.actionPanel.UnsetPanel();
     }
 
     private void OnClickMoveBtn()
