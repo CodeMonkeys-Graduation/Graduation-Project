@@ -31,8 +31,8 @@ public class PlayerTurnSkill : TurnState
         owner.mapMgr.BlinkCubes(cubesCanCast, 0.7f);
 
         unit.StartBlink();
-        owner.endTurnBtn.SetActive(true);
-        owner.backBtn.SetActive(true);
+        owner.uiMgr.endTurnBtn.SetActive(true);
+        owner.uiMgr.backBtn.SetActive(true);
     }
 
     public override void Execute()
@@ -52,7 +52,7 @@ public class PlayerTurnSkill : TurnState
                         unit.skillSplash.range, unit.skillSplash.centerX, unit.skillSplash.centerZ, cubeClicked);
 
                     owner.stateMachine.ChangeState(
-                        new PlayerTurnPopup(owner, unit, Input.mousePosition, owner.popupPanel, popupContent, 
+                        new PlayerTurnPopup(owner, unit, Input.mousePosition, owner.uiMgr.popupPanel, popupContent, 
                         ()=>CastSkillOnCube(cubeClicked), OnClickNo, () => cubesInSkillSplash.ForEach(c => c.SetBlink(0.7f)), null, () => owner.mapMgr.StopBlinkAll()),
                         StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
    
@@ -65,8 +65,8 @@ public class PlayerTurnSkill : TurnState
     {
         unit.StopBlink();
         owner.mapMgr.StopBlinkAll();
-        owner.endTurnBtn.SetActive(false);
-        owner.backBtn.SetActive(false);
+        owner.uiMgr.endTurnBtn.SetActive(false);
+        owner.uiMgr.backBtn.SetActive(false);
     }
     private bool CubeCanCastConditions(Cube cube)
         => true; // 범위내의 모든 큐브에 Cast가능합니다.

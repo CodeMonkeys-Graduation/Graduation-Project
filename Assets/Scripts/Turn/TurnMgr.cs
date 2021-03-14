@@ -6,11 +6,6 @@ using UnityEngine.UI;
 
 public class TurnMgr : MonoBehaviour
 {
-    [Header("Set in Editor")]
-    [SerializeField] public GameObject testPlayBtn;
-    [SerializeField] public GameObject endTurnBtn;
-    [SerializeField] public GameObject backBtn;
-
     //--- Events ---//
     private EventListener el_onUnitDead = new EventListener();
     private EventListener el_onPathUpdatingStart = new EventListener();
@@ -20,15 +15,10 @@ public class TurnMgr : MonoBehaviour
     private List<Unit> units = new List<Unit>(); // all alive units on the scene
     [HideInInspector] public bool isAnyCubePathUpdating = false; // checking if any path is updating
     [HideInInspector] public MapMgr mapMgr;
-
-    [HideInInspector] public TurnPanel turnPanel;
-    [HideInInspector] public StatusPanel statusPanel;
-    [HideInInspector] public PopupPanel popupPanel;
+    [HideInInspector] public UIMgr uiMgr;
     [HideInInspector] public ActionPlanner actionPlanner;
+
     [HideInInspector] public CameraMove cameraMove;
-    [HideInInspector] public ActionPanel actionPanel;
-    [HideInInspector] public ActionPointPanel actionPointPanel;
-    [HideInInspector] public ItemPanel itemPanel;
     [HideInInspector] public Queue<Unit> turns = new Queue<Unit>();
     [HideInInspector] public Dictionary<string, int> actionPointRemains = new Dictionary<string, int>();
 
@@ -45,15 +35,10 @@ public class TurnMgr : MonoBehaviour
         RegisterEvents();
 
         mapMgr = FindObjectOfType<MapMgr>();
-        turnPanel = FindObjectOfType<TurnPanel>();
+        uiMgr = FindObjectOfType<UIMgr>();
         actionPlanner = FindObjectOfType<ActionPlanner>();
         cameraMove = FindObjectOfType<CameraMove>();
-        actionPanel = FindObjectOfType<ActionPanel>();
-        actionPointPanel = FindObjectOfType<ActionPointPanel>();
-        itemPanel = FindObjectOfType<ItemPanel>();
-        statusPanel = FindObjectOfType<StatusPanel>();
-        popupPanel = FindObjectOfType<PopupPanel>();
-
+        
         // get all units in the scene
         units.Clear();
         units.AddRange(FindObjectsOfType<Unit>());

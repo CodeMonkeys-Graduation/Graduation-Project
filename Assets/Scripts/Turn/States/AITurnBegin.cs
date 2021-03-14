@@ -36,16 +36,16 @@ public class AITurnBegin : TurnState
 
     private void SetUI()
     {
-        owner.testPlayBtn.SetActive(false);
-        owner.endTurnBtn.SetActive(false);
-        owner.backBtn.SetActive(false);
+        owner.uiMgr.testPlayBtn.SetActive(false);
+        owner.uiMgr.endTurnBtn.SetActive(false);
+        owner.uiMgr.backBtn.SetActive(false);
 
-        owner.actionPanel.UnsetPanel();
-        owner.actionPointPanel.SetText(unit.actionPointsRemain);
+        owner.uiMgr.actionPanel.UnsetPanel();
+        owner.uiMgr.actionPointPanel.SetText(unit.actionPointsRemain);
 
-        owner.turnPanel.gameObject.SetActive(true);
+        owner.uiMgr.turnPanel.gameObject.SetActive(true);
 
-        if (owner.turnPanel.ShouldUpdateSlots(owner.turns.ToList()))
-            owner.turnPanel.SetSlots(owner.statusPanel, owner.turns.ToList(), owner.cameraMove);
+        if (owner.uiMgr.turnPanel.ShouldUpdateSlots(owner.turns.ToList()))
+            owner.uiMgr.turnPanel.SetSlots(owner.uiMgr.statusPanel, owner.turns.ToList(), owner.cameraMove);
     }
 }
