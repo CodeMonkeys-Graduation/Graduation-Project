@@ -21,8 +21,8 @@ public class PlayerTurnItem : TurnState
         _itemPanel.SetPanel(_itemCounter, OnClickButton);
 
         owner.cameraMove.SetTarget(unit);
-        owner.endTurnBtn.SetActive(true);
-        owner.backBtn.SetActive(true);
+        owner.uiMgr.endTurnBtn.SetActive(true);
+        owner.uiMgr.backBtn.SetActive(true);
     }
 
     public override void Execute() 
@@ -33,15 +33,15 @@ public class PlayerTurnItem : TurnState
     {
         _itemPanel.UnsetPanel();
 
-        owner.endTurnBtn.SetActive(false);
-        owner.backBtn.SetActive(false);
+        owner.uiMgr.endTurnBtn.SetActive(false);
+        owner.uiMgr.backBtn.SetActive(false);
     }
 
     void OnClickButton(Item item)
     {
         string popupContent = $"r u sure u wanna use {item.name}?";
         owner.stateMachine.ChangeState(
-            new PlayerTurnPopup(owner, unit, Input.mousePosition, owner.popupPanel, popupContent, 
+            new PlayerTurnPopup(owner, unit, Input.mousePosition, owner.uiMgr.popupPanel, popupContent, 
             ()=>UseItem(item), OnClickNo, () => _itemPanel.SetPanel(_itemCounter, OnClickButton), null, () => _itemPanel.UnsetPanel()),
             StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     }

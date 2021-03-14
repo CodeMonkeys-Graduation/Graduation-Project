@@ -59,22 +59,20 @@ public class PlayerTurnBegin : TurnState
 
     private void SetUI()
     {
-        owner.testPlayBtn.SetActive(false);
-        owner.endTurnBtn.SetActive(true);
-        owner.backBtn.SetActive(false);
-
         Dictionary<ActionType, UnityAction> btnEvents = new Dictionary<ActionType, UnityAction>();
         btnEvents.Add(ActionType.Move, OnClickMoveBtn);
         btnEvents.Add(ActionType.Attack, OnClickAttackBtn);
         btnEvents.Add(ActionType.Item, OnClickItemBtn);
         btnEvents.Add(ActionType.Skill, OnClickSkillBtn);
 
-        owner.actionPanel.SetPanel(unit.actionSlots, unit.actionPointsRemain, btnEvents);
-        owner.actionPointPanel.SetText(unit.actionPointsRemain);
-        owner.turnPanel.gameObject.SetActive(true);
+        EventMgr.Instance.onTurnBegin.Invoke();
 
-        if(owner.turnPanel.ShouldUpdateSlots(owner.turns.ToList()))
-            owner.turnPanel.SetSlots(owner.statusPanel, owner.turns.ToList(), owner.cameraMove);
+        owner.uiMgr.actionPanel.SetPanel(unit.actionSlots, unit.actionPointsRemain, btnEvents);
+        owner.uiMgr.actionPointPanel.SetText(unit.actionPointsRemain);
+        owner.uiMgr.turnPanel.gameObject.SetActive(true);
+
+        if (owner.uiMgr.turnPanel.ShouldUpdateSlots(owner.turns.ToList()))
+            owner.uiMgr.turnPanel.SetSlots(owner.uiMgr.statusPanel, owner.turns.ToList(), owner.cameraMove);
     }
 
     private void UpdateCurrentUnitPaths()
@@ -91,7 +89,7 @@ public class PlayerTurnBegin : TurnState
 
     private void UnsetUI()
     {
-        owner.actionPanel.UnsetPanel();
+        owner.uiMgr.actionPanel.UnsetPanel();
     }
 
     private void OnClickMoveBtn()
@@ -99,7 +97,7 @@ public class PlayerTurnBegin : TurnState
     private void OnClickAttackBtn()
         => owner.stateMachine.ChangeState(new PlayerTurnAttack(owner, unit), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     private void OnClickItemBtn()
-        => owner.stateMachine.ChangeState(new PlayerTurnItem(owner, unit, owner.itemPanel), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+        => owner.stateMachine.ChangeState(new PlayerTurnItem(owner, unit, owner.uiMgr.itemPanel), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     private void OnClickSkillBtn()
     => owner.stateMachine.ChangeState(new PlayerTurnSkill(owner, unit), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
 

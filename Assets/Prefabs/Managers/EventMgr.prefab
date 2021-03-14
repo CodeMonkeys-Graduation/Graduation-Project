@@ -54,3 +54,9 @@ MonoBehaviour:
   onUnitRunEnter: {fileID: 11400000, guid: 247a2c00413a2024fb34c43a4e4f3a42, type: 2}
   onUnitRunExit: {fileID: 11400000, guid: d08eea7cc7367e647ba2486a6e4af064, type: 2}
   onUnitSkillExit: {fileID: 11400000, guid: fdcb3b5fa987bd648a833a522ec80cf2, type: 2}
+  onTurnAttack: {fileID: 11400000, guid: e175047550a988044b3194b4b2abb23b, type: 2}
+  onTurnBegin: {fileID: 11400000, guid: c338e38df103d614eb5c21a7bc242215, type: 2}
+  onTurnItem: {fileID: 11400000, guid: 4522122548770bf4397a733b0daa379a, type: 2}
+  onTurnPlan: {fileID: 11400000, guid: 47b2b3178eac02244a0008105d9137d3, type: 2}
+  onTurnPopup: {fileID: 11400000, guid: e46a14bf2846f43419c2abf0b0954f3c, type: 2}
+  onTurnSkill: {fileID: 11400000, guid: 89c4c15afe426d24aab2a453ee23f3e1, type: 2}
