@@ -20,11 +20,11 @@ public class EventMgr : MonoBehaviour
         instance = this;
     }
 
-    //--- Pathfind ---//
+    [Header("PathFinding Event")]
     [SerializeField] public Event onPathfindRequesterCountZero;
     [SerializeField] public Event onPathUpdatingStart;
 
-    //--- Unit ---//
+    [Header("Unit Event")]
     [SerializeField] public Event onUnitAttackExit;
     [SerializeField] public Event onUnitDead;
     [SerializeField] public Event onUnitIdleEnter;
@@ -33,12 +33,15 @@ public class EventMgr : MonoBehaviour
     [SerializeField] public Event onUnitRunExit;
     [SerializeField] public Event onUnitSkillExit;
 
-    //--- Turn ---//
-    [SerializeField] public Event onTurnActionEnter;
+    [Header("Turn Event")]
+    [SerializeField] public Event onTurnActionEnter; // begin, popup을 제외한 모든 TurnState
     [SerializeField] public Event onTurnActionExit;
-    [SerializeField] public Event onTurnBeginEnter;
+    [SerializeField] public Event onTurnBeginEnter; // begin
     [SerializeField] public Event onTurnBeginExit;
-    [SerializeField] public Event onTurnPlan;
-
-
+    [SerializeField] public Event onTurnItemEnter; // item
+    [SerializeField] public Event onTurnItemExit;
+    [SerializeField] public Event onTurnMove; // move
+    [SerializeField] public Event onTurnNobody; // nobody 
+    [SerializeField] public Event onTurnPlan; // AI Plan 생각 중...
+ 
 }

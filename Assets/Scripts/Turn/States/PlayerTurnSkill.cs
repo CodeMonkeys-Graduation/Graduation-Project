@@ -44,14 +44,14 @@ public class PlayerTurnSkill : TurnState
                 Cube cubeClicked = hit.transform.GetComponent<Cube>();
                 if (cubesCanCast.Contains(cubeClicked))
                 {
-                    // 스킬은 유닛이 없는 곳에 구사가능
-                    string popupContent = "r u sure you wanna use Skill here?";
-
                     List<Cube> cubesInSkillSplash = owner.mapMgr.GetCubes(
                         unit.skillSplash.range, unit.skillSplash.centerX, unit.skillSplash.centerZ, cubeClicked);
 
+                    // 스킬은 유닛이 없는 곳에 구사가능
+                    string popupContent = "r u sure you wanna use Skill here?";
+
                     owner.stateMachine.ChangeState(
-                        new PlayerTurnPopup(owner, unit, Input.mousePosition, owner.uiMgr.popupPanel, popupContent, 
+                        new PlayerTurnPopup(owner, unit, Input.mousePosition, popupContent, 
                         ()=>CastSkillOnCube(cubeClicked), OnClickNo, () => cubesInSkillSplash.ForEach(c => c.SetBlink(0.7f)), null, () => owner.mapMgr.StopBlinkAll()),
                         StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
    

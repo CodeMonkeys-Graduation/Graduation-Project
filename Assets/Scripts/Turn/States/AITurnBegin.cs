@@ -19,7 +19,7 @@ public class AITurnBegin : TurnState
         if (owner.stateMachine.StackCount == 1)
             unit.ResetActionPoint();
 
-        SetUI();
+        EventMgr.Instance.onTurnPlan.Invoke();
 
         owner.stateMachine.ChangeState(new AITurnPlan(owner, unit, actionPlanner), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     }
@@ -32,20 +32,5 @@ public class AITurnBegin : TurnState
     public override void Exit()
     {
         unit.StopBlink();
-    }
-
-    private void SetUI()
-    {
-        owner.uiMgr.testPlayBtn.SetActive(false);
-        owner.uiMgr.endTurnBtn.SetActive(false);
-        owner.uiMgr.backBtn.SetActive(false);
-
-        owner.uiMgr.actionPanel.UnsetPanel();
-        owner.uiMgr.actionPointPanel.SetText(unit.actionPointsRemain);
-
-        owner.uiMgr.turnPanel.gameObject.SetActive(true);
-
-        if (owner.uiMgr.turnPanel.ShouldUpdateSlots(owner.turns.ToList()))
-            owner.uiMgr.turnPanel.SetSlots(owner.uiMgr.statusPanel, owner.turns.ToList(), owner.cameraMove);
     }
 }

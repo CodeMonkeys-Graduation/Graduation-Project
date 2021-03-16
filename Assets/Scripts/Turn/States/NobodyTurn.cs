@@ -9,15 +9,7 @@ public class NobodyTurn : State<TurnMgr>
 
     public override void Enter()
     {
-        owner.uiMgr.testPlayBtn.SetActive(true);
-        owner.uiMgr.endTurnBtn.SetActive(false);
-        owner.uiMgr.backBtn.SetActive(false);
-        owner.uiMgr.actionPanel.UnsetPanel();
-        owner.uiMgr.turnPanel.UnsetPanel();
-        owner.uiMgr.itemPanel.UnsetPanel();
-        owner.uiMgr.actionPointPanel.UnsetPanel();
-        owner.uiMgr.statusPanel.UnsetPanel();
-        owner.uiMgr.popupPanel.UnsetPanel();
+        EventMgr.Instance.onTurnNobody.Invoke();
     }
 
     public override void Execute()

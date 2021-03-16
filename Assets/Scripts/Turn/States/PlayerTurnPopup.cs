@@ -1,8 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System;
 using UnityEngine.Events;
 
@@ -11,17 +7,18 @@ public class PlayerTurnPopup : TurnState
     Action onPopupEnter; 
     Action onPopupExecute; 
     Action onPopupExit;
-    
+
     PopupPanel _popup;
     Vector2 _popupPos;
     string _popupContent;
     UnityAction _onClickYes;
     UnityAction _onClickNo;
-    public PlayerTurnPopup(TurnMgr owner, Unit unit, Vector2 popupPos, PopupPanel popupPanel,
+
+    public PlayerTurnPopup(TurnMgr owner, Unit unit, Vector2 popupPos,
         string popupContent, UnityAction onClickYes, UnityAction onClickNo,
         Action onPopupEnter = null, Action onPopupExecute = null, Action onPopupExit = null) : base(owner, unit)
     {
-        _popup = popupPanel;
+        _popup = MonoBehaviour.FindObjectOfType<UIMgr>().popupPanel; // 여기가 조금 문제
         _popupPos = popupPos;
         _onClickNo = onClickNo;
         _onClickYes = onClickYes;

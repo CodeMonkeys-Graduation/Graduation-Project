@@ -45,13 +45,13 @@ public class PlayerTurnAttack : TurnState
                 cubeClicked = hit.transform.GetComponent<Cube>();
                 if (cubesCanAttack.Contains(cubeClicked))
                 {
-                    string popupContent = $"It is {cubeClicked.GetUnit().name} r u Attack?";
-
                     List<Cube> cubesInAttackSplash = owner.mapMgr.GetCubes(
                         unit.basicAttackSplash.range, unit.basicAttackSplash.centerX, unit.basicAttackSplash.centerZ, cubeClicked);
 
+                    string popupContent = $"It is {cubeClicked.GetUnit().name} r u Attack?";
+
                     owner.stateMachine.ChangeState(
-                        new PlayerTurnPopup(owner, unit, Input.mousePosition, owner.uiMgr.popupPanel,
+                        new PlayerTurnPopup(owner, unit, Input.mousePosition,
                         popupContent, AttackOnClickedCube, OnClickNo, () => cubesInAttackSplash.ForEach(c => c.SetBlink(0.7f)), null, () => owner.mapMgr.StopBlinkAll()),
                         StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
                 }
