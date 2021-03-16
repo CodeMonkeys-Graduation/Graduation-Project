@@ -68,7 +68,7 @@ public class TurnMgr : MonoBehaviour
         if (!stateMachine.IsStateType(typeof(NobodyTurn)))
         {
             // 유닛의 행동력이 남았다면 유닛의 name과 remain point를 저장
-            if (turns.Peek().actionPointsRemain != 0) actionPointRemains.Add(turns.Peek().name, turns.Peek().actionPointsRemain);
+            if (turns.Peek().actionPointsRemain > 0) actionPointRemains.Add(turns.Peek().name, turns.Peek().actionPointsRemain);
             
 
             Unit unitPrevTurn = turns.Dequeue();
