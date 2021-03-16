@@ -7,19 +7,15 @@ using UnityEngine.UI;
 
 public class PlayerTurnItem : TurnState
 {
-    Dictionary<Item, int> _itemCounter;
-    ItemPanel _itemPanel;
-
-    public PlayerTurnItem(TurnMgr owner, Unit unit, ItemPanel itemPanel) : base(owner, unit)
+    public PlayerTurnItem(TurnMgr owner, Unit unit) : base(owner, unit)
     {
-        _itemCounter = unit.itemBag.GetItem();
-        _itemPanel = itemPanel;
     }
 
     public override void Enter()
     {
-        _itemPanel.SetPanel(_itemCounter, OnClickButton);
         owner.cameraMove.SetTarget(unit);
+
+        EventMgr.Instance.onTurnItemEnter.Invoke();
         EventMgr.Instance.onTurnActionEnter.Invoke();
     }
 
@@ -29,29 +25,8 @@ public class PlayerTurnItem : TurnState
 
     public override void Exit()
     {
-        _itemPanel.UnsetPanel();
+        EventMgr.Instance.onTurnItemExit.Invoke();
         EventMgr.Instance.onTurnActionExit.Invoke();
     }
-
-    void OnClickButton(Item item)
-    {
-        string popupContent = $"r u sure u wanna use {item.name}?";
-        owner.stateMachine.ChangeState(
-            new PlayerTurnPopup(owner, unit, Input.mousePosition, owner.uiMgr.popupPanel, popupContent, 
-            ()=>UseItem(item), OnClickNo, () => _itemPanel.SetPanel(_itemCounter, OnClickButton), null, () => _itemPanel.UnsetPanel()),
-            StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
-    }
-
-    void UseItem(Item item)
-    {
-        TurnState nextState = new PlayerTurnBegin(owner, unit);
-        owner.stateMachine.ChangeState(
-            new WaitSingleEvent(owner, unit, EventMgr.Instance.onUnitIdleEnter, nextState),
-            StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
-
-        unit.UseItem(item);
-    }
-
-    private void OnClickNo() => owner.stateMachine.ChangeState(null, StateMachine<TurnMgr>.StateTransitionMethod.ReturnToPrev);
 
 }

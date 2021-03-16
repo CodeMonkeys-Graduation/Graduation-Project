@@ -43,6 +43,7 @@ public class PlayerTurnMove : TurnState
     {
         unit.StopBlink();
         owner.mapMgr.StopBlinkAll();
+
         EventMgr.Instance.onTurnActionExit.Invoke();
     }
 
@@ -87,7 +88,7 @@ public class PlayerTurnMove : TurnState
 
     private void OnWaitExecute()
     {
-        owner.uiMgr.actionPointPanel.SetText(unit.actionPointsRemain);
+        EventMgr.Instance.onTurnMove.Invoke();
     }
 
     private void OnWaitExit()

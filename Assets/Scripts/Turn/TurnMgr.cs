@@ -15,7 +15,6 @@ public class TurnMgr : MonoBehaviour
     private List<Unit> units = new List<Unit>(); // all alive units on the scene
     [HideInInspector] public bool isAnyCubePathUpdating = false; // checking if any path is updating
     [HideInInspector] public MapMgr mapMgr;
-    [HideInInspector] public UIMgr uiMgr;
     [HideInInspector] public ActionPlanner actionPlanner;
 
     [HideInInspector] public CameraMove cameraMove;
@@ -35,7 +34,6 @@ public class TurnMgr : MonoBehaviour
         RegisterEvents();
 
         mapMgr = FindObjectOfType<MapMgr>();
-        uiMgr = FindObjectOfType<UIMgr>();
         actionPlanner = FindObjectOfType<ActionPlanner>();
         cameraMove = FindObjectOfType<CameraMove>();
         
