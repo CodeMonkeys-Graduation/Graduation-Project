@@ -31,7 +31,6 @@ public class AITurnAction : TurnState
         // 액션 고갈
         if (_actions.Count == 0)
         {
-
             owner.StartCoroutine(SomeDelayBeforeNextTurn());
             return;
         }
