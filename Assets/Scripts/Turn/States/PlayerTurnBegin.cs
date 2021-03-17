@@ -13,17 +13,20 @@ public class PlayerTurnBegin : TurnState
     {
         // 턴의 첫 액션임
         if (owner.stateMachine.StackCount == 1)
-            unit.ResetActionPoint();
-
-        // 유닛이 전 턴에 남긴 행동력이 존재한다면
-        if (owner.actionPointRemains.ContainsKey(unit.name)) 
         {
+            // 유닛이 전 턴에 남긴 행동력이 존재한다면
             int remain;
-            owner.actionPointRemains.TryGetValue(unit.name, out remain);
-            unit.actionPointsRemain += remain;
-            owner.actionPointRemains.Remove(unit.name);
+            if (owner.actionPointRemains.TryGetValue(unit, out remain))
+            {
+                unit.actionPointsRemain += remain;
+                owner.actionPointRemains.Remove(unit);
+            }
+            else
+                remain = 0;
+
+            unit.ResetActionPoint(remain);
         }
-    
+
         // 액션포인트가 남아있지않음
         if (unit.actionPointsRemain <= 0)
         {

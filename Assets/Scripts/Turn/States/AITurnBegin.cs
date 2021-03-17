@@ -16,8 +16,21 @@ public class AITurnBegin : TurnState
         owner.cameraMove.SetTarget(unit);
         unit.StartBlink();
 
+        // 턴의 첫 액션임
         if (owner.stateMachine.StackCount == 1)
-            unit.ResetActionPoint();
+        {
+            // 유닛이 전 턴에 남긴 행동력이 존재한다면
+            int remain;
+            if (owner.actionPointRemains.TryGetValue(unit, out remain))
+            {
+                unit.actionPointsRemain += remain;
+                owner.actionPointRemains.Remove(unit);
+            }
+            else
+                remain = 0;
+
+            unit.ResetActionPoint(remain);
+        }
 
         EventMgr.Instance.onTurnPlan.Invoke();
 

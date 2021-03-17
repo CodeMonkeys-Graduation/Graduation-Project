@@ -82,6 +82,7 @@ public class UnitMove : State<Unit>
         prevCube = cubesToGo.Dequeue();
         if (cost > 0)
         {
+            // TODO owner.actionPointsRemain < 0 예외처리
             owner.actionPointsRemain--;
             cost--;
         }
