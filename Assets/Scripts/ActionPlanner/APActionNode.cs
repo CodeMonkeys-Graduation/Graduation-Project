@@ -185,10 +185,6 @@ public class ActionNode_Move : APActionNode
 
     public override void Perform()
     {
-        Unit unit = _gameState.self.owner;
-        if (unit.actionPointsRemain < unit.GetActionSlot(ActionType.Move).cost)
-            return;
-
         _gameState.self.owner.MoveTo(_path);
     }
 
@@ -309,8 +305,6 @@ public class ActionNode_Attack : APActionNode
     public override void Perform()
     {
         Unit unit = _gameState.self.owner;
-        if (unit.actionPointsRemain < unit.GetActionSlot(ActionType.Attack).cost)
-            return;
 
         Cube targetCube = _target.GetCube;
         List<Cube> cubesInAttackRange = _mapMgr.GetCubes(

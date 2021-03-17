@@ -172,7 +172,7 @@ public abstract class Unit : MonoBehaviour
 
 #region Move Methods
 
-public void MoveTo(PFPath pathToDest)
+    public void MoveTo(PFPath pathToDest)
     {
         int apCost = CalcMoveAPCost(pathToDest);
         stateMachine.ChangeState(new UnitMove(this, pathToDest, apCost), StateMachine<Unit>.StateTransitionMethod.PopNPush);
@@ -190,25 +190,35 @@ public void MoveTo(PFPath pathToDest)
         StartCoroutine(JumpToDestination(currPos, nextDestinationCube.Platform.position, OnJumpDone));
     }
 
-    public bool FlatMove(Cube nextDestinationCube)
+    public void FlatMove(Cube nextDestinationCube, Action OnWalkDone)
     {
         Vector3 nextDestination = nextDestinationCube.Platform.position;
-        float distanceRemain = Vector3.Distance(nextDestination, transform.position);
-        Vector3 dir = (nextDestination - transform.position).normalized;
-        Vector3 move = dir * moveSpeed * Time.deltaTime;
-
-        LookDirection(dir);
-        transform.Translate(Vector3.ClampMagnitude(move, distanceRemain));
-
-        if (distanceRemain < Mathf.Epsilon)
-            return true;
-        else
-            return false;
+        StartCoroutine(WalkToDestination(nextDestination, OnWalkDone));
     }
 
     private void LookDirection(Vector3 dir)
     {
         if (dir != Vector3.zero) body.rotation = Quaternion.LookRotation(dir, Vector3.up);
+    }
+
+    private IEnumerator WalkToDestination(Vector3 nextDestination, Action OnWalkDone)
+    {
+        while (true)
+        {
+            float distanceRemain = Vector3.Distance(nextDestination, transform.position);
+            Vector3 dir = (nextDestination - transform.position).normalized;
+            Vector3 move = dir * moveSpeed * Time.deltaTime;
+
+            LookDirection(dir);
+            transform.Translate(Vector3.ClampMagnitude(move, distanceRemain));
+            yield return null;
+
+            if (distanceRemain < Mathf.Epsilon)
+            {
+                OnWalkDone();
+                yield break;
+            }
+        }
     }
 
     private IEnumerator JumpToDestination(Vector3 currCubePos, Vector3 nextDestination, Action OnJumpDone)
@@ -254,7 +264,16 @@ public void MoveTo(PFPath pathToDest)
     public void Attack(List<Cube> cubesToAttack, Cube centerCube)
     {
         this.targetCubes = cubesToAttack;
-        actionPointsRemain -= GetActionSlot(ActionType.Attack).cost;
+
+        int cost = GetActionSlot(ActionType.Attack).cost;
+        if (actionPointsRemain >= cost)
+            actionPointsRemain -= cost;
+        else
+        {
+            stateMachine.ChangeState(new UnitIdle(this), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+            return;
+        }
+
         stateMachine.ChangeState(new UnitAttack(this, cubesToAttack, centerCube), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
 
