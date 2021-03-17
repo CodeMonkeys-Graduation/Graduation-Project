@@ -11,6 +11,7 @@ public class UnitMove : State<Unit>
     Cube prevCube;
     int cost;
     private bool isJumping = false;
+    private bool isWalking = false;
     public UnitMove(Unit owner, PFPath path, int apCost) : base(owner) 
     {
         this.path = path;
@@ -39,7 +40,7 @@ public class UnitMove : State<Unit>
     public override void Exit()
     {
         // 혹시나 못쓴 cost는 싹 써버리기
-        owner.actionPointsRemain -= cost;
+        owner.actionPointsRemain = Mathf.Max(owner.actionPointsRemain - cost, 0);
         EventMgr.Instance.onUnitRunExit.Invoke();
     }
 
@@ -50,18 +51,18 @@ public class UnitMove : State<Unit>
 
         Cube nextCubeToGo = cubesToGo.Peek();
         Vector3 nextDestination = nextCubeToGo.Platform.position;
-        float cubeHeightDiff;
+        float cubeHeightDiff = Mathf.Abs(prevCube.Platform.position.y - nextDestination.y);
 
-        cubeHeightDiff = Mathf.Abs(prevCube.Platform.position.y - nextDestination.y);
-
-        if (cubeHeightDiff < owner.cubeHeightToJump)  // 걷기로 이동 : 다음 큐브가 유닛이 점프로 이동하는 큐브높이(owner.cubeHeightToJump) 미만이라면 
+        if (isWalking || cubeHeightDiff < owner.cubeHeightToJump)  // 걷기로 이동 : 다음 큐브가 유닛이 점프로 이동하는 큐브높이(owner.cubeHeightToJump) 미만이라면 
         {
-            if (owner.FlatMove(nextCubeToGo)) // 도착하면 return true
+            if (isWalking) return true;
+            else
             {
-                OnArriveAtNextCube();
+                isWalking = true;
+                owner.FlatMove(nextCubeToGo, OnArriveAtNextCube);
             }
         }
-        else // 점프로 이동 : currCube와 nextCube의 높이가 유닛이 점프로 이동하는 큐브높이(owner.cubeHeightToJump) 이상이라면
+        else if(isJumping || cubeHeightDiff >= owner.cubeHeightToJump) // 점프로 이동 : currCube와 nextCube의 높이가 유닛이 점프로 이동하는 큐브높이(owner.cubeHeightToJump) 이상이라면
         {
             if (isJumping) return true;
             else
@@ -77,6 +78,7 @@ public class UnitMove : State<Unit>
     private void OnArriveAtNextCube()
     {
         isJumping = false;
+        isWalking = false;
         prevCube = cubesToGo.Dequeue();
         if (cost > 0)
         {
