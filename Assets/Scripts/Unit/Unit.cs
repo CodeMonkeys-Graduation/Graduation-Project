@@ -168,6 +168,7 @@ public abstract class Unit : MonoBehaviour
     }
 
     public void ResetActionPoint() => actionPointsRemain = actionPoints;
+    public void ResetActionPoint(int add) => actionPointsRemain = actionPoints + add;
 
 
 #region Move Methods

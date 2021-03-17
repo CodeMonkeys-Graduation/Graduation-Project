@@ -19,7 +19,7 @@ public class TurnMgr : MonoBehaviour
 
     [HideInInspector] public CameraMove cameraMove;
     [HideInInspector] public Queue<Unit> turns = new Queue<Unit>();
-    [HideInInspector] public Dictionary<string, int> actionPointRemains = new Dictionary<string, int>();
+    [HideInInspector] public Dictionary<Unit, int> actionPointRemains = new Dictionary<Unit, int>();
 
     public StateMachine<TurnMgr> stateMachine;
     public enum TMState { 
@@ -63,13 +63,18 @@ public class TurnMgr : MonoBehaviour
     {
         // 이전 턴이 유닛의 턴이었다면
         // 턴Queue가 돌아야함
-
-
         if (!stateMachine.IsStateType(typeof(NobodyTurn)))
         {
             // 유닛의 행동력이 남았다면 유닛의 name과 remain point를 저장
-            if (turns.Peek().actionPointsRemain > 0) actionPointRemains.Add(turns.Peek().name, turns.Peek().actionPointsRemain);
-            
+            Unit currTurnUnit = turns.Peek();
+            if (currTurnUnit.actionPointsRemain > 0)
+            {
+                if(actionPointRemains.ContainsKey(currTurnUnit))
+                    actionPointRemains[currTurnUnit] = currTurnUnit.actionPointsRemain;
+
+                else
+                    actionPointRemains.Add(currTurnUnit, currTurnUnit.actionPointsRemain);
+            }
 
             Unit unitPrevTurn = turns.Dequeue();
             turns.Enqueue(unitPrevTurn);
