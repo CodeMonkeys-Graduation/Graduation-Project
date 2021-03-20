@@ -29,7 +29,6 @@ public class GameMgr : MonoBehaviour
         testNextStateBtn = FindObjectOfType<TestNextStateBtn>();
 
         stateMachine = new StateMachine<GameMgr>(new Init(this));
-        // stateMachine이 비어있는 문제
     }
 
     private void Update()
@@ -42,7 +41,7 @@ public class GameMgr : MonoBehaviour
 
     public void NextState()
     {
-        if(stateMachine.IsStateType(typeof(Init)))
+        if (stateMachine.IsStateType(typeof(Init)))
         {
             stateMachine.ChangeState(new Positioning(this, turnMgr, summonUI, unitPrefabs, testNextStateBtn), StateMachine<GameMgr>.StateTransitionMethod.ClearNPush);
         }
@@ -54,6 +53,7 @@ public class GameMgr : MonoBehaviour
         {
             stateMachine.ChangeState(new Init(this), StateMachine<GameMgr>.StateTransitionMethod.ClearNPush);
         }
+        
         
     }
 
