@@ -24,7 +24,7 @@ public class WaitMultipleEvents : TurnState
         {
             EventListener el = new EventListener();
             elList.Add(el);
-            e.Register(el, () => { elList.Remove(el); e.Unregister(el); });
+            e.Register(el, (param) => { elList.Remove(el); e.Unregister(el); });
         }
         this.nextState = nextState;
 

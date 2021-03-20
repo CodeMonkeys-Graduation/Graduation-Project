@@ -55,8 +55,8 @@ public class Cube : MonoBehaviour, INavable
         mapMgr = FindObjectOfType<MapMgr>();
         groundHeight = Platform.position.y;
 
-        EventMgr.Instance.onUnitDead.Register(el_onUnitDead, () => pathUpdateDirty = true);
-        EventMgr.Instance.onUnitRunEnter.Register(el_onUnitRunEnter, () => pathUpdateDirty = true);
+        EventMgr.Instance.onUnitDead.Register(el_onUnitDead, (param) => pathUpdateDirty = true);
+        EventMgr.Instance.onUnitRunEnter.Register(el_onUnitRunEnter, (param) => pathUpdateDirty = true);
         pathUpdateDirty = true;
     }
 
