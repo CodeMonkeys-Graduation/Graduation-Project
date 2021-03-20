@@ -21,10 +21,10 @@ public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         if (Physics.Raycast(ray, out hitObj, Mathf.Infinity, LayerMask.GetMask("Cube")))
         {
             Cube currRaycastedCube = hitObj.transform.GetComponent<Cube>();
-
+           
             if (currRaycastedCube == prevRaycastedCube) return; // 이전 큐브와 같은 큐브
 
-            if(currRaycastedCube.IsAccupied() == null) // 비어있는 큐브
+            if(!currRaycastedCube.IsAccupied()) // 비어있는 큐브
                 SetCubeNUnit(currRaycastedCube);
             else // 유닛이 있는 큐브
                 UnsetCubeNUnit();
