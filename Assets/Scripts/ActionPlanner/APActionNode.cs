@@ -10,7 +10,7 @@ public abstract class APActionNode
     public APGameState _gameState;
     public int _score = 0;
     public ActionPointPanel _actionPointPanel;
-
+    public abstract bool IsPerformable();
     protected APActionNode(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel)
     {
         SetNode(prevGameState, prevScore, actionPointPanel);
@@ -105,18 +105,13 @@ public class RootNode : APActionNode
     {
         _parent = null;
     }
+    public override bool IsPerformable() { return false; }
 
-    public override void OnWaitEnter()
-    {
-    }
+    public override void OnWaitEnter() { }
 
-    public override void OnWaitExecute()
-    {
-    }
+    public override void OnWaitExecute() { }
 
-    public override void OnWaitExit()
-    {
-    }
+    public override void OnWaitExit() { }
 
     public override void Perform() { }
 
@@ -142,6 +137,12 @@ public class ActionNode_Move : APActionNode
         // 정보를 바탕으로 preform한후 예상되는 GameState로 Change
         ChangeState(prevGameState);
     }
+    public override bool IsPerformable() 
+    { 
+        return _gameState.self.owner.actionPointsRemain >= 
+            (_path.path.Count - 1) * _gameState.self.owner.GetActionSlot(ActionType.Move).cost; 
+    }
+
 
     private void SetNode(PFPath path)
     {
@@ -262,6 +263,13 @@ public class ActionNode_Attack : APActionNode
         // 정보를 바탕으로 preform한후 예상되는 GameState로 Change
         ChangeState(prevGameState, target);
     }
+
+    public override bool IsPerformable()
+    {
+        return _gameState.self.owner.actionPointsRemain >=
+            _gameState.self.owner.GetActionSlot(ActionType.Attack).cost;
+    }
+
     private void SetNode(Unit target, MapMgr mapMgr)
     {
         _target = target;

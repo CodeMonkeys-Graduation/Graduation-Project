@@ -60,11 +60,14 @@ public class AITurnAction : TurnState
 
     private IEnumerator SomeDelayBeforeAction()
     {
-        float sec = Random.Range(0.5f, 1.5f);
-        yield return new WaitForSeconds(sec);
-
         // 다음 액션
         _currAction = _actions.Dequeue();
+
+        // action point 부족으로 perform 불가
+        if (!_currAction.IsPerformable()) yield break;
+
+        float sec = Random.Range(0.5f, 1.5f);
+        yield return new WaitForSeconds(sec);
 
         // 액션이 끝나는 이벤트를 wait
         owner.stateMachine.ChangeState(
