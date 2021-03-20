@@ -94,11 +94,11 @@ public class TurnMgr : MonoBehaviour
     private void RegisterEvents()
     {
         EventMgr.Instance.onUnitDead.Register(el_onUnitDead, OnUnitDead_RefreshQueue);
-        EventMgr.Instance.onPathUpdatingStart.Register(el_onPathUpdatingStart, () => isAnyCubePathUpdating = true);
-        EventMgr.Instance.onPathfindRequesterCountZero.Register(el_onPathfindRequesterCountZero, () => isAnyCubePathUpdating = false);
+        EventMgr.Instance.onPathUpdatingStart.Register(el_onPathUpdatingStart, (param) => isAnyCubePathUpdating = true);
+        EventMgr.Instance.onPathfindRequesterCountZero.Register(el_onPathfindRequesterCountZero, (param) => isAnyCubePathUpdating = false);
     }
 
-    private void OnUnitDead_RefreshQueue()
+    private void OnUnitDead_RefreshQueue(EventParam param)
     {
         int turnCount = turns.Count;
         for (int i = 0; i < turnCount; i++)

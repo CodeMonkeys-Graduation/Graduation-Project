@@ -49,18 +49,18 @@ public class UIMgr : MonoBehaviour
 
     void RegisterEvent()
     {
-        EventMgr.Instance.onTurnActionEnter.Register(el_TurnActionEnter, () => SetUIAction(true));
-        EventMgr.Instance.onTurnActionExit.Register(el_TurnActionExit, () => SetUIAction(false));
+        EventMgr.Instance.onTurnActionEnter.Register(el_TurnActionEnter, (param) => SetUIAction(true));
+        EventMgr.Instance.onTurnActionExit.Register(el_TurnActionExit, (param) => SetUIAction(false));
         EventMgr.Instance.onTurnBeginEnter.Register(el_TurnBeginEnter, SetUIBeginEnter);
-        EventMgr.Instance.onTurnBeginExit.Register(el_TurnBeginExit, () => actionPanel.UnsetPanel());
-        EventMgr.Instance.onTurnItemEnter.Register(el_TurnItemEnter, () => itemPanel.SetPanel(turnMgr.turns.Peek().itemBag.GetItem(), OnClickItemSlotBtn));
-        EventMgr.Instance.onTurnItemExit.Register(el_TurnItemExit, () => itemPanel.UnsetPanel());
-        EventMgr.Instance.onTurnMove.Register(el_TurnMove, () => actionPointPanel.SetText(turnMgr.turns.Peek().actionPointsRemain));
+        EventMgr.Instance.onTurnBeginExit.Register(el_TurnBeginExit, (param) => actionPanel.UnsetPanel());
+        EventMgr.Instance.onTurnItemEnter.Register(el_TurnItemEnter, (param) => itemPanel.SetPanel(turnMgr.turns.Peek().itemBag.GetItem(), OnClickItemSlotBtn));
+        EventMgr.Instance.onTurnItemExit.Register(el_TurnItemExit, (param) => itemPanel.UnsetPanel());
+        EventMgr.Instance.onTurnMove.Register(el_TurnMove, (param) => actionPointPanel.SetText(turnMgr.turns.Peek().actionPointsRemain));
         EventMgr.Instance.onTurnNobody.Register(el_TurnNobody, SetUINobody);
         EventMgr.Instance.onTurnPlan.Register(el_TurnPlan, SetUIPlan);
     }
 
-    void SetUINobody()
+    void SetUINobody(EventParam param)
     {
         testPlayBtn.SetActive(true);
         endTurnBtn.SetActive(false);
@@ -79,7 +79,7 @@ public class UIMgr : MonoBehaviour
         backBtn.SetActive(b);
     }
 
-    void SetUIBeginEnter()
+    void SetUIBeginEnter(EventParam param)
     {
         Dictionary<ActionType, UnityAction> btnEvents = new Dictionary<ActionType, UnityAction>();
         btnEvents.Add(ActionType.Move, OnClickMoveBtn);
@@ -101,7 +101,7 @@ public class UIMgr : MonoBehaviour
         backBtn.SetActive(false);
     }
 
-    void SetUIPlan()
+    void SetUIPlan(EventParam param)
     {
         testPlayBtn.SetActive(false);
         endTurnBtn.SetActive(false);

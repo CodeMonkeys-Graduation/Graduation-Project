@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+public interface EventParam {}
+
 [CreateAssetMenu(order = 0, fileName = "E_OnXXX", menuName = "New Event")]
 public class Event : ScriptableObject
 {
     List<EventListener> eListeners = new List<EventListener>();
     [SerializeField] public int listenerCount = 0;
     
-    public void Register(EventListener l, UnityAction action)
+    public void Register(EventListener l, UnityAction<EventParam> action)
     {
         l.OnNotify.AddListener(action);
         eListeners.Add(l);
@@ -26,11 +28,11 @@ public class Event : ScriptableObject
         listenerCount = eListeners.Count;
     }
 
-    public void Invoke()
+    public void Invoke(EventParam param = null)
     {
         //eListeners.ForEach(l => l.OnNotify.Invoke());
         foreach (var l in eListeners.ToArray())
-            l.OnNotify.Invoke();
+            l.OnNotify.Invoke(param);
 
         listenerCount = eListeners.Count;
     }

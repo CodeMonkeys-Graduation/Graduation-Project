@@ -13,7 +13,7 @@ public class WaitSingleEvent : TurnState
     /// <param name="e">기다릴 Event</param>
     /// <param name="nextState">Event발생시 Transition할 다음 State</param>
     /// <param name="onEvent">state를 바꾸기 전에 호출할 함수가 잇다면 추가하세요.</param>
-    public WaitSingleEvent(TurnMgr owner, Unit unit, Event e, TurnState nextState, UnityAction onEvent = null, 
+    public WaitSingleEvent(TurnMgr owner, Unit unit, Event e, TurnState nextState, UnityAction<EventParam> onEvent = null, 
         Action onWaitEnter = null, Action onWaitExecute = null, Action onWaitExit = null) : base(owner, unit) 
     {
         this.e = e;
@@ -49,7 +49,7 @@ public class WaitSingleEvent : TurnState
         e.Unregister(el);
     }
 
-    private void OnEvent_TransitionToNextState()
+    private void OnEvent_TransitionToNextState(EventParam param)
     {
         // path를 업데이트중인 큐브가 있으므로 큐브가 업데이트 될때까지 기다려야함.
         if (owner.isAnyCubePathUpdating)
