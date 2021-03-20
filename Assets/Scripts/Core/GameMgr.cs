@@ -1,30 +1,78 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class GameMgr : MonoBehaviour
 {
-    [SerializeField] List<Unit> unitsToPosition;
+    //-- Set in Editor --//
+    [SerializeField] List<Unit> unitPrefabs;
 
-    // StateMachine //
+    TurnMgr turnMgr;
+    SummonPanel summonUI;
+    TestNextStateBtn testNextStateBtn;
 
-    void Start()
+    public StateMachine<GameMgr> stateMachine;
+   
+
+    public enum GMState
     {
+        None, Positioning, Battle
+    }
+    public GMState gmState;
+
+    public void Start()
+    {
+        RegisterEvents();
+
+        turnMgr = FindObjectOfType<TurnMgr>();
+        summonUI = FindObjectOfType<SummonPanel>();
+        testNextStateBtn = FindObjectOfType<TestNextStateBtn>();
+
+        stateMachine = new StateMachine<GameMgr>(new Init(this));
+        // stateMachine이 비어있는 문제
+    }
+
+    private void Update()
+    {
+        stateMachine.Run();
+
+        // 디버깅용
+        CheckTurnState();
+    }
+
+    public void NextState()
+    {
+        if(stateMachine.IsStateType(typeof(Init)))
+        {
+            stateMachine.ChangeState(new Positioning(this, turnMgr, summonUI, unitPrefabs, testNextStateBtn), StateMachine<GameMgr>.StateTransitionMethod.ClearNPush);
+        }
+        else if (stateMachine.IsStateType(typeof(Positioning)))
+        {
+            stateMachine.ChangeState(new Battle(this), StateMachine<GameMgr>.StateTransitionMethod.ClearNPush);
+        }
+        else if(stateMachine.IsStateType(typeof(Battle)))
+        {
+            stateMachine.ChangeState(new Init(this), StateMachine<GameMgr>.StateTransitionMethod.ClearNPush);
+        }
         
     }
 
-    void Update()
+    private void RegisterEvents()
     {
-        
+
     }
 
-    // Positioning
-    // Enter : SummonUI들에 units들 적재 & Set(이건 SummonUI에 만들어야할듯) 호출
-    // 
-    // Exit: -
+    // 디버깅용
+    private void CheckTurnState()
+    {
+        if (stateMachine.IsStateType(typeof(Positioning)))
+            gmState = GMState.Positioning;
 
-    // Battle
-    // Enter : TurnMgr NextTurn호출
-    // 
-    // Exit: -
+        else if (stateMachine.IsStateType(typeof(Battle)))
+            gmState = GMState.Battle;
+
+        else
+            gmState = GMState.None;
+    }
+
 }
