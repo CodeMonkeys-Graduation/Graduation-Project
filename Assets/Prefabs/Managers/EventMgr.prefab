@@ -56,7 +56,6 @@ MonoBehaviour:
   onUnitSkillExit: {fileID: 11400000, guid: fdcb3b5fa987bd648a833a522ec80cf2, type: 2}
   onTurnActionEnter: {fileID: 11400000, guid: 4522122548770bf4397a733b0daa379a, type: 2}
   onTurnActionExit: {fileID: 11400000, guid: e46a14bf2846f43419c2abf0b0954f3c, type: 2}
-  onTurnAttackEnter: {fileID: 11400000, guid: 3cd034c12ab9a1444b11ccd1d6865848, type: 2}
   onTurnBeginEnter: {fileID: 11400000, guid: e175047550a988044b3194b4b2abb23b, type: 2}
   onTurnBeginExit: {fileID: 11400000, guid: c338e38df103d614eb5c21a7bc242215, type: 2}
   onTurnItemEnter: {fileID: 11400000, guid: 7d7413baa9d131a4987a597349a693ea, type: 2}
@@ -64,4 +63,11 @@ MonoBehaviour:
   onTurnMove: {fileID: 11400000, guid: 21eaa094aa7ec65448bc6dd7e5dd52e1, type: 2}
   onTurnNobody: {fileID: 11400000, guid: b517919fc49fc9840897635a5b15785f, type: 2}
   onTurnPlan: {fileID: 11400000, guid: 47b2b3178eac02244a0008105d9137d3, type: 2}
-  onTurnSkillEnter: {fileID: 11400000, guid: 8738128da710f00438a02a59691053db, type: 2}
+  onGameBattleEnter: {fileID: 11400000, guid: a382a0abf0ae7c943a65a0b2dc274774, type: 2}
+  onGameBattleExit: {fileID: 11400000, guid: 71de499fcdd865b44a433b41df984a57, type: 2}
+  onGameInitEnter: {fileID: 11400000, guid: 149ceb97438b07e439bdb631d81e3084, type: 2}
+  onGameInitExit: {fileID: 11400000, guid: c0661a9039bfa2b44a5cbae433fab816, type: 2}
+  onGamePositioningEnter: {fileID: 11400000, guid: 57e7f51f4acf2e64a8f37eb14d0832f9,
+    type: 2}
+  onGamePositioningExit: {fileID: 11400000, guid: fd5a3839fea33834fa947d9df6e1d4f0,
+    type: 2}

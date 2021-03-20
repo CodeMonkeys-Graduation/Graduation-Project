@@ -43,5 +43,14 @@ public class EventMgr : MonoBehaviour
     [SerializeField] public Event onTurnMove; // move
     [SerializeField] public Event onTurnNobody; // nobody 
     [SerializeField] public Event onTurnPlan; // AI Plan 생각 중...
- 
+
+    [Header("Game Event")]
+    [SerializeField] public Event onGameBattleEnter;
+    [SerializeField] public Event onGameBattleExit;
+    [SerializeField] public Event onGameInitEnter;
+    [SerializeField] public Event onGameInitExit;
+    [SerializeField] public Event onGamePositioningEnter;
+    [SerializeField] public Event onGamePositioningExit;
+    
+    
 }

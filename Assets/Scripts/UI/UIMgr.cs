@@ -12,7 +12,10 @@ public class UIMgr : MonoBehaviour
     [SerializeField] public GameObject testPlayBtn;
     [SerializeField] public GameObject endTurnBtn;
     [SerializeField] public GameObject backBtn;
+    [SerializeField] public GameObject testNextStateBtn;
 
+    //-- Mgr --//
+    [HideInInspector] GameMgr gameMgr;
     [HideInInspector] TurnMgr turnMgr;
     
     //-- UI --//
@@ -22,8 +25,19 @@ public class UIMgr : MonoBehaviour
     [HideInInspector] public ActionPanel actionPanel;
     [HideInInspector] public ActionPointPanel actionPointPanel;
     [HideInInspector] public ItemPanel itemPanel;
+    [HideInInspector] public SummonPanel summonPanel;
 
     //-- Event Listener --//
+
+    // Game
+    EventListener el_GameInitEnter = new EventListener();
+    EventListener el_GameInitExit = new EventListener();
+    EventListener el_GamePositioningEnter = new EventListener();
+    EventListener el_GamePositioningExit = new EventListener();
+    EventListener el_GameBattleEnter = new EventListener();
+    EventListener el_GameBattleExit = new EventListener();
+
+    // Turn
     EventListener el_TurnBeginEnter = new EventListener();
     EventListener el_TurnBeginExit = new EventListener();
     EventListener el_TurnActionEnter = new EventListener();
@@ -34,21 +48,33 @@ public class UIMgr : MonoBehaviour
     EventListener el_TurnNobody = new EventListener();
     EventListener el_TurnPlan = new EventListener();
 
+    
+
     void Start()
     {
+        gameMgr = FindObjectOfType<GameMgr>();
         turnMgr = FindObjectOfType<TurnMgr>();
+
         turnPanel = FindObjectOfType<TurnPanel>();
         actionPanel = FindObjectOfType<ActionPanel>();
         actionPointPanel = FindObjectOfType<ActionPointPanel>();
         itemPanel = FindObjectOfType<ItemPanel>();
         statusPanel = FindObjectOfType<StatusPanel>();
         popupPanel = FindObjectOfType<PopupPanel>();
+        summonPanel = FindObjectOfType<SummonPanel>();
 
         RegisterEvent();
     }
 
     void RegisterEvent()
     {
+        EventMgr.Instance.onGameInitEnter.Register(el_GameInitEnter, null);
+        EventMgr.Instance.onGameInitExit.Register(el_GameInitExit, null);
+        EventMgr.Instance.onGamePositioningEnter.Register(el_GamePositioningEnter, (param) => SetUIPositioning(true));
+        EventMgr.Instance.onGamePositioningExit.Register(el_GamePositioningExit, (param) => SetUIPositioning(false));
+        EventMgr.Instance.onGameBattleEnter.Register(el_GameBattleEnter, null);
+        EventMgr.Instance.onGameBattleExit.Register(el_GameBattleExit, null);
+
         EventMgr.Instance.onTurnActionEnter.Register(el_TurnActionEnter, (param) => SetUIAction(true));
         EventMgr.Instance.onTurnActionExit.Register(el_TurnActionExit, (param) => SetUIAction(false));
         EventMgr.Instance.onTurnBeginEnter.Register(el_TurnBeginEnter, SetUIBeginEnter);
@@ -60,17 +86,26 @@ public class UIMgr : MonoBehaviour
         EventMgr.Instance.onTurnPlan.Register(el_TurnPlan, SetUIPlan);
     }
 
+    void SetUIPositioning(bool b)
+    {
+        testPlayBtn.SetActive(!b);
+        summonPanel.gameObject.SetActive(b); // summonUI 켜기
+        testNextStateBtn.SetActive(b);
+    }
+
     void SetUINobody(EventParam param)
     {
         testPlayBtn.SetActive(true);
         endTurnBtn.SetActive(false);
         backBtn.SetActive(false);
+
         actionPanel.UnsetPanel();
         turnPanel.UnsetPanel();
         itemPanel.UnsetPanel();
         actionPointPanel.UnsetPanel();
         statusPanel.UnsetPanel();
         popupPanel.UnsetPanel();
+        summonPanel.UnsetPanel();
     }
 
     void SetUIAction(bool b)
