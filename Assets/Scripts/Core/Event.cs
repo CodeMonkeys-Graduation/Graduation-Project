@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public interface EventParam {}
+public interface EventParam {  }
 
 [CreateAssetMenu(order = 0, fileName = "E_OnXXX", menuName = "New Event")]
 public class Event : ScriptableObject
@@ -26,6 +26,7 @@ public class Event : ScriptableObject
         eListeners.Remove(l);
 
         listenerCount = eListeners.Count;
+
     }
 
     public void Invoke(EventParam param = null)

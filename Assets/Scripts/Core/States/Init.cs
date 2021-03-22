@@ -12,7 +12,7 @@ public class Init : GameState
     public override void Enter()
     {
         Debug.Log("게임이 시작됩니다.");
-        //EventMgr.Instance.onGameInitEnter.Invoke();
+        EventMgr.Instance.onGameInitEnter.Invoke();
     }
 
     public override void Execute()
