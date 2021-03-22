@@ -68,12 +68,12 @@ public class UIMgr : MonoBehaviour
 
     void RegisterEvent()
     {
-        EventMgr.Instance.onGameInitEnter.Register(el_GameInitEnter, null);
-        EventMgr.Instance.onGameInitExit.Register(el_GameInitExit, null);
+        EventMgr.Instance.onGameInitEnter.Register(el_GameInitEnter, (param) => { });
+        EventMgr.Instance.onGameInitExit.Register(el_GameInitExit, (param) => { });
         EventMgr.Instance.onGamePositioningEnter.Register(el_GamePositioningEnter, (param) => SetUIPositioning(true));
         EventMgr.Instance.onGamePositioningExit.Register(el_GamePositioningExit, (param) => SetUIPositioning(false));
-        EventMgr.Instance.onGameBattleEnter.Register(el_GameBattleEnter, null);
-        EventMgr.Instance.onGameBattleExit.Register(el_GameBattleExit, null);
+        EventMgr.Instance.onGameBattleEnter.Register(el_GameBattleEnter, (param) => { });
+        EventMgr.Instance.onGameBattleExit.Register(el_GameBattleExit, (param) => { });
 
         EventMgr.Instance.onTurnActionEnter.Register(el_TurnActionEnter, (param) => SetUIAction(true));
         EventMgr.Instance.onTurnActionExit.Register(el_TurnActionExit, (param) => SetUIAction(false));

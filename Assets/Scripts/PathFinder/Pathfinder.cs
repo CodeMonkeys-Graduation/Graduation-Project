@@ -106,15 +106,10 @@ public class Pathfinder : MonoBehaviour
             Debug.LogError("[Pathfinder] e_pathfindRequesterCountZero == null");
     }
 
-    public void RequestAsync(INavable start, Action<List<PFPath>> OnServe)
-    {
-        List<INavable> navables = new List<INavable>(mapMgr.map.Cubes);
-        StartCoroutine(DijkstraPathfinding(start, navables, OnServe));
-    }
-
     public void RequestAsync(INavable start, int maxDistance, Action<List<PFPath>> OnServe, Func<INavable, bool> cubeExculsion)
     {
         List<INavable> navables = new List<INavable>(mapMgr.map.Cubes);
+
         StartCoroutine(BFSPathfinding(start, navables, maxDistance, OnServe, cubeExculsion));
     }
 
@@ -124,13 +119,8 @@ public class Pathfinder : MonoBehaviour
         APUnit unit = gameState.self;
         int maxDistance = unit.actionPoint / unit.owner.GetActionSlot(ActionType.Move).cost;
         Cube start = gameState._unitPos[unit];
-        StartCoroutine(BFSPathfinding(start, navables, unit.actionPoint, OnServe));
-    }
 
-    public List<PFPath> RequestSync(INavable start)
-    {
-        List<INavable> navables = new List<INavable>(mapMgr.map.Cubes);
-        return DijkstraPathfinding(start, navables);
+        StartCoroutine(BFSPathfinding(start, navables, unit.actionPoint, OnServe));
     }
 
     private void OnSearchBegin()
@@ -149,129 +139,6 @@ public class Pathfinder : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 에디터 상에서만 호출할 함수입니다.
-    /// </summary>
-    /// <returns>Path 자료구조를 확인하세요.</returns>
-    private List<PFPath> DijkstraPathfinding(INavable start, List<INavable> navables)
-    {
-
-        OnSearchBegin();
-
-        // Dijkstra
-        PFTable table = new PFTable(navables);
-        table[start].cost = 0;
-
-        Dictionary<INavable, bool> visited = new Dictionary<INavable, bool>();
-        foreach (var cube in navables)
-            visited.Add(cube, false);
-
-
-        while (true)
-        {
-            // find least cost && unvisited node from table
-            PFNode currNode;
-            GetUnvisitedNLeastCostFromTable(table, visited, out currNode);
-            if (currNode == null) break;
-
-            visited[currNode.cube] = true;
-
-            // update via currNode
-            UpdateTable(table, currNode);
-
-            // check if visited all nodes
-            if (!visited.ContainsValue(false)) break;
-        }
-
-        // Make All Pathes 
-        // to Each Cube 
-        // from the Start Cube
-        List<PFPath> paths = new List<PFPath>();
-        foreach (var node in table.nodes)
-        {
-            PFPath path = new PFPath(start, node.cube);
-            path.Add(node.cube); // add destination first
-
-            // construct a path
-            PFNode currNode = node;
-            while (currNode.prevNode != null)
-            {
-                path.Add(currNode.prevNode.cube);
-                currNode = currNode.prevNode;
-            }
-            path.Reverse();
-
-            paths.Add(path);
-        }
-
-        OnSearchEnd();
-
-        return paths;
-    }
-
-    /// <summary>
-    /// 오래걸리는 함수이므로 런타임에는 코루틴인 이 함수를 사용하여야 합니다.
-    /// </summary>
-    /// <param name="OnServe">함수가 끝나면 호출할 함수를 전달하세요.</param>
-    private IEnumerator DijkstraPathfinding(INavable start, List<INavable> navables, Action<List<PFPath>> OnServe)
-    {
-
-        OnSearchBegin();
-
-        // Dijkstra
-        PFTable table = new PFTable(navables);
-        table[start].cost = 0;
-
-        Dictionary<INavable, bool> visited = new Dictionary<INavable, bool>();
-        foreach (var cube in navables)
-            visited.Add(cube, false);
-
-
-        while (true)
-        {
-            PFNode currNode;
-            GetUnvisitedNLeastCostFromTable(table, visited, out currNode);
-            if (currNode == null) break;
-
-            visited[currNode.cube] = true;
-
-            // update via currNode
-            UpdateTable(table, currNode);
-
-            // check if visited all nodes
-            if (!visited.ContainsValue(false)) break;
-
-
-            yield return null;
-        }
-
-        // Make All Pathes 
-        // to Each Cube 
-        // from the Start Cube
-        List<PFPath> paths = new List<PFPath>();
-        foreach (var node in table.nodes)
-        {
-            PFPath path = new PFPath(start, node);
-            path.Add(node); // add destination first
-
-            // construct a path
-            PFNode currNode = node;
-            while (currNode.prevNode != null)
-            {
-                path.Add(currNode.prevNode);
-                currNode = currNode.prevNode;
-
-                yield return null;
-            }
-            path.Reverse();
-
-            paths.Add(path);
-        }
-
-
-        OnServe(paths);
-        OnSearchEnd();
-    }
 
     /// <summary>
     /// 오래걸리는 함수이므로 런타임에는 코루틴인 이 함수를 사용하여야 합니다.
@@ -432,33 +299,4 @@ public class Pathfinder : MonoBehaviour
         OnSearchEnd();
 
     }
-
-    private void GetUnvisitedNLeastCostFromTable(PFTable table, Dictionary<INavable, bool> visited, out PFNode currNode)
-    {
-        currNode = null;
-        int currCost = int.MaxValue;
-        foreach (var node in table.nodes)
-        {
-            if (node.cost < currCost && visited[node.cube] == false)
-            {
-                currNode = node;
-                currCost = node.cost;
-            }
-        }
-
-    }
-
-    private void UpdateTable(PFTable table, PFNode currNode)
-    {
-        foreach (var neighbor in currNode.cube.Neighbors)
-        {
-            PFNode neighborNode = table.Find(neighbor);
-            if (currNode.cost + 1 < neighborNode.cost)
-            {
-                neighborNode.prevNode = table.Find(currNode.cube);
-                neighborNode.cost = currNode.cost + 1;
-            }
-        }
-    }
-
 }

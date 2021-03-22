@@ -2,6 +2,14 @@ using UnityEngine;
 using System;
 using UnityEngine.Events;
 
+public class TurnPopupParam : EventParam
+{
+    public Vector2 _popupPos;
+    public string _popupContent;
+    public UnityAction _onClickYes;
+    public UnityAction _onClickNo;
+}
+
 public class PlayerTurnPopup : TurnState
 {
     Action onPopupEnter; 
@@ -33,8 +41,12 @@ public class PlayerTurnPopup : TurnState
 
     public override void Enter() 
     {
-        // TODO 파라미터가능한 Event시 해결가능
+        // TODO delete
         _popup.SetPopup(_popupContent, _popupPos, _onClickYes, _onClickNo);
+
+        // TODO param 전달
+        //TurnPopupParam param = new TurnPopupParam(...);
+        //EventMgr.Instance.onTurnPopupEnter.Invoke(param);
 
         if (onPopupEnter != null)
             onPopupEnter.Invoke();
@@ -49,7 +61,10 @@ public class PlayerTurnPopup : TurnState
     public override void Exit()
     {
         _popup.UnsetPanel();
-        
+
+        //EventMgr.Instance.onTurnPopupExit.Invoke(param);
+
+
         if (onPopupExit != null)
             onPopupExit.Invoke();
     }
