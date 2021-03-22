@@ -357,9 +357,26 @@ public abstract class Unit : MonoBehaviour
 
     public bool HasAction(ActionType type) => actionSlots.Any((a) => a.type == type);
 
-    public void StartBlink() => allBodyPartRenderers.ForEach(part => { if (part.GetComponent<Renderer>()) part.GetComponent<Renderer>()?.material.SetInt("_IsFresnel", 1); });
+    public void StartBlink() => 
+        allBodyPartRenderers.ForEach(part => { 
+            if (part.GetComponent<Renderer>()) part.GetComponent<Renderer>()?.material.SetInt("_IsFresnel", 1); 
+        });
     
-    public void StopBlink() => allBodyPartRenderers.ForEach(part => { if (part.GetComponent<Renderer>()) part.GetComponent<Renderer>()?.material.SetInt("_IsFresnel", 0); });
+    public void StopBlink() => 
+        allBodyPartRenderers.ForEach(part => { 
+            if (part.GetComponent<Renderer>()) part.GetComponent<Renderer>()?.material.SetInt("_IsFresnel", 0); 
+        });
+
+    public void StartTransparent() => 
+        allBodyPartRenderers.ForEach(part => { 
+            if (part.GetComponent<Renderer>()) part.GetComponent<Renderer>()?.material.SetInt("_IsDitherTransparent", 1); 
+        });
+
+    public void StopTransparent() => 
+        allBodyPartRenderers.ForEach(part => { 
+            if (part.GetComponent<Renderer>()) part.GetComponent<Renderer>()?.material.SetInt("_IsDitherTransparent", 0); 
+        });
+
 
     private Cube GetCubeOnPosition()
     {
