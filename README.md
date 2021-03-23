@@ -8,6 +8,7 @@
 - [Cube World - Proto Series](https://assetstore.unity.com/packages/3d/environments/cube-world-proto-series-144159)
 - [RPG Monster Duo PBR Polyart](https://assetstore.unity.com/packages/3d/characters/creatures/rpg-monster-duo-pbr-polyart-157762)
 - [GUI PRO Kit - Fantasy RPG](https://assetstore.unity.com/packages/2d/gui/gui-pro-kit-fantasy-rpg-170168)
+- [Epic Toon VFX 2](https://assetstore.unity.com/packages/vfx/particles/spells/epic-toon-vfx-2-157651)
 
 ## 개발 일지: [Youtube](https://youtube.com/playlist?list=PLUnoDCtQAT-4vgxizujnRzX_ROiHMac2x)
 
@@ -37,17 +38,15 @@
 
 ### AI 
 
-저희가 사용할 AI 테크닉은 변형된 Goal Oriented Action Planning(GOAP)입니다. 
+저희가 사용할 AI 테크닉은 Decision Tree입니다. 
 
-가용가능한 Action들과 Goal들을 제공받으면 Planner는 모든 경우의 수를 트리 자료구조로 Plan합니다. 
+가용가능한 Action들로 Planner는 모든 경우의 수를 트리 자료구조로 Plan합니다. 
 
-기존의 GOAP은 한개의 Goal을 위한 최소의 cost를 찾아가는 한편, 저희가 사용할 GOAP은 점수가 배정되어 있는 Goal들을 중에 가장 높은 점수의 Goal에 도달할 수 있는 Plan을 찾습니다.
+Tree의 Leaf 노드들은 최종 Score를 갖고 최대 Score의 Leaf Node에서부터 Root 노드까지를 최적의 Plan으로 정합니다.
 
-해당 Plan을 찾아 캐릭터에게 리턴하고 캐릭터는 해당 Plan에 따라 행동합니다. 
+해당 Plan을 캐릭터에게 리턴하고 캐릭터는 해당 Plan에 따라 행동합니다. 
 
-[Goal Oriented Action Planning for a Smarter AI](https://gamedevelopment.tutsplus.com/tutorials/goal-oriented-action-planning-for-a-smarter-ai--cms-20793)
-
-[AI Implementation Using GOAP, Part I](https://warzonegameblog.wordpress.com/2016/02/08/ai-implementation-using-goap-part-i/)
+[Decision Tree](https://www.geeksforgeeks.org/decision-tree)
 
 ### 게임 시스템
 
