@@ -35,7 +35,7 @@
 
 [Breadth First Search or BFS for a Graph - GeeksforGeeks](https://www.geeksforgeeks.org/breadth-first-search-or-bfs-for-a-graph/)
 
-### AI
+### AI 
 
 저희가 사용할 AI 테크닉은 변형된 Goal Oriented Action Planning(GOAP)입니다. 
 
