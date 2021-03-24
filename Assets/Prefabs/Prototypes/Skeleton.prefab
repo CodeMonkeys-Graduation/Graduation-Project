@@ -889,9 +889,8 @@ MonoBehaviour:
   basicAttackDamageMin: 5
   actionPoints: 7
   agility: 8
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: f17a92dafc489ef4db1f0a91b70d1c1b, type: 3}
   team: {fileID: 11400000, guid: 157136e1c92388342b8f678cabad00c3, type: 2}
-  id: 13
   moveSpeed: 4
   jumpTime: 0.3
   jumpHeight: 0.3
