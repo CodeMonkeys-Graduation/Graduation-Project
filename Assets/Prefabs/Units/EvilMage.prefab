@@ -764,13 +764,15 @@ MonoBehaviour:
   jumpTime: 0.3
   jumpHeight: 0.1
   cubeHeightToJump: 0.2
-  skill: {fileID: 0}
+  skill: {fileID: 11400000, guid: 783e046bcb23a4a4cb54ebcdea7d93a2, type: 2}
   actionSlots:
   - type: 0
     cost: 1
   - type: 1
     cost: 3
   - type: 2
+    cost: 3
+  - type: 3
     cost: 3
   itemBag:
     items: []
@@ -787,10 +789,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.59
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 0.39, z: 0}
+  m_Center: {x: 0, y: 0.39, z: 0.18}
 --- !u!1 &1805415877106652630
 GameObject:
   m_ObjectHideFlags: 0
