@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05029eaee7f956d4482f40bdb60ff114, type: 3}
-  m_Name: FlameSkill
+  m_Script: {fileID: 11500000, guid: e06977da009bc024b8107bf96d5c5277, type: 3}
+  m_Name: WaterTornadoSkill
   m_EditorClassIdentifier: 
-  skillName: Flame
+  skillName: Water Tornado
   icon: {fileID: 0}
-  skillVFX: {fileID: 661307058896348757, guid: 348affcb6fd9af84bab10dc1f235ecc1, type: 3}
-  amountMin: 6
-  amountMax: 10
+  skillVFX: {fileID: 782595691969465692, guid: f95e3187a7adf9b44acbeec3ff2bfcd0, type: 3}
+  amountMin: 8
+  amountMax: 12
