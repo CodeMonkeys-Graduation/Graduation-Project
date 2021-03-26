@@ -21,19 +21,6 @@ public class Wizard : Unit
             {   0,  1,  0   }
         });
         basicAttackSplash = new Range(new int[1, 1] { { 1 } });
-        skillRange = new Range(new int[7, 7]{
-            {   0,0,0,1,0,0,0 },
-            {   0,0,1,1,1,0,0 },
-            {   0,1,1,1,1,1,0 },
-            {   1,1,1,1,1,1,1 },
-            {   0,1,1,1,1,1,0 },
-            {   0,0,1,1,1,0,0 },
-            {   0,0,0,1,0,0,0 }
-        });
-        skillSplash = new Range(new int[3, 3]{
-            {   0,  1,  0   },
-            {   1,  1,  1   },
-            {   0,  1,  0   }
-        });
+        
     }
 }

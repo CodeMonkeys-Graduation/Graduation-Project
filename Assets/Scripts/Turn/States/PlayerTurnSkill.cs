@@ -12,9 +12,9 @@ public class PlayerTurnSkill : TurnState
     {
         // get all cubes in range
         cubesCastRange = owner.mapMgr.GetCubes(
-            unit.skillRange.range,
-            unit.skillRange.centerX,
-            unit.skillRange.centerZ,
+            unit.skill.skillRange.range,
+            unit.skill.skillRange.centerX,
+            unit.skill.skillRange.centerZ,
             unit.GetCube
             );
 
@@ -45,7 +45,7 @@ public class PlayerTurnSkill : TurnState
                 if (cubesCanCast.Contains(cubeClicked))
                 {
                     List<Cube> cubesInSkillSplash = owner.mapMgr.GetCubes(
-                        unit.skillSplash.range, unit.skillSplash.centerX, unit.skillSplash.centerZ, cubeClicked);
+                        unit.skill.skillSplash.range, unit.skill.skillSplash.centerX, unit.skill.skillSplash.centerZ, cubeClicked);
 
                     // 스킬은 유닛이 없는 곳에 구사가능
                     string popupContent = "r u sure you wanna use Skill here?";
@@ -81,9 +81,9 @@ public class PlayerTurnSkill : TurnState
         unit.StopBlink();
 
         List<Cube> cubesToCast = owner.mapMgr.GetCubes(
-            unit.skillSplash.range,
-            unit.skillSplash.centerX,
-            unit.skillSplash.centerX,
+            unit.skill.skillSplash.range,
+            unit.skill.skillSplash.centerX,
+            unit.skill.skillSplash.centerX,
             cubeClicked);
 
         unit.CastSkill(cubesToCast, cubeClicked);

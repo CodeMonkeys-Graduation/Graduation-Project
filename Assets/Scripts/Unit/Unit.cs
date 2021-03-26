@@ -138,8 +138,7 @@ public abstract class Unit : MonoBehaviour
     public int BasicAttackDamageAvg { get => (basicAttackDamageMax + basicAttackDamageMin) / 2; }
     public Range basicAttackRange;
     public Range basicAttackSplash;
-    public Range skillRange;
-    public Range skillSplash;
+
 
     private List<Transform> allBodyPartRenderers = new List<Transform>();
     private List<Cube> targetCubes;
@@ -161,10 +160,8 @@ public abstract class Unit : MonoBehaviour
             Debug.LogError("Action Attack을 갖고 있지만 basicAttackRange를 설정하지 않았습니다.");
         if (basicAttackSplash == null && GetActionSlot(ActionType.Attack) != null)
             Debug.LogError("Action Attack을 갖고 있지만 basicAttackSplash를 설정하지 않았습니다.");
-        if (skillRange == null && GetActionSlot(ActionType.Skill) != null)
-            Debug.LogError("Action Skill을 갖고 있지만 skillRange를 설정하지 않았습니다.");
-        if (skillSplash == null && GetActionSlot(ActionType.Skill) != null)
-            Debug.LogError("Action Skill을 갖고 있지만 skillSplash를 설정하지 않았습니다.");
+        if (skill == null && GetActionSlot(ActionType.Skill) != null)
+            Debug.LogError("Action Skill을 갖고 있지만 Skill을 설정하지 않았습니다.");
     }
 
     public void ResetActionPoint() => actionPointsRemain = actionPoints;
