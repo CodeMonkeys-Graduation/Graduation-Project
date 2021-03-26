@@ -5,6 +5,25 @@ using UnityEngine;
 [CreateAssetMenu(order = 3, fileName = "FlameSkill", menuName = "Skills/Flame(Wizard)")]
 public class Flame : Skill
 {
+    public Flame() : base(
+        new int[7, 7]{
+            {   0,0,0,1,0,0,0 },
+            {   0,0,1,1,1,0,0 },
+            {   0,1,1,1,1,1,0 },
+            {   1,1,1,1,1,1,1 },
+            {   0,1,1,1,1,1,0 },
+            {   0,0,1,1,1,0,0 },
+            {   0,0,0,1,0,0,0 }
+        },
+        new int[3, 3]{
+            {   0,  1,  0   },
+            {   1,  1,  1   },
+            {   0,  1,  0   }
+        }
+        )
+    {
+    }
+
     public override void OnUnitSkillEnter(List<Cube> targetCubes, Cube centerCube)
     {
         GameObject vfxGO = Instantiate(

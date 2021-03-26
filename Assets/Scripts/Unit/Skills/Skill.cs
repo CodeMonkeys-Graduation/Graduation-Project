@@ -8,7 +8,15 @@ public abstract class Skill : ScriptableObject
     [SerializeField] public ParticleSystem skillVFX;
     [SerializeField] public int amountMin; // damage or heal amount anything
     [SerializeField] public int amountMax;
-    
+    public readonly Range skillRange;
+    public readonly Range skillSplash;
+
+    public Skill(int[,] skillRange, int[,] skillSplash)
+    {
+        this.skillRange = new Range(skillRange);
+        this.skillSplash = new Range(skillSplash);
+    }
+
     public int amountAvg { get => (amountMax + amountMin) / 2; }
 
     /// <summary>

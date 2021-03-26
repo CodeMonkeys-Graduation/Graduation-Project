@@ -5,6 +5,23 @@ using UnityEngine;
 [CreateAssetMenu(order = 2, fileName = "WaterTornadoSkill", menuName = "Skills/Water Tornado(EvilMage)")]
 public class WaterTornado : Skill
 {
+    public WaterTornado() : base(
+        new int[7, 7]{
+            {   0,0,0,1,0,0,0 },
+            {   0,0,1,1,1,0,0 },
+            {   0,1,1,1,1,1,0 },
+            {   1,1,1,1,1,1,1 },
+            {   0,1,1,1,1,1,0 },
+            {   0,0,1,1,1,0,0 },
+            {   0,0,0,1,0,0,0 }
+        },
+        new int[1, 1]{
+            { 1 }
+        }
+        )
+    {
+    }
+
     public override void OnUnitSkillEnter(List<Cube> targetCubes, Cube centerCube)
     {
         foreach(var cube in targetCubes)

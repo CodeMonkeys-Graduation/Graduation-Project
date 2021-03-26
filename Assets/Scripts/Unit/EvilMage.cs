@@ -24,8 +24,5 @@ public class EvilMage : Unit
             {   0,  1,  0   }
         });
         basicAttackSplash = new Range(new int[1, 1] { { 1 } });
-
-        skillRange = null;
-        skillSplash = null;
     }
 }
