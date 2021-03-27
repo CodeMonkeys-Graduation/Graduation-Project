@@ -38,12 +38,15 @@ public class APGameState
     public List<APUnit> _units = new List<APUnit>();
     public Dictionary<APUnit, Cube> _unitPos = new Dictionary<APUnit, Cube>();
     public APUnit self { get => _units.Find(u => u.isSelf); }
-    private APGameState(Unit self, List<Unit> units, List<Cube> cubes)
+    public APGameState()
+    {
+    }
+    public APGameState(Unit self, List<Unit> units, List<Cube> cubes)
     {
         SetState(self, units, cubes);
     }
 
-    private APGameState(APUnit self, List<APUnit> units, List<Cube> cubes, Dictionary<APUnit, Cube> unitPos)
+    public APGameState(APUnit self, List<APUnit> units, List<Cube> cubes, Dictionary<APUnit, Cube> unitPos)
     {
         SetState(self, units, cubes, unitPos);
     }
@@ -88,42 +91,24 @@ public class APGameState
             _unitPos.Add(myApUnit, pair.Value);
         }
     }
+
     public APGameState Clone() => Create(self, _units, _cubes, _unitPos);
     public static APGameState Create(Unit self, List<Unit> units, List<Cube> cubes)
     {
         APGameState newState;
-        // Pool에 남는 Node가 없을 경우 직접 만들어서 Add하고 return
-        if (!APGameStatePool.Instance.GetState(out newState))
-        {
-            newState = new APGameState(self, units, cubes);
-            APGameStatePool.Instance.AddState(newState);
-            APGameStatePool.Instance.GetState(out newState);
-        }
-        else
-        {
-            newState.SetState(self, units, cubes);
-        }
-
+        APGameStatePool.Instance.GetState(out newState);
+        newState.SetState(self, units, cubes);
         return newState;
     }
 
     public static APGameState Create(APUnit self, List<APUnit> units, List<Cube> cubes, Dictionary<APUnit, Cube> unitPos)
     {
         APGameState newState;
-        // Pool에 남는 Node가 없을 경우 직접 만들어서 Add하고 return
-        if (!APGameStatePool.Instance.GetState(out newState))
-        {
-            newState = new APGameState(self, units, cubes, unitPos);
-            APGameStatePool.Instance.AddState(newState);
-            APGameStatePool.Instance.GetState(out newState);
-        }
-        else
-        {
-            newState.SetState(self, units, cubes, unitPos);
-        }
-
+        APGameStatePool.Instance.GetState(out newState);
+        newState.SetState(self, units, cubes, unitPos);
         return newState;
     }
+
     public Cube APFind(INavable cube) => _cubes.Find(c => c == cube as Cube);
     public APUnit APFind(Unit unit) => _units.Find(u => u.owner == unit);
 
@@ -150,4 +135,5 @@ public class APGameState
             }
         }
     }
+
 }

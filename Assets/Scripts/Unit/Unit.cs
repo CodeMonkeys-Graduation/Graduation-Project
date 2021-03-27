@@ -76,7 +76,6 @@ public class ItemBag
         itemFinder.Add(code, count);
     }
 }
-
 public class Range
 {
     public int[,] range;

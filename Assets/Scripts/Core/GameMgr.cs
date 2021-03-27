@@ -12,7 +12,6 @@ public class GameMgr : MonoBehaviour
     TestNextStateBtn testNextStateBtn;
 
     public StateMachine<GameMgr> stateMachine;
-   
 
     public enum GMState
     {

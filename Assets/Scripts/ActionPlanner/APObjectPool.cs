@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UnityEngine;
 
 public class APNodePool
 {
@@ -107,7 +105,7 @@ public class APGameStatePool
         }
     }
     private Dictionary<APGameState, bool> pool = new Dictionary<APGameState, bool>();
-    public bool GetState(out APGameState newState)
+    public void GetState(out APGameState newState)
     {
         foreach (var state in pool.Keys)
         {
@@ -115,17 +113,12 @@ public class APGameStatePool
             {
                 pool[state] = true;
                 newState = state;
-                return true;
+                return;
             }
         }
 
-        newState = null;
-        return false;
-    }
-
-    public void AddState(APGameState newState)
-    {
-        pool.Add(newState, false);
+        newState = new APGameState();
+        pool.Add(newState, true);
     }
 
     public void Reset()
@@ -133,4 +126,5 @@ public class APGameStatePool
         var keys = pool.Keys.ToList();
         Parallel.ForEach(keys, key => pool[key] = false);
     }
+
 }
