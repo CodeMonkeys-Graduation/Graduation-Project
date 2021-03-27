@@ -13,6 +13,7 @@ public class AITurnPlan : TurnState
     public override void Enter()
     {
         unit.StartBlink();
+        owner.cameraMove.SetTarget(unit);
 
         actionPlanner.Plan(
             unit, 

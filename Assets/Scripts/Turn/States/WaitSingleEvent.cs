@@ -51,17 +51,7 @@ public class WaitSingleEvent : TurnState
 
     private void OnEvent_TransitionToNextState(EventParam param)
     {
-        // path를 업데이트중인 큐브가 있으므로 큐브가 업데이트 될때까지 기다려야함.
-        if (owner.isAnyCubePathUpdating)
-        {
-            owner.stateMachine.ChangeState(
-                new WaitSingleEvent(owner, unit, EventMgr.Instance.onPathfindRequesterCountZero, nextState),
-                StateMachine<TurnMgr>.StateTransitionMethod.PopNPush);
-        }
-        else
-        {
-            owner.stateMachine.ChangeState(nextState, StateMachine<TurnMgr>.StateTransitionMethod.PopNPush);
-        }
+        owner.stateMachine.ChangeState(nextState, StateMachine<TurnMgr>.StateTransitionMethod.PopNPush);
     }
 
 }

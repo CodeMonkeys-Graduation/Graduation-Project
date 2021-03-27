@@ -8,8 +8,6 @@ public class TurnMgr : MonoBehaviour
 {
     //--- Events ---//
     private EventListener el_onUnitDead = new EventListener();
-    private EventListener el_onPathUpdatingStart = new EventListener();
-    private EventListener el_onPathfindRequesterCountZero = new EventListener();
 
     //--- Set in Runtime ---//
     private List<Unit> units = new List<Unit>(); // all alive units on the scene
@@ -82,6 +80,8 @@ public class TurnMgr : MonoBehaviour
 
         Unit unitForNextTurn = turns.Peek();
 
+
+        TurnState nextState;
         // 플레이어가 컨트롤하는 팀의 유닛이라면
         if (unitForNextTurn.team.controller == Team.Controller.Player)
             stateMachine.ChangeState(new PlayerTurnBegin(this, unitForNextTurn), StateMachine<TurnMgr>.StateTransitionMethod.ClearNPush);
@@ -93,12 +93,10 @@ public class TurnMgr : MonoBehaviour
 
     private void RegisterEvents()
     {
-        EventMgr.Instance.onUnitDead.Register(el_onUnitDead, OnUnitDead_RefreshQueue);
-        EventMgr.Instance.onPathUpdatingStart.Register(el_onPathUpdatingStart, (param) => isAnyCubePathUpdating = true);
-        EventMgr.Instance.onPathfindRequesterCountZero.Register(el_onPathfindRequesterCountZero, (param) => isAnyCubePathUpdating = false);
+        EventMgr.Instance.onUnitDeadEnter.Register(el_onUnitDead, OnUnitDead_RefreshQueueNWait);
     }
 
-    private void OnUnitDead_RefreshQueue(EventParam param)
+    private void OnUnitDead_RefreshQueueNWait(EventParam param)
     {
         int turnCount = turns.Count;
         for (int i = 0; i < turnCount; i++)
@@ -109,6 +107,10 @@ public class TurnMgr : MonoBehaviour
         }
 
         this.units = turns.ToList();
+
+        stateMachine.ChangeState(
+            new WaitSingleEvent(this, turns.Peek(), EventMgr.Instance.onUnitDeadExit, stateMachine.stateStack.Peek() as TurnState), 
+            StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     }
 
     // 디버깅용

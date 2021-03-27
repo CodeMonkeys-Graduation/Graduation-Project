@@ -26,7 +26,8 @@ public class EventMgr : MonoBehaviour
 
     [Header("Unit Event")]
     [SerializeField] public Event onUnitAttackExit;
-    [SerializeField] public Event onUnitDead;
+    [SerializeField] public Event onUnitDeadEnter;
+    [SerializeField] public Event onUnitDeadExit;
     [SerializeField] public Event onUnitIdleEnter;
     [SerializeField] public Event onUnitItemExit;
     [SerializeField] public Event onUnitRunEnter;

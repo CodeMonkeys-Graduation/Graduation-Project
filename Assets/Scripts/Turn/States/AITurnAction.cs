@@ -31,11 +31,13 @@ public class AITurnAction : TurnState
         // 액션 고갈
         if (_actions.Count == 0)
         {
-            owner.StartCoroutine(SomeDelayBeforeNextTurn());
-            return;
+            owner.StartCoroutine(NextTurn());
+        }
+        else
+        {
+            owner.StartCoroutine(Action());
         }
 
-        owner.StartCoroutine(SomeDelayBeforeAction());
     }
 
     public override void Execute()
@@ -47,19 +49,20 @@ public class AITurnAction : TurnState
         unit.StopBlink();
     }
 
-    private IEnumerator SomeDelayBeforeNextTurn()
+    private IEnumerator NextTurn()
     {
         APNodePool.Instance.Reset();
         APGameStatePool.Instance.Reset();
 
-        float sec = Random.Range(0.5f, 1.5f);
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(0.5f);
 
         owner.NextTurn();
     }
 
-    private IEnumerator SomeDelayBeforeAction()
+    private IEnumerator Action()
     {
+        if (_actions.Count < 1) yield break;
+
         // 다음 액션
         _currAction = _actions.Dequeue();
 

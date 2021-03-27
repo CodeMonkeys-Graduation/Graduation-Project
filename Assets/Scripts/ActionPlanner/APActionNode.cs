@@ -253,7 +253,8 @@ public class ActionNode_Attack : APActionNode
 {
     public Unit _target;
     public MapMgr _mapMgr;
-    bool couldntAttack = false;
+    private bool couldntAttack = false;
+    private EventListener el_onUnitDead;
     private ActionNode_Attack(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, Unit target, MapMgr mapMgr)
          : base(prevGameState, prevScore, actionPointPanel)
     {

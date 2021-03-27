@@ -13,9 +13,6 @@ public class AITurnBegin : TurnState
 
     public override void Enter()
     {
-        owner.cameraMove.SetTarget(unit);
-        unit.StartBlink();
-
         // 턴의 첫 액션임
         if (owner.stateMachine.StackCount == 1)
         {
@@ -33,7 +30,6 @@ public class AITurnBegin : TurnState
         }
 
         EventMgr.Instance.onTurnPlan.Invoke();
-
         owner.stateMachine.ChangeState(new AITurnPlan(owner, unit, actionPlanner), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     }
 
@@ -44,6 +40,5 @@ public class AITurnBegin : TurnState
 
     public override void Exit()
     {
-        unit.StopBlink();
     }
 }

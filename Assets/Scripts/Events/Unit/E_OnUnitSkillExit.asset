@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c4c49bf0190b884d89532f1985f6be4, type: 3}
   m_Name: E_OnUnitSkillExit
   m_EditorClassIdentifier: 
-  listenerCount: 1
+  listenerCount: 0
