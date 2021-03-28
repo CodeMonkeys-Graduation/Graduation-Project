@@ -37,11 +37,14 @@ public class ActionPlanner : SingletonBehaviour<ActionPlanner>
             MovePlanner movePlanner = new MovePlanner(parentNode._gameState, parentNode._score, actionPointPanel);
             if (movePlanner.IsAvailable(parentNode))
             {
+                // 시뮬레이션
                 List<APActionNode> moveNodes;
                 bool simulCompleted = false;
                 movePlanner.Simulate(this, () => simulCompleted = true, out moveNodes);
 
+                // // // // // // // // // // // // // // // // // // // // // // // //
                 while (!simulCompleted) yield return null;
+                // // // // // // // // // // // // // // // // // // // // // // // //
 
                 // 부모노드 세팅 및 인큐
                 foreach (var node in moveNodes)
@@ -56,11 +59,14 @@ public class ActionPlanner : SingletonBehaviour<ActionPlanner>
             AttackPlanner attackPlanner = new AttackPlanner(parentNode._gameState, parentNode._score, actionPointPanel);
             if (attackPlanner.IsAvailable(parentNode))
             {
+                // 시뮬레이션
                 List<APActionNode> attackNodes;
                 bool simulCompleted = false;
                 attackPlanner.Simulate(this, () => simulCompleted = true, out attackNodes);
 
+                // // // // // // // // // // // // // // // // // // // // // // // //
                 while (!simulCompleted) yield return null;
+                // // // // // // // // // // // // // // // // // // // // // // // //
 
                 // 부모노드 세팅 및 인큐
                 foreach (var node in attackNodes)
@@ -92,7 +98,6 @@ public class ActionPlanner : SingletonBehaviour<ActionPlanner>
         }
 
         //*** 마지막 위치에 따른 점수 계산 ***//
-
 
 
 

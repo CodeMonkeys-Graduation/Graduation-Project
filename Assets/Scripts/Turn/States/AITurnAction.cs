@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class AITurnAction : TurnState
 {
+    private class UnitKey : Unit, IKey { }
     Queue<APActionNode> _actions;
     APActionNode _currAction;
     public AITurnAction(TurnMgr owner, Unit unit, List<APActionNode> actions) : base(owner, unit)
@@ -14,6 +15,16 @@ public class AITurnAction : TurnState
 
     public override void Enter()
     {
+        // 죽는 중인(UnitDead) 유닛이 존재 => 사라지고 다시 이 State로 돌아오기
+        if (owner.units.Any(unit => unit.stateMachine.IsStateType(typeof(UnitDead))))
+        {
+            owner.stateMachine.ChangeState(
+                new WaitSingleEvent(owner, unit, EventMgr.Instance.onUnitDeadCountZero, this),
+                StateMachine<TurnMgr>.StateTransitionMethod.PopNPush);
+
+            return;
+        }
+
         unit.StartBlink();
         CameraMove.Instance.SetTarget(unit);
 
@@ -61,25 +72,31 @@ public class AITurnAction : TurnState
 
     private IEnumerator Action()
     {
-        if (_actions.Count < 1) yield break;
-
-        // 다음 액션
-        _currAction = _actions.Dequeue();
-
-        // action point 부족으로 perform 불가
-        if (!_currAction.IsPerformable()) yield break;
+        if (_actions.Count <= 0) yield break;
 
         float sec = Random.Range(0.5f, 1.5f);
         yield return new WaitForSeconds(sec);
 
-        // 액션이 끝나는 이벤트를 wait
-        owner.stateMachine.ChangeState(
-            new WaitSingleEvent(owner, unit, EventMgr.Instance.onUnitIdleEnter, this, null,
-            _currAction.OnWaitEnter, _currAction.OnWaitExecute, _currAction.OnWaitExit),
-            StateMachine<TurnMgr>.StateTransitionMethod.PopNPush);
+        // 다음 액션
+        _currAction = _actions.Dequeue();
 
         // 액션 실행
-        _currAction.Perform();
+        if (_currAction.Command.Perform<UnitKey>(unit))
+        {
+            // 액션이 끝나는 이벤트를 wait
+            owner.stateMachine.ChangeState(
+                new WaitSingleEvent(owner, unit, EventMgr.Instance.onUnitIdleEnter, this, null,
+                _currAction.OnWaitEnter, _currAction.OnWaitExecute, _currAction.OnWaitExit),
+                StateMachine<TurnMgr>.StateTransitionMethod.PopNPush);
+        }
+        // 액션 실행 실패
+        else
+        {
+            // Replan
+            owner.stateMachine.ChangeState(
+            new AITurnPlan(owner, unit),
+            StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+        }
     }
 
 }

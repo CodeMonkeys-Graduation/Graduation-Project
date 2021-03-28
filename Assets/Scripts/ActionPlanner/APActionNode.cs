@@ -10,7 +10,7 @@ public abstract class APActionNode
     public APGameState _gameState;
     public int _score = 0;
     public ActionPointPanel _actionPointPanel;
-    public abstract bool IsPerformable();
+    public abstract UnitCommand Command { get; set; }
     protected APActionNode(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel)
     {
         SetNode(prevGameState, prevScore, actionPointPanel);
@@ -21,7 +21,6 @@ public abstract class APActionNode
         _score = prevScore;
         _actionPointPanel = actionPointPanel;
     }
-    public abstract bool Perform();
     public abstract int GetScoreToAdd(APGameState prevState);
     public virtual bool ShouldReplan(List<Unit> units, List<Cube> cubes)
     {
@@ -100,12 +99,14 @@ public abstract class APActionNode
 
 public class RootNode : APActionNode
 {
+    public UnitCommand _command;
+    public override UnitCommand Command { get => null; set => _command = null; }
+
     public RootNode(APGameState gameState)
         : base(gameState, 0, null)
     {
         _parent = null;
     }
-    public override bool IsPerformable() { return false; }
 
     public override void OnWaitEnter() { }
 
@@ -113,21 +114,51 @@ public class RootNode : APActionNode
 
     public override void OnWaitExit() { }
 
-    public override bool Perform() { return false; }
-
     public override int GetScoreToAdd(APGameState prevState) => 0;
 
     public override bool ShouldReplan(List<Unit> units, List<Cube> cubes) => false;
 }
 
 
-
-
-
 public class ActionNode_Move : APActionNode
 {
     public PFPath _path;
     public Cube _destination;
+
+    private UnitCommand _command;
+    public override UnitCommand Command { get => _command; set { _command = value; } }
+
+    public static APActionNode Create(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, PFPath path)
+    {
+        APActionNode node;
+
+        MoveCommand command;
+        MoveCommand.ForceCreateCommand(path, out command);
+        
+
+        // Pool에 남는 Node가 없을 경우 직접 만들어서 Add하고 return
+        if (!APNodePool.Instance.GetNode(APNodePool.NodeType.Move, out node))
+        {
+            node = new ActionNode_Move(prevGameState, prevScore, actionPointPanel, path);
+            APNodePool.Instance.AddNode(node);
+            APNodePool.Instance.GetNode(APNodePool.NodeType.Move, out node);
+            node.Command = command;
+
+            return node;
+        }
+        else
+        {
+            ActionNode_Move moveNode = node as ActionNode_Move;
+            moveNode.SetNode(prevGameState, prevScore, actionPointPanel);
+            moveNode.SetNode(path);
+            moveNode.ChangeState(prevGameState);
+            moveNode.Command = command;
+
+
+            return moveNode;
+        }
+    }
+
     private ActionNode_Move(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, PFPath path)
         : base(prevGameState, prevScore, actionPointPanel)
     {
@@ -137,12 +168,6 @@ public class ActionNode_Move : APActionNode
         // 정보를 바탕으로 preform한후 예상되는 GameState로 Change
         ChangeState(prevGameState);
     }
-    public override bool IsPerformable() 
-    { 
-        return _gameState.self.owner.actionPointsRemain >= 
-            (_path.path.Count - 1) * _gameState.self.owner.GetActionSlot(ActionType.Move).cost; 
-    }
-
 
     private void SetNode(PFPath path)
     {
@@ -161,44 +186,9 @@ public class ActionNode_Move : APActionNode
         _score += GetScoreToAdd(prevGameState);
     }
 
-    public static APActionNode Create(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, PFPath path)
-    {
-        APActionNode node;
-        // Pool에 남는 Node가 없을 경우 직접 만들어서 Add하고 return
-        if (!APNodePool.Instance.GetNode(APNodePool.NodeType.Move, out node))
-        {
-            node = new ActionNode_Move(prevGameState, prevScore, actionPointPanel, path);
-            APNodePool.Instance.AddNode(node);
-            APNodePool.Instance.GetNode(APNodePool.NodeType.Move, out node);
-
-            return node;
-        }
-        else
-        {
-            ActionNode_Move moveNode = node as ActionNode_Move;
-            moveNode.SetNode(prevGameState, prevScore, actionPointPanel);
-            moveNode.SetNode(path);
-            moveNode.ChangeState(prevGameState);
-
-            return moveNode;
-        }
-    }
-
-    public override bool Perform()
-    {
-        MoveCommand moveCommand;
-        if (MoveCommand.CreateCommand(_gameState.self.owner, _path, out moveCommand))
-        {
-            _gameState.self.owner.EnqueueCommand(moveCommand);
-            return true;
-        }
-        else
-            return false;
-    }
-
     public override void OnWaitEnter()
     {
-        (_path.destination as Cube).SetBlink(0.5f);
+        (_path.destination as Cube).SetBlink(0.7f);
     }
 
     public override void OnWaitExecute()
@@ -261,20 +251,47 @@ public class ActionNode_Attack : APActionNode
     public Unit _target;
     private bool couldntAttack = false;
     private EventListener el_onUnitDead;
+    private UnitCommand _command;
+    public override UnitCommand Command { get => _command; set { _command = value; } }
+
+    public static APActionNode Create(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, Unit target)
+    {
+        APActionNode node;
+
+        AttackCommand command;
+        AttackCommand.ForceCreateCommand(target.GetCube, out command);
+
+        // Pool에 남는 Node가 없을 경우 직접 만들어서 Add하고 return
+        if (!APNodePool.Instance.GetNode(APNodePool.NodeType.Attack, out node))
+        {
+            node = new ActionNode_Attack(prevGameState, prevScore, actionPointPanel, target);
+            APNodePool.Instance.AddNode(node);
+            APNodePool.Instance.GetNode(APNodePool.NodeType.Attack, out node);
+            node.Command = command;
+
+            return node;
+        }
+        else
+        {
+            ActionNode_Attack attackNode = node as ActionNode_Attack;
+            attackNode.SetNode(prevGameState, prevScore, actionPointPanel);
+            attackNode.SetNode(target);
+            attackNode.ChangeState(prevGameState, target);
+            attackNode.Command = command;
+
+            return attackNode;
+        }
+        
+    }
+
     private ActionNode_Attack(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, Unit target)
-         : base(prevGameState, prevScore, actionPointPanel)
+     : base(prevGameState, prevScore, actionPointPanel)
     {
         // node의 정보 set
         SetNode(target);
 
         // 정보를 바탕으로 preform한후 예상되는 GameState로 Change
         ChangeState(prevGameState, target);
-    }
-
-    public override bool IsPerformable()
-    {
-        return _gameState.self.owner.actionPointsRemain >=
-            _gameState.self.owner.GetActionSlot(ActionType.Attack).cost;
     }
 
     private void SetNode(Unit target)
@@ -290,61 +307,6 @@ public class ActionNode_Attack : APActionNode
 
         // 바꾼 GameState와 prev를 비교하여 점수계산
         _score += GetScoreToAdd(prevGameState);
-    }
-
-    public static APActionNode Create(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, Unit target)
-    {
-        APActionNode node;
-        // Pool에 남는 Node가 없을 경우 직접 만들어서 Add하고 return
-        if (!APNodePool.Instance.GetNode(APNodePool.NodeType.Attack, out node))
-        {
-            node = new ActionNode_Attack(prevGameState, prevScore, actionPointPanel, target);
-            APNodePool.Instance.AddNode(node);
-            APNodePool.Instance.GetNode(APNodePool.NodeType.Attack, out node);
-
-            return node;
-        }
-        else
-        {
-            ActionNode_Attack attackNode = node as ActionNode_Attack;
-            attackNode.SetNode(prevGameState, prevScore, actionPointPanel);
-            attackNode.SetNode(target);
-            attackNode.ChangeState(prevGameState, target);
-
-            return attackNode;
-        }
-        
-    }
-
-    public override bool Perform()
-    {
-        Unit unit = _gameState.self.owner;
-
-        Cube targetCube = _target.GetCube;
-        List<Cube> cubesInAttackRange = MapMgr.Instance.GetCubes(
-                unit.basicAttackRange,
-                targetCube
-            );
-
-        // 공격하고자 했던 유닛이 범위내에 없다면 공격 실패
-        // 추후 Replan을 위해 couldntAttack = true;
-        if (targetCube == null || targetCube.GetUnit() == null || !cubesInAttackRange.Contains(targetCube))
-        {
-            couldntAttack = true;
-            return false;
-        }
-
-        // 실제 공격
-        List<Cube> cubesToAttack = MapMgr.Instance.GetCubes(unit.basicAttackSplash, _target.GetCube);
-
-        AttackCommand attackCommand;
-        if (AttackCommand.CreateCommand(unit, _target.GetCube, out attackCommand))
-        {
-            unit.EnqueueCommand(attackCommand);
-            return true;
-        }
-
-        return false;
     }
 
     public override void OnWaitEnter()
