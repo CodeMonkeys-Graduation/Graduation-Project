@@ -7,19 +7,24 @@ public class WaitSingleEvent : TurnState
     Action onWaitEnter; Action onWaitExecute; Action onWaitExit;
     Event e;
     TurnState nextState;
+    Predicate<EventParam> paramCondition;
+
+
     /// <summary>
     /// Event를 기다리는 State입니다.
     /// </summary>
     /// <param name="e">기다릴 Event</param>
-    /// <param name="nextState">Event발생시 Transition할 다음 State</param>
-    /// <param name="onEvent">state를 바꾸기 전에 호출할 함수가 잇다면 추가하세요.</param>
-    public WaitSingleEvent(TurnMgr owner, Unit unit, Event e, TurnState nextState, UnityAction<EventParam> onEvent = null, 
-        Action onWaitEnter = null, Action onWaitExecute = null, Action onWaitExit = null) : base(owner, unit) 
+    /// <param name="nextState">이 State 다음 State</param>
+    /// <param name="paramCondition">Event발생시 매개변수를 검사하여 nextState로 Tranisition 여부를 결정하는 Predicate</param>
+    public WaitSingleEvent(
+        TurnMgr owner, Unit unit, Event e, TurnState nextState, 
+        Predicate<EventParam> paramCondition = null, Action onWaitEnter = null, 
+        Action onWaitExecute = null, Action onWaitExit = null) : base(owner, unit) 
     {
         this.e = e;
         this.nextState = nextState;
-        
-        if (onEvent != null) el.OnNotify.AddListener(onEvent);
+        this.paramCondition = paramCondition;
+
         e.Register(el, OnEvent_TransitionToNextState);
 
         if (onWaitEnter != null) this.onWaitEnter = onWaitEnter;
@@ -27,14 +32,9 @@ public class WaitSingleEvent : TurnState
         if (onWaitExit != null) this.onWaitExit = onWaitExit;
     }
 
-    ~WaitSingleEvent()
-    {
-        e.Unregister(el);
-    }
 
     public override void Enter()
     {
-        GC.Collect();
         if (onWaitEnter != null) this.onWaitEnter.Invoke();
     }
 
@@ -51,7 +51,9 @@ public class WaitSingleEvent : TurnState
 
     private void OnEvent_TransitionToNextState(EventParam param)
     {
-        owner.stateMachine.ChangeState(nextState, StateMachine<TurnMgr>.StateTransitionMethod.PopNPush);
+        if(paramCondition == null || paramCondition(param))
+            owner.stateMachine.ChangeState(nextState, StateMachine<TurnMgr>.StateTransitionMethod.PopNPush);
+
     }
 
 }

@@ -13,8 +13,7 @@ public class PlayerTurnItem : TurnState
 
     public override void Enter()
     {
-        owner.cameraMove.SetTarget(unit);
-
+        CameraMove.Instance.SetTarget(unit);
         EventMgr.Instance.onTurnItemEnter.Invoke();
         EventMgr.Instance.onTurnActionEnter.Invoke();
     }

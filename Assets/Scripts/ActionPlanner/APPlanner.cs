@@ -21,12 +21,10 @@ public abstract class APPlanner
 
 public class MovePlanner : APPlanner
 {
-    Pathfinder _pathfinder;
-    public MovePlanner(APGameState gameState, int prevScore, ActionPointPanel actionPointPanel, Pathfinder pathfinder)
+    public MovePlanner(APGameState gameState, int prevScore, ActionPointPanel actionPointPanel)
         : base(gameState, prevScore, actionPointPanel)
     {
         _actionPointPanel = actionPointPanel;
-        _pathfinder = pathfinder;
     }
 
     public override bool IsAvailable(APActionNode prevNode) 
@@ -43,7 +41,7 @@ public class MovePlanner : APPlanner
         // pathfind
         bool pathServed = false;
         List<PFPath> paths = new List<PFPath>();
-        _pathfinder.RequestAsync(_gameState, (p) => { paths = p; pathServed = true; });
+        Pathfinder.Instance.RequestAsync(_gameState, (p) => { paths = p; pathServed = true; });
 
         // pathfind가 끝날때까지 대기
         while (!pathServed) yield return null;
@@ -67,16 +65,12 @@ public class MovePlanner : APPlanner
 
 public class AttackPlanner : APPlanner
 {
-    MapMgr _mapMgr;
-    public AttackPlanner(APGameState gameState, int prevScore, ActionPointPanel actionPointPanel, MapMgr mapMgr)
+    public AttackPlanner(APGameState gameState, int prevScore, ActionPointPanel actionPointPanel)
          : base(gameState, prevScore, actionPointPanel)
     {
         _gameState = gameState.Clone();
         _prevScore = prevScore;
         _actionPointPanel = actionPointPanel;
-
-
-        _mapMgr = mapMgr;
     }
 
     public override bool IsAvailable(APActionNode prevNode)
@@ -104,10 +98,8 @@ public class AttackPlanner : APPlanner
 
         // 현실 큐브로 기본공격 범위를 먼저 Get
         Cube centerCube = _gameState._unitPos[_gameState.self];
-        List<Cube> cubesInAttackRange = _mapMgr.GetCubes(
-            _gameState.self.owner.basicAttackRange.range,
-            _gameState.self.owner.basicAttackRange.centerX,
-            _gameState.self.owner.basicAttackRange.centerZ,
+        List<Cube> cubesInAttackRange = MapMgr.Instance.GetCubes(
+            _gameState.self.owner.basicAttackRange,
             centerCube
             );
 
@@ -125,7 +117,7 @@ public class AttackPlanner : APPlanner
                 if (gameStateCube != null && 
                     _gameState._unitPos[_gameState.self] != gameStateCube && 
                     _gameState.self.owner.team.enemyTeams.Contains(apUnit.owner.team))
-                    attackNodes.Add(ActionNode_Attack.Create(_gameState, _prevScore, _actionPointPanel, apUnit.owner, _mapMgr));
+                    attackNodes.Add(ActionNode_Attack.Create(_gameState, _prevScore, _actionPointPanel, apUnit.owner));
             }
 
 

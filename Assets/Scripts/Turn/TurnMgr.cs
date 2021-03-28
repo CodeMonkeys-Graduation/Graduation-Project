@@ -4,19 +4,15 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class TurnMgr : MonoBehaviour
+public class TurnMgr : SingletonBehaviour<TurnMgr>
 {
     //--- Events ---//
-    private EventListener el_onUnitDead = new EventListener();
+    private EventListener el_onUnitDeadEnter = new EventListener();
+    private EventListener el_onUnitDeadExit = new EventListener();
 
     //--- Set in Runtime ---//
-    private List<Unit> units = new List<Unit>(); // all alive units on the scene
-    [HideInInspector] public bool isAnyCubePathUpdating = false; // checking if any path is updating
-    [HideInInspector] public MapMgr mapMgr;
-    [HideInInspector] public ActionPlanner actionPlanner;
-
-    [HideInInspector] public CameraMove cameraMove;
-    [HideInInspector] public Queue<Unit> turns = new Queue<Unit>();
+    public List<Unit> units = new List<Unit>(); // all present units on the scene including ones in UnitDead State
+    [HideInInspector] public Queue<Unit> turns = new Queue<Unit>(); // all alive units
     [HideInInspector] public Dictionary<Unit, int> actionPointRemains = new Dictionary<Unit, int>();
 
     public StateMachine<TurnMgr> stateMachine;
@@ -30,10 +26,6 @@ public class TurnMgr : MonoBehaviour
     public void Start()
     {
         RegisterEvents();
-
-        mapMgr = FindObjectOfType<MapMgr>();
-        actionPlanner = FindObjectOfType<ActionPlanner>();
-        cameraMove = FindObjectOfType<CameraMove>();
         
         // get all units in the scene
         units.Clear();
@@ -88,29 +80,43 @@ public class TurnMgr : MonoBehaviour
 
         // AI가 컨트롤하는 팀의 유닛이라면
         else if (unitForNextTurn.team.controller == Team.Controller.AI)
-            stateMachine.ChangeState(new AITurnBegin(this, unitForNextTurn, actionPlanner), StateMachine<TurnMgr>.StateTransitionMethod.ClearNPush);
+            stateMachine.ChangeState(new AITurnBegin(this, unitForNextTurn), StateMachine<TurnMgr>.StateTransitionMethod.ClearNPush);
     }
 
     private void RegisterEvents()
     {
-        EventMgr.Instance.onUnitDeadEnter.Register(el_onUnitDead, OnUnitDead_RefreshQueueNWait);
+        EventMgr.Instance.onUnitDeadEnter.Register(el_onUnitDeadEnter, OnUnitDeadEnter_RefreshQueueNWait);
+        EventMgr.Instance.onUnitDeadEnter.Register(el_onUnitDeadExit, OnUnitDeadExit);
+
     }
 
-    private void OnUnitDead_RefreshQueueNWait(EventParam param)
+    private void OnUnitDeadExit(EventParam param)
+    {
+        if(param is UnitStateEvent)
+        {
+            Unit deadUnit = ((UnitStateEvent)param)._owner;
+            this.units.Remove(deadUnit);
+        }
+
+        foreach(var unit in units)
+        {
+            if (!turns.Contains(unit))
+                return;
+        }
+
+        EventMgr.Instance.onUnitDeadCountZero.Invoke();
+    }
+
+    private void OnUnitDeadEnter_RefreshQueueNWait(EventParam param)
     {
         int turnCount = turns.Count;
         for (int i = 0; i < turnCount; i++)
         {
-            Unit u = turns.Dequeue();
-            if (u != null && u.gameObject.activeInHierarchy && u.Health > 0)
-                turns.Enqueue(u);
+            Unit unit = turns.Dequeue();
+            if (unit != null && unit.gameObject.activeInHierarchy && unit.currHealth > 0)
+                turns.Enqueue(unit);
         }
 
-        this.units = turns.ToList();
-
-        stateMachine.ChangeState(
-            new WaitSingleEvent(this, turns.Peek(), EventMgr.Instance.onUnitDeadExit, stateMachine.stateStack.Peek() as TurnState), 
-            StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     }
 
     // 디버깅용

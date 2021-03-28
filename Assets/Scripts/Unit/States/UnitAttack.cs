@@ -18,8 +18,11 @@ public class UnitAttack : State<Unit>
         owner.anim.SetTrigger("ToAttack");
 
         owner.LookAt(centerCube.Platform);
-        
-        if(owner.projectile != null)
+
+        int cost = owner.GetActionSlot(ActionType.Attack).cost;
+        owner.actionPointsRemain -= cost;
+
+        if (owner.projectile != null)
         {
             owner.StartCoroutine(ProcessProjectile());
         }
@@ -33,7 +36,7 @@ public class UnitAttack : State<Unit>
 
     private IEnumerator Execute_Coroutine()
     {
-        yield return null;
+        yield return new WaitForSeconds(0.1f);
         while(true)
         {
             if (!owner.anim.GetBool("IsAttack"))
@@ -46,7 +49,7 @@ public class UnitAttack : State<Unit>
 
     public override void Exit()
     {
-        EventMgr.Instance.onUnitAttackExit.Invoke();
+        EventMgr.Instance.onUnitAttackExit.Invoke(new UnitStateEvent(owner));
     }
 
     private IEnumerator ProcessProjectile()

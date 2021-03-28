@@ -11,10 +11,8 @@ public class PlayerTurnSkill : TurnState
     public PlayerTurnSkill(TurnMgr owner, Unit unit) : base(owner, unit)
     {
         // get all cubes in range
-        cubesCastRange = owner.mapMgr.GetCubes(
-            unit.skill.skillRange.range,
-            unit.skill.skillRange.centerX,
-            unit.skill.skillRange.centerZ,
+        cubesCastRange = MapMgr.Instance.GetCubes(
+            unit.skill.skillRange,
             unit.GetCube
             );
 
@@ -25,10 +23,10 @@ public class PlayerTurnSkill : TurnState
     }
     public override void Enter()
     {
-        owner.cameraMove.SetTarget(unit);
+        CameraMove.Instance.SetTarget(unit);
 
-        owner.mapMgr.BlinkCubes(cubesCastRange, 0.3f);
-        owner.mapMgr.BlinkCubes(cubesCanCast, 0.7f);
+        MapMgr.Instance.BlinkCubes(cubesCastRange, 0.3f);
+        MapMgr.Instance.BlinkCubes(cubesCanCast, 0.7f);
         unit.StartBlink();
 
         EventMgr.Instance.onTurnActionEnter.Invoke();
@@ -44,15 +42,15 @@ public class PlayerTurnSkill : TurnState
                 Cube cubeClicked = hit.transform.GetComponent<Cube>();
                 if (cubesCanCast.Contains(cubeClicked))
                 {
-                    List<Cube> cubesInSkillSplash = owner.mapMgr.GetCubes(
-                        unit.skill.skillSplash.range, unit.skill.skillSplash.centerX, unit.skill.skillSplash.centerZ, cubeClicked);
+                    List<Cube> cubesInSkillSplash = MapMgr.Instance.GetCubes(
+                        unit.skill.skillSplash, cubeClicked);
 
                     // 스킬은 유닛이 없는 곳에 구사가능
                     string popupContent = "r u sure you wanna use Skill here?";
 
                     owner.stateMachine.ChangeState(
                         new PlayerTurnPopup(owner, unit, Input.mousePosition, popupContent, 
-                        ()=>CastSkillOnCube(cubeClicked), OnClickNo, () => cubesInSkillSplash.ForEach(c => c.SetBlink(0.7f)), null, () => owner.mapMgr.StopBlinkAll()),
+                        ()=>CastSkillOnCube(cubeClicked), OnClickNo, () => cubesInSkillSplash.ForEach(c => c.SetBlink(0.7f)), null, () => MapMgr.Instance.StopBlinkAll()),
                         StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
    
                 }
@@ -63,7 +61,7 @@ public class PlayerTurnSkill : TurnState
     public override void Exit()
     {
         unit.StopBlink();
-        owner.mapMgr.StopBlinkAll();
+        MapMgr.Instance.StopBlinkAll();
         EventMgr.Instance.onTurnActionExit.Invoke();
     }
     private bool CubeCanCastConditions(Cube cube)
@@ -75,18 +73,18 @@ public class PlayerTurnSkill : TurnState
 
         TurnState nextState = new PlayerTurnBegin(owner, unit);
         owner.stateMachine.ChangeState(
-            new WaitSingleEvent(owner, unit, EventMgr.Instance.onUnitIdleEnter, nextState),
+            new WaitSingleEvent(
+                owner, unit, EventMgr.Instance.onUnitSkillExit, nextState, 
+                (param) => ((UnitStateEvent)param)._owner == unit),
             StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
 
         unit.StopBlink();
 
-        List<Cube> cubesToCast = owner.mapMgr.GetCubes(
-            unit.skill.skillSplash.range,
-            unit.skill.skillSplash.centerX,
-            unit.skill.skillSplash.centerX,
-            cubeClicked);
-
-        unit.CastSkill(cubesToCast, cubeClicked);
+        SkillCommand skillCommand;
+        if(SkillCommand.CreateCommand(unit, cubeClicked, out skillCommand))
+        {
+            unit.EnqueueCommand(skillCommand);
+        }
     }
 
     private void OnClickNo() => owner.stateMachine.ChangeState(null, StateMachine<TurnMgr>.StateTransitionMethod.ReturnToPrev);

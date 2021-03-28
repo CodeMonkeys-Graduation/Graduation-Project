@@ -6,6 +6,12 @@ using UnityEngine.Events;
 
 public interface EventParam {  }
 
+public class UnitStateEvent : EventParam
+{
+    public Unit _owner;
+    public UnitStateEvent(Unit owner) { _owner = owner; }
+}
+
 [CreateAssetMenu(order = 0, fileName = "E_OnXXX", menuName = "New Event")]
 public class Event : ScriptableObject
 {

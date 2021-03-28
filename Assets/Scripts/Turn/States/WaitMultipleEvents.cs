@@ -35,7 +35,6 @@ public class WaitMultipleEvents : TurnState
 
     public override void Enter()
     {
-        GC.Collect();
         if (onWaitEnter != null) this.onWaitEnter.Invoke();
     }
 

@@ -15,7 +15,7 @@ public class UnitAnimationHelper : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    public void OnAttackMotion() => unit.GiveDamageOnTargets();
-    public void OnSkillMotion() => unit.CastSkillOnTargets();
+    public void OnAttackMotion() => unit.attacker.GiveDamageOnTargets();
+    public void OnSkillMotion() => unit.skillCaster.CastSkillOnTargets();
 
 }

@@ -18,17 +18,18 @@ public class EventMgr : SingletonBehaviour<EventMgr>
     [SerializeField] public Event onUnitRunEnter;
     [SerializeField] public Event onUnitRunExit;
     [SerializeField] public Event onUnitSkillExit;
+    [SerializeField] public Event onUnitDeadCountZero;
 
     [Header("Turn Event")]
     [SerializeField] public Event onTurnActionEnter; // begin, popup을 제외한 모든 TurnState
     [SerializeField] public Event onTurnActionExit;
-    [SerializeField] public Event onTurnBeginEnter; // begin
+    [SerializeField] public Event onTurnBeginEnter;
     [SerializeField] public Event onTurnBeginExit;
-    [SerializeField] public Event onTurnItemEnter; // item
+    [SerializeField] public Event onTurnItemEnter; 
     [SerializeField] public Event onTurnItemExit;
-    [SerializeField] public Event onTurnMove; // move
-    [SerializeField] public Event onTurnNobody; // nobody 
-    [SerializeField] public Event onTurnPlan; // AI Plan 생각 중...
+    [SerializeField] public Event onTurnMove;
+    [SerializeField] public Event onTurnNobody;
+    [SerializeField] public Event onTurnPlan; 
 
     [Header("Game Event")]
     [SerializeField] public Event onGameBattleEnter;

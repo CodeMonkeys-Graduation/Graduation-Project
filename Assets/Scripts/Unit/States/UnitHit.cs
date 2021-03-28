@@ -19,7 +19,7 @@ public class UnitHit : State<Unit>
     public override void Enter()
     {
         takingDamage.Invoke(damage);
-        if(owner.Health <= 0)
+        if(owner.currHealth <= 0)
         {
             owner.stateMachine.ChangeState(new UnitDead(owner), StateMachine<Unit>.StateTransitionMethod.JustPush);
             return;
@@ -36,7 +36,7 @@ public class UnitHit : State<Unit>
 
     private IEnumerator Execute_Coroutine()
     {
-        yield return null;
+        yield return new WaitForSeconds(0.1f);
         while (true)
         {
             if (!owner.anim.GetBool("IsHit"))
@@ -45,7 +45,7 @@ public class UnitHit : State<Unit>
             yield return new WaitForSeconds(0.1f);
         }
 
-        if (owner.Health > 0)
+        if (owner.currHealth > 0)
             owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
         else
             owner.stateMachine.ChangeState(new UnitDead(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);

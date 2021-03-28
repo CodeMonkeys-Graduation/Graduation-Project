@@ -22,10 +22,10 @@ public abstract class Skill : ScriptableObject
     /// <summary>
     /// UnitSkill Enter 에서 호출됩니다. 
     /// </summary>
-    public abstract void OnUnitSkillEnter(List<Cube> targetCubes, Cube centerCube);
+    public abstract void OnUnitSkillEnter(Unit caster, List<Cube> targetCubes, Cube centerCube);
 
     /// <summary>
     /// 유닛의 Skill Animation 중에 대상 유닛들 각각을 인자로 전달받아 호출됩니다.
     /// </summary>
-    public abstract void OnSkillAnimation(Unit ownerUnit, Unit targetUnit);
+    public abstract void OnSkillAnimation(Unit caster);
 }

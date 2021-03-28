@@ -129,7 +129,7 @@ public class UIMgr : MonoBehaviour
         turnPanel.gameObject.SetActive(true);
 
         if (turnPanel.ShouldUpdateSlots(turnMgr.turns.ToList()))
-            turnPanel.SetSlots(statusPanel, turnMgr.turns.ToList(), turnMgr.cameraMove);
+            turnPanel.SetSlots(statusPanel, turnMgr.turns.ToList());
 
         testPlayBtn.SetActive(false);
         endTurnBtn.SetActive(true);
@@ -148,7 +148,7 @@ public class UIMgr : MonoBehaviour
         turnPanel.gameObject.SetActive(true);
 
         if (turnPanel.ShouldUpdateSlots(turnMgr.turns.ToList()))
-            turnPanel.SetSlots(statusPanel, turnMgr.turns.ToList(), turnMgr.cameraMove);
+            turnPanel.SetSlots(statusPanel, turnMgr.turns.ToList());
     }
 
     private void OnClickMoveBtn()
@@ -177,7 +177,12 @@ public class UIMgr : MonoBehaviour
             new WaitSingleEvent(turnMgr, turnMgr.turns.Peek(), EventMgr.Instance.onUnitIdleEnter, nextState),
             StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
 
-        turnMgr.turns.Peek().UseItem(item);
+
+        ItemCommand itemCommand;
+        if(ItemCommand.CreateCommand(turnMgr.turns.Peek(), item, out itemCommand))
+        {
+            turnMgr.turns.Peek().EnqueueCommand(itemCommand);
+        }
     }
 
 }

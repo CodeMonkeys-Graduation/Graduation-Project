@@ -41,12 +41,22 @@ public class PlayerTurnBegin : TurnState
             return;
         }
 
+        // 죽는 중인(UnitDead) 유닛이 존재 => 사라지고 
+        if (owner.units.Any(unit => unit.stateMachine.IsStateType(typeof(UnitDead))))
+        {
+            owner.stateMachine.ChangeState(
+                new WaitSingleEvent(owner, unit, EventMgr.Instance.onUnitDeadCountZero, this),
+                StateMachine<TurnMgr>.StateTransitionMethod.PopNPush);
+
+            return;
+        }
+
+
         unit.StartBlink();
         
         EventMgr.Instance.onTurnBeginEnter.Invoke();
 
-        if (owner.cameraMove != null)
-            owner.cameraMove.SetTarget(unit);
+        CameraMove.Instance.SetTarget(unit);
     }
 
     public override void Execute()
@@ -68,7 +78,7 @@ public class PlayerTurnBegin : TurnState
 
         unit.GetCube.UpdatePaths(
             unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost,
-            (cube) => (cube as Cube).GetUnit() != null && (cube as Cube).GetUnit().Health > 0);
+            (cube) => (cube as Cube).GetUnit() != null && (cube as Cube).GetUnit().currHealth > 0);
     }
 
 
