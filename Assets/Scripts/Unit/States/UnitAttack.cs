@@ -27,24 +27,12 @@ public class UnitAttack : State<Unit>
             owner.StartCoroutine(ProcessProjectile());
         }
 
-        owner.StartCoroutine(Execute_Coroutine());
     }
 
     public override void Execute()
     {
-    }
-
-    private IEnumerator Execute_Coroutine()
-    {
-        yield return new WaitForSeconds(0.1f);
-        while(true)
-        {
-            if (!owner.anim.GetBool("IsAttack"))
-                break;
-
-            yield return new WaitForSeconds(0.1f);
-        }
-        owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+        if (!owner.anim.GetBool("IsAttack"))
+            owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
 
     public override void Exit()

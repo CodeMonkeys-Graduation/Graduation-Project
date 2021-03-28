@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public interface IKey { }
@@ -102,7 +100,6 @@ public class Unit : MonoBehaviour
         public ActionType type;
         public int cost;
     }
-    private class UnitKey : IKey { }
 
     [Header ("Set in Editor")]
     [SerializeField] public Animator anim;

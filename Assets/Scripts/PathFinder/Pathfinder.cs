@@ -10,21 +10,18 @@ public class PFPath
     public INavable start;
     public INavable destination;
     public List<INavable> path = new List<INavable>();
-    public int cost;
-    public int Length { get => path.Count; }
+    public int Length { get => path.Count - 1; }
 
-    public PFPath(INavable start, INavable destination, int cost = 0)
+    public PFPath(INavable start, INavable destination)
     {
         this.start = start;
         this.destination = destination;
-        this.cost = cost;
     }
 
-    public PFPath(INavable start, Pathfinder.PFNode destination, int cost = 0)
+    public PFPath(INavable start, Pathfinder.PFNode destination)
     {
         this.start = start;
         this.destination = destination.cube;
-        this.cost = cost;
     }
 
     public void Add(Pathfinder.PFNode node) => path.Add(node.cube);
