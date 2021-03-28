@@ -31,6 +31,12 @@ public class AttackCommand : UnitCommand
         }
     }
 
+    // AI Simulation에서만 사용할 함수입니다.
+    public static void ForceCreateCommand(Cube target, out AttackCommand attackCommand)
+    {
+        attackCommand = new AttackCommand(target);
+    }
+
     // State만 바꿔주세요.
     // 다른 동작은 State내부에서 합니다.
     // 여기서는 Perform할지말지만 검사합니다.
@@ -76,6 +82,12 @@ public class MoveCommand : UnitCommand
         }
     }
 
+    // AI Simulation에서만 사용할 함수입니다.
+    public static void ForceCreateCommand(PFPath path, out MoveCommand moveCommand)
+    {
+        moveCommand = new MoveCommand(path);
+    }
+
     // State만 바꿔주세요.
     // 다른 동작은 State내부에서 합니다.
     // 여기서는 Perform할지말지만 검사합니다.
@@ -116,6 +128,12 @@ public class ItemCommand : UnitCommand
             itemCommand = null;
             return false;
         }
+    }
+
+    // AI Simulation에서만 사용할 함수입니다.
+    public static void ForceCreateCommand(Item item, out ItemCommand itemCommand)
+    {
+        itemCommand = new ItemCommand(item);
     }
 
 
@@ -159,6 +177,12 @@ public class SkillCommand : UnitCommand
             skillCommand = null;
             return false;
         }
+    }
+
+    // AI Simulation에서만 사용할 함수입니다.
+    public static void ForceCreateCommand(Cube target, out SkillCommand skillCommand)
+    {
+        skillCommand = new SkillCommand(target);
     }
 
     // State만 바꿔주세요.

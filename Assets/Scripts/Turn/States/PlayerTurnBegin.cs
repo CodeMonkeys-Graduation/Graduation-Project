@@ -41,7 +41,7 @@ public class PlayerTurnBegin : TurnState
             return;
         }
 
-        // 죽는 중인(UnitDead) 유닛이 존재 => 사라지고 
+        // 죽는 중인(UnitDead) 유닛이 존재 => 사라지고 다시 이 State로 돌아오기
         if (owner.units.Any(unit => unit.stateMachine.IsStateType(typeof(UnitDead))))
         {
             owner.stateMachine.ChangeState(
