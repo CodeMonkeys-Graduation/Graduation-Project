@@ -4,19 +4,27 @@ using System.Linq;
 using UnityEngine;
 
 
-public class MapMgr : MonoBehaviour
+public class MapMgr : SingletonBehaviour<MapMgr>
 {
     [Header("Reset Before Test")]
     [SerializeField] private bool showPaths = true;
     [SerializeField] public Map map;
-    
-    public void Reset()
+
+
+    void Start()
     {
         map = new Map(FindObjectsOfType<Cube>().ToList());
     }
-    void Awake()
+
+    public bool IsInRange(Range range, Cube centerCube, Cube targetCube)
     {
-        InitializeMapData();
+        List<Cube> cubesInRange = GetCubes(range.range, range.centerX, range.centerZ, centerCube);
+        return cubesInRange.Contains(targetCube);
+    }
+
+    public List<Cube> GetCubes(Range range, Cube center)
+    {
+        return GetCubes(range.range, range.centerX, range.centerZ, center);
     }
 
     public List<Cube> GetCubes(int[,] range, int centerXIndex, int centerZIndex, Cube center)
@@ -123,7 +131,6 @@ public class MapMgr : MonoBehaviour
         return returnCube;
     }
 
-    private void InitializeMapData() => map = new Map(FindObjectsOfType<Cube>().ToList());
     //private void OnDrawGizmos()
     //{
     //    if (!showPaths) return;
