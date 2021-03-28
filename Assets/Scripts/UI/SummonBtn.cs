@@ -41,9 +41,9 @@ public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData data)
     {
-        if(selectedUnit != null) EventMgr.Instance.onUnitSummonEnd.Invoke((EventParam)selectedUnit);
+        if(selectedUnit != null) EventMgr.Instance.onUnitSummonEnd.Invoke(new UnitParam(selectedUnit));
 
-        selectedUnit?.StopTransparent();
+        currDraggingUnit?.GetComponent<Unit>().StopTransparent();
         selectedUnit = null;
         prevRaycastedCube = null;
         currDraggingUnit = null;

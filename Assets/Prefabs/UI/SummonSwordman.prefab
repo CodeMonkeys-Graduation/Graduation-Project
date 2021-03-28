@@ -246,5 +246,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitPrefab: {fileID: 1555109558, guid: 76032b6ea6507f442ba2c816944ee397, type: 3}
-  unitCountText: {fileID: 7258815666956704427}
-  unitCount: 0
+  unitCount: {fileID: 7258815666956704427}
