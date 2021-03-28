@@ -25,25 +25,14 @@ public class UnitSkill : State<Unit>
         owner.actionPointsRemain -= apCost;
 
         owner.skill.OnUnitSkillEnter(owner, owner.targetCubes, centerCube);
-
-        owner.StartCoroutine(Execute_Coroutine());
     }
 
     public override void Execute()
     {
+        if (!owner.anim.GetBool("IsSkill"))
+            owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
-    private IEnumerator Execute_Coroutine()
-    {
-        yield return new WaitForSeconds(0.1f);
-        while (true)
-        {
-            if (!owner.anim.GetBool("IsSkill"))
-                break;
 
-            yield return new WaitForSeconds(0.1f);
-        }
-        owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
-    }
 
     public override void Exit()
     {

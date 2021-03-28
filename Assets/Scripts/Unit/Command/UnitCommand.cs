@@ -64,7 +64,7 @@ public class MoveCommand : UnitCommand
     // 생성자대용으로 사용합니다.
     public static bool CreateCommand(Unit unit, PFPath path, out MoveCommand moveCommand)
     {
-        if (unit.actionPointsRemain >= unit.GetActionSlot(ActionType.Move).cost * (path.path.Count - 1))
+        if (unit.actionPointsRemain >= unit.GetActionSlot(ActionType.Move).cost * path.Length)
         {
             moveCommand = new MoveCommand(path);
             return true;
