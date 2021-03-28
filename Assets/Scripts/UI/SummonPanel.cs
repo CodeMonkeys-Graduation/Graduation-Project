@@ -5,27 +5,37 @@ using UnityEngine;
 public class SummonPanel : MonoBehaviour, IPanel
 {
     [SerializeField] public List<SummonBtn> summonBtnList;
+    [SerializeField] public List<SummonBtn> summonBtnPrefabs;
+    [SerializeField] public Transform contentTr;
 
-    public void SetSummonPanel(Unit unit)
+    public Dictionary<Unit, int> SummonBtnCount = new Dictionary<Unit, int>();
+    EventListener e_onUnitSummonEnd = new EventListener();
+
+    public void SetSummonPanel(Unit unit, bool b = false)
     {
-        foreach(SummonBtn u in summonBtnList)
+        foreach(SummonBtn u in summonBtnPrefabs)
         {
             Unit up = u.unitPrefab;
 
             if(up == unit)
             {
-                if (!u.gameObject.activeSelf)
-                {
-                    u.gameObject.SetActive(true);
-                    u.unitCount = 1;
-                }
+                if (SummonBtnCount.ContainsKey(up)) SummonBtnCount[up]++;
                 else
-                    u.unitCount++;
+                {
+                    Instantiate(u.gameObject).transform.SetParent(contentTr, false);
+                    SummonBtnCount[up] = 1;
+                }
             }
-
-            u.SetSummonCountText();
         }
- 
+
+        EventMgr.Instance.onUnitSummonEnd.Register(e_onUnitSummonEnd, (param) => UpdateSummonPanel(param));
+    }
+
+    public void UpdateSummonPanel(EventParam ep = null)
+    {
+        Unit up = (Unit)ep;
+        SetSummonPanel((Unit)ep);
+        
     }
 
     public void UnsetPanel()

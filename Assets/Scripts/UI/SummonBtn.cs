@@ -5,13 +5,13 @@ using UnityEngine.UI;
 public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     [SerializeField] public Unit unitPrefab;
-    [SerializeField] public Text unitCountText;
+    [SerializeField] public Text unitCount;
+
     EventListener e_onUnitSummonReady = new EventListener();
 
     Cube prevRaycastedCube = null;
     GameObject currDraggingUnit = null;
     private static Unit selectedUnit; // 소환 UI가 통틀어 가지고 있을 변수
-    public int unitCount;
 
     public void OnBeginDrag(PointerEventData data)
     {
@@ -41,9 +41,9 @@ public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData data)
     {
-        currDraggingUnit?.GetComponent<Unit>().StopTransparent();
-        unitCount--;
+        if(selectedUnit != null) EventMgr.Instance.onUnitSummonEnd.Invoke((EventParam)selectedUnit);
 
+        selectedUnit?.StopTransparent();
         selectedUnit = null;
         prevRaycastedCube = null;
         currDraggingUnit = null;
@@ -70,11 +70,6 @@ public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         if (currDraggingUnit != null) Destroy(currDraggingUnit.gameObject);
         prevRaycastedCube = null;
         currDraggingUnit = null;
-    }
-
-    public void SetSummonCountText()
-    {
-        unitCountText.text = unitCount.ToString();
     }
 
 }
