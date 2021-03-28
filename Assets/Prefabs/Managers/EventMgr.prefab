@@ -47,6 +47,7 @@ MonoBehaviour:
     type: 2}
   onPathUpdatingStart: {fileID: 11400000, guid: 53dc6cb665e1f0849885d27f53e37798,
     type: 2}
+  onUnitSummonReady: {fileID: 11400000, guid: a89a89060b4d8a04baa43c69acd734b5, type: 2}
   onUnitAttackExit: {fileID: 11400000, guid: 2079106fc3680b44ba8b64dcc785cf18, type: 2}
   onUnitDeadEnter: {fileID: 11400000, guid: 66ff86eb3d1dceb47a03c6d50e4a3a26, type: 2}
   onUnitDeadExit: {fileID: 11400000, guid: 91024f9cb800d6046bbfbd14f27b6277, type: 2}
