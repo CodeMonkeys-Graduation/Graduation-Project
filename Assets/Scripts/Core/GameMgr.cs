@@ -42,7 +42,7 @@ public class GameMgr : MonoBehaviour
     {
         if (stateMachine.IsStateType(typeof(Init)))
         {
-            stateMachine.ChangeState(new Positioning(this, turnMgr, summonUI, unitPrefabs, testNextStateBtn), StateMachine<GameMgr>.StateTransitionMethod.ClearNPush);
+            stateMachine.ChangeState(new Positioning(this, turnMgr, summonUI, unitPrefabs), StateMachine<GameMgr>.StateTransitionMethod.ClearNPush);
         }
         else if (stateMachine.IsStateType(typeof(Positioning)))
         {

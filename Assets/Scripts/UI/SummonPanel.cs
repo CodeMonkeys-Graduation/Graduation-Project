@@ -2,40 +2,50 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class SummonPanel : MonoBehaviour, IPanel
 {
-    [SerializeField] public List<SummonBtn> summonBtnList;
     [SerializeField] public List<SummonBtn> summonBtnPrefabs;
-    [SerializeField] public Transform contentTr;
+    [SerializeField] public Transform content;
 
-    public Dictionary<Unit, int> SummonBtnCount = new Dictionary<Unit, int>();
-    EventListener e_onUnitSummonEnd = new EventListener();
+    public Dictionary<SummonBtn, int> SummonBtnCount = new Dictionary<SummonBtn, int>();
 
-    public void SetSummonPanel(Unit unit, bool b = false)
+    public void SetSummonPanel(UnitParam up, bool add = true)
     {
-        foreach(SummonBtn u in summonBtnPrefabs)
+        foreach(SummonBtn summonBtn in summonBtnPrefabs)
         {
-            Unit up = u.unitPrefab;
-
-            if(up == unit)
+            if(up.u == summonBtn.unitPrefab)
             {
-                if (SummonBtnCount.ContainsKey(up)) SummonBtnCount[up]++;
+                if(add)
+                {
+                    if (SummonBtnCount.ContainsKey(summonBtn)) SummonBtnCount[summonBtn]++;
+                    else SummonBtnCount.Add(summonBtn, 1);
+                }
                 else
                 {
-                    Instantiate(u.gameObject).transform.SetParent(contentTr, false);
-                    SummonBtnCount[up] = 1;
+                    if (SummonBtnCount.ContainsKey(summonBtn) && SummonBtnCount[summonBtn] > 1) SummonBtnCount[summonBtn]--;
+                    else SummonBtnCount.Remove(summonBtn);
                 }
             }
         }
 
-        EventMgr.Instance.onUnitSummonEnd.Register(e_onUnitSummonEnd, (param) => UpdateSummonPanel(param));
+        UpdateSummonBtns();
     }
 
-    public void UpdateSummonPanel(EventParam ep = null)
+    public void UpdateSummonBtns()
     {
-        Unit up = (Unit)ep;
-        SetSummonPanel((Unit)ep);
+        SummonBtn[] currSummonBtns = content.GetComponentsInChildren<SummonBtn>();
+
+        foreach(SummonBtn sb in currSummonBtns)
+        {
+            Destroy(sb.gameObject);
+        }
         
+        foreach(KeyValuePair<SummonBtn, int> si in SummonBtnCount)
+        {
+            Instantiate(si.Key.gameObject).transform.SetParent(content, false);
+            si.Key.unitCount.text = si.Value.ToString();
+        }
     }
 
     public void UnsetPanel()

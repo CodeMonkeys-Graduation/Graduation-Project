@@ -1,7 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+
+public class UnitParam : EventParam
+{
+    public Unit u;
+
+    public UnitParam(Unit u)
+    {
+        this.u = u;
+    }
+}
+
 
 public class Positioning : GameState
 {
@@ -9,25 +19,26 @@ public class Positioning : GameState
 
     TurnMgr turnMgr;
     
-    SummonPanel summonUI;
+    SummonPanel summonPanel;
     List<Unit> unitPrefabs;
-    TestNextStateBtn testNextStateBtn;
 
-    public Positioning(GameMgr owner, TurnMgr turnMgr, SummonPanel summonUI, List<Unit> unitPrefabs, TestNextStateBtn testNextStateBtn) : base(owner)
+    EventListener e_onUnitSummonEnd = new EventListener();
+
+    public Positioning(GameMgr owner, TurnMgr turnMgr, SummonPanel summonPanel, List<Unit> unitPrefabs) : base(owner)
     {
         this.turnMgr = turnMgr;
 
-        this.summonUI = summonUI;
+        this.summonPanel = summonPanel;
         this.unitPrefabs = unitPrefabs;
-        this.testNextStateBtn = testNextStateBtn;
     }
 
     public override void Enter()
     {
         Debug.Log("유닛을 배치해주세요.");
 
-        foreach (Unit u in unitPrefabs) summonUI.SetSummonPanel(u); // summonUI에 unit에 해당하는 버튼 세팅
+        foreach (Unit u in unitPrefabs) summonPanel.SetSummonPanel(new UnitParam(u)); // summonUI에 unit에 해당하는 버튼 세팅
 
+        EventMgr.Instance.onUnitSummonEnd.Register(e_onUnitSummonEnd, (param) => summonPanel.SetSummonPanel((UnitParam)param, false));
         EventMgr.Instance.onGamePositioningEnter.Invoke();
     }
 
