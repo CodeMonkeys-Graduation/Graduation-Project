@@ -12,7 +12,7 @@ public class TurnSlot : MonoBehaviour
     [SerializeField] Image frame;
     [SerializeField] GameObject glowFrame;
 
-    public void SetSlot(StatusPanel statusPanel, Unit unit, bool isFirstTurn, CameraMove cameraMove, ToggleGroup group)
+    public void SetSlot(StatusPanel statusPanel, Unit unit, bool isFirstTurn, ToggleGroup group)
     {
         icon.sprite = unit.icon;
         frame.sprite = unit.team.teamTurnSlotFrame;
@@ -21,7 +21,7 @@ public class TurnSlot : MonoBehaviour
             if (isOn)
             {
                 statusPanel.SetStatusForUnit(unit);
-                cameraMove.SetTarget(unit);
+                CameraMove.Instance.SetTarget(unit);
             }
             else
             {

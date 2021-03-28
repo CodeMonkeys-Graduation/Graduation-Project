@@ -7,17 +7,17 @@ public class PlayerTurnMove : TurnState
     Cube cubeClicked;
     public PlayerTurnMove(TurnMgr owner, Unit unit) : base(owner, unit)
     {
-        cubesCanGo = owner.mapMgr.GetCubes(
+        cubesCanGo = MapMgr.Instance.GetCubes(
             unit.GetCube,
-            cube => cube != unit.GetCube && (cube.GetUnit() == null || cube.GetUnit().Health <= 0),
+            cube => cube != unit.GetCube && (cube.GetUnit() == null || cube.GetUnit().currHealth <= 0),
             path => path.path.Count <= unit.actionPointsRemain + 1);
     }
 
     public override void Enter()
     {
-        owner.cameraMove.SetTarget(unit);
+        CameraMove.Instance.SetTarget(unit);
 
-        owner.mapMgr.BlinkCubes(cubesCanGo, 0.5f);
+        MapMgr.Instance.BlinkCubes(cubesCanGo, 0.5f);
         unit.StartBlink();
 
         EventMgr.Instance.onTurnActionEnter.Invoke();
@@ -42,7 +42,7 @@ public class PlayerTurnMove : TurnState
     public override void Exit()
     {
         unit.StopBlink();
-        owner.mapMgr.StopBlinkAll();
+        MapMgr.Instance.StopBlinkAll();
 
         EventMgr.Instance.onTurnActionExit.Invoke();
     }
@@ -58,12 +58,17 @@ public class PlayerTurnMove : TurnState
 
         // unit move
         PFPath pathToDest = unit.GetCube.paths.Find((p) => p.destination == cubeClicked);
-        unit.MoveTo(pathToDest);
 
-        // update paths in the destination cube
-        (cubeClicked as Cube).UpdatePaths(
-            unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost,
-            cube => (cube as Cube).GetUnit() != null && (cube as Cube).GetUnit() != unit);
+        MoveCommand moveCommand;
+        if(MoveCommand.CreateCommand(unit, pathToDest, out moveCommand))
+        {
+            unit.EnqueueCommand(moveCommand);
+
+            // update paths in the destination cube
+            (cubeClicked as Cube).UpdatePaths(
+                unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost,
+                cube => (cube as Cube).GetUnit() != null && (cube as Cube).GetUnit() != unit);
+        }
     }
 
     private bool RaycastWithCubeMask(out RaycastHit hit)
@@ -75,11 +80,20 @@ public class PlayerTurnMove : TurnState
     private void ChangeStateToWaitState()
     {
         TurnState nextState = new PlayerTurnBegin(owner, unit);
-        List<Event> eList = new List<Event>() { EventMgr.Instance.onUnitRunExit, EventMgr.Instance.onPathfindRequesterCountZero };
         owner.stateMachine.ChangeState(
-            new WaitMultipleEvents(owner, unit, eList, nextState, OnWaitEnter, OnWaitExecute, OnWaitExit),
+            new WaitSingleEvent(owner, unit, EventMgr.Instance.onUnitRunExit, nextState, 
+            (param) => ((UnitStateEvent)param)._owner == unit, OnWaitEnter, OnWaitExecute, OnWaitExit),
             StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     }
+
+    private void WaitSingleEventParam_OnEvent(EventParam param)
+    {
+        if (param is UnitStateEvent && ((UnitStateEvent)param)._owner == unit)
+            owner.stateMachine.ChangeState(
+                new PlayerTurnBegin(owner, unit),
+                StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+    }
+
     private void OnWaitEnter()
     {
         cubeClicked.SetBlink(0.5f);

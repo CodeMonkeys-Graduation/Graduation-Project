@@ -15,14 +15,14 @@ public class AITurnAction : TurnState
     public override void Enter()
     {
         unit.StartBlink();
-        owner.cameraMove.SetTarget(unit);
+        CameraMove.Instance.SetTarget(unit);
 
         // 이전 액션한 결과, ShouldReplan이라면 AITurnPlan로 돌아가서 Replan
         // 첫 Enter는 _currAction == null
-        if (_currAction != null && _currAction.ShouldReplan(owner.turns.ToList(), owner.mapMgr.map.Cubes.ToList()))
+        if (_currAction != null && _currAction.ShouldReplan(owner.turns.ToList(), MapMgr.Instance.map.Cubes.ToList()))
         {
             owner.stateMachine.ChangeState(
-            new AITurnPlan(owner, unit, owner.actionPlanner),
+            new AITurnPlan(owner, unit),
             StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
 
             return;

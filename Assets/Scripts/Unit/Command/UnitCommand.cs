@@ -4,44 +4,49 @@ using UnityEngine;
 
 public abstract class UnitCommand
 {
-    protected Unit _unit;
-    protected UnitCommand(Unit unit)
-    {
-        _unit = unit;
-    }
-
-    public abstract bool Perform();
+    public abstract bool Perform<TKey>(Unit unit) where TKey : Unit, IKey;
 }
 
 public class AttackCommand : UnitCommand
 {
-    Unit _target;
-    private AttackCommand(Unit unit, Unit target) : base(unit)
+    Cube _target;
+    private AttackCommand(Cube target)
     {
         _target = target;
     }
-    public static AttackCommand CreateCommand(Unit unit, Unit target)
-    {
-        if (MapMgr.Instance.IsInRange(unit.basicAttackRange, unit.GetCube, target.GetCube))
-            return new AttackCommand(unit, target);
-        else
-            return null;
-    }
 
-    public override bool Perform()
+    // Command를 할수 있는지 없는지만 검사합니다.
+    // 생성자대용으로 사용합니다.
+    public static bool CreateCommand(Unit unit, Cube target, out AttackCommand attackCommand)
     {
-        _unit.targetCubes = MapMgr.Instance.GetCubes(_unit.basicAttackSplash, _target.GetCube);
-
-        int cost = _unit.GetActionSlot(ActionType.Attack).cost;
-        if (_unit.actionPointsRemain >= cost)
+        if (MapMgr.Instance.IsInRange(unit.basicAttackRange, unit.GetCube, target))
         {
-            _unit.actionPointsRemain -= cost;
-            _unit.stateMachine.ChangeState(new UnitAttack(_unit, _unit.targetCubes, _target.GetCube), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+            attackCommand = new AttackCommand(target);
             return true;
         }
         else
         {
-            _unit.stateMachine.ChangeState(new UnitIdle(_unit), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+            attackCommand = null;
+            return false;
+        }
+    }
+
+    // State만 바꿔주세요.
+    // 다른 동작은 State내부에서 합니다.
+    // 여기서는 Perform할지말지만 검사합니다.
+    public override bool Perform<TKey>(Unit unit)
+    {
+        unit.targetCubes = MapMgr.Instance.GetCubes(unit.basicAttackSplash, _target);
+
+        int cost = unit.GetActionSlot(ActionType.Attack).cost;
+        if (unit.actionPointsRemain >= cost)
+        {
+            unit.stateMachine.ChangeState(new UnitAttack(unit, unit.targetCubes, _target), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+            return true;
+        }
+        else
+        {
+            unit.stateMachine.ChangeState(new UnitIdle(unit), StateMachine<Unit>.StateTransitionMethod.PopNPush);
             return false;
         }
     }
@@ -50,26 +55,38 @@ public class AttackCommand : UnitCommand
 public class MoveCommand : UnitCommand
 {
     PFPath _path;
-    private MoveCommand(Unit unit, PFPath path) : base(unit)
+    private MoveCommand(PFPath path)
     {
         _path = path;
     }
 
-    public static MoveCommand CreateCommand(Unit unit, PFPath path, int actionPointRemain)
+    // Command를 할수 있는지 없는지만 검사합니다.
+    // 생성자대용으로 사용합니다.
+    public static bool CreateCommand(Unit unit, PFPath path, out MoveCommand moveCommand)
     {
-        if (actionPointRemain >= unit.GetActionSlot(ActionType.Move).cost * (path.path.Count - 1))
-            return new MoveCommand(unit, path);
+        if (unit.actionPointsRemain >= unit.GetActionSlot(ActionType.Move).cost * (path.path.Count - 1))
+        {
+            moveCommand = new MoveCommand(path);
+            return true;
+        }
         else
-            return null;
+        {
+            moveCommand = null;
+            return false;
+        }
     }
 
-    public override bool Perform()
+    // State만 바꿔주세요.
+    // 다른 동작은 State내부에서 합니다.
+    // 여기서는 Perform할지말지만 검사합니다.
+    public override bool Perform<TKey>(Unit unit)
     {
-        int apCost = _unit.CalcMoveAPCost(_path);
+        if (unit.GetActionSlot(ActionType.Move) == null) return false;
 
-        if(_unit.actionPointsRemain >= _unit.GetActionSlot(ActionType.Move).cost * (_path.path.Count - 1))
+        int apCost = unit.mover.CalcMoveAPCost(_path);
+        if(unit.actionPointsRemain >= unit.GetActionSlot(ActionType.Move).cost * (_path.path.Count - 1))
         {
-            _unit.stateMachine.ChangeState(new UnitMove(_unit, _path, apCost), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+            unit.stateMachine.ChangeState(new UnitMove(unit, _path, apCost), StateMachine<Unit>.StateTransitionMethod.PopNPush);
             return true;
         }
         else
@@ -80,28 +97,38 @@ public class MoveCommand : UnitCommand
 public class ItemCommand : UnitCommand
 {
     Item _item;
-    private ItemCommand(Unit unit, Item item) : base(unit)
+    private ItemCommand(Item item)
     {
         _item = item;
     }
 
-    public static ItemCommand CreateCommand(Unit unit, Item item)
+    // Command를 할수 있는지 없는지만 검사합니다.
+    // 생성자대용으로 사용합니다.
+    public static bool CreateCommand(Unit unit, Item item, out ItemCommand itemCommand)
     {
         if (unit.itemBag.items.Contains(item))
-            return new ItemCommand(unit, item);
+        {
+            itemCommand = new ItemCommand(item);
+            return true;
+        }
         else
-            return null;
+        {
+            itemCommand = null;
+            return false;
+        }
     }
 
-    public override bool Perform()
+
+    // State만 바꿔주세요.
+    // 다른 동작은 State내부에서 합니다.
+    // 여기서는 Perform할지말지만 검사합니다.
+    public override bool Perform<TKey>(Unit unit)
     {
-        int apCost = _unit.GetActionSlot(ActionType.Item).cost;
-        if (_unit.itemBag.items.Contains(_item) &&
-        _unit.actionPointsRemain >= apCost)
+        int apCost = unit.GetActionSlot(ActionType.Item).cost;
+        if (unit.itemBag.items.Contains(_item) &&
+        unit.actionPointsRemain >= apCost)
         {
-            _unit.itemBag.RemoveItem(_item);
-            _unit.actionPointsRemain -= apCost;
-            _unit.stateMachine.ChangeState(new UnitItem(_unit, _item), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+            unit.stateMachine.ChangeState(new UnitItem(unit, _item), StateMachine<Unit>.StateTransitionMethod.PopNPush);
             return true;
         }
         else
@@ -113,29 +140,38 @@ public class ItemCommand : UnitCommand
 public class SkillCommand : UnitCommand
 {
     Cube _target;
-    private SkillCommand(Unit unit, Cube target) : base(unit)
+    private SkillCommand(Cube target)
     {
         _target = target;
     }
 
-    public static SkillCommand CreateCommand(Unit unit, Cube target)
+    // Command를 할수 있는지 없는지만 검사합니다.
+    // 생성자대용으로 사용합니다.
+    public static bool CreateCommand(Unit unit, Cube target, out SkillCommand skillCommand)
     {
         if (MapMgr.Instance.IsInRange(unit.skill.skillRange, unit.GetCube, target))
-            return new SkillCommand(unit, target);
+        {
+            skillCommand = new SkillCommand(target);
+            return true;
+        }
         else
-            return null;
+        {
+            skillCommand = null;
+            return false;
+        }
     }
 
-    public override bool Perform()
+    // State만 바꿔주세요.
+    // 다른 동작은 State내부에서 합니다.
+    // 여기서는 Perform할지말지만 검사합니다.
+    public override bool Perform<TKey>(Unit unit)
     {
-        if (_unit.GetActionSlot(ActionType.Skill) == null) return false;
+        if (unit.GetActionSlot(ActionType.Skill) == null) return false;
 
-        int apCost = _unit.GetActionSlot(ActionType.Skill).cost;
-        if (_unit.actionPointsRemain >= apCost)
+        int apCost = unit.GetActionSlot(ActionType.Skill).cost;
+        if (unit.actionPointsRemain >= apCost)
         {
-            _unit.targetCubes = MapMgr.Instance.GetCubes(_unit.basicAttackSplash, _target);
-            _unit.actionPointsRemain -= apCost;
-            _unit.stateMachine.ChangeState(new UnitSkill(_unit, _unit.targetCubes, _target), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+            unit.stateMachine.ChangeState(new UnitSkill(unit, unit.targetCubes, _target), StateMachine<Unit>.StateTransitionMethod.PopNPush);
             return true;
         }
         else

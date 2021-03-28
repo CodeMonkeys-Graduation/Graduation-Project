@@ -11,12 +11,7 @@ public class PlayerTurnAttack : TurnState
     public PlayerTurnAttack(TurnMgr owner, Unit unit) : base(owner, unit)
     {
         // get all cubes in range
-        cubesAttackRange = owner.mapMgr.GetCubes(
-            unit.basicAttackRange.range,
-            unit.basicAttackRange.centerX,
-            unit.basicAttackRange.centerZ,
-            unit.GetCube
-            );
+        cubesAttackRange = MapMgr.Instance.GetCubes(unit.basicAttackRange, unit.GetCube);
 
         // filter cubes
         cubesCanAttack = cubesAttackRange
@@ -26,10 +21,10 @@ public class PlayerTurnAttack : TurnState
 
     public override void Enter()
     {
-        owner.cameraMove.SetTarget(unit);
+        CameraMove.Instance.SetTarget(unit);
 
-        owner.mapMgr.BlinkCubes(cubesAttackRange, 0.3f);
-        owner.mapMgr.BlinkCubes(cubesCanAttack, 0.7f);
+        MapMgr.Instance.BlinkCubes(cubesAttackRange, 0.3f);
+        MapMgr.Instance.BlinkCubes(cubesCanAttack, 0.7f);
         unit.StartBlink();
 
         EventMgr.Instance.onTurnActionEnter.Invoke();
@@ -45,14 +40,14 @@ public class PlayerTurnAttack : TurnState
                 cubeClicked = hit.transform.GetComponent<Cube>();
                 if (cubesCanAttack.Contains(cubeClicked))
                 {
-                    List<Cube> cubesInAttackSplash = owner.mapMgr.GetCubes(
+                    List<Cube> cubesInAttackSplash = MapMgr.Instance.GetCubes(
                         unit.basicAttackSplash.range, unit.basicAttackSplash.centerX, unit.basicAttackSplash.centerZ, cubeClicked);
 
                     string popupContent = $"It is {cubeClicked.GetUnit().name} r u Attack?";
 
                     owner.stateMachine.ChangeState(
                         new PlayerTurnPopup(owner, unit, Input.mousePosition,
-                        popupContent, AttackOnClickedCube, OnClickNo, () => cubesInAttackSplash.ForEach(c => c.SetBlink(0.7f)), null, () => owner.mapMgr.StopBlinkAll()),
+                        popupContent, AttackOnClickedCube, OnClickNo, () => cubesInAttackSplash.ForEach(c => c.SetBlink(0.7f)), null, () => MapMgr.Instance.StopBlinkAll()),
                         StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
                 }
             }
@@ -62,7 +57,7 @@ public class PlayerTurnAttack : TurnState
     public override void Exit()
     {
         unit.StopBlink();
-        owner.mapMgr.StopBlinkAll();
+        MapMgr.Instance.StopBlinkAll();
         EventMgr.Instance.onTurnActionExit.Invoke();
     }
 
@@ -81,18 +76,19 @@ public class PlayerTurnAttack : TurnState
     {
         TurnState nextState = new PlayerTurnBegin(owner, unit);
         owner.stateMachine.ChangeState(
-            new WaitSingleEvent(owner, unit, EventMgr.Instance.onUnitIdleEnter, nextState),
+            new WaitSingleEvent(owner, unit, EventMgr.Instance.onUnitIdleEnter, nextState, 
+            (param) => ((UnitStateEvent)param)._owner == unit),
             StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
 
         unit.StopBlink();
 
-        List<Cube> cubesToAttack = owner.mapMgr.GetCubes(
-            unit.basicAttackSplash.range,
-            unit.basicAttackSplash.centerX,
-            unit.basicAttackSplash.centerX,
-            cubeClicked);
+        List<Cube> cubesToAttack = MapMgr.Instance.GetCubes(unit.basicAttackSplash, cubeClicked);
 
-        unit.Attack(cubesToAttack, cubeClicked);
+        AttackCommand attackCommand;
+        if(AttackCommand.CreateCommand(unit, cubeClicked, out attackCommand))
+        {
+            unit.EnqueueCommand(attackCommand);
+        }
     }
 
     private void OnClickNo() => owner.stateMachine.ChangeState(null, StateMachine<TurnMgr>.StateTransitionMethod.ReturnToPrev);

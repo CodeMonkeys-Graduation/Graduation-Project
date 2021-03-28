@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
+public interface IKey { }
 public enum ActionType { Move, Attack, Item, Skill }
 
 [System.Serializable]
@@ -93,7 +94,7 @@ public class Range
     }
 }
 
-public abstract class Unit : MonoBehaviour
+public class Unit : MonoBehaviour
 {
     [System.Serializable]
     public class ActionSlot
@@ -101,58 +102,64 @@ public abstract class Unit : MonoBehaviour
         public ActionType type;
         public int cost;
     }
+    private class UnitKey : IKey { }
 
-    [Header ("Set in Editor (Unit)")]
+    [Header ("Set in Editor")]
     [SerializeField] public Animator anim;
     [SerializeField] public Transform body;
 
-    //*** Stat ***//
+    [Header("Stat")]
     [SerializeField] public int maxHealth;
     [SerializeField] public int basicAttackDamageMax;
     [SerializeField] public int basicAttackDamageMin;
     [SerializeField] public int actionPoints;
     [SerializeField] public int agility;
+    [SerializeField] public Skill skill;
+    [SerializeField] public List<ActionSlot> actionSlots;
     [SerializeField] public Sprite icon;
     [SerializeField] public Team team;
+    [SerializeField] public ItemBag itemBag;
+    [SerializeField] public GameObject projectile;
 
-    //*** 움직임이 자연스러운 수치 기입 ***//
+    [Header("Movement")] //*** 움직임이 자연스러운 수치 기입 ***//
     [SerializeField] public float moveSpeed;
     [SerializeField] [Range(0f, 2f)] float jumpTime; // 점프를 실행할 timespan
     [SerializeField] [Range(0f, 3f)] float jumpHeight; // 점프 높이
     [SerializeField] [Range(0.1f, 0.3f)] public float cubeHeightToJump; // 유닛이 점프로 큐브를 이동할 큐브높이 최소차이.
 
-
-    [SerializeField] public Skill skill;
-    [SerializeField] public List<ActionSlot> actionSlots;
-    [SerializeField] public ItemBag itemBag;
-    [SerializeField] public GameObject projectile;
-
-
     [Header ("Set in Runtime")]
     [HideInInspector] public int actionPointsRemain;
     [HideInInspector] public Cube GetCube { get => GetCubeOnPosition(); }
     [HideInInspector] public StateMachine<Unit> stateMachine;
-    /*[HideInInspector]*/ [SerializeField] private int currHealth;
-    public int Health { get { return currHealth; } }
+    [SerializeField] public int currHealth;
+    public UnitMover mover;
+    public UnitAttacker attacker;
+    public UnitSkillCaster skillCaster;
+    public UnitItemUser itemUser;
     public int BasicAttackDamageAvg { get => (basicAttackDamageMax + basicAttackDamageMin) / 2; }
     public Range basicAttackRange;
     public Range basicAttackSplash;
 
 
-    private List<Transform> allBodyPartRenderers = new List<Transform>();
+    private List<Renderer> renderers = new List<Renderer>();
     public List<Cube> targetCubes;
+    private Queue<UnitCommand> commandQueue = new Queue<UnitCommand>();
+    public int commandQueueCount { get => commandQueue.Count; }
+    public float JumpTime { get => jumpTime; }
+    public float JumpHeight { get => jumpHeight; }
 
     /// <summary>
-    /// basicAttackRange, basicAttackSplash, skillRange, skillSplash 네 변수를 꼭 유닛별로 초기화해주세요.
+    /// basicAttackRange, basicAttackSplash 두 변수를 꼭 유닛별로 초기화해주세요.
     /// </summary>
-    protected abstract void SetRange();
+    protected virtual void SetRange() { basicAttackRange = basicAttackSplash = null; }
 
     public virtual void Start()
     {
-        TraverseChildren((tr) => { if (tr.GetComponent<Renderer>()) allBodyPartRenderers.Add(tr); });
+        TraverseChildren((tr) => { if (tr.GetComponent<Renderer>()) renderers.Add(tr.GetComponent<Renderer>()); });
         currHealth = maxHealth;
         ResetActionPoint();
         SetRange();
+        SetActionComponents();
         stateMachine = new StateMachine<Unit>(new UnitIdle(this));
 
         if (basicAttackRange == null && GetActionSlot(ActionType.Attack) != null)
@@ -161,185 +168,39 @@ public abstract class Unit : MonoBehaviour
             Debug.LogError("Action Attack을 갖고 있지만 basicAttackSplash를 설정하지 않았습니다.");
         if (skill == null && GetActionSlot(ActionType.Skill) != null)
             Debug.LogError("Action Skill을 갖고 있지만 Skill을 설정하지 않았습니다.");
+
+    }
+
+    private void SetActionComponents()
+    {
+        if (GetActionSlot(ActionType.Move) != null)
+            mover = gameObject.AddComponent(typeof(UnitMover)) as UnitMover;
+        if(GetActionSlot(ActionType.Attack) != null)
+            attacker = gameObject.AddComponent(typeof(UnitAttacker)) as UnitAttacker;
+        if (GetActionSlot(ActionType.Skill) != null)
+            skillCaster = gameObject.AddComponent(typeof(UnitSkillCaster)) as UnitSkillCaster;
+        if (GetActionSlot(ActionType.Item) != null)
+            itemUser = gameObject.AddComponent(typeof(UnitItemUser)) as UnitItemUser;
     }
 
     public void ResetActionPoint() => actionPointsRemain = actionPoints;
     public void ResetActionPoint(int add) => actionPointsRemain = actionPoints + add;
 
-    #region Move Methods
-
-    public void MoveTo(PFPath pathToDest)
+    public void EnqueueCommand(UnitCommand command) => commandQueue.Enqueue(command);
+    public UnitCommand TryDequeueCommand()
     {
-        int apCost = CalcMoveAPCost(pathToDest);
-        stateMachine.ChangeState(new UnitMove(this, pathToDest, apCost), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+        if (commandQueue.Count > 0)
+            return commandQueue.Dequeue();
+        else 
+            return null;
     }
 
-    /// <param name="nextDestinationCube">도착지 Cube</param>
-    /// <param name="OnJumpDone">도착하면 OnJumpDone을 호출합니다.</param>
-    public void JumpMove(Cube nextDestinationCube, Action OnJumpDone)
-    {
-        Vector3 currPos = transform.position;
-        Vector3 dir = nextDestinationCube.Platform.position - transform.position;
-        dir.y = 0f;
-        LookDirection(dir);
-        
-        StartCoroutine(JumpToDestination(currPos, nextDestinationCube.Platform.position, OnJumpDone));
-    }
-
-    public void FlatMove(Cube nextDestinationCube, Action OnWalkDone)
-    {
-        Vector3 nextDestination = nextDestinationCube.Platform.position;
-        StartCoroutine(WalkToDestination(nextDestination, OnWalkDone));
-    }
-
-    private void LookDirection(Vector3 dir)
-    {
-        if (dir != Vector3.zero) body.rotation = Quaternion.LookRotation(dir, Vector3.up);
-    }
-
-    private IEnumerator WalkToDestination(Vector3 nextDestination, Action OnWalkDone)
-    {
-        while (true)
-        {
-            float distanceRemain = Vector3.Distance(nextDestination, transform.position);
-            Vector3 dir = (nextDestination - transform.position).normalized;
-            Vector3 move = dir * moveSpeed * Time.deltaTime;
-
-            LookDirection(dir);
-            transform.Translate(Vector3.ClampMagnitude(move, distanceRemain));
-            yield return null;
-
-            if (distanceRemain < Mathf.Epsilon)
-            {
-                OnWalkDone();
-                yield break;
-            }
-        }
-    }
-
-    private IEnumerator JumpToDestination(Vector3 currCubePos, Vector3 nextDestination, Action OnJumpDone)
-    {
-        float currLerpTime = 0f;
-        float lerpTime = jumpTime;
-
-
-        while (Vector3.Distance(transform.position, nextDestination) > Mathf.Epsilon)
-        {
-            currLerpTime += Time.deltaTime;
-            if (currLerpTime > lerpTime)
-            {
-                currLerpTime = lerpTime;
-                transform.position = nextDestination;
-                break;
-            }
-            float lerp = currLerpTime / lerpTime;
-
-            /*  LERP   */
-
-            // Linear Lerp
-            Vector3 moveLerp = Vector3.Lerp(currCubePos, nextDestination, lerp);
-
-            // Sin Lerp
-            float jumpLerpY = Mathf.Sin(lerp * Mathf.PI) * jumpHeight;
-            Vector3 jumpLerp = new Vector3(0f, jumpLerpY, 0f);
-
-            transform.localPosition = moveLerp + jumpLerp;
-
-            yield return null;
-        }
-
-        OnJumpDone();
-    }
-
-    public int CalcMoveAPCost(PFPath path) => (path.path.Count - 1) * GetActionSlot(ActionType.Move).cost;
-
-    #endregion
-
-    #region Attack Methods
-
-    public void Attack(List<Cube> cubesToAttack, Cube centerCube)
-    {
-        this.targetCubes = cubesToAttack;
-
-        int cost = GetActionSlot(ActionType.Attack).cost;
-        if (actionPointsRemain >= cost)
-            actionPointsRemain -= cost;
-        else
-        {
-            stateMachine.ChangeState(new UnitIdle(this), StateMachine<Unit>.StateTransitionMethod.PopNPush);
-            return;
-        }
-
-        stateMachine.ChangeState(new UnitAttack(this, cubesToAttack, centerCube), StateMachine<Unit>.StateTransitionMethod.PopNPush);
-    }
 
     // 공격을 받는 유닛입장에서 호출당하는 함수
     public void TakeDamage(int damage, Transform opponent)
     {
         stateMachine.ChangeState(new UnitHit(this, damage, opponent, (amount) => currHealth -= amount), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
-
-    // 공격자 입장에서 호출하는 함수
-    // AnimationHelper에 의해 Attack Animation 도중에 호출됩니다.
-    public void GiveDamageOnTargets()
-    {
-        foreach (var cube in targetCubes)
-        {
-            Unit targetUnit = cube.GetUnit();
-            if (targetUnit)
-            {
-                int damage = UnityEngine.Random.Range(basicAttackDamageMin, basicAttackDamageMax + 1);
-                targetUnit.TakeDamage(damage, transform);
-            }
-                
-        }
-    }
-
-    #endregion
-
-    #region Item Methods
-
-    public void UseItem(Item item)
-    {
-        itemBag.RemoveItem(item);
-        actionPointsRemain -= GetActionSlot(ActionType.Item).cost;
-        stateMachine.ChangeState(new UnitItem(this, item), StateMachine<Unit>.StateTransitionMethod.PopNPush);
-    }
-
-    public void Heal(int amount)
-    {
-        if (amount < 0) return; // 양수만 받습니다. 데미지를 주고 싶을 땐 UnitAttack State를 이용하세요.
-
-        currHealth = Mathf.Clamp(currHealth + amount, 0, maxHealth);
-    }
-
-    #endregion
-
-    #region Skill Methods
-
-    // TurnMgr에 의해 호출됩니다.
-    public void CastSkill(List<Cube> cubesToCastSkill, Cube centerCube)
-    {
-        this.targetCubes = cubesToCastSkill;
-        actionPointsRemain -= GetActionSlot(ActionType.Skill).cost;
-        stateMachine.ChangeState(new UnitSkill(this, targetCubes, centerCube), StateMachine<Unit>.StateTransitionMethod.PopNPush);
-    }
-
-    // AnimationHelper에 의해 Attack Animation 도중에 호출됩니다.
-    public void CastSkillOnTargets()
-    {
-        foreach (var cube in targetCubes)
-        {
-            Unit targetUnit = cube.GetUnit();
-            if (targetUnit)
-            {
-                skill.OnSkillAnimation(this, targetUnit);
-            }
-                
-        }
-    }
-
-    #endregion
 
     public void LookAt(Transform pos)
     {
@@ -353,25 +214,17 @@ public abstract class Unit : MonoBehaviour
     public bool HasAction(ActionType type) => actionSlots.Any((a) => a.type == type);
 
     public void StartBlink() => 
-        allBodyPartRenderers.ForEach(part => { 
-            if (part.GetComponent<Renderer>()) part.GetComponent<Renderer>()?.material.SetInt("_IsFresnel", 1); 
-        });
+        renderers.ForEach(part => part.GetComponent<Renderer>().material.SetInt("_IsFresnel", 1) );
     
-    public void StopBlink() => 
-        allBodyPartRenderers.ForEach(part => { 
-            if (part.GetComponent<Renderer>()) part.GetComponent<Renderer>()?.material.SetInt("_IsFresnel", 0); 
-        });
+    public void StopBlink() =>
+        renderers.ForEach(part => part.GetComponent<Renderer>().material.SetInt("_IsFresnel", 0));
 
-    public void StartTransparent() => 
-        allBodyPartRenderers.ForEach(part => { 
-            if (part.GetComponent<Renderer>()) part.GetComponent<Renderer>()?.material.SetInt("_IsDitherTransparent", 1); 
-        });
+    public void StartTransparent() =>
+        renderers.ForEach(part => part.GetComponent<Renderer>().material.SetInt("_IsDitherTransparent", 1));
 
-    public void StopTransparent() => 
-        allBodyPartRenderers.ForEach(part => { 
-            if (part.GetComponent<Renderer>()) part.GetComponent<Renderer>()?.material.SetInt("_IsDitherTransparent", 0); 
-        });
 
+    public void StopTransparent() =>
+        renderers.ForEach(part => part.GetComponent<Renderer>().material.SetInt("_IsDitherTransparent", 0));
 
     private Cube GetCubeOnPosition()
     {

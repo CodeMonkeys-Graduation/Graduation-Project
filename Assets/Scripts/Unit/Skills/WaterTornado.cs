@@ -22,7 +22,7 @@ public class WaterTornado : Skill
     {
     }
 
-    public override void OnUnitSkillEnter(List<Cube> targetCubes, Cube centerCube)
+    public override void OnUnitSkillEnter(Unit caster, List<Cube> targetCubes, Cube centerCube)
     {
         foreach(var cube in targetCubes)
         {
@@ -33,6 +33,14 @@ public class WaterTornado : Skill
         }
     }
 
-    public override void OnSkillAnimation(Unit ownerUnit, Unit targetUnit) => targetUnit.TakeDamage(Random.Range(amountMin, amountMax + 1), ownerUnit.transform);
+    public override void OnSkillAnimation(Unit caster)
+    {
+        foreach(var target in caster.targetCubes)
+        {
+            if(target.GetUnit() != null)
+                target.GetUnit().TakeDamage(Random.Range(amountMin, amountMax + 1), caster.transform);
+
+        }
+    }
 
 }

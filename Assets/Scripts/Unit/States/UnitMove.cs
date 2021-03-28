@@ -21,7 +21,7 @@ public class UnitMove : State<Unit>
 
     public override void Enter()
     {
-        EventMgr.Instance.onUnitRunEnter.Invoke();
+        EventMgr.Instance.onUnitRunEnter.Invoke(new UnitStateEvent(owner));
         owner.anim.SetTrigger("ToRun");
 
         prevCube = owner.GetCube;
@@ -41,7 +41,7 @@ public class UnitMove : State<Unit>
     {
         // 혹시나 못쓴 cost는 싹 써버리기
         owner.actionPointsRemain = Mathf.Max(owner.actionPointsRemain - cost, 0);
-        EventMgr.Instance.onUnitRunExit.Invoke();
+        EventMgr.Instance.onUnitRunExit.Invoke(new UnitStateEvent(owner));
     }
 
     private bool ProcessCubeToGo()
@@ -59,7 +59,7 @@ public class UnitMove : State<Unit>
             else
             {
                 isWalking = true;
-                owner.FlatMove(nextCubeToGo, OnArriveAtNextCube);
+                owner.mover.FlatMove(nextCubeToGo, OnArriveAtNextCube);
             }
         }
         else if(isJumping || cubeHeightDiff >= owner.cubeHeightToJump) // 점프로 이동 : currCube와 nextCube의 높이가 유닛이 점프로 이동하는 큐브높이(owner.cubeHeightToJump) 이상이라면
@@ -68,7 +68,7 @@ public class UnitMove : State<Unit>
             else
             {
                 isJumping = true;
-                owner.JumpMove(nextCubeToGo, OnArriveAtNextCube);
+                owner.mover.JumpMove(nextCubeToGo, OnArriveAtNextCube);
             }
         }
 

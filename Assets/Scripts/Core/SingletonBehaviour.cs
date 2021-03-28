@@ -4,7 +4,7 @@ public class SingletonBehaviour<T> : MonoBehaviour where T : SingletonBehaviour<
 {
     public static T Instance { get; protected set; }
 
-    void Awake()
+    protected void Awake()
     {
         if (Instance != null && Instance != this)
         {

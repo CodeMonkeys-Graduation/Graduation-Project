@@ -12,7 +12,7 @@ public class UnitDead : State<Unit>
     {
         owner.anim.SetTrigger("ToDead");
         owner.StartCoroutine(DestroyDelay(2f));
-        EventMgr.Instance.onUnitDeadEnter.Invoke();
+        EventMgr.Instance.onUnitDeadEnter.Invoke(new UnitStateEvent(owner));
     }
 
     public override void Execute()
@@ -21,14 +21,13 @@ public class UnitDead : State<Unit>
 
     public override void Exit()
     {
-        EventMgr.Instance.onUnitDeadExit.Invoke();
-        owner.gameObject.SetActive(false);
     }
 
     private IEnumerator DestroyDelay(float sec)
     {
         yield return new WaitForSeconds(sec);
-        owner.stateMachine.ChangeState(new UnitIdle(owner), StateMachine<Unit>.StateTransitionMethod.JustPush);
+        EventMgr.Instance.onUnitDeadExit.Invoke(new UnitStateEvent(owner));
+        owner.gameObject.SetActive(false);
     }
 
 }

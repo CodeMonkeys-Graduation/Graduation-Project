@@ -19,7 +19,12 @@ public class UnitSkill : State<Unit>
 
         owner.LookAt(centerCube.Platform);
 
-        owner.skill.OnUnitSkillEnter(castTargets, centerCube);
+        owner.targetCubes = MapMgr.Instance.GetCubes(owner.skill.skillSplash, centerCube);
+
+        int apCost = owner.GetActionSlot(ActionType.Skill).cost;
+        owner.actionPointsRemain -= apCost;
+
+        owner.skill.OnUnitSkillEnter(owner, owner.targetCubes, centerCube);
 
         owner.StartCoroutine(Execute_Coroutine());
     }
@@ -29,7 +34,7 @@ public class UnitSkill : State<Unit>
     }
     private IEnumerator Execute_Coroutine()
     {
-        yield return null;
+        yield return new WaitForSeconds(0.1f);
         while (true)
         {
             if (!owner.anim.GetBool("IsSkill"))
@@ -42,6 +47,6 @@ public class UnitSkill : State<Unit>
 
     public override void Exit()
     {
-        EventMgr.Instance.onUnitSkillExit.Invoke();
+        EventMgr.Instance.onUnitSkillExit.Invoke(new UnitStateEvent(owner));
     }
 }

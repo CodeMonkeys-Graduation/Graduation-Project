@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraMove : MonoBehaviour
+public class CameraMove : SingletonBehaviour<CameraMove>
 {
     public enum CameraState
     {
@@ -15,7 +15,7 @@ public class CameraMove : MonoBehaviour
     private Vector3 offset;
     Transform target;
     private float lerp = 0f;
-    void Awake()
+    void Start()
     {
         cameraState = CameraState.NonTargeting;
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));

@@ -4,18 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ActionPlanner : MonoBehaviour
+public class ActionPlanner : SingletonBehaviour<ActionPlanner>
 {
-    [SerializeField] MapMgr mapMgr;
-    [SerializeField] TurnMgr turnMgr;
-    [SerializeField] Pathfinder pathfinder;
     [SerializeField] ActionPointPanel actionPointPanel;
 
     private void Start()
     {
-        mapMgr = FindObjectOfType<MapMgr>();
-        turnMgr = FindObjectOfType<TurnMgr>();
-        pathfinder = FindObjectOfType<Pathfinder>();
         actionPointPanel = FindObjectOfType<ActionPointPanel>();
     }
 
@@ -26,7 +20,7 @@ public class ActionPlanner : MonoBehaviour
 
     public IEnumerator Plan_Coroutine(Unit requester, Action<List<APActionNode>> OnPlanCompleted)
     {
-        APGameState initialGameState = APGameState.Create(requester, turnMgr.turns.ToList(), mapMgr.map.Cubes.ToList());
+        APGameState initialGameState = APGameState.Create(requester, TurnMgr.Instance.turns.ToList(), MapMgr.Instance.map.Cubes.ToList());
 
         List<APActionNode> leafNodes = new List<APActionNode>();
 
@@ -40,7 +34,7 @@ public class ActionPlanner : MonoBehaviour
             int childCount = 0;
 
             //************** MOVE NODES **************// 
-            MovePlanner movePlanner = new MovePlanner(parentNode._gameState, parentNode._score, actionPointPanel, pathfinder);
+            MovePlanner movePlanner = new MovePlanner(parentNode._gameState, parentNode._score, actionPointPanel);
             if (movePlanner.IsAvailable(parentNode))
             {
                 List<APActionNode> moveNodes;
@@ -59,7 +53,7 @@ public class ActionPlanner : MonoBehaviour
             }
 
             //************** ATTACK NODES **************// 
-            AttackPlanner attackPlanner = new AttackPlanner(parentNode._gameState, parentNode._score, actionPointPanel, mapMgr);
+            AttackPlanner attackPlanner = new AttackPlanner(parentNode._gameState, parentNode._score, actionPointPanel);
             if (attackPlanner.IsAvailable(parentNode))
             {
                 List<APActionNode> attackNodes;
@@ -158,7 +152,7 @@ public class ActionPlanner : MonoBehaviour
 
                 Cube unitPos = finalGameState._unitPos[unit];
                 Range attackRange = unit.owner.basicAttackRange;
-                List<Cube> cubesInRange = mapMgr.GetCubes(
+                List<Cube> cubesInRange = MapMgr.Instance.GetCubes(
                     attackRange.range,
                     attackRange.centerX,
                     attackRange.centerZ,

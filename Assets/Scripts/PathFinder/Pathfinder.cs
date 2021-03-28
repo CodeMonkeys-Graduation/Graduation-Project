@@ -32,7 +32,7 @@ public class PFPath
 }
 
 
-public class Pathfinder : MonoBehaviour
+public class Pathfinder : SingletonBehaviour<Pathfinder>
 {
     public class PFNode
     {

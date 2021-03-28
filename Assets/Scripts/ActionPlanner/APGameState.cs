@@ -14,7 +14,7 @@ public class APUnit
     public APUnit(Unit unit, bool isSelf)
     {
         owner = unit;
-        health = unit.Health;
+        health = unit.currHealth;
         actionPoint = unit.actionPointsRemain;
         this.isSelf = isSelf;
     }

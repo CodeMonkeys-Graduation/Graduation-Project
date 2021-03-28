@@ -16,6 +16,11 @@ public class UnitItem : State<Unit>
     {
         _item.Use(owner);
 
+        owner.itemBag.RemoveItem(_item);
+
+        int apCost = owner.GetActionSlot(ActionType.Item).cost;
+        owner.actionPointsRemain -= apCost;
+
         owner.StartCoroutine(Execute_Coroutine());
     }
 
@@ -38,7 +43,7 @@ public class UnitItem : State<Unit>
 
     public override void Exit()
     {
-        EventMgr.Instance.onUnitItemExit.Invoke();
+        EventMgr.Instance.onUnitItemExit.Invoke(new UnitStateEvent(owner));
     }
 
 }

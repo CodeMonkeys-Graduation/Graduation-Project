@@ -5,10 +5,8 @@ using UnityEngine;
 
 public class AITurnBegin : TurnState
 {
-    ActionPlanner actionPlanner;
-    public AITurnBegin(TurnMgr owner, Unit unit, ActionPlanner actionPlanner) : base(owner, unit)
+    public AITurnBegin(TurnMgr owner, Unit unit) : base(owner, unit)
     {
-        this.actionPlanner = actionPlanner;
     }
 
     public override void Enter()
@@ -30,7 +28,7 @@ public class AITurnBegin : TurnState
         }
 
         EventMgr.Instance.onTurnPlan.Invoke();
-        owner.stateMachine.ChangeState(new AITurnPlan(owner, unit, actionPlanner), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+        owner.stateMachine.ChangeState(new AITurnPlan(owner, unit), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     }
 
     public override void Execute()
