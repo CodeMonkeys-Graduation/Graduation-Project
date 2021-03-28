@@ -1,13 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     [SerializeField] public Unit unitPrefab;
+    [SerializeField] public Text unitCountText;
+    EventListener e_onUnitSummonReady = new EventListener();
 
     Cube prevRaycastedCube = null;
     GameObject currDraggingUnit = null;
     private static Unit selectedUnit; // 소환 UI가 통틀어 가지고 있을 변수
+    public int unitCount;
 
     public void OnBeginDrag(PointerEventData data)
     {
@@ -24,7 +28,7 @@ public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
            
             if (currRaycastedCube == prevRaycastedCube) return; // 이전 큐브와 같은 큐브
 
-            if(!currRaycastedCube.IsAccupied()) // 비어있는 큐브
+            if (!currRaycastedCube.IsAccupied()) // 비어있는 큐브
                 SetCubeNUnit(currRaycastedCube);
             else // 유닛이 있는 큐브
                 UnsetCubeNUnit();
@@ -37,24 +41,40 @@ public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData data)
     {
+        currDraggingUnit?.GetComponent<Unit>().StopTransparent();
+        unitCount--;
+
         selectedUnit = null;
         prevRaycastedCube = null;
         currDraggingUnit = null;
     }
-
+    
     private bool IsUnitTempPlaced() => prevRaycastedCube != null && currDraggingUnit != null;
     private void SetCubeNUnit(Cube cube)
     {
-        // 드래깅하던 유닛이 어딘가 있음
-        if (currDraggingUnit != null) currDraggingUnit.transform.position = cube.Platform.position;
-        // 드래깅하던 유닛이 없음
-        else currDraggingUnit = Instantiate(selectedUnit.gameObject, cube.Platform.position, Quaternion.identity);
-
+        // 이미 드래깅하던 유닛이 존재
+        if (currDraggingUnit != null)
+        {
+            currDraggingUnit.transform.position = cube.Platform.position;
+        }
+        // 첫 드래깅
+        else
+        {
+            currDraggingUnit = Instantiate(selectedUnit.gameObject, cube.Platform.position, Quaternion.identity);
+            EventMgr.Instance.onUnitSummonReady.Register(e_onUnitSummonReady, (param) => { currDraggingUnit?.GetComponent<Unit>().StartTransparent(); });
+        }
         prevRaycastedCube = cube;
     }
     private void UnsetCubeNUnit()
     {
         if (currDraggingUnit != null) Destroy(currDraggingUnit.gameObject);
         prevRaycastedCube = null;
+        currDraggingUnit = null;
     }
+
+    public void SetSummonCountText()
+    {
+        unitCountText.text = unitCount.ToString();
+    }
+
 }
