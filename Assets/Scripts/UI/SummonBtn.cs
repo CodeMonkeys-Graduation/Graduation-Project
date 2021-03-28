@@ -41,7 +41,7 @@ public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData data)
     {
-        currDraggingUnit.GetComponent<Unit>().StopTransparent();
+        currDraggingUnit?.GetComponent<Unit>().StopTransparent();
         unitCount--;
 
         selectedUnit = null;
