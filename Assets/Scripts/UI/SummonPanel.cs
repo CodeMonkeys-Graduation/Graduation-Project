@@ -10,9 +10,9 @@ public class SummonPanel : MonoBehaviour, IPanel
 
     public Dictionary<SummonBtn, int> SummonBtnCount = new Dictionary<SummonBtn, int>();
 
-    public void SetSummonPanel(UnitParam up, bool add = true)
+    public void SetSummonPanel(UnitParam up, bool add)
     {
-        foreach(SummonBtn summonBtn in summonBtnPrefabs)
+        foreach(SummonBtn summonBtn in summonBtnPrefabs) // Dictionary를 Setting한 후
         {
             if(up.u == summonBtn.unitPrefab)
             {
@@ -36,15 +36,14 @@ public class SummonPanel : MonoBehaviour, IPanel
     {
         SummonBtn[] currSummonBtns = content.GetComponentsInChildren<SummonBtn>();
 
-        foreach(SummonBtn sb in currSummonBtns)
-        {
-            Destroy(sb.gameObject);
-        }
+        foreach(SummonBtn sb in currSummonBtns) Destroy(sb.gameObject);
         
         foreach(KeyValuePair<SummonBtn, int> si in SummonBtnCount)
         {
-            Instantiate(si.Key.gameObject).transform.SetParent(content, false);
-            si.Key.unitCount.text = si.Value.ToString();
+            GameObject g = Instantiate(si.Key.gameObject);
+
+            g.transform.SetParent(content, false);
+            g.GetComponent<SummonBtn>().unitCount.text = si.Value.ToString();
         }
     }
 
