@@ -140,7 +140,7 @@ public abstract class Unit : MonoBehaviour
 
 
     private List<Transform> allBodyPartRenderers = new List<Transform>();
-    private List<Cube> targetCubes;
+    public List<Cube> targetCubes;
 
     /// <summary>
     /// basicAttackRange, basicAttackSplash, skillRange, skillSplash 네 변수를 꼭 유닛별로 초기화해주세요.

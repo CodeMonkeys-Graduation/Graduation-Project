@@ -2,23 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EventMgr : MonoBehaviour
+public class EventMgr : SingletonBehaviour<EventMgr>
 {
-    private static EventMgr instance;
-    public static EventMgr Instance
-    {
-        get
-        {
-            if (instance == null)
-                instance = FindObjectOfType<EventMgr>();
-
-            return instance;
-        }
-    }
-    private void Awake()
-    {
-        instance = this;
-    }
 
     [Header("PathFinding Event")]
     [SerializeField] public Event onPathfindRequesterCountZero;
