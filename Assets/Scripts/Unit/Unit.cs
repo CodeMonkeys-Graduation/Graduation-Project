@@ -246,7 +246,10 @@ public class Unit : MonoBehaviour
             foreach (var child in currTr.GetComponentsInChildren<Transform>().Where(tr => tr != currTr))
                 queue.Enqueue(child);
         }
+
+        EventMgr.Instance.onUnitSummonReady.Invoke();
+
     }
 
-    
+
 }

@@ -26,7 +26,7 @@ public class Positioning : GameState
     {
         Debug.Log("유닛을 배치해주세요.");
 
-        foreach (Unit u in unitPrefabs) summonUI.SetSummonBtn(u); // summonUI에 unit에 해당하는 버튼 세팅
+        foreach (Unit u in unitPrefabs) summonUI.SetSummonPanel(u); // summonUI에 unit에 해당하는 버튼 세팅
 
         EventMgr.Instance.onGamePositioningEnter.Invoke();
     }

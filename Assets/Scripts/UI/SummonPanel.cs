@@ -6,15 +6,26 @@ public class SummonPanel : MonoBehaviour, IPanel
 {
     [SerializeField] public List<SummonBtn> summonBtnList;
 
-    public void SetSummonBtn(Unit unit)
+    public void SetSummonPanel(Unit unit)
     {
         foreach(SummonBtn u in summonBtnList)
         {
-            if(u.unitPrefab == unit)
+            Unit up = u.unitPrefab;
+
+            if(up == unit)
             {
-                u.gameObject.SetActive(true);
+                if (!u.gameObject.activeSelf)
+                {
+                    u.gameObject.SetActive(true);
+                    u.unitCount = 1;
+                }
+                else
+                    u.unitCount++;
             }
+
+            u.SetSummonCountText();
         }
+ 
     }
 
     public void UnsetPanel()
