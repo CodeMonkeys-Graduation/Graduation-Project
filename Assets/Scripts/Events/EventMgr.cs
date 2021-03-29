@@ -9,10 +9,12 @@ public class EventMgr : SingletonBehaviour<EventMgr>
     [SerializeField] public Event onPathfindRequesterCountZero;
     [SerializeField] public Event onPathUpdatingStart;
 
-    [Header("Unit Event")]
-    [SerializeField] public Event onUnitSummonReady;
+    [Header("Positioning Event")]
+    [SerializeField] public Event onUnitInitEnd;
     [SerializeField] public Event onUnitSummonEnd;
 
+    [Header("Unit Event")]
+    [SerializeField] public Event onUnitCommandFail;
     [SerializeField] public Event onUnitAttackExit;
     [SerializeField] public Event onUnitDeadEnter;
     [SerializeField] public Event onUnitDeadExit;
