@@ -158,13 +158,13 @@ public class UIMgr : MonoBehaviour
     private void OnClickItemBtn()
         => turnMgr.stateMachine.ChangeState(new PlayerTurnItem(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     private void OnClickSkillBtn()
-    => turnMgr.stateMachine.ChangeState(new PlayerTurnSkill(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+    => turnMgr.stateMachine.ChangeState(new TurnMgr_PlayerSkill_(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
 
     void OnClickItemSlotBtn(Item item)
     {
         string popupContent = $"r u sure u wanna use {item.name}?";
         turnMgr.stateMachine.ChangeState(
-            new PlayerTurnPopup(turnMgr, turnMgr.turns.Peek(), Input.mousePosition, popupContent,
+            new TurnMgr_Popup_(turnMgr, turnMgr.turns.Peek(), Input.mousePosition, popupContent,
             () => UseItem(item), () => turnMgr.stateMachine.ChangeState(null, StateMachine<TurnMgr>.StateTransitionMethod.ReturnToPrev),
             () => itemPanel.SetPanel(turnMgr.turns.Peek().itemBag.GetItem(), OnClickItemSlotBtn), null, 
             () => itemPanel.UnsetPanel()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
@@ -172,9 +172,9 @@ public class UIMgr : MonoBehaviour
 
     void UseItem(Item item)
     {
-        TurnState nextState = new PlayerTurnBegin(turnMgr, turnMgr.turns.Peek());
+        TurnMgr_State_ nextState = new TurnMgr_PlayerBegin_(turnMgr, turnMgr.turns.Peek());
         turnMgr.stateMachine.ChangeState(
-            new WaitSingleEvent(turnMgr, turnMgr.turns.Peek(), EventMgr.Instance.onUnitIdleEnter, nextState),
+            new TurnMgr_WaitSingleEvent_(turnMgr, turnMgr.turns.Peek(), EventMgr.Instance.onUnitIdleEnter, nextState),
             StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
 
 

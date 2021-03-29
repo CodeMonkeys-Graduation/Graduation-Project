@@ -157,7 +157,7 @@ public class Unit : MonoBehaviour
         ResetActionPoint();
         SetRange();
         SetActionComponents();
-        stateMachine = new StateMachine<Unit>(new UnitIdle(this));
+        stateMachine = new StateMachine<Unit>(new Unit_Idle_(this));
 
         if (basicAttackRange == null && GetActionSlot(ActionType.Attack) != null)
             Debug.LogError("Action Attack을 갖고 있지만 basicAttackRange를 설정하지 않았습니다.");
@@ -196,7 +196,7 @@ public class Unit : MonoBehaviour
     // 공격을 받는 유닛입장에서 호출당하는 함수
     public void TakeDamage(int damage, Transform opponent)
     {
-        stateMachine.ChangeState(new UnitHit(this, damage, opponent, (amount) => currHealth -= amount), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+        stateMachine.ChangeState(new Unit_Hit_(this, damage, opponent, (amount) => currHealth -= amount), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
 
     public void LookAt(Transform pos)
