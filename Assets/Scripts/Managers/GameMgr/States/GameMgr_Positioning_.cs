@@ -22,7 +22,7 @@ public class GameMgr_Positioning_ : GameMgr_State_
     SummonPanel summonPanel;
     List<Unit> unitPrefabs;
 
-    EventListener e_onUnitSummonEnd = new EventListener();
+    EventListener el_onUnitSummonEnd = new EventListener();
 
     public GameMgr_Positioning_(GameMgr owner, TurnMgr turnMgr, SummonPanel summonPanel, List<Unit> unitPrefabs) : base(owner)
     {
@@ -40,7 +40,7 @@ public class GameMgr_Positioning_ : GameMgr_State_
             summonPanel.SetSummonPanel(unit, true); // summonUI에 unit에 해당하는 버튼 세팅
 
         EventMgr.Instance.onUnitSummonEnd.Register(
-            e_onUnitSummonEnd, 
+            el_onUnitSummonEnd, 
             (param) => summonPanel.SetSummonPanel(((UnitParam)param)._unit, false)
             );
 

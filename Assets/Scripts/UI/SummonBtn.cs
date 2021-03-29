@@ -7,7 +7,7 @@ public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     [SerializeField] public Unit unitPrefab;
     [SerializeField] public Text unitCount;
 
-    EventListener e_onUnitSummonReady = new EventListener();
+    EventListener el_onUnitSummonReady = new EventListener();
 
     Cube prevRaycastedCube = null;
     GameObject currDraggingUnit = null;
@@ -61,7 +61,7 @@ public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         else
         {
             currDraggingUnit = Instantiate(selectedUnit.gameObject, cube.Platform.position, Quaternion.identity);
-            EventMgr.Instance.onUnitSummonReady.Register(e_onUnitSummonReady, (param) => { currDraggingUnit?.GetComponent<Unit>().StartTransparent(); });
+            EventMgr.Instance.onUnitInitEnd.Register(el_onUnitSummonReady, (param) => { currDraggingUnit?.GetComponent<Unit>().StartTransparent(); });
         }
         prevRaycastedCube = cube;
     }

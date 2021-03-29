@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class TurnMgr_AIAction_ : TurnMgr_State_
 {
-    private class UnitKey : Unit, IKey { }
+    private class Key : Unit, IKey { }
+
     Queue<APActionNode> _actions;
     APActionNode _currAction;
     public TurnMgr_AIAction_(TurnMgr owner, Unit unit, List<APActionNode> actions) : base(owner, unit)
@@ -81,7 +82,7 @@ public class TurnMgr_AIAction_ : TurnMgr_State_
         _currAction = _actions.Dequeue();
 
         // 액션 실행
-        if (_currAction.Command.Perform<UnitKey>(unit))
+        if (_currAction.Command.Perform<Key>(unit))
         {
             // 액션이 끝나는 이벤트를 wait
             owner.stateMachine.ChangeState(

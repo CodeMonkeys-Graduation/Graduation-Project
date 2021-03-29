@@ -2,13 +2,13 @@
 using System.Linq;
 using UnityEngine;
 
-public class PlayerTurnAttack : TurnMgr_State_
+public class TurnMgr_PlayerAttack_ : TurnMgr_State_
 {
     List<Cube> cubesCanAttack;
     List<Cube> cubesAttackRange;
     protected Cube cubeClicked;
 
-    public PlayerTurnAttack(TurnMgr owner, Unit unit) : base(owner, unit)
+    public TurnMgr_PlayerAttack_(TurnMgr owner, Unit unit) : base(owner, unit)
     {
         // get all cubes in range
         cubesAttackRange = MapMgr.Instance.GetCubes(unit.basicAttackRange, unit.GetCube);

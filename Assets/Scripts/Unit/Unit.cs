@@ -166,6 +166,7 @@ public class Unit : MonoBehaviour
         if (skill == null && GetActionSlot(ActionType.Skill) != null)
             Debug.LogError("Action Skill을 갖고 있지만 Skill을 설정하지 않았습니다.");
 
+        EventMgr.Instance.onUnitInitEnd.Invoke();
     }
 
     private void SetActionComponents()
@@ -247,7 +248,6 @@ public class Unit : MonoBehaviour
                 queue.Enqueue(child);
         }
 
-        EventMgr.Instance.onUnitSummonReady.Invoke();
 
     }
 

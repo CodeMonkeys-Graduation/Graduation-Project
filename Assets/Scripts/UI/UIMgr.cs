@@ -154,7 +154,7 @@ public class UIMgr : MonoBehaviour
     private void OnClickMoveBtn()
   => turnMgr.stateMachine.ChangeState(new PlayerTurnMove(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     private void OnClickAttackBtn()
-        => turnMgr.stateMachine.ChangeState(new PlayerTurnAttack(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+        => turnMgr.stateMachine.ChangeState(new TurnMgr_PlayerAttack_(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     private void OnClickItemBtn()
         => turnMgr.stateMachine.ChangeState(new PlayerTurnItem(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     private void OnClickSkillBtn()
