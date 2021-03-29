@@ -13,7 +13,7 @@ public class UnitAttacker : MonoBehaviour
     // 공격을 받는 유닛입장에서 호출당하는 함수
     public void TakeDamage(int damage, Transform opponent)
     {
-        owner.stateMachine.ChangeState(new UnitHit(owner, damage, opponent, (amount) => owner.currHealth -= amount), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+        owner.stateMachine.ChangeState(new Unit_Hit_(owner, damage, opponent, (amount) => owner.currHealth -= amount), StateMachine<Unit>.StateTransitionMethod.PopNPush);
     }
 
     // 공격자 입장에서 호출하는 함수

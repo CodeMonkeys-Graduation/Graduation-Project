@@ -47,12 +47,12 @@ public class AttackCommand : UnitCommand
         int cost = unit.GetActionSlot(ActionType.Attack).cost;
         if (unit.actionPointsRemain >= cost)
         {
-            unit.stateMachine.ChangeState(new UnitAttack(unit, unit.targetCubes, _target), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+            unit.stateMachine.ChangeState(new Unit_Attack_(unit, unit.targetCubes, _target), StateMachine<Unit>.StateTransitionMethod.PopNPush);
             return true;
         }
         else
         {
-            unit.stateMachine.ChangeState(new UnitIdle(unit), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+            unit.stateMachine.ChangeState(new Unit_Idle_(unit), StateMachine<Unit>.StateTransitionMethod.PopNPush);
             return false;
         }
     }
@@ -98,7 +98,7 @@ public class MoveCommand : UnitCommand
         int apCost = unit.mover.CalcMoveAPCost(_path);
         if(unit.actionPointsRemain >= unit.GetActionSlot(ActionType.Move).cost * (_path.path.Count - 1))
         {
-            unit.stateMachine.ChangeState(new UnitMove(unit, _path, apCost), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+            unit.stateMachine.ChangeState(new Unit_Move_(unit, _path, apCost), StateMachine<Unit>.StateTransitionMethod.PopNPush);
             return true;
         }
         else
@@ -146,7 +146,7 @@ public class ItemCommand : UnitCommand
         if (unit.itemBag.items.Contains(_item) &&
         unit.actionPointsRemain >= apCost)
         {
-            unit.stateMachine.ChangeState(new UnitItem(unit, _item), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+            unit.stateMachine.ChangeState(new Unit_Item_(unit, _item), StateMachine<Unit>.StateTransitionMethod.PopNPush);
             return true;
         }
         else
@@ -195,7 +195,7 @@ public class SkillCommand : UnitCommand
         int apCost = unit.GetActionSlot(ActionType.Skill).cost;
         if (unit.actionPointsRemain >= apCost)
         {
-            unit.stateMachine.ChangeState(new UnitSkill(unit, unit.targetCubes, _target), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+            unit.stateMachine.ChangeState(new Unit_Skill_(unit, unit.targetCubes, _target), StateMachine<Unit>.StateTransitionMethod.PopNPush);
             return true;
         }
         else

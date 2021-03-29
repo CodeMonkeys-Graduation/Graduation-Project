@@ -10,11 +10,11 @@ public class SummonPanel : MonoBehaviour, IPanel
 
     public Dictionary<SummonBtn, int> SummonBtnCount = new Dictionary<SummonBtn, int>();
 
-    public void SetSummonPanel(UnitParam up, bool add)
+    public void SetSummonPanel(Unit unit, bool add)
     {
         foreach(SummonBtn summonBtn in summonBtnPrefabs) // Dictionary를 Setting한 후
         {
-            if(up.u == summonBtn.unitPrefab)
+            if(unit == summonBtn.unitPrefab)
             {
                 if(add)
                 {

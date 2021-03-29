@@ -21,7 +21,7 @@ public class TurnSlot : MonoBehaviour
             if (isOn)
             {
                 statusPanel.SetStatusForUnit(unit);
-                CameraMove.Instance.SetTarget(unit);
+                CameraMgr.Instance.SetTarget(unit);
             }
             else
             {
