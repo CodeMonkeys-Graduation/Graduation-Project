@@ -1,6 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+public class CommandResultParam : EventParam
+{
+    public Unit _subject;
+    public bool _success;
+    public CommandResultParam(Unit subject, bool success)
+    {
+        _subject = subject;
+        _success = success;
+    }
+}
 
 public class Unit_Idle_ : State<Unit>
 {
@@ -22,7 +32,10 @@ public class Unit_Idle_ : State<Unit>
         {
             UnitCommand command = owner.TryDequeueCommand();
             if (command != null)
-                command.Perform<UnitKey>(owner);
+                if (command.Perform<UnitKey>(owner))
+                    EventMgr.Instance.onUnitCommandResult.Invoke(new CommandResultParam(owner, true));
+                else
+                    EventMgr.Instance.onUnitCommandResult.Invoke(new CommandResultParam(owner, false));
         }
     }
 

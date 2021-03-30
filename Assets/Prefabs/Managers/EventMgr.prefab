@@ -49,7 +49,8 @@ MonoBehaviour:
     type: 2}
   onUnitInitEnd: {fileID: 11400000, guid: a89a89060b4d8a04baa43c69acd734b5, type: 2}
   onUnitSummonEnd: {fileID: 11400000, guid: 254ca249b70a61b4f9d7fd31e1fc16fb, type: 2}
-  onUnitCommandFail: {fileID: 0}
+  onUnitCommandResult: {fileID: 11400000, guid: 8fdb4b3ed1fc0d74da5b38535499871d,
+    type: 2}
   onUnitAttackExit: {fileID: 11400000, guid: 2079106fc3680b44ba8b64dcc785cf18, type: 2}
   onUnitDeadEnter: {fileID: 11400000, guid: 66ff86eb3d1dceb47a03c6d50e4a3a26, type: 2}
   onUnitDeadExit: {fileID: 11400000, guid: 91024f9cb800d6046bbfbd14f27b6277, type: 2}
