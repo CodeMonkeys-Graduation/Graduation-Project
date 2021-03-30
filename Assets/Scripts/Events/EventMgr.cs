@@ -14,7 +14,7 @@ public class EventMgr : SingletonBehaviour<EventMgr>
     [SerializeField] public Event onUnitSummonEnd;
 
     [Header("Unit Event")]
-    [SerializeField] public Event onUnitCommandFail;
+    [SerializeField] public Event onUnitCommandResult;
     [SerializeField] public Event onUnitAttackExit;
     [SerializeField] public Event onUnitDeadEnter;
     [SerializeField] public Event onUnitDeadExit;

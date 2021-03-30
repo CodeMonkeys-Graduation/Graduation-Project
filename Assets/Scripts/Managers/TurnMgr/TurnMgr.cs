@@ -59,11 +59,12 @@ public class TurnMgr : SingletonBehaviour<TurnMgr>
             Unit currTurnUnit = turns.Peek();
             if (currTurnUnit.actionPointsRemain > 0)
             {
+                int clampRemain = Mathf.Min(currTurnUnit.actionPointsRemain, 3);
                 if(actionPointRemains.ContainsKey(currTurnUnit))
-                    actionPointRemains[currTurnUnit] = currTurnUnit.actionPointsRemain;
+                    actionPointRemains[currTurnUnit] = clampRemain;
 
                 else
-                    actionPointRemains.Add(currTurnUnit, currTurnUnit.actionPointsRemain);
+                    actionPointRemains.Add(currTurnUnit, clampRemain);
             }
 
             Unit unitPrevTurn = turns.Dequeue();
