@@ -3,11 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurnMgr_BranchSingleEvent_ : TurnMgr_State_
+public class TurnMgr_BranchSingleEvent_ : TurnMgr_WaitSingleEvent_
 {
-    EventListener el = new EventListener();
-    Action _onWaitEnter; Action _onWaitExecute; Action _onWaitExit;
-    Event _e;
     List<KeyValuePair<Predicate<EventParam>, TurnMgr_State_>> _branches;
     Predicate<EventParam> _ignoreCondition;
 
@@ -18,36 +15,14 @@ public class TurnMgr_BranchSingleEvent_ : TurnMgr_State_
     /// <param name="e">기다릴 Event</param>
     public TurnMgr_BranchSingleEvent_(
         TurnMgr owner, Unit unit, Event e, List<KeyValuePair<Predicate<EventParam>, TurnMgr_State_>> branches, 
-        Predicate<EventParam> ignoreCondition = null, Action onWaitEnter = null, Action onWaitExecute = null, Action onWaitExit = null) : base(owner, unit)
+        Predicate<EventParam> ignoreCondition = null, Action onWaitEnter = null, Action onWaitExecute = null, Action onWaitExit = null)
+        : base(owner, unit, e, null, null, onWaitEnter, onWaitExecute, onWaitExit)
     {
-        _e = e;
         _branches = branches;
-        e.Register(el, OnEvent_CheckPredicateNBranch);
-
         _ignoreCondition = ignoreCondition;
-        _onWaitEnter = onWaitEnter;
-        _onWaitExecute = onWaitExecute;
-        _onWaitExit = onWaitExit;
     }
 
-
-    public override void Enter()
-    {
-        if (_onWaitEnter != null) this._onWaitEnter.Invoke();
-    }
-
-    public override void Execute()
-    {
-        if (_onWaitExecute != null) this._onWaitExecute.Invoke();
-    }
-
-    public override void Exit()
-    {
-        if (_onWaitExit != null) this._onWaitExit.Invoke();
-        _e.Unregister(el);
-    }
-
-    private void OnEvent_CheckPredicateNBranch(EventParam param)
+    protected override void OnEvent(EventParam param)
     {
         if (_ignoreCondition(param))
             return;
