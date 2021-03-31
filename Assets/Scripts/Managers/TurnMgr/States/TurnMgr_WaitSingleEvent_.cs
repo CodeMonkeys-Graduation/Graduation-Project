@@ -3,11 +3,13 @@ using UnityEngine.Events;
 
 public class TurnMgr_WaitSingleEvent_ : TurnMgr_State_
 {
-    EventListener el = new EventListener();
-    Action _onWaitEnter; Action _onWaitExecute; Action _onWaitExit;
-    Event _e;
-    TurnMgr_State_ _nextState;
-    Predicate<EventParam> _paramCondition;
+    protected EventListener el = new EventListener();
+    protected Action _onWaitEnter;
+    protected Action _onWaitExecute;
+    protected Action _onWaitExit;
+    protected Event _e;
+    protected TurnMgr_State_ _nextState;
+    private Predicate<EventParam> _paramCondition;
 
 
     /// <summary>
@@ -25,8 +27,6 @@ public class TurnMgr_WaitSingleEvent_ : TurnMgr_State_
         _nextState = nextState;
         _paramCondition = paramCondition;
 
-        e.Register(el, OnEvent_TransitionToNextState);
-
         _onWaitEnter = onWaitEnter;
         _onWaitExecute = onWaitExecute;
         _onWaitExit = onWaitExit;
@@ -35,6 +35,8 @@ public class TurnMgr_WaitSingleEvent_ : TurnMgr_State_
 
     public override void Enter()
     {
+        _e.Register(el, OnEvent);
+
         if (_onWaitEnter != null) _onWaitEnter.Invoke();
     }
 
@@ -49,11 +51,10 @@ public class TurnMgr_WaitSingleEvent_ : TurnMgr_State_
         _e.Unregister(el);
     }
 
-    private void OnEvent_TransitionToNextState(EventParam param)
+    protected virtual void OnEvent(EventParam param)
     {
         if(_paramCondition == null || _paramCondition(param))
             owner.stateMachine.ChangeState(_nextState, StateMachine<TurnMgr>.StateTransitionMethod.PopNPush);
-
     }
 
 }
