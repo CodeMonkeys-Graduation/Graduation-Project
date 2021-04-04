@@ -6,6 +6,7 @@ public class GameMgr : MonoBehaviour
 {
     //-- Set in Editor --//
     [SerializeField] List<Unit> unitPrefabs;
+    [SerializeField] List<Cube> canSummonCubes;
 
     TurnMgr turnMgr;
     SummonPanel summonUI;
@@ -42,7 +43,7 @@ public class GameMgr : MonoBehaviour
     {
         if (stateMachine.IsStateType(typeof(GameMgr_Init_)))
         {
-            stateMachine.ChangeState(new GameMgr_Positioning_(this, turnMgr, summonUI, unitPrefabs), StateMachine<GameMgr>.StateTransitionMethod.ClearNPush);
+            stateMachine.ChangeState(new GameMgr_Positioning_(this, summonUI, unitPrefabs, canSummonCubes), StateMachine<GameMgr>.StateTransitionMethod.ClearNPush);
         }
         else if (stateMachine.IsStateType(typeof(GameMgr_Positioning_)))
         {

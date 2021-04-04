@@ -46,7 +46,6 @@ public class SummonPanel : MonoBehaviour, IPanel
             g.GetComponent<SummonBtn>().unitCount.text = si.Value.ToString();
         }
     }
-
     public void UnsetPanel()
     {
         gameObject.SetActive(false);
