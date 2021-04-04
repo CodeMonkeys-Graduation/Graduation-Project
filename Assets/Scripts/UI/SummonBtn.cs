@@ -7,11 +7,19 @@ public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     [SerializeField] public Unit unitPrefab;
     [SerializeField] public Text unitCount;
 
+    SummonCubeContainer summonCubeContainer;
+
     EventListener el_onUnitSummonReady = new EventListener();
 
     Cube prevRaycastedCube = null;
     GameObject currDraggingUnit = null;
+
     private static Unit selectedUnit; // 소환 UI가 통틀어 가지고 있을 변수
+
+    void Awake()
+    {
+        summonCubeContainer = FindObjectOfType<SummonCubeContainer>();
+    }
 
     public void OnBeginDrag(PointerEventData data)
     {
@@ -27,8 +35,8 @@ public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
             Cube currRaycastedCube = hitObj.transform.GetComponent<Cube>();
            
             if (currRaycastedCube == prevRaycastedCube) return; // 이전 큐브와 같은 큐브
-
-            if (!currRaycastedCube.IsAccupied()) // 비어있는 큐브
+            
+            if (!currRaycastedCube.IsAccupied() && summonCubeContainer.canSummonCubes.Find((c) => (c == currRaycastedCube)) != null) // 비어있는 큐브
                 SetCubeNUnit(currRaycastedCube);
             else // 유닛이 있는 큐브
                 UnsetCubeNUnit();
