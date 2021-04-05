@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Collections;
+using System.Collections.Generic;
 
 public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
@@ -30,13 +32,14 @@ public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     {
         RaycastHit hitObj;
         Ray ray = Camera.main.ScreenPointToRay(data.position);
+        List<Cube> canConsumeCubes = summonCubeContainer.canSummonCubes;
         if (Physics.Raycast(ray, out hitObj, Mathf.Infinity, LayerMask.GetMask("Cube")))
         {
             Cube currRaycastedCube = hitObj.transform.GetComponent<Cube>();
-           
+
             if (currRaycastedCube == prevRaycastedCube) return; // 이전 큐브와 같은 큐브
             
-            if (!currRaycastedCube.IsAccupied() && summonCubeContainer.canSummonCubes.Find((c) => (c == currRaycastedCube)) != null) // 비어있는 큐브
+            if (!currRaycastedCube.IsAccupied() && canConsumeCubes.Find((c) => (c == currRaycastedCube)) != null) // 비어있는 큐브
                 SetCubeNUnit(currRaycastedCube);
             else // 유닛이 있는 큐브
                 UnsetCubeNUnit();
@@ -49,9 +52,14 @@ public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData data)
     {
-        if(selectedUnit != null) EventMgr.Instance.onUnitSummonEnd.Invoke(new UnitParam(selectedUnit));
+        Unit u = currDraggingUnit?.GetComponent<Unit>();
 
-        currDraggingUnit?.GetComponent<Unit>().StopTransparent();
+        if (u != null)
+        {
+            EventMgr.Instance.onUnitSummonEnd.Invoke(new UnitParam(selectedUnit));
+            u.StopTransparent();
+        }
+
         selectedUnit = null;
         prevRaycastedCube = null;
         currDraggingUnit = null;

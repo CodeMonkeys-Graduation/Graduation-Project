@@ -6,11 +6,14 @@ public class GameMgr : MonoBehaviour
 {
     //-- Set in Editor --//
     [SerializeField] List<Unit> unitPrefabs;
-    [SerializeField] List<Cube> canSummonCubes;
+    [SerializeField] Transform environment;
+    [SerializeField] int canConsumeCubeCount;
+
 
     TurnMgr turnMgr;
     SummonPanel summonUI;
     TestNextStateBtn testNextStateBtn;
+    List<Cube> canSummonCubes;
 
     public StateMachine<GameMgr> stateMachine;
 
@@ -27,6 +30,14 @@ public class GameMgr : MonoBehaviour
         turnMgr = FindObjectOfType<TurnMgr>();
         summonUI = FindObjectOfType<SummonPanel>();
         testNextStateBtn = FindObjectOfType<TestNextStateBtn>();
+
+        canSummonCubes = new List<Cube>();
+
+        for (int i=0; i < canConsumeCubeCount; i++)
+        {
+            Cube canConsumeCube = environment.Find("Cube (" + i + ")")?.GetComponent<Cube>();
+            if(canConsumeCube != null) canSummonCubes.Add(canConsumeCube);
+        }
 
         stateMachine = new StateMachine<GameMgr>(new GameMgr_Init_(this));
     }

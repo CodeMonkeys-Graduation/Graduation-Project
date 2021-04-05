@@ -62,6 +62,8 @@ public class GameMgr_Positioning_ : GameMgr_State_
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hitObj, Mathf.Infinity, LayerMask.GetMask("Unit")))
             {
+                if(hitObj.transform.GetComponent<Unit>().team.controller == Team.Controller.AI) return;
+
                 selectedUnit = hitObj.transform.GetComponent<Unit>();
                 selectedUnit.StartTransparent();
                 prevRaycastedCube = selectedUnit.GetCube;
