@@ -9,10 +9,7 @@ public class GameMgr : MonoBehaviour
     [SerializeField] Transform environment;
     [SerializeField] int canConsumeCubeCount;
 
-
-    TurnMgr turnMgr;
     SummonPanel summonUI;
-    TestNextStateBtn testNextStateBtn;
     List<Cube> canSummonCubes;
 
     public StateMachine<GameMgr> stateMachine;
@@ -25,11 +22,7 @@ public class GameMgr : MonoBehaviour
 
     public void Start()
     {
-        RegisterEvents();
-
-        turnMgr = FindObjectOfType<TurnMgr>();
         summonUI = FindObjectOfType<SummonPanel>();
-        testNextStateBtn = FindObjectOfType<TestNextStateBtn>();
 
         canSummonCubes = new List<Cube>();
 
@@ -66,11 +59,6 @@ public class GameMgr : MonoBehaviour
         }
         
         
-    }
-
-    private void RegisterEvents()
-    {
-
     }
 
     // 디버깅용
