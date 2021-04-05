@@ -15,23 +15,23 @@ public class UnitParam : EventParam
 
 public class GameMgr_Positioning_ : GameMgr_State_
 {
-    SummonPanel summonPanel;
-    SummonCubeContainer summonCubeContainer;
+    SummonPanel _summonPanel;
+    SummonCubeContainer _summonCubeContainer;
 
-    List<Unit> unitPrefabs;
-    List<Cube> canSummonCubes;
+    List<Unit> _unitPrefabs;
+    List<Cube> _canSummonCubes;
 
-    Cube prevRaycastedCube = null;
-    Unit selectedUnit;
+    Cube _prevRaycastedCube = null;
+    Unit _selectedUnit;
 
     EventListener el_onUnitSummonEnd = new EventListener();
 
     public GameMgr_Positioning_(GameMgr owner, SummonPanel summonPanel, List<Unit> unitPrefabs, List<Cube> canSummonCubes) : base(owner)
     {
-        summonCubeContainer = MonoBehaviour.FindObjectOfType<SummonCubeContainer>();
-        this.summonPanel = summonPanel;
-        this.unitPrefabs = unitPrefabs;
-        this.canSummonCubes = canSummonCubes;
+        _summonCubeContainer = MonoBehaviour.FindObjectOfType<SummonCubeContainer>();
+        _summonPanel = summonPanel;
+        _unitPrefabs = unitPrefabs;
+        _canSummonCubes = canSummonCubes;
     }
 
     public override void Enter()
@@ -39,17 +39,17 @@ public class GameMgr_Positioning_ : GameMgr_State_
         Debug.Log("유닛을 배치해주세요.");
         EventMgr.Instance.onGamePositioningEnter.Invoke();
 
-        foreach (Unit unit in unitPrefabs) 
-            summonPanel.SetSummonPanel(unit, true); // summonUI에 unit에 해당하는 버튼 세팅
+        foreach (Unit unit in _unitPrefabs) 
+            _summonPanel.SetSummonPanel(unit, true); // summonUI에 unit에 해당하는 버튼 세팅
 
-        summonCubeContainer.SetCanSummonCubeContainer(canSummonCubes);
+        _summonCubeContainer.SetCanSummonCubeContainer(_canSummonCubes);
 
         EventMgr.Instance.onUnitSummonEnd.Register(
             el_onUnitSummonEnd, 
             (param) => 
                 {
                     Unit u = ((UnitParam)param)._unit;
-                    summonPanel.SetSummonPanel(u, false);
+                    _summonPanel.SetSummonPanel(u, false);
                 }
             );  
     }
@@ -64,9 +64,9 @@ public class GameMgr_Positioning_ : GameMgr_State_
             {
                 if(hitObj.transform.GetComponent<Unit>().team.controller == Team.Controller.AI) return;
 
-                selectedUnit = hitObj.transform.GetComponent<Unit>();
-                selectedUnit.StartTransparent();
-                prevRaycastedCube = selectedUnit.GetCube;
+                _selectedUnit = hitObj.transform.GetComponent<Unit>();
+                _selectedUnit.StartTransparent();
+                _prevRaycastedCube = _selectedUnit.GetCube;
             }
         }
 
@@ -78,25 +78,25 @@ public class GameMgr_Positioning_ : GameMgr_State_
             {
                 Cube currRaycastedCube = hitObj.transform.GetComponent<Cube>();
 
-                if (currRaycastedCube == prevRaycastedCube) return; // 이전 큐브와 같은 큐브
+                if (currRaycastedCube == _prevRaycastedCube) return; // 이전 큐브와 같은 큐브
 
-                if (!currRaycastedCube.IsAccupied() && canSummonCubes.Find((c) => currRaycastedCube == c) != null) // 비어있는 큐브
+                if (!currRaycastedCube.IsAccupied() && _canSummonCubes.Find((c) => currRaycastedCube == c) != null) // 비어있는 큐브
                     SetCubeNUnit(currRaycastedCube);
                 else // 유닛이 있는 큐브
-                    prevRaycastedCube = null;
+                    _prevRaycastedCube = null;
             }
             else // 마우스포인트가 큐브에 있지않음
             {
-                prevRaycastedCube = null;
+                _prevRaycastedCube = null;
             }
         }
 
         else if(Input.GetMouseButtonUp(0))
         {
-            selectedUnit?.GetComponent<Unit>().StopTransparent();
+            _selectedUnit?.GetComponent<Unit>().StopTransparent();
 
-            selectedUnit = null;
-            prevRaycastedCube = null;
+            _selectedUnit = null;
+            _prevRaycastedCube = null;
         }
         
     }
@@ -108,8 +108,8 @@ public class GameMgr_Positioning_ : GameMgr_State_
 
     private void SetCubeNUnit(Cube cube)
     {
-        if(selectedUnit != null) selectedUnit.transform.position = cube.Platform.position;
-        prevRaycastedCube = cube;
+        if(_selectedUnit != null) _selectedUnit.transform.position = cube.Platform.position;
+        _prevRaycastedCube = cube;
     }
 
 }

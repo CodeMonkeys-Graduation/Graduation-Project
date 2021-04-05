@@ -98,7 +98,7 @@ public class TurnMgr_AIAction_ : TurnMgr_State_
         var failBranch = new KeyValuePair<Predicate<EventParam>, TurnMgr_State_>((param) => !CommandResultPredicate(param), new TurnMgr_AIPlan_(owner, unit));
         branches.Add(failBranch);
 
-
+        
         // BranchSingleEvent
         owner.stateMachine.ChangeState(
             new TurnMgr_BranchSingleEvent_(owner, unit, EventMgr.Instance.onUnitCommandResult, branches, 
