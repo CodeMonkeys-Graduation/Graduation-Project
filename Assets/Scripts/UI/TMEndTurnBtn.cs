@@ -2,7 +2,12 @@
 
 public class TMEndTurnBtn : MonoBehaviour
 {
-    [SerializeField] TurnMgr turnMgr;
+    TurnMgr _turnMgr;
+
+    public void SetTMEndTurnBtn()
+    {
+        _turnMgr = FindObjectOfType<TurnMgr>();
+    }
     public void OnClick_EndTurnBtn()
-        => turnMgr.NextTurn();
+        => _turnMgr.NextTurn();
 }

@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class TestPlayBtn : MonoBehaviour
 {
-    [SerializeField] TurnMgr turnMgr;
+    TurnMgr _turnMgr;
+
+    public void SetTestPlayBtn()
+    {
+        _turnMgr = FindObjectOfType<TurnMgr>();
+    }
 
     public void OnClickPlay()
     {
-        turnMgr.NextTurn();
+        _turnMgr.NextTurn();
     }
 }

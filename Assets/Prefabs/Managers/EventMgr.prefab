@@ -70,11 +70,15 @@ MonoBehaviour:
   onTurnMove: {fileID: 11400000, guid: 21eaa094aa7ec65448bc6dd7e5dd52e1, type: 2}
   onTurnNobody: {fileID: 11400000, guid: b517919fc49fc9840897635a5b15785f, type: 2}
   onTurnPlan: {fileID: 11400000, guid: 47b2b3178eac02244a0008105d9137d3, type: 2}
-  onGameBattleEnter: {fileID: 11400000, guid: a382a0abf0ae7c943a65a0b2dc274774, type: 2}
-  onGameBattleExit: {fileID: 11400000, guid: 71de499fcdd865b44a433b41df984a57, type: 2}
   onGameInitEnter: {fileID: 11400000, guid: 149ceb97438b07e439bdb631d81e3084, type: 2}
   onGameInitExit: {fileID: 11400000, guid: c0661a9039bfa2b44a5cbae433fab816, type: 2}
   onGamePositioningEnter: {fileID: 11400000, guid: 57e7f51f4acf2e64a8f37eb14d0832f9,
     type: 2}
   onGamePositioningExit: {fileID: 11400000, guid: fd5a3839fea33834fa947d9df6e1d4f0,
     type: 2}
+  onGameBattleEnter: {fileID: 11400000, guid: a382a0abf0ae7c943a65a0b2dc274774, type: 2}
+  onGameBattleExit: {fileID: 11400000, guid: 71de499fcdd865b44a433b41df984a57, type: 2}
+  onGameVictoryEnter: {fileID: 11400000, guid: c8109fada91ac664290586388ab3478c, type: 2}
+  onGameVictoryExit: {fileID: 11400000, guid: 7fda8a0e081480846a6715e7831a93da, type: 2}
+  onGameDefeatEnter: {fileID: 11400000, guid: 0cefdc7d27f35d24689969c09c0bb96a, type: 2}
+  onGameDefeatExit: {fileID: 11400000, guid: 7479db5a97c6d9b4a943571ee09072db, type: 2}
