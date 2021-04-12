@@ -36,6 +36,10 @@ public class UIMgr : MonoBehaviour
     EventListener el_GamePositioningExit = new EventListener();
     EventListener el_GameBattleEnter = new EventListener();
     EventListener el_GameBattleExit = new EventListener();
+    EventListener el_GameVictoryEnter = new EventListener();
+    EventListener el_GameVictoryExit = new EventListener();
+    EventListener el_GameDefeatEnter = new EventListener();
+    EventListener el_GameDefeatExit = new EventListener();
 
     // Turn
     EventListener el_TurnBeginEnter = new EventListener();
@@ -53,7 +57,6 @@ public class UIMgr : MonoBehaviour
     void Start()
     {
         gameMgr = FindObjectOfType<GameMgr>();
-        turnMgr = FindObjectOfType<TurnMgr>();
 
         turnPanel = FindObjectOfType<TurnPanel>();
         actionPanel = FindObjectOfType<ActionPanel>();
@@ -68,12 +71,16 @@ public class UIMgr : MonoBehaviour
 
     void RegisterEvent()
     {
-        EventMgr.Instance.onGameInitEnter.Register(el_GameInitEnter, (param) => { });
+        EventMgr.Instance.onGameInitEnter.Register(el_GameInitEnter, SetUIGameInit);
         EventMgr.Instance.onGameInitExit.Register(el_GameInitExit, (param) => { });
         EventMgr.Instance.onGamePositioningEnter.Register(el_GamePositioningEnter, (param) => SetUIPositioning(true));
         EventMgr.Instance.onGamePositioningExit.Register(el_GamePositioningExit, (param) => SetUIPositioning(false));
         EventMgr.Instance.onGameBattleEnter.Register(el_GameBattleEnter, (param) => { });
         EventMgr.Instance.onGameBattleExit.Register(el_GameBattleExit, (param) => { });
+        EventMgr.Instance.onGameVictoryEnter.Register(el_GameVictoryEnter, (param) => { });
+        EventMgr.Instance.onGameVictoryExit.Register(el_GameVictoryEnter, (param) => { });
+        EventMgr.Instance.onGameDefeatEnter.Register(el_GameDefeatExit, (param) => { });
+        EventMgr.Instance.onGameDefeatExit.Register(el_GameDefeatExit, (param) => { });
 
         EventMgr.Instance.onTurnActionEnter.Register(el_TurnActionEnter, (param) => SetUIAction(true));
         EventMgr.Instance.onTurnActionExit.Register(el_TurnActionExit, (param) => SetUIAction(false));
@@ -84,6 +91,21 @@ public class UIMgr : MonoBehaviour
         EventMgr.Instance.onTurnMove.Register(el_TurnMove, (param) => actionPointPanel.SetText(turnMgr.turns.Peek().actionPointsRemain));
         EventMgr.Instance.onTurnNobody.Register(el_TurnNobody, SetUINobody);
         EventMgr.Instance.onTurnPlan.Register(el_TurnPlan, SetUIPlan);
+    }
+
+    void SetUIGameInit(EventParam param)
+    {
+        testPlayBtn.SetActive(false);
+        endTurnBtn.SetActive(false);
+        backBtn.SetActive(false);
+
+        actionPanel.UnsetPanel();
+        turnPanel.UnsetPanel();
+        itemPanel.UnsetPanel();
+        actionPointPanel.UnsetPanel();
+        statusPanel.UnsetPanel();
+        popupPanel.UnsetPanel();
+        summonPanel.UnsetPanel();
     }
 
     void SetUIPositioning(bool b)
@@ -98,6 +120,9 @@ public class UIMgr : MonoBehaviour
         testPlayBtn.SetActive(true);
         endTurnBtn.SetActive(false);
         backBtn.SetActive(false);
+
+        testPlayBtn.GetComponent<TestPlayBtn>().SetTestPlayBtn();
+        endTurnBtn.GetComponent<TMEndTurnBtn>().SetTMEndTurnBtn();
 
         actionPanel.UnsetPanel();
         turnPanel.UnsetPanel();
@@ -116,6 +141,8 @@ public class UIMgr : MonoBehaviour
 
     void SetUIBeginEnter(EventParam param)
     {
+        turnMgr = gameMgr.turnMgr;
+
         Dictionary<ActionType, UnityAction> btnEvents = new Dictionary<ActionType, UnityAction>();
         btnEvents.Add(ActionType.Move, OnClickMoveBtn);
         btnEvents.Add(ActionType.Attack, OnClickAttackBtn);
@@ -138,6 +165,8 @@ public class UIMgr : MonoBehaviour
 
     void SetUIPlan(EventParam param)
     {
+        turnMgr = gameMgr.turnMgr;
+
         testPlayBtn.SetActive(false);
         endTurnBtn.SetActive(false);
         backBtn.SetActive(false);
@@ -152,16 +181,18 @@ public class UIMgr : MonoBehaviour
     }
 
     private void OnClickMoveBtn()
-  => turnMgr.stateMachine.ChangeState(new PlayerTurnMove(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+  => gameMgr.turnMgr.stateMachine.ChangeState(new PlayerTurnMove(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     private void OnClickAttackBtn()
-        => turnMgr.stateMachine.ChangeState(new TurnMgr_PlayerAttack_(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+        => gameMgr.turnMgr.stateMachine.ChangeState(new TurnMgr_PlayerAttack_(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     private void OnClickItemBtn()
-        => turnMgr.stateMachine.ChangeState(new PlayerTurnItem(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+        => gameMgr.turnMgr.stateMachine.ChangeState(new PlayerTurnItem(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     private void OnClickSkillBtn()
-    => turnMgr.stateMachine.ChangeState(new TurnMgr_PlayerSkill_(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+    => gameMgr.turnMgr.stateMachine.ChangeState(new TurnMgr_PlayerSkill_(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
 
     void OnClickItemSlotBtn(Item item)
     {
+        turnMgr = gameMgr.turnMgr;
+
         string popupContent = $"r u sure u wanna use {item.name}?";
         turnMgr.stateMachine.ChangeState(
             new TurnMgr_Popup_(turnMgr, turnMgr.turns.Peek(), Input.mousePosition, popupContent,
@@ -172,6 +203,8 @@ public class UIMgr : MonoBehaviour
 
     void UseItem(Item item)
     {
+        turnMgr = gameMgr.turnMgr;
+
         TurnMgr_State_ nextState = new TurnMgr_PlayerBegin_(turnMgr, turnMgr.turns.Peek());
         turnMgr.stateMachine.ChangeState(
             new TurnMgr_WaitSingleEvent_(turnMgr, turnMgr.turns.Peek(), EventMgr.Instance.onUnitIdleEnter, nextState),

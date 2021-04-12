@@ -34,7 +34,7 @@ public class GameMgr_Positioning_ : GameMgr_State_
 
     public override void Enter()
     {
-        Debug.Log("유닛을 배치해주세요.");
+        Debug.Log("Positioning State Enter");
         EventMgr.Instance.onGamePositioningEnter.Invoke();
 
         foreach (Unit unit in _unitPrefabs) 
@@ -103,6 +103,7 @@ public class GameMgr_Positioning_ : GameMgr_State_
 
     public override void Exit()
     {
+        Debug.Log("Positioning State Exit");
         EventMgr.Instance.onGamePositioningExit.Invoke();
     }
 

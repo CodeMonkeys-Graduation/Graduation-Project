@@ -11,7 +11,8 @@ public class GameMgr_Init_ : GameMgr_State_
 
     public override void Enter()
     {
-        Debug.Log("게임이 시작됩니다.");
+        Debug.Log("Init State Enter");
+
         EventMgr.Instance.onGameInitEnter.Invoke();
     }
 
@@ -22,6 +23,8 @@ public class GameMgr_Init_ : GameMgr_State_
 
     public override void Exit()
     {
+        Debug.Log("Init State Exit");
+
         EventMgr.Instance.onGameInitExit.Invoke();
     }
 

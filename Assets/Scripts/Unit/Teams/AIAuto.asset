@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8823607dbfd456b41a77f4138abec69d, type: 3}
   m_Name: AIAuto
   m_EditorClassIdentifier: Assembly-CSharp::Team
-  controller: 0
+  controller: 1
   name: AIAuto
   teamTurnSlotFrame: {fileID: 21300000, guid: b61d54ada442843bb81c0b4ae4c744fa, type: 3}
   enemyTeams:

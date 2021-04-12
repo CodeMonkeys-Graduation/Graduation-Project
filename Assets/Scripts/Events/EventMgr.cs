@@ -37,12 +37,16 @@ public class EventMgr : SingletonBehaviour<EventMgr>
     [SerializeField] public Event onTurnPlan; 
 
     [Header("Game Event")]
-    [SerializeField] public Event onGameBattleEnter;
-    [SerializeField] public Event onGameBattleExit;
     [SerializeField] public Event onGameInitEnter;
     [SerializeField] public Event onGameInitExit;
     [SerializeField] public Event onGamePositioningEnter;
     [SerializeField] public Event onGamePositioningExit;
-    
-    
+    [SerializeField] public Event onGameBattleEnter;
+    [SerializeField] public Event onGameBattleExit;
+    [SerializeField] public Event onGameVictoryEnter;
+    [SerializeField] public Event onGameVictoryExit;
+    [SerializeField] public Event onGameDefeatEnter;
+    [SerializeField] public Event onGameDefeatExit;
+
+
 }
