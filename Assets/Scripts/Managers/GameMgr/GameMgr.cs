@@ -9,10 +9,10 @@ public class GameMgr : MonoBehaviour
     [SerializeField] Transform environment;
     [SerializeField] int canConsumeCubeCount;
 
-    SummonPanel summonUI;
-    List<Cube> canSummonCubes;
-
+    public static List<Cube> canSummonCubes;
     public StateMachine<GameMgr> stateMachine;
+
+    SummonPanel summonUI;
 
     public enum GMState
     {
