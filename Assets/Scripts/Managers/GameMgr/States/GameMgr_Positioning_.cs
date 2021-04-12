@@ -16,7 +16,6 @@ public class UnitParam : EventParam
 public class GameMgr_Positioning_ : GameMgr_State_
 {
     SummonPanel _summonPanel;
-    SummonCubeContainer _summonCubeContainer;
 
     List<Unit> _unitPrefabs;
     List<Cube> _canSummonCubes;
@@ -28,7 +27,6 @@ public class GameMgr_Positioning_ : GameMgr_State_
 
     public GameMgr_Positioning_(GameMgr owner, SummonPanel summonPanel, List<Unit> unitPrefabs, List<Cube> canSummonCubes) : base(owner)
     {
-        _summonCubeContainer = MonoBehaviour.FindObjectOfType<SummonCubeContainer>();
         _summonPanel = summonPanel;
         _unitPrefabs = unitPrefabs;
         _canSummonCubes = canSummonCubes;
@@ -41,8 +39,6 @@ public class GameMgr_Positioning_ : GameMgr_State_
 
         foreach (Unit unit in _unitPrefabs) 
             _summonPanel.SetSummonPanel(unit, true); // summonUI에 unit에 해당하는 버튼 세팅
-
-        _summonCubeContainer.SetCanSummonCubeContainer(_canSummonCubes);
 
         EventMgr.Instance.onUnitSummonEnd.Register(
             el_onUnitSummonEnd, 
@@ -63,6 +59,8 @@ public class GameMgr_Positioning_ : GameMgr_State_
             if (Physics.Raycast(ray, out hitObj, Mathf.Infinity, LayerMask.GetMask("Unit")))
             {
                 if(hitObj.transform.GetComponent<Unit>().team.controller == Team.Controller.AI) return;
+
+                MapMgr.Instance.BlinkCubes(_canSummonCubes, 0.5f);
 
                 _selectedUnit = hitObj.transform.GetComponent<Unit>();
                 _selectedUnit.StartTransparent();
@@ -93,6 +91,8 @@ public class GameMgr_Positioning_ : GameMgr_State_
 
         else if(Input.GetMouseButtonUp(0))
         {
+            MapMgr.Instance.StopBlinkAll();
+
             _selectedUnit?.GetComponent<Unit>().StopTransparent();
 
             _selectedUnit = null;

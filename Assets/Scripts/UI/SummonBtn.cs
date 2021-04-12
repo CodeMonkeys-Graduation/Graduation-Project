@@ -9,19 +9,12 @@ public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     [SerializeField] public Unit unitPrefab;
     [SerializeField] public Text unitCount;
 
-    SummonCubeContainer summonCubeContainer;
-
     EventListener el_onUnitSummonReady = new EventListener();
 
     Cube prevRaycastedCube = null;
     GameObject currDraggingUnit = null;
 
     private static Unit selectedUnit; // 소환 UI가 통틀어 가지고 있을 변수
-
-    void Awake()
-    {
-        summonCubeContainer = FindObjectOfType<SummonCubeContainer>();
-    }
 
     public void OnBeginDrag(PointerEventData data)
     {
@@ -32,7 +25,7 @@ public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     {
         RaycastHit hitObj;
         Ray ray = Camera.main.ScreenPointToRay(data.position);
-        List<Cube> canConsumeCubes = summonCubeContainer.canSummonCubes;
+        List<Cube> canConsumeCubes = GameMgr.canSummonCubes;
         if (Physics.Raycast(ray, out hitObj, Mathf.Infinity, LayerMask.GetMask("Cube")))
         {
             Cube currRaycastedCube = hitObj.transform.GetComponent<Cube>();
