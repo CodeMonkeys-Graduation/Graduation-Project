@@ -22,7 +22,7 @@ public class GameMgr_Init_ : GameMgr_State_
 
     public override void Exit()
     {
-        //EventMgr.Instance.onGameInitExit.Invoke();
+        EventMgr.Instance.onGameInitExit.Invoke();
     }
 
 }
