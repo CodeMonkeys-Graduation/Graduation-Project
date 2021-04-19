@@ -43,12 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27a0047ad25084a45a23f80b77b27bae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnMgrPrefab: {fileID: 7267787486544221071, guid: 123438e52d72ad947b154a4f46022840,
+  _turnMgrPrefab: {fileID: 7267787486544221071, guid: 123438e52d72ad947b154a4f46022840,
     type: 3}
-  environment: {fileID: 0}
-  canConsumeCubeCount: 0
-  unitPrefabs:
-  - {fileID: 1555109558, guid: 76032b6ea6507f442ba2c816944ee397, type: 3}
-  - {fileID: 5783308623365600305, guid: f718be1aed9d7ac489a1d4fae79836ff, type: 3}
-  - {fileID: 575295730912583316, guid: 96d49b415117a2340a0e798db751561d, type: 3}
+  _unitPrefabs: []
+  _turnMgr: {fileID: 0}
   gmState: 0

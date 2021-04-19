@@ -57,7 +57,7 @@ public class PlayerTurnMove : TurnMgr_State_
         ChangeStateToWaitState();
 
         // unit move
-        PFPath pathToDest = unit.GetCube.paths.Find((p) => p.destination == cubeClicked);
+        PFPath pathToDest = unit.GetCube._paths.Find((p) => p.destination == cubeClicked);
 
         MoveCommand moveCommand;
         if(MoveCommand.CreateCommand(unit, pathToDest, out moveCommand))
