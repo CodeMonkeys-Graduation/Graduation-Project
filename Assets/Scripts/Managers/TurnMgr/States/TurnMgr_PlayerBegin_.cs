@@ -35,7 +35,7 @@ public class TurnMgr_PlayerBegin_ : TurnMgr_State_
         }
 
         // 큐브의 경로를 업데이트해야함
-        if (unit.GetCube.pathUpdateDirty)
+        if (unit.GetCube._pathUpdateDirty)
         {
             UpdateCurrentUnitPaths();
             return;

@@ -758,12 +758,6 @@ MonoBehaviour:
   basicAttackDamageMin: 2
   actionPoints: 7
   agility: 6
-  icon: {fileID: 21300000, guid: 878fff979f5f8db4dafb43e56e7818dd, type: 3}
-  team: {fileID: 11400000, guid: 157136e1c92388342b8f678cabad00c3, type: 2}
-  moveSpeed: 2
-  jumpTime: 0.3
-  jumpHeight: 0.1
-  cubeHeightToJump: 0.2
   skill: {fileID: 11400000, guid: 783e046bcb23a4a4cb54ebcdea7d93a2, type: 2}
   actionSlots:
   - type: 0
@@ -774,11 +768,22 @@ MonoBehaviour:
     cost: 3
   - type: 3
     cost: 3
+  icon: {fileID: 21300000, guid: d0d8de7cc597a9c46a4cf5fe4e90df11, type: 3}
+  team: {fileID: 11400000, guid: 157136e1c92388342b8f678cabad00c3, type: 2}
   itemBag:
     items: []
   projectile: {fileID: 0}
+  moveSpeed: 2
+  jumpTime: 0.3
+  jumpHeight: 0.1
+  cubeHeightToJump: 0.2
   actionPointsRemain: 0
   currHealth: 0
+  mover: {fileID: 0}
+  attacker: {fileID: 0}
+  skillCaster: {fileID: 0}
+  itemUser: {fileID: 0}
+  targetCubes: []
 --- !u!136 &1805415877028720003
 CapsuleCollider:
   m_ObjectHideFlags: 0

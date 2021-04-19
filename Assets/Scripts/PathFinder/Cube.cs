@@ -7,57 +7,44 @@ using UnityEngine;
 
 public class Cube : MonoBehaviour, INavable
 {
-    [Header("Reset Before Play")]
-    [SerializeField] public List<PFPath> paths = new List<PFPath>();
-    [SerializeField] public Pathfinder pathFinder;
-    [SerializeField] public MapMgr mapMgr;
-
     // Set in Runtime
-    private List<INavable> neighbors = new List<INavable>();
-    [SerializeField] private Transform platform;
-    [HideInInspector] public float groundHeight;
-    private float neighborMaxDistance = 1.1f;
+    public List<PFPath> _paths = new List<PFPath>();
+    private List<INavable> _neighbors = new List<INavable>();
+    [SerializeField] private Transform _platform;
+    [HideInInspector] public float _groundHeight;
+    private float _neighborMaxDistance = 1.1f;
     private EventListener el_onUnitDead = new EventListener();
     private EventListener el_onUnitRunEnter = new EventListener();
-    [HideInInspector] public bool pathUpdateDirty = true;
+    [HideInInspector] public bool _pathUpdateDirty = true;
 
     [Header("Set in Editor")]
     [SerializeField] float maxNeighborHeightDiff = 0.6f;
 
+    public List<INavable> Neighbors { get => _neighbors; set => _neighbors = value; }
+    public Transform Platform { get => _platform; set => _platform = value; }
 
-    public List<INavable> Neighbors { get => neighbors; set => neighbors = value; }
-    public Transform Platform { get => platform; set => platform = value; }
-
-    /// <summary>
-    /// 1. neighborMaxDistance안에 있는 다른 Cube들을 Neighbor로 저장합니다.
-    /// 2. PathRequester에게 Path를 요청하여 저장합니다.
-    /// 3. 자신의 Child GameObject인 platform을 찾아 저장합니다. 이름은 "Platform"이어야합니다.
-    /// </summary>
-    public void Reset()
+    // Platform Set이 SetNeighbor보다 선행되어야함
+    private void Awake()
     {
         Platform = transform.Find("Platform");
-
-        neighbors.Clear();
-        neighbors = GetNeighbors();
-
-        groundHeight = Platform.position.y;
-
-        pathFinder = FindObjectOfType<Pathfinder>();
-        mapMgr = FindObjectOfType<MapMgr>();
+        if (Platform == null)
+        {
+            GameObject platform = new GameObject("Platform");
+            Vector3 platformPos = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
+            platform.transform.position = platformPos;
+            platform.transform.SetParent(transform);
+            Platform = platform.transform;
+        }
+        _groundHeight = Platform.position.y;
     }
 
     private void Start()
     {
-        neighbors.Clear();
-        neighbors = GetNeighbors();
+        SetNeighbors();
 
-        pathFinder = FindObjectOfType<Pathfinder>();
-        mapMgr = FindObjectOfType<MapMgr>();
-        groundHeight = Platform.position.y;
-
-        EventMgr.Instance.onUnitDeadEnter.Register(el_onUnitDead, (param) => pathUpdateDirty = true);
-        EventMgr.Instance.onUnitRunEnter.Register(el_onUnitRunEnter, (param) => pathUpdateDirty = true);
-        pathUpdateDirty = true;
+        EventMgr.Instance.onUnitDeadEnter.Register(el_onUnitDead, (param) => _pathUpdateDirty = true);
+        EventMgr.Instance.onUnitRunEnter.Register(el_onUnitRunEnter, (param) => _pathUpdateDirty = true);
+        _pathUpdateDirty = true;
     }
 
     public bool IsAccupied()
@@ -91,25 +78,23 @@ public class Cube : MonoBehaviour, INavable
 
     public void UpdatePaths(int maxRange, Func<INavable, bool> cubeExclusion)
     {
-        pathFinder.RequestAsync(this, maxRange, OnPathServe, cubeExclusion);
+        Pathfinder.Instance.RequestAsync(this, maxRange, OnPathServe, cubeExclusion);
     }
 
     private void OnPathServe(List<PFPath> paths)
     {
-        this.paths.Clear();
-        this.paths.AddRange(paths);
-        pathUpdateDirty = false;
+        this._paths.Clear();
+        this._paths.AddRange(paths);
+        _pathUpdateDirty = false;
     }
 
-    public List<INavable> GetNeighbors()
+    public void SetNeighbors()
     {
-        List<INavable> neighbors = new List<INavable>();
+        _neighbors.Clear();
         INavable[] cubes = FindObjectsOfType<Cube>();
         foreach (var c in cubes)
             if (NeighborCondition(c as Cube))
-                neighbors.Add(c);
-
-        return neighbors;
+                _neighbors.Add(c);
     }
 
     private bool NeighborCondition(Cube candidate)
@@ -117,7 +102,7 @@ public class Cube : MonoBehaviour, INavable
         Vector2 registererPlanePos = new Vector2(candidate.transform.position.x, candidate.transform.position.z);
         Vector2 myPlanePos = new Vector2(transform.position.x, transform.position.z);
 
-        return Vector2.Distance(registererPlanePos, myPlanePos) < neighborMaxDistance && // Cube끼리 충분히 가까운지
+        return Vector2.Distance(registererPlanePos, myPlanePos) < _neighborMaxDistance && // Cube끼리 충분히 가까운지
             Mathf.Abs(candidate.Platform.position.y - Platform.position.y) <= maxNeighborHeightDiff && // Cube끼리 높이가 너무 차이나진 않는지
             candidate != this; // 자기자신은 아닌지
     }
