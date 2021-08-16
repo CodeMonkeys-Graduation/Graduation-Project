@@ -38,7 +38,7 @@
 
 ### AI 
 
-저희가 사용할 AI 테크닉은 Decision Tree입니다. 
+저희가 사용할 AI 테크닉은 GOAP을 변형한 모델입니다. 
 
 가용가능한 Action들로 Planner는 모든 경우의 수를 트리 자료구조로 Plan합니다. 
 
@@ -46,7 +46,7 @@ Tree의 Leaf 노드들은 최종 Score를 갖고 최대 Score의 Leaf Node에서
 
 해당 Plan을 캐릭터에게 리턴하고 캐릭터는 해당 Plan에 따라 행동합니다. 
 
-[Decision Tree](https://www.geeksforgeeks.org/decision-tree)
+[GOAP](https://gamedevelopment.tutsplus.com/tutorials/goal-oriented-action-planning-for-a-smarter-ai--cms-20793)
 
 ### 게임 시스템
 
