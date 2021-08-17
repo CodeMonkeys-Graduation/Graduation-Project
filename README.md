@@ -22,7 +22,7 @@
 
 배치가 완료되면 게임시작을 눌러 게임을 시작합니다. 
 
-![게임 흐름 다이어그램](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/81e7e1bd-ee4a-4b24-9eec-cbf511dd645f/-_.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210209%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210209T093343Z&X-Amz-Expires=86400&X-Amz-Signature=8f227c6778fa42edd6d67eeafa814a25a1b517ac8c7d22d95fd2a571f300ac66&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22-_.png%22)
+![게임 흐름 다이어그램](https://raw.githubusercontent.com/CodeMonkeys-Graduation/Graduation-Project/master/%EA%B2%8C%EC%9E%84%EA%B8%B0%EB%B3%B8%ED%9D%90%EB%A6%84.png)
 
 게임이 시작되면 아군유닛 적군유닛 모든유닛들이 민첩성 스탯에 따라 턴의 순서가 정해집니다. 각 턴마다 해당 유닛의 주인 플레이어가 유닛의 액션을 취하게 할 수 있습니다.
 
