@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameMgr_Victory_ : GameMgr_State_
 {
     GameResult _result;
-    public GameMgr_Victory_(GameMgr owner, GameResult result) : base(owner)
+    public GameMgr_Victory_(BattleMgr owner, GameResult result) : base(owner)
     {
         _result = result;
     }

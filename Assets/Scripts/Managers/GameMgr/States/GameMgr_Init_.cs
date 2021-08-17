@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameMgr_Init_ : GameMgr_State_
 {
-    public GameMgr_Init_(GameMgr owner) : base(owner)
+    public GameMgr_Init_(BattleMgr owner) : base(owner)
     {
         
     }

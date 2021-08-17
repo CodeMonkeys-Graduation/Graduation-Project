@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using UnityEngine.Events;
 
-public class UIMgr : MonoBehaviour
+public class UIMgr : SingletonBehaviour<UIMgr>
 {
     [Header("Set in Editor")]
 
@@ -15,7 +15,7 @@ public class UIMgr : MonoBehaviour
     [SerializeField] public GameObject testNextStateBtn;
 
     //-- Mgr --//
-    [HideInInspector] GameMgr gameMgr;
+    [HideInInspector] BattleMgr gameMgr;
     [HideInInspector] TurnMgr turnMgr;
     
     //-- UI --//
@@ -56,7 +56,7 @@ public class UIMgr : MonoBehaviour
 
     void Start()
     {
-        gameMgr = FindObjectOfType<GameMgr>();
+        gameMgr = FindObjectOfType<BattleMgr>();
 
         turnPanel = FindObjectOfType<TurnPanel>();
         actionPanel = FindObjectOfType<ActionPanel>();
@@ -121,9 +121,6 @@ public class UIMgr : MonoBehaviour
         endTurnBtn.SetActive(false);
         backBtn.SetActive(false);
 
-        testPlayBtn.GetComponent<TestPlayBtn>().SetTestPlayBtn();
-        endTurnBtn.GetComponent<TMEndTurnBtn>().SetTMEndTurnBtn();
-
         actionPanel.UnsetPanel();
         turnPanel.UnsetPanel();
         itemPanel.UnsetPanel();
@@ -141,7 +138,8 @@ public class UIMgr : MonoBehaviour
 
     void SetUIBeginEnter(EventParam param)
     {
-        turnMgr = gameMgr._turnMgr;
+        turnMgr = TurnMgr.Instance;
+        if (!turnMgr) return;
 
         Dictionary<ActionType, UnityAction> btnEvents = new Dictionary<ActionType, UnityAction>();
         btnEvents.Add(ActionType.Move, OnClickMoveBtn);
@@ -165,7 +163,7 @@ public class UIMgr : MonoBehaviour
 
     void SetUIPlan(EventParam param)
     {
-        turnMgr = gameMgr._turnMgr;
+        turnMgr = TurnMgr.Instance;
 
         testPlayBtn.SetActive(false);
         endTurnBtn.SetActive(false);
@@ -181,17 +179,17 @@ public class UIMgr : MonoBehaviour
     }
 
     private void OnClickMoveBtn()
-  => gameMgr._turnMgr.stateMachine.ChangeState(new PlayerTurnMove(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+  => TurnMgr.Instance.stateMachine.ChangeState(new PlayerTurnMove(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     private void OnClickAttackBtn()
-        => gameMgr._turnMgr.stateMachine.ChangeState(new TurnMgr_PlayerAttack_(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+        => TurnMgr.Instance.stateMachine.ChangeState(new TurnMgr_PlayerAttack_(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     private void OnClickItemBtn()
-        => gameMgr._turnMgr.stateMachine.ChangeState(new PlayerTurnItem(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+        => TurnMgr.Instance.stateMachine.ChangeState(new PlayerTurnItem(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     private void OnClickSkillBtn()
-    => gameMgr._turnMgr.stateMachine.ChangeState(new TurnMgr_PlayerSkill_(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+    => TurnMgr.Instance.stateMachine.ChangeState(new TurnMgr_PlayerSkill_(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
 
     void OnClickItemSlotBtn(Item item)
     {
-        turnMgr = gameMgr._turnMgr;
+        turnMgr = TurnMgr.Instance;
 
         string popupContent = $"r u sure u wanna use {item.name}?";
         turnMgr.stateMachine.ChangeState(
@@ -203,7 +201,7 @@ public class UIMgr : MonoBehaviour
 
     void UseItem(Item item)
     {
-        turnMgr = gameMgr._turnMgr;
+        turnMgr = TurnMgr.Instance;
 
         TurnMgr_State_ nextState = new TurnMgr_PlayerBegin_(turnMgr, turnMgr.turns.Peek());
         turnMgr.stateMachine.ChangeState(

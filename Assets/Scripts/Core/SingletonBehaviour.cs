@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-public class SingletonBehaviour<T> : MonoBehaviour where T : SingletonBehaviour<T>
+public class SingletonBehaviour<T> : ManagerBehaviour where T : SingletonBehaviour<T>
 {
     public static T Instance { get; protected set; }
+
+    public override ManagerBehaviour GetInstance() => Instance;
 
     protected void Awake()
     {
@@ -16,4 +19,7 @@ public class SingletonBehaviour<T> : MonoBehaviour where T : SingletonBehaviour<
             Instance = (T)this;
         }
     }
+
+    public bool IsSingletonExist() => Instance != null;
+
 }
