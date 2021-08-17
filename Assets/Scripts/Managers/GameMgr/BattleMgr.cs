@@ -2,18 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class GameMgr : MonoBehaviour
+public class BattleMgr : SingletonBehaviour<BattleMgr>
 {
     //-- Set in Editor --//
-    [SerializeField] TurnMgr _turnMgrPrefab;
     [SerializeField] List<Unit> _unitPrefabs;
 
     EventListener el_GameBattleEnter = new EventListener();
     SummonPanel _summonUI;
 
-    public TurnMgr _turnMgr;
     public static List<Cube> _canSummonCubes;
-    public StateMachine<GameMgr> _stateMachine;
+    public StateMachine<BattleMgr> _stateMachine;
 
 
     public enum GMState
@@ -28,9 +26,8 @@ public class GameMgr : MonoBehaviour
 
         _canSummonCubes = new List<Cube>(FindObjectsOfType<Cube>());
 
-        _stateMachine = new StateMachine<GameMgr>(new GameMgr_Init_(this));
+        _stateMachine = new StateMachine<BattleMgr>(new GameMgr_Init_(this));
 
-        RegisterEvent();
     }
 
     private void Update()
@@ -41,20 +38,16 @@ public class GameMgr : MonoBehaviour
         CheckTurnState();
     }
 
-    public void RegisterEvent()
-    {
-        EventMgr.Instance.onGameBattleEnter.Register(el_GameBattleEnter, (param) => { _turnMgr = FindObjectOfType<TurnMgr>(); });
-    }
 
     public void NextState()
     {
         if (_stateMachine.IsStateType(typeof(GameMgr_Init_)))
         {
-            _stateMachine.ChangeState(new GameMgr_Positioning_(this, _summonUI, _unitPrefabs, _canSummonCubes), StateMachine<GameMgr>.StateTransitionMethod.ClearNPush);
+            _stateMachine.ChangeState(new GameMgr_Positioning_(this, _summonUI, _unitPrefabs, _canSummonCubes), StateMachine<BattleMgr>.StateTransitionMethod.ClearNPush);
         }
         else if (_stateMachine.IsStateType(typeof(GameMgr_Positioning_)))
         {
-            _stateMachine.ChangeState(new GameMgr_Battle_(this, _turnMgrPrefab), StateMachine<GameMgr>.StateTransitionMethod.ClearNPush);
+            _stateMachine.ChangeState(new GameMgr_Battle_(this), StateMachine<BattleMgr>.StateTransitionMethod.ClearNPush);
         }
         else if(_stateMachine.IsStateType(typeof(GameMgr_Battle_)))
         {
@@ -62,7 +55,7 @@ public class GameMgr : MonoBehaviour
         }
         else
         {
-            _stateMachine.ChangeState(new GameMgr_Init_(this), StateMachine<GameMgr>.StateTransitionMethod.ClearNPush);
+            _stateMachine.ChangeState(new GameMgr_Init_(this), StateMachine<BattleMgr>.StateTransitionMethod.ClearNPush);
         }
     }
 
