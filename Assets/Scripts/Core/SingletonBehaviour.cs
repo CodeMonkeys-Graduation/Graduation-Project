@@ -20,6 +20,6 @@ public class SingletonBehaviour<T> : ManagerBehaviour where T : SingletonBehavio
         }
     }
 
-    public bool IsSingletonExist() => Instance != null;
+    public static bool IsSingletonExist() => Instance != null;
 
 }

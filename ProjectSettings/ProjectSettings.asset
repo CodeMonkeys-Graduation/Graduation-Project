@@ -649,7 +649,10 @@ PlayerSettings:
       daydreamIconForeground: {fileID: 0}
       daydreamIconBackground: {fileID: 0}
   cloudServicesEnabled:
-    Collab: 0
+    Build: 0
+    Collab: 1
+    ErrorHub: 0
+    Hub: 0
     UNet: 1
   luminIcon:
     m_Name: 
@@ -663,9 +666,9 @@ PlayerSettings:
     m_VersionCode: 1
     m_VersionName: 
   apiCompatibilityLevel: 6
-  cloudProjectId: 673567e5-58b5-431d-a7e9-e539a342f35a
+  cloudProjectId: c0450a4d-50a2-4e70-ba9f-f47d63caaf3c
   framebufferDepthMemorylessMode: 0
-  projectName: Graduation-Project (1)
+  projectName: Graduation-Project
   organizationId: wondong5
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0

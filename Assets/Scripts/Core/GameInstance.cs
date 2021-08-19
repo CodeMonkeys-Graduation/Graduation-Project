@@ -20,18 +20,25 @@ public class GameInstance : MonoBehaviour
 {
     [SerializeField] public List<ManagerBehaviour> ManagerPrefabs;
 
+    [SerializeField] public Event e_onSceneChanged;
+
     public EventListener el_onSceneChanged = new EventListener();
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+        e_onSceneChanged.Register(el_onSceneChanged, OnSceneChanged);
+        OnSceneChanged(new SceneChanged(SceneMgr.Scene.Main));
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     public void OnSceneChanged(EventParam param)
@@ -46,7 +53,7 @@ public class GameInstance : MonoBehaviour
             if (manager.LifeCycles.Contains(sceneParam._scene))
             {
                 // 이미 해당 Manager가 존재함.
-                if (manager.GetInstance())
+                if (manager.GetInstance() != null)
                     continue;
 
                 else 
