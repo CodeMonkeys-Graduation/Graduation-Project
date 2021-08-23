@@ -25,7 +25,7 @@ public class GameMgr_Positioning_ : GameMgr_State_
 
     EventListener el_onUnitSummonEnd = new EventListener();
 
-    public GameMgr_Positioning_(GameMgr owner, SummonPanel summonPanel, List<Unit> unitPrefabs, List<Cube> canSummonCubes) : base(owner)
+    public GameMgr_Positioning_(BattleMgr owner, SummonPanel summonPanel, List<Unit> unitPrefabs, List<Cube> canSummonCubes) : base(owner)
     {
         _summonPanel = summonPanel;
         _unitPrefabs = unitPrefabs;

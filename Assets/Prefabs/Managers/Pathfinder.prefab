@@ -43,9 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0646200cf3b3754ba20870349bd5847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sState: 0
-  e_pathfindRequesterCountZero: {fileID: 11400000, guid: 9ff65ca66f58723409b2a13e08bbbed5,
-    type: 2}
-  e_onPathUpdatingStart: {fileID: 11400000, guid: 53dc6cb665e1f0849885d27f53e37798,
-    type: 2}
+  _lifeCycles: 03000000
+  pfState: 0
   mapMgr: {fileID: 0}
+  requesterCounts: 0
