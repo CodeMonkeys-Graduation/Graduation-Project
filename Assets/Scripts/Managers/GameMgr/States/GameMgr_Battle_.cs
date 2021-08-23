@@ -14,13 +14,11 @@ public class GameResult : EventParam
 
 public class GameMgr_Battle_ : GameMgr_State_
 {
-    TurnMgr _turnMgr;
     EventListener el_GameBattleExit = new EventListener();
     public GameResult _gameResult;
 
-    public GameMgr_Battle_(GameMgr owner, TurnMgr turnMgrPrefab) : base(owner)
+    public GameMgr_Battle_(BattleMgr owner) : base(owner)
     {
-        _turnMgr = Object.Instantiate(turnMgrPrefab);
     }
 
     public override void Enter()
@@ -39,7 +37,6 @@ public class GameMgr_Battle_ : GameMgr_State_
     public override void Exit()
     {
         EventMgr.Instance.onGameBattleExit.Invoke();
-        Object.Destroy(_turnMgr);
     }
 
     public void GoToResult(EventParam param)
@@ -47,9 +44,9 @@ public class GameMgr_Battle_ : GameMgr_State_
         _gameResult = (GameResult)param;
         
         if(_gameResult._isVictory) 
-            owner._stateMachine.ChangeState(new GameMgr_Victory_(owner, _gameResult), StateMachine<GameMgr>.StateTransitionMethod.ClearNPush);
+            owner._stateMachine.ChangeState(new GameMgr_Victory_(owner, _gameResult), StateMachine<BattleMgr>.StateTransitionMethod.ClearNPush);
         else 
-            owner._stateMachine.ChangeState(new GameMgr_Defeat_(owner, _gameResult), StateMachine<GameMgr>.StateTransitionMethod.ClearNPush);
+            owner._stateMachine.ChangeState(new GameMgr_Defeat_(owner, _gameResult), StateMachine<BattleMgr>.StateTransitionMethod.ClearNPush);
     }
 
 }

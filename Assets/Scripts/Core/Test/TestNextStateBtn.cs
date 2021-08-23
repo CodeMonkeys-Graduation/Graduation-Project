@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TestNextStateBtn : MonoBehaviour
 {
-    [SerializeField] GameMgr gameMgr;
+    [SerializeField] BattleMgr gameMgr;
 
     public void OnClickNextState()
     {

@@ -25,7 +25,7 @@ public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     {
         RaycastHit hitObj;
         Ray ray = Camera.main.ScreenPointToRay(data.position);
-        List<Cube> canConsumeCubes = GameMgr._canSummonCubes;
+        List<Cube> canConsumeCubes = BattleMgr._canSummonCubes;
         if (Physics.Raycast(ray, out hitObj, Mathf.Infinity, LayerMask.GetMask("Cube")))
         {
             Cube currRaycastedCube = hitObj.transform.GetComponent<Cube>();

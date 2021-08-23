@@ -43,26 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41dd441092d27d04494aba47eefb35de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popupPanel: {fileID: 0}
-  testPlayBtn: {fileID: 0}
-  endTurnBtn: {fileID: 0}
-  backBtn: {fileID: 0}
-  e_onUnitSkillExit: {fileID: 11400000, guid: fdcb3b5fa987bd648a833a522ec80cf2, type: 2}
-  e_onUnitIdleEnter: {fileID: 11400000, guid: 8e463aa40a1952a4fbd939eab2d1f7d4, type: 2}
-  e_onUnitItemExit: {fileID: 11400000, guid: 379654bbf98e9984d8ff400469dded0a, type: 2}
-  e_onUnitRunExit: {fileID: 11400000, guid: d08eea7cc7367e647ba2486a6e4af064, type: 2}
-  e_onUnitAttackExit: {fileID: 11400000, guid: 2079106fc3680b44ba8b64dcc785cf18, type: 2}
-  e_onPathfindRequesterCountZero: {fileID: 11400000, guid: 9ff65ca66f58723409b2a13e08bbbed5,
-    type: 2}
-  e_onPathUpdatingStart: {fileID: 11400000, guid: 53dc6cb665e1f0849885d27f53e37798,
-    type: 2}
-  e_onUnitDead: {fileID: 11400000, guid: 66ff86eb3d1dceb47a03c6d50e4a3a26, type: 2}
-  isAnyCubePathUpdating: 0
-  mapMgr: {fileID: 0}
-  turnPanel: {fileID: 0}
-  actionPlanner: {fileID: 0}
-  cameraMove: {fileID: 0}
-  actionPanel: {fileID: 0}
-  actionPointPanel: {fileID: 0}
-  itemPanel: {fileID: 0}
+  _lifeCycles: 03000000
+  units: []
   tmState: 0

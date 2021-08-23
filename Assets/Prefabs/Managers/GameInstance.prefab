@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8228059320565222680
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8228059320565222687}
+  - component: {fileID: 8228059320565222686}
+  m_Layer: 0
+  m_Name: GameInstance
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8228059320565222687
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8228059320565222680}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 115.53624, y: -128.85153, z: 121.89923}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8228059320565222686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8228059320565222680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c314dcfcdbbe3e43a6c5830ff795ced, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ManagerPrefabs:
+  - {fileID: 3891748751220861526, guid: 4e4753b3deb171542807e034c6c661db, type: 3}
+  - {fileID: 7527200215017880975, guid: d81dbc2ef49272844ad7cf676b15416a, type: 3}
+  - {fileID: 6763195189498767702, guid: b3578c247fb378c4b921553fe18245f2, type: 3}
+  - {fileID: 2184850768461445009, guid: 66e5fb4c5ef210846a068c9cfe702f59, type: 3}
+  - {fileID: 8117687600564118032, guid: 2a75d5365df150b42abbab3dd336b186, type: 3}
+  - {fileID: 7267787486544221071, guid: 123438e52d72ad947b154a4f46022840, type: 3}
+  - {fileID: 7658463604238734188, guid: 391ea2c202655f640ac10e52e1809698, type: 3}
+  - {fileID: 7554061240196775122, guid: f665ef834602a1840bbaec2845ff25cf, type: 3}
+  e_onSceneChanged: {fileID: 11400000, guid: ae612a7fab9e72744adb378a19b3d41e, type: 2}
