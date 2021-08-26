@@ -43,5 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f04dd2b26f6491c4eab514e5705a8977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Type: 5
   _lifeCycles: 03000000
   showPaths: 1

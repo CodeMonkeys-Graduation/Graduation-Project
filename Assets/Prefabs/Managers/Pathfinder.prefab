@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0646200cf3b3754ba20870349bd5847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Type: 6
   _lifeCycles: 03000000
   pfState: 0
   mapMgr: {fileID: 0}

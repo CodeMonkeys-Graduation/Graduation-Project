@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ObserverPattern;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ public class TurnMgr_BranchSingleEvent_ : TurnMgr_WaitSingleEvent_
     /// </summary>
     /// <param name="e">기다릴 Event</param>
     public TurnMgr_BranchSingleEvent_(
-        TurnMgr owner, Unit unit, Event e, List<KeyValuePair<Predicate<EventParam>, TurnMgr_State_>> branches, 
+        TurnMgr owner, Unit unit, ObserverEvent e, List<KeyValuePair<Predicate<EventParam>, TurnMgr_State_>> branches, 
         Predicate<EventParam> ignoreCondition = null, Action onWaitEnter = null, Action onWaitExecute = null, Action onWaitExit = null)
         : base(owner, unit, e, null, null, onWaitEnter, onWaitExecute, onWaitExit)
     {

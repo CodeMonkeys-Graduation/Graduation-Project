@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ObserverPattern;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Events;
 
 public class TurnMgr_WaitMultipleEvents_ : TurnMgr_WaitSingleEvent_
 {
-    private List<Event> _events;
+    private List<ObserverEvent> _events;
     private List<EventListener> _elList;
 
     /// <summary>
@@ -14,7 +15,7 @@ public class TurnMgr_WaitMultipleEvents_ : TurnMgr_WaitSingleEvent_
     /// <param name="e">기다릴 Event</param>
     /// <param name="nextState">Event발생시 Transition할 다음 State</param>
     /// <param name="onEvent">state를 바꾸기 전에 호출할 함수가 있다면 추가하세요.</param>
-    public TurnMgr_WaitMultipleEvents_(TurnMgr owner, Unit unit, List<Event> events,
+    public TurnMgr_WaitMultipleEvents_(TurnMgr owner, Unit unit, List<ObserverEvent> events,
         TurnMgr_State_ nextState, Action onWaitEnter = null, Action onWaitExecute = null, Action onWaitExit = null)
         : base(owner, unit, null, nextState, null, onWaitEnter, onWaitExecute, onWaitExit)
     {
