@@ -1,0 +1,4 @@
+repository "Graduation-Project@wonAdam_Cloud@cloud"
+  path "/"
+    br "/main"
+    co "/main"
