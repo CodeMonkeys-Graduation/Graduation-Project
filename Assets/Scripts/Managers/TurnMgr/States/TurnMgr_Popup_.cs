@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using UnityEngine.Events;
+using ObserverPattern;
 
 public class TurnPopupParam : EventParam
 {

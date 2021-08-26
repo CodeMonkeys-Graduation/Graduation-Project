@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ObserverPattern;
+using System;
 using UnityEngine.Events;
 
 public class TurnMgr_WaitSingleEvent_ : TurnMgr_State_
@@ -7,7 +8,7 @@ public class TurnMgr_WaitSingleEvent_ : TurnMgr_State_
     protected Action _onWaitEnter;
     protected Action _onWaitExecute;
     protected Action _onWaitExit;
-    protected Event _e;
+    protected ObserverEvent _e;
     protected TurnMgr_State_ _nextState;
     private Predicate<EventParam> _paramCondition;
 
@@ -19,7 +20,7 @@ public class TurnMgr_WaitSingleEvent_ : TurnMgr_State_
     /// <param name="nextState">이 State 다음 State</param>
     /// <param name="paramCondition">Event발생시 매개변수를 검사하여 nextState로 Tranisition 여부를 결정하는 Predicate</param>
     public TurnMgr_WaitSingleEvent_(
-        TurnMgr owner, Unit unit, Event e, TurnMgr_State_ nextState, 
+        TurnMgr owner, Unit unit, ObserverEvent e, TurnMgr_State_ nextState, 
         Predicate<EventParam> paramCondition = null, Action onWaitEnter = null, 
         Action onWaitExecute = null, Action onWaitExit = null) : base(owner, unit) 
     {

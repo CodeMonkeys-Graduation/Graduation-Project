@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using ObserverPattern;
+using RotaryHeart.Lib.SerializableDictionary;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneChanged : EventParam
 {
@@ -16,19 +19,49 @@ public class SceneChanged : EventParam
 /// 게임의 시작부터 끝까지 존재하는 게임오브젝트입니다.
 /// Manager들의 Lifecycle을 관리합니다.
 /// </summary>
-public class GameInstance : MonoBehaviour
+public class GameInstance : SingletonBehaviour<GameInstance>
 {
-    [SerializeField] public List<ManagerBehaviour> ManagerPrefabs;
+    [System.Serializable]
+    public class ManagerDictionary : SerializableDictionaryBase<ManagerType, ManagerBehaviour> { }
 
-    [SerializeField] public Event e_onSceneChanged;
+    public enum ManagerType
+    {
+        NONE,
+
+        ActionPlanner,
+        BattleMgr,
+        CameraMgr,
+        EventMgr,
+        MapMgr,
+        Pathfinder,
+        TurnMgr,
+        UIMgr,
+        SceneMgr,
+    }
+
+    [SerializeField] public ManagerDictionary ManagerPrefabs;
+
+    [SerializeField] public ObserverEvent e_onSceneChanged;
 
     public EventListener el_onSceneChanged = new EventListener();
 
-    private void Awake()
+    protected override void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         DontDestroyOnLoad(gameObject);
-        e_onSceneChanged.Register(el_onSceneChanged, OnSceneChanged);
-        OnSceneChanged(new SceneChanged(SceneMgr.Scene.Main));
+
+        foreach (var Mgr in ManagerPrefabs)
+            Instantiate(Mgr.Value);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     // Start is called before the first frame update
@@ -41,31 +74,45 @@ public class GameInstance : MonoBehaviour
     {
     }
 
-    public void OnSceneChanged(EventParam param)
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
-        SceneChanged sceneParam = param as SceneChanged;
-        if (sceneParam == null) 
-            return;
+        Debug.Log($"OnSceneLoaded");
+        Debug.Assert(SceneMgr.sceneMap.TryGetValue(scene.name, out _));
 
-        foreach(ManagerBehaviour manager in ManagerPrefabs)
+        List<ManagerBehaviour> managersToSpawn = new List<ManagerBehaviour>();
+
+        foreach (var mgr in ManagerPrefabs)
         {
-            // 현재 Scene이 Manager의 LifeCycle에 해당함.
-            if (manager.LifeCycles.Contains(sceneParam._scene))
+            // 이 Manager의 LifeCycle에 해당하는 Scene임.
+            if (mgr.Value.LifeCycles.Contains(SceneMgr.sceneMap[scene.name]))
             {
-                // 이미 해당 Manager가 존재함.
-                if (manager.GetInstance() != null)
-                    continue;
-
-                else 
+                if (mgr.Value.GetInstance() == null)
                 {
-                    Object.Instantiate(manager);
+                    Instantiate(mgr.Value);
+                    managersToSpawn.Add(mgr.Value);
                 }
             }
-            // 현재 Scene이 Manager의 LifeCycle에 해당하지 않음.
+            // 이 Manager의 LifeCycle에 해당하지 않는 Scene임.
             else
             {
-                manager.DestroyInstance();
+                if (mgr.Value.GetInstance() != null)
+                {
+                    Destroy(mgr.Value.GetInstance().gameObject);
+                }
             }
         }
+
     }
+
+
+    private IEnumerator SpawnManagersInFrames(List<ManagerBehaviour> managersToSpawn)
+    {
+        foreach(var mgr in managersToSpawn)
+        {
+            yield return null;
+            Instantiate(mgr);
+        }
+    }
+
 }

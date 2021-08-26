@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using ObserverPattern;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class CommandResultParam : EventParam

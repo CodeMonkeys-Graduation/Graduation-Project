@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 193220588596823811}
   - component: {fileID: 7527200215017880975}
   m_Layer: 0
-  m_Name: GameMgr
+  m_Name: BattleMgr
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f9032052e0ffd408042c6b212305f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Type: 2
   _lifeCycles: 03000000
   _unitPrefabs: []
-  _turnMgr: {fileID: 0}
   gmState: 0

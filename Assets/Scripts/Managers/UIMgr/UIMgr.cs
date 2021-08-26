@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 using UnityEngine.Events;
+using ObserverPattern;
 
 public class UIMgr : SingletonBehaviour<UIMgr>
 {

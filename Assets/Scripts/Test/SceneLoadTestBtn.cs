@@ -22,7 +22,7 @@ public class SceneLoadTestBtn : MonoBehaviour
         {
             if(SceneMgr.Instance != null)
             {
-                _Btn.onClick.AddListener(() => SceneMgr.Instance.LoadSceneBtnTest(sceneName));
+                //_Btn.onClick.AddListener(() => SceneMgr.Instance.LoadSceneBtnTest(sceneName));
                 IsSubscribedOnClicked = true;
             }
         }

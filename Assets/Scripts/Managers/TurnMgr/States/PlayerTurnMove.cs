@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ObserverPattern;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerTurnMove : TurnMgr_State_

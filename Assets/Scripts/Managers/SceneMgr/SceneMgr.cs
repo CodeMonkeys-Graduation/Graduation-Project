@@ -8,76 +8,39 @@ using System;
 public class SceneMgr : SingletonBehaviour<SceneMgr>
 {
     [System.Serializable]
-    public enum Scene
+    public enum Scene // ToString()으로 검사하기때문에 Scene의 이름과 정확히 일치해야합니다. 
     { 
         Main, 
-        Dialog,
+        Dialog1,
         UnitSelection,
-        Battle
+        Battle1
     }
 
-    public Dictionary<Scene, string> SceneMap = new Dictionary<Scene, string>();
+    public static Dictionary<string, Scene> sceneMap = new Dictionary<string, Scene>() {
+        { Scene.Main.ToString(), Scene.Main },
+        { Scene.Dialog1.ToString(), Scene.Dialog1 },
+        { Scene.UnitSelection.ToString(), Scene.UnitSelection },
+        { Scene.Battle1.ToString(), Scene.Battle1 },
+    };
 
-    [SerializeField] public Event _onSceneChanged;
-
-    bool _IsOnLoad = false;
-
-    // Start is called before the first frame update
-    void Start()
+    public void LoadScene(Scene sceneEnum, Action<float> onSceneLoad = null)
     {
-        SceneMap.Add(Scene.Main, Scene.Main.ToString());
-        SceneMap.Add(Scene.Dialog, Scene.Dialog.ToString());
-        SceneMap.Add(Scene.UnitSelection, Scene.UnitSelection.ToString());
-        SceneMap.Add(Scene.Battle, Scene.Battle.ToString());
+        StartCoroutine(OnLoadSceneCoroutine(sceneEnum, onSceneLoad));
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator OnLoadSceneCoroutine(Scene SceneEnum, Action<float> onSceneLoad)
     {
-    }
+        var asyncOperation = SceneManager.LoadSceneAsync(SceneEnum.ToString(), LoadSceneMode.Single);
+        asyncOperation.allowSceneActivation = false;
 
-    // TODO Delete
-    public void LoadSceneBtnTest(string sceneName)
-    {
-        foreach (var scene in SceneMap)
-            if (scene.Value == sceneName)
-                LoadScene(scene.Key);
-    }
-
-    public void LoadScene(Scene SceneEnum, float loadDelay = 0f, Action<float> onSceneLoad = null)
-    {
-        var AsyncOperation = SceneManager.LoadSceneAsync(SceneMap[SceneEnum], LoadSceneMode.Single);
-        SceneChanged sceneChangedParam = new SceneChanged(SceneEnum);
-
-        if (loadDelay > 0f)
+        while (asyncOperation.progress < 0.9f)
         {
-            AsyncOperation.allowSceneActivation = false;
-            Action onLoadComplete = () => { _onSceneChanged.Invoke(sceneChangedParam); AsyncOperation.allowSceneActivation = true; };
-            object[] parameters = { loadDelay, onSceneLoad, onLoadComplete };
-            StartCoroutine(OnLoadSceneCoroutine(parameters));
-        }
-        else
-        {
-            AsyncOperation.allowSceneActivation = true;
-            _onSceneChanged.Invoke(sceneChangedParam);
-        }
-    }
+            yield return new WaitForSeconds(0.1f);
 
-    private IEnumerator OnLoadSceneCoroutine(object[] parameters)
-    {
-        float curr = 0f;
-
-        float delay = (float)parameters[0];
-        Action<float> onSceneLoad = (Action<float>)parameters[1];
-        Action onLoadComplete = (Action)parameters[2];
-
-        while (curr < delay)
-        {
-            yield return null;
-            curr += Time.deltaTime;
-            onSceneLoad(curr);
+            if(onSceneLoad != null)
+                onSceneLoad(asyncOperation.progress);
         }
 
-        onLoadComplete();
+        asyncOperation.allowSceneActivation = true;
     }
 }

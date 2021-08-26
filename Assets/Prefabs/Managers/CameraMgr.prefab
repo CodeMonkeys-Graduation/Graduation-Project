@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44e948575ef8f6f48bb56b9f2126c83f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Type: 3
   _lifeCycles: 03000000
   cameraState: 0
   _camera: {fileID: 0}

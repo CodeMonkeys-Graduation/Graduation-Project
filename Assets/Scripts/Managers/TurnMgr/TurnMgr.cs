@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using ObserverPattern;
 
 public class TurnMgr : SingletonBehaviour<TurnMgr>
 {
