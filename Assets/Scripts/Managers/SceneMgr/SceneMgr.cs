@@ -13,7 +13,10 @@ public class SceneMgr : SingletonBehaviour<SceneMgr>
         Main, 
         Dialog1,
         UnitSelection,
-        Battle1
+        Battle1,
+        Battle2,
+        Battle3,
+        Battle4,
     }
 
     public static Dictionary<string, Scene> sceneMap = new Dictionary<string, Scene>() {
