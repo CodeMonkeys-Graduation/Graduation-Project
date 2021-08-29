@@ -1,4 +1,0 @@
-repository "CodeMonkeys-Graduation@wonAdam_Cloud@cloud"
-  path "/"
-    br "/main"
-    co "/main"
