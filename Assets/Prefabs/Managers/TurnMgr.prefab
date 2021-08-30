@@ -44,6 +44,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 7
-  _lifeCycles: 03000000
+  _lifeCycles: 03000000040000000500000006000000
   units: []
   tmState: 0

@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 4
-  _lifeCycles: 00000000030000000200000003000000
+  _lifeCycles: 00000000010000000200000003000000040000000500000006000000
   onPathfindRequesterCountZero: {fileID: 11400000, guid: 9ff65ca66f58723409b2a13e08bbbed5,
     type: 2}
   onPathUpdatingStart: {fileID: 11400000, guid: 53dc6cb665e1f0849885d27f53e37798,

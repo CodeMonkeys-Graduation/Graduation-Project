@@ -24,6 +24,9 @@ public class SceneMgr : SingletonBehaviour<SceneMgr>
         { Scene.Dialog1.ToString(), Scene.Dialog1 },
         { Scene.UnitSelection.ToString(), Scene.UnitSelection },
         { Scene.Battle1.ToString(), Scene.Battle1 },
+        { Scene.Battle2.ToString(), Scene.Battle2 },
+        { Scene.Battle3.ToString(), Scene.Battle3 },
+        { Scene.Battle4.ToString(), Scene.Battle4 },
     };
 
     public void LoadScene(Scene sceneEnum, Action<float> onSceneLoad = null)

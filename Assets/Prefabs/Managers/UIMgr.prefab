@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 8
-  _lifeCycles: 03000000
+  _lifeCycles: 03000000040000000500000006000000
   testPlayBtn: {fileID: 6797552524488251223, guid: a43d64d589fbcd54db9cb38f5c0d5099,
     type: 3}
   endTurnBtn: {fileID: 4699184060849207397, guid: 6260fd98c11f8f24688eefd7a1221ded,

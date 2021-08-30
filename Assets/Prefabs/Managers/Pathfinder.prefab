@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 6
-  _lifeCycles: 03000000
+  _lifeCycles: 03000000040000000500000006000000
   pfState: 0
   mapMgr: {fileID: 0}
   requesterCounts: 0

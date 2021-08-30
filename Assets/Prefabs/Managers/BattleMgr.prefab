@@ -44,6 +44,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 2
-  _lifeCycles: 03000000
+  _lifeCycles: 03000000040000000500000006000000
   _unitPrefabs: []
   gmState: 0

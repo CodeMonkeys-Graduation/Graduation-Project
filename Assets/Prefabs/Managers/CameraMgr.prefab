@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 3
-  _lifeCycles: 03000000
+  _lifeCycles: 03000000040000000500000006000000
   cameraState: 0
   _camera: {fileID: 0}
   lerpTime: 1
