@@ -5,12 +5,17 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class TurnPanel : MonoBehaviour, IPanel
+public class TurnPanel : Battle_UI
 {
     public List<TurnSlot> slots;
     [SerializeField] TurnSlot slotPrefab;
     [SerializeField] GameObject glowFramePrefab;
     [SerializeField] Transform content;
+
+    public TurnPanel() : base(BattleUIType.Turn)
+    {
+
+    }
     
 
     public bool ShouldUpdateSlots(List<Unit> turns)
@@ -55,15 +60,14 @@ public class TurnPanel : MonoBehaviour, IPanel
         float gridY = content.GetComponent<GridLayoutGroup>().cellSize.y;
         content.GetComponent<RectTransform>().sizeDelta = new Vector2(gridX * turns.Count - GetComponent<RectTransform>().sizeDelta.x, gridY);
     }
+    public override void SetPanel(UIParam u = null) { if(u == null) gameObject.SetActive(true); }
 
-    public void UnsetPanel()
+public override void UnsetPanel()
     {
         foreach(var slot in slots)
         {
             slot.GetComponent<Toggle>().onValueChanged.RemoveAllListeners();
         }
-
-
 
         gameObject.SetActive(false);
     }

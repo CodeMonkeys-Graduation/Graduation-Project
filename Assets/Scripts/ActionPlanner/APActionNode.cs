@@ -193,7 +193,7 @@ public class ActionNode_Move : APActionNode
 
     public override void OnWaitExecute()
     {
-        _actionPointPanel.SetText(_gameState.self.owner.actionPointsRemain);
+        _actionPointPanel.SetPanel(new UIActionPoint(_gameState.self.owner.actionPointsRemain));
     }
 
     public override void OnWaitExit()
@@ -316,7 +316,7 @@ public class ActionNode_Attack : APActionNode
 
     public override void OnWaitExecute()
     {
-        _actionPointPanel.SetText(_gameState.self.owner.actionPointsRemain);
+        _actionPointPanel.SetPanel(new UIActionPoint(_gameState.self.owner.actionPointsRemain));
     }
 
     public override void OnWaitExit()

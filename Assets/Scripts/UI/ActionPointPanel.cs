@@ -2,16 +2,24 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-
-public class ActionPointPanel : MonoBehaviour, IPanel
+public class ActionPointPanel : Battle_UI
 {
     [SerializeField] TextMeshProUGUI actionPointText;
 
-    public void SetText(int point)
+    public ActionPointPanel() : base(BattleUIType.ActionPoint)
     {
-        actionPointText.text = $"X {point.ToString()}";
+
+    }
+
+    public override void SetPanel(UIParam u)
+    {
+        if (u == null) return;
+
+        UIActionPoint uap = (UIActionPoint)u;
+
+        actionPointText.text = $"X {uap._point.ToString()}";
         gameObject.SetActive(true);
     }
 
-    public void UnsetPanel() => gameObject.SetActive(false);
+    public override void UnsetPanel() => gameObject.SetActive(false);
 }

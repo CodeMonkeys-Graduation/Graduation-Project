@@ -8,7 +8,7 @@ public class BattleMgr : SingletonBehaviour<BattleMgr>
     [SerializeField] List<Unit> _unitPrefabs;
 
     EventListener el_GameBattleEnter = new EventListener();
-    SummonPanel _summonUI;
+    [SerializeField] SummonPanel _summonUI;
 
     public static List<Cube> _canSummonCubes;
     public StateMachine<BattleMgr> _stateMachine;

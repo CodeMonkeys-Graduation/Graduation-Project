@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
 
-public class ItemSlot : MonoBehaviour, IPanel
+public class ItemSlot : MonoBehaviour, Ipanel
 {
     [SerializeField] Image icon;
     [SerializeField] TextMeshProUGUI text;
@@ -22,6 +22,8 @@ public class ItemSlot : MonoBehaviour, IPanel
         text.text = count.ToString();
         btn.onClick.AddListener(onClickSlot);
     }
+
+    public void SetPanel(UIParam u) => gameObject.SetActive(true);
 
     public void UnsetPanel()
     {

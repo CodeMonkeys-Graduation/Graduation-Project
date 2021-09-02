@@ -4,12 +4,24 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ItemPanel : MonoBehaviour, IPanel
+public class ItemPanel : Battle_UI
 {
     [SerializeField] List<ItemSlot> itemSlots;
 
-    public void SetPanel(Dictionary<Item, int> itemCounter, Action<Item> onClickItemSlot)
+    public ItemPanel() : base(BattleUIType.Item) 
+    { 
+    
+    }
+
+    public override void SetPanel(UIParam u)
     {
+        if (u == null) return;
+
+        UIItem uit = (UIItem)u;
+
+        Dictionary<Item, int> itemCounter = uit._itemCounter;
+        Action<Item> onClickItemSlot = uit._onClickItemSlot;
+
         gameObject.SetActive(true);
         itemSlots.ForEach(slot => slot.UnsetPanel());
 
@@ -21,7 +33,7 @@ public class ItemPanel : MonoBehaviour, IPanel
         }
     }
 
-    public void UnsetPanel()
+    public override void UnsetPanel()
     {
         itemSlots.ForEach(slot => slot.UnsetPanel());
         gameObject.SetActive(false);

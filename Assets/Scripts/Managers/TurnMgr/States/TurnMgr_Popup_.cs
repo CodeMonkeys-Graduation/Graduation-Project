@@ -27,8 +27,8 @@ public class TurnMgr_Popup_ : TurnMgr_State_
         string popupContent, UnityAction onClickYes, UnityAction onClickNo,
         Action onPopupEnter = null, Action onPopupExecute = null, Action onPopupExit = null) : base(owner, unit)
     {
-        // TODO ÆÄ¶ó¹ÌÅÍ°¡´ÉÇÑ Event½Ã ÇØ°á°¡´É
-        _popup = MonoBehaviour.FindObjectOfType<UIMgr>().popupPanel; // ¿©±â°¡ Á¶±Ý ¹®Á¦
+        // TODO ï¿½Ä¶ï¿½ï¿½ï¿½Í°ï¿½ï¿½ï¿½ï¿½ï¿½ Eventï¿½ï¿½ ï¿½Ø°á°¡ï¿½ï¿½
+        //_popup = MonoBehaviour.FindObjectOfType<BattleUI>().popupPanel; // ï¿½ï¿½ï¿½â°¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
         _popupPos = popupPos;
         _onClickNo = onClickNo;
@@ -43,9 +43,9 @@ public class TurnMgr_Popup_ : TurnMgr_State_
     public override void Enter() 
     {
         // TODO delete
-        _popup.SetPopup(_popupContent, _popupPos, _onClickYes, _onClickNo);
+        _popup.SetPanel(new UIPopup(_popupContent, _popupPos, _onClickYes, _onClickNo));
 
-        // TODO param Àü´Þ
+        // TODO param ï¿½ï¿½ï¿½ï¿½
         //TurnPopupParam param = new TurnPopupParam(...);
         //EventMgr.Instance.onTurnPopupEnter.Invoke(param);
 

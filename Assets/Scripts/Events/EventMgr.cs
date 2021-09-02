@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class EventMgr : SingletonBehaviour<EventMgr>
 {
+    [Header("SceneChanged")]
+    [SerializeField] public ObserverEvent OnSceneChanged;
 
     [Header("PathFinding Event")]
     [SerializeField] public ObserverEvent onPathfindRequesterCountZero;
