@@ -2,16 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class SummonPanel : MonoBehaviour, IPanel
+public class SummonPanel : Battle_UI
 {
     [SerializeField] public List<SummonBtn> summonBtnPrefabs;
     [SerializeField] public Transform content;
 
     public Dictionary<SummonBtn, int> SummonBtnCount = new Dictionary<SummonBtn, int>();
 
-    public void SetSummonPanel(Unit unit, bool add)
+    public SummonPanel() : base(BattleUIType.Summon)
     {
+
+    }
+
+    public override void SetPanel(UIParam u)
+    {
+        if (u == null) return;
+
+        UISummon us = (UISummon)u;
+        Unit unit = us._unit;
+        bool add = us._add;
+
         foreach(SummonBtn summonBtn in summonBtnPrefabs) // Dictionary를 Setting한 후
         {
             if(unit == summonBtn.unitPrefab)
@@ -46,7 +56,7 @@ public class SummonPanel : MonoBehaviour, IPanel
             g.GetComponent<SummonBtn>().unitCount.text = si.Value.ToString();
         }
     }
-    public void UnsetPanel()
+    public override void UnsetPanel()
     {
         gameObject.SetActive(false);
     }

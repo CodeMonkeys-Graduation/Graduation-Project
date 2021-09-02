@@ -39,14 +39,14 @@ public class GameMgr_Positioning_ : GameMgr_State_
         EventMgr.Instance.onGamePositioningEnter.Invoke();
 
         foreach (Unit unit in _unitPrefabs) 
-            _summonPanel.SetSummonPanel(unit, true); // summonUI에 unit에 해당하는 버튼 세팅
+            _summonPanel.SetPanel(new UISummon(unit, true)); // summonUI에 unit에 해당하는 버튼 세팅
 
         EventMgr.Instance.onUnitSummonEnd.Register(
             el_onUnitSummonEnd, 
             (param) => 
                 {
                     Unit u = ((UnitParam)param)._unit;
-                    _summonPanel.SetSummonPanel(u, false);
+                    _summonPanel.SetPanel(new UISummon(u, false));
                 }
             );  
     }

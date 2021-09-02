@@ -40,21 +40,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 7658463604238734189}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8153d584467c244cbb2f241c195de1c, type: 3}
+  m_Script: {fileID: 11500000, guid: 74dfa43f717a0014d801af7ea7afb396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 8
-  _lifeCycles: 03000000040000000500000006000000
-  testPlayBtn: {fileID: 6797552524488251223, guid: a43d64d589fbcd54db9cb38f5c0d5099,
-    type: 3}
-  endTurnBtn: {fileID: 4699184060849207397, guid: 6260fd98c11f8f24688eefd7a1221ded,
-    type: 3}
-  backBtn: {fileID: 4288348786587585540, guid: 0e7925379cfa7484288df31428c022c7, type: 3}
-  testNextStateBtn: {fileID: 0}
-  turnPanel: {fileID: 0}
-  statusPanel: {fileID: 0}
-  popupPanel: {fileID: 0}
-  actionPanel: {fileID: 0}
-  actionPointPanel: {fileID: 0}
-  itemPanel: {fileID: 0}
-  summonPanel: {fileID: 0}
+  Type: 0
+  _lifeCycles: 
+  canvasPrefabs:
+  - {fileID: 7291966241044905970, guid: 706998cc4dbc0bd42b4365a0f1492ee5, type: 3}
+  - {fileID: 7291966241044905970, guid: 706998cc4dbc0bd42b4365a0f1492ee5, type: 3}
+  battleUIPrefabs:
+  - {fileID: 3869887982127670184, guid: 167fc138fb3f4464487057d5326ab375, type: 3}
+  - {fileID: 8948062014891496318, guid: 23cb8a30dc4bfbc4bba0aeef5c15c9d5, type: 3}
+  - {fileID: 4288348786587585537, guid: 0e7925379cfa7484288df31428c022c7, type: 3}
+  - {fileID: 4699184060849207399, guid: 6260fd98c11f8f24688eefd7a1221ded, type: 3}
+  - {fileID: 2559020914478534006, guid: 9bb0e2107fda6ac4eb86a2d3e0f5b6f5, type: 3}
+  - {fileID: 1934562568237661069, guid: da9d62e1f8225f746ae571116b58f1bb, type: 3}
+  - {fileID: 6797552524488251228, guid: a43d64d589fbcd54db9cb38f5c0d5099, type: 3}
+  - {fileID: 57251538121215964, guid: 48cd7599f8277754b84ef7358f248736, type: 3}
+  - {fileID: 7009132371826327025, guid: 5dab125834ef72648bfb787b12eefde8, type: 3}
+  - {fileID: 8819214805487652758, guid: 5a77e7f93f0edf24a855121de0232b0f, type: 3}
+  - {fileID: 7073010292704358077, guid: 4a79ae64fc9c6544c828e131665bd42f, type: 3}
+  normalUIPrefabs: []

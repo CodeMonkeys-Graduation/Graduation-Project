@@ -20,7 +20,7 @@ public class TurnSlot : MonoBehaviour
         GetComponent<Toggle>().onValueChanged.AddListener((isOn) => {
             if (isOn)
             {
-                statusPanel.SetStatusForUnit(unit);
+                statusPanel.SetPanel(new UIStatus(unit));
                 CameraMgr.Instance.SetTarget(unit);
             }
             else

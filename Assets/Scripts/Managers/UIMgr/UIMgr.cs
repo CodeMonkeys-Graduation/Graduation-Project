@@ -6,215 +6,70 @@ using System.Linq;
 using UnityEngine.Events;
 using ObserverPattern;
 
+public enum CanvasType
+{
+    Normal,
+    Battle
+}
 public class UIMgr : SingletonBehaviour<UIMgr>
 {
-    [Header("Set in Editor")]
+    public StateMachine<UIMgr> stateMachine;
 
-    [SerializeField] public GameObject testPlayBtn;
-    [SerializeField] public GameObject endTurnBtn;
-    [SerializeField] public GameObject backBtn;
-    [SerializeField] public GameObject testNextStateBtn;
+    [SerializeField] List<Canvas> canvasPrefabs; 
+    [SerializeField] List<Battle_UI> battleUIPrefabs; // 배틀에 사용될 UI 프리팹
+    [SerializeField] List<Normal_UI> normalUIPrefabs; // 일단 UI 프리팹
 
-    //-- Mgr --//
-    [HideInInspector] BattleMgr gameMgr;
-    [HideInInspector] TurnMgr turnMgr;
-    
-    //-- UI --//
-    [HideInInspector] public TurnPanel turnPanel;
-    [HideInInspector] public StatusPanel statusPanel;
-    [HideInInspector] public PopupPanel popupPanel;
-    [HideInInspector] public ActionPanel actionPanel;
-    [HideInInspector] public ActionPointPanel actionPointPanel;
-    [HideInInspector] public ItemPanel itemPanel;
-    [HideInInspector] public SummonPanel summonPanel;
+    [HideInInspector] public EventListener sceneListener = new EventListener(); // 씬이 변경되면 이벤트 발생
+    CanvasType currCanvasType; // 디버깅용
 
-    //-- Event Listener --//
+    [HideInInspector] public Dictionary<string, List<NormalUIType>> normalUIDictionary; // 씬마다 들어갈 UI 리스트를 만들어야 함
 
-    // Game
-    EventListener el_GameInitEnter = new EventListener();
-    EventListener el_GameInitExit = new EventListener();
-    EventListener el_GamePositioningEnter = new EventListener();
-    EventListener el_GamePositioningExit = new EventListener();
-    EventListener el_GameBattleEnter = new EventListener();
-    EventListener el_GameBattleExit = new EventListener();
-    EventListener el_GameVictoryEnter = new EventListener();
-    EventListener el_GameVictoryExit = new EventListener();
-    EventListener el_GameDefeatEnter = new EventListener();
-    EventListener el_GameDefeatExit = new EventListener();
-
-    // Turn
-    EventListener el_TurnBeginEnter = new EventListener();
-    EventListener el_TurnBeginExit = new EventListener();
-    EventListener el_TurnActionEnter = new EventListener();
-    EventListener el_TurnActionExit = new EventListener();
-    EventListener el_TurnItemEnter = new EventListener();
-    EventListener el_TurnItemExit = new EventListener();
-    EventListener el_TurnMove = new EventListener();
-    EventListener el_TurnNobody = new EventListener();
-    EventListener el_TurnPlan = new EventListener();
-
-    
-
-    void Start()
+    public void Start()
     {
-        gameMgr = FindObjectOfType<BattleMgr>();
-
-        turnPanel = FindObjectOfType<TurnPanel>();
-        actionPanel = FindObjectOfType<ActionPanel>();
-        actionPointPanel = FindObjectOfType<ActionPointPanel>();
-        itemPanel = FindObjectOfType<ItemPanel>();
-        statusPanel = FindObjectOfType<StatusPanel>();
-        popupPanel = FindObjectOfType<PopupPanel>();
-        summonPanel = FindObjectOfType<SummonPanel>();
-
         RegisterEvent();
+        
+        stateMachine = new StateMachine<UIMgr>(new UIBattleState(this, canvasPrefabs[(int)CanvasType.Battle], CanvasType.Battle, battleUIPrefabs, BattleMgr.Instance, TurnMgr.Instance));
+        currCanvasType = CanvasType.Battle;
     }
 
-    void RegisterEvent()
+    public void Update()
     {
-        EventMgr.Instance.onGameInitEnter.Register(el_GameInitEnter, SetUIGameInit);
-        EventMgr.Instance.onGameInitExit.Register(el_GameInitExit, (param) => { });
-        EventMgr.Instance.onGamePositioningEnter.Register(el_GamePositioningEnter, (param) => SetUIPositioning(true));
-        EventMgr.Instance.onGamePositioningExit.Register(el_GamePositioningExit, (param) => SetUIPositioning(false));
-        EventMgr.Instance.onGameBattleEnter.Register(el_GameBattleEnter, (param) => { });
-        EventMgr.Instance.onGameBattleExit.Register(el_GameBattleExit, (param) => { });
-        EventMgr.Instance.onGameVictoryEnter.Register(el_GameVictoryEnter, (param) => { });
-        EventMgr.Instance.onGameVictoryExit.Register(el_GameVictoryEnter, (param) => { });
-        EventMgr.Instance.onGameDefeatEnter.Register(el_GameDefeatExit, (param) => { });
-        EventMgr.Instance.onGameDefeatExit.Register(el_GameDefeatExit, (param) => { });
-
-        EventMgr.Instance.onTurnActionEnter.Register(el_TurnActionEnter, (param) => SetUIAction(true));
-        EventMgr.Instance.onTurnActionExit.Register(el_TurnActionExit, (param) => SetUIAction(false));
-        EventMgr.Instance.onTurnBeginEnter.Register(el_TurnBeginEnter, SetUIBeginEnter);
-        EventMgr.Instance.onTurnBeginExit.Register(el_TurnBeginExit, (param) => actionPanel.UnsetPanel());
-        EventMgr.Instance.onTurnItemEnter.Register(el_TurnItemEnter, (param) => itemPanel.SetPanel(turnMgr.turns.Peek().itemBag.GetItem(), OnClickItemSlotBtn));
-        EventMgr.Instance.onTurnItemExit.Register(el_TurnItemExit, (param) => itemPanel.UnsetPanel());
-        EventMgr.Instance.onTurnMove.Register(el_TurnMove, (param) => actionPointPanel.SetText(turnMgr.turns.Peek().actionPointsRemain));
-        EventMgr.Instance.onTurnNobody.Register(el_TurnNobody, SetUINobody);
-        EventMgr.Instance.onTurnPlan.Register(el_TurnPlan, SetUIPlan);
+        stateMachine.Run();
     }
 
-    void SetUIGameInit(EventParam param)
+    void RegisterEvent() => EventMgr.Instance.OnSceneChanged.Register(sceneListener, ChangedScene);
+
+    List<Normal_UI> MakeActiveUIList(string scenename)
     {
-        testPlayBtn.SetActive(false);
-        endTurnBtn.SetActive(false);
-        backBtn.SetActive(false);
+        List<Normal_UI> activeNormalUIList = new List<Normal_UI>();
+        List<NormalUIType> activeNormalUITypeList = normalUIDictionary[scenename];
 
-        actionPanel.UnsetPanel();
-        turnPanel.UnsetPanel();
-        itemPanel.UnsetPanel();
-        actionPointPanel.UnsetPanel();
-        statusPanel.UnsetPanel();
-        popupPanel.UnsetPanel();
-        summonPanel.UnsetPanel();
-    }
-
-    void SetUIPositioning(bool b)
-    {
-        testPlayBtn.SetActive(!b);
-        summonPanel.gameObject.SetActive(b); // summonUI 켜기
-        testNextStateBtn.SetActive(b);
-    }
-
-    void SetUINobody(EventParam param)
-    {
-        testPlayBtn.SetActive(true);
-        endTurnBtn.SetActive(false);
-        backBtn.SetActive(false);
-
-        actionPanel.UnsetPanel();
-        turnPanel.UnsetPanel();
-        itemPanel.UnsetPanel();
-        actionPointPanel.UnsetPanel();
-        statusPanel.UnsetPanel();
-        popupPanel.UnsetPanel();
-        summonPanel.UnsetPanel();
-    }
-
-    void SetUIAction(bool b)
-    {
-        endTurnBtn.SetActive(b);
-        backBtn.SetActive(b);
-    }
-
-    void SetUIBeginEnter(EventParam param)
-    {
-        turnMgr = TurnMgr.Instance;
-        if (!turnMgr) return;
-
-        Dictionary<ActionType, UnityAction> btnEvents = new Dictionary<ActionType, UnityAction>();
-        btnEvents.Add(ActionType.Move, OnClickMoveBtn);
-        btnEvents.Add(ActionType.Attack, OnClickAttackBtn);
-        btnEvents.Add(ActionType.Item, OnClickItemBtn);
-        btnEvents.Add(ActionType.Skill, OnClickSkillBtn);
-
-        Unit nextTurnUnit = turnMgr.turns.Peek();
-
-        actionPanel.SetPanel(nextTurnUnit.actionSlots, nextTurnUnit.actionPointsRemain, btnEvents);
-        actionPointPanel.SetText(nextTurnUnit.actionPointsRemain);
-        turnPanel.gameObject.SetActive(true);
-
-        if (turnPanel.ShouldUpdateSlots(turnMgr.turns.ToList()))
-            turnPanel.SetSlots(statusPanel, turnMgr.turns.ToList());
-
-        testPlayBtn.SetActive(false);
-        endTurnBtn.SetActive(true);
-        backBtn.SetActive(false);
-    }
-
-    void SetUIPlan(EventParam param)
-    {
-        turnMgr = TurnMgr.Instance;
-
-        testPlayBtn.SetActive(false);
-        endTurnBtn.SetActive(false);
-        backBtn.SetActive(false);
-
-        actionPanel.UnsetPanel();
-        actionPointPanel.SetText(turnMgr.turns.Peek().actionPointsRemain);
-
-        turnPanel.gameObject.SetActive(true);
-
-        if (turnPanel.ShouldUpdateSlots(turnMgr.turns.ToList()))
-            turnPanel.SetSlots(statusPanel, turnMgr.turns.ToList());
-    }
-
-    private void OnClickMoveBtn()
-  => TurnMgr.Instance.stateMachine.ChangeState(new PlayerTurnMove(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
-    private void OnClickAttackBtn()
-        => TurnMgr.Instance.stateMachine.ChangeState(new TurnMgr_PlayerAttack_(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
-    private void OnClickItemBtn()
-        => TurnMgr.Instance.stateMachine.ChangeState(new PlayerTurnItem(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
-    private void OnClickSkillBtn()
-    => TurnMgr.Instance.stateMachine.ChangeState(new TurnMgr_PlayerSkill_(turnMgr, turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
-
-    void OnClickItemSlotBtn(Item item)
-    {
-        turnMgr = TurnMgr.Instance;
-
-        string popupContent = $"r u sure u wanna use {item.name}?";
-        turnMgr.stateMachine.ChangeState(
-            new TurnMgr_Popup_(turnMgr, turnMgr.turns.Peek(), Input.mousePosition, popupContent,
-            () => UseItem(item), () => turnMgr.stateMachine.ChangeState(null, StateMachine<TurnMgr>.StateTransitionMethod.ReturnToPrev),
-            () => itemPanel.SetPanel(turnMgr.turns.Peek().itemBag.GetItem(), OnClickItemSlotBtn), null, 
-            () => itemPanel.UnsetPanel()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
-    }
-
-    void UseItem(Item item)
-    {
-        turnMgr = TurnMgr.Instance;
-
-        TurnMgr_State_ nextState = new TurnMgr_PlayerBegin_(turnMgr, turnMgr.turns.Peek());
-        turnMgr.stateMachine.ChangeState(
-            new TurnMgr_WaitSingleEvent_(turnMgr, turnMgr.turns.Peek(), EventMgr.Instance.onUnitIdleEnter, nextState),
-            StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
-
-
-        ItemCommand itemCommand;
-        if(ItemCommand.CreateCommand(turnMgr.turns.Peek(), item, out itemCommand))
+        foreach (NormalUIType t in activeNormalUITypeList)
         {
-            turnMgr.turns.Peek().EnqueueCommand(itemCommand);
+            int idx = (int)t;
+            activeNormalUIList.Add(normalUIPrefabs[idx]); // SerializeField와 enum의 순서가 일치해야함
+        }
+
+        return activeNormalUIList;
+    }
+
+    void ChangedScene(EventParam param)
+    {
+        SceneChanged e = (SceneChanged)param;
+
+        if (e == null) return;
+
+        string curr_scenename = e._scene.ToString();
+
+        if(curr_scenename.Contains("Battle")) // 배틀씬
+        {
+            stateMachine.ChangeState(new UIBattleState(this, canvasPrefabs[(int)CanvasType.Battle], CanvasType.Battle, battleUIPrefabs, BattleMgr.Instance, TurnMgr.Instance), StateMachine<UIMgr>.StateTransitionMethod.JustPush);
+            currCanvasType = CanvasType.Battle;
+        }
+        else // 그 외
+        {
+            stateMachine.ChangeState(new UINormalState(this, canvasPrefabs[(int)CanvasType.Normal], CanvasType.Normal, MakeActiveUIList(curr_scenename)), StateMachine<UIMgr>.StateTransitionMethod.JustPush);
+            currCanvasType = CanvasType.Normal;
         }
     }
-
 }
