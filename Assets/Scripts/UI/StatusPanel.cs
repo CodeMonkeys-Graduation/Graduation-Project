@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using ObserverPattern;
 
 public class StatusPanel : Battle_UI
 {
@@ -18,7 +19,7 @@ public class StatusPanel : Battle_UI
 
     }
 
-    public override void SetPanel(UIParam u)
+    public override void SetPanel(EventParam u)
     {
         if (u == null) return;
 

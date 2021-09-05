@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using ObserverPattern;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class ActionPointPanel : Battle_UI
 
     }
 
-    public override void SetPanel(UIParam u)
+    public override void SetPanel(EventParam u)
     {
         if (u == null) return;
 

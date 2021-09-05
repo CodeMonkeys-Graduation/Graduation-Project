@@ -35,6 +35,8 @@ public class EventMgr : SingletonBehaviour<EventMgr>
     [SerializeField] public ObserverEvent onTurnBeginExit;
     [SerializeField] public ObserverEvent onTurnItemEnter; 
     [SerializeField] public ObserverEvent onTurnItemExit;
+    [SerializeField] public ObserverEvent onTurnPopupEnter;
+    [SerializeField] public ObserverEvent onTurnPopupExit;
     [SerializeField] public ObserverEvent onTurnMove;
     [SerializeField] public ObserverEvent onTurnNobody;
     [SerializeField] public ObserverEvent onTurnPlan; 
@@ -43,6 +45,7 @@ public class EventMgr : SingletonBehaviour<EventMgr>
     [SerializeField] public ObserverEvent onGameInitEnter;
     [SerializeField] public ObserverEvent onGameInitExit;
     [SerializeField] public ObserverEvent onGamePositioningEnter;
+    [SerializeField] public ObserverEvent onGamePositioningExecute;
     [SerializeField] public ObserverEvent onGamePositioningExit;
     [SerializeField] public ObserverEvent onGameBattleEnter;
     [SerializeField] public ObserverEvent onGameBattleExit;

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
+using ObserverPattern;
 
 public class ItemSlot : MonoBehaviour, Ipanel
 {
@@ -23,7 +24,7 @@ public class ItemSlot : MonoBehaviour, Ipanel
         btn.onClick.AddListener(onClickSlot);
     }
 
-    public void SetPanel(UIParam u) => gameObject.SetActive(true);
+    public void SetPanel(EventParam u) => gameObject.SetActive(true);
 
     public void UnsetPanel()
     {

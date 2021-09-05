@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using ObserverPattern;
 
 public class PopupPanel : Battle_UI
 {
@@ -14,19 +15,19 @@ public class PopupPanel : Battle_UI
 
     }
 
-    public override void SetPanel(UIParam u)
+    public override void SetPanel(EventParam u)
     {
         if (u == null) return;
 
         UIPopup up = (UIPopup)u;
 
-        gameObject.SetActive(true);
-
         Description.text = up._content;
-        transform.localPosition = up._pos;
+        transform.position = up._pos;
         yesBtn.onClick.AddListener(up._yes);
         noBtn.onClick.AddListener(up._no);
- 
+
+        gameObject.SetActive(true);
+
     }
 
     public override void UnsetPanel()

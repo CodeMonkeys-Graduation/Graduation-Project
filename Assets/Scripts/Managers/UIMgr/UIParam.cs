@@ -4,13 +4,9 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
+using ObserverPattern;
 
-    public interface UIParam
-    {
-
-    }
-
-    public class UIAction : UIParam
+    public class UIAction : EventParam
     {
         public List<Unit.ActionSlot> _actionSlots;
         public int _actionPointRemain;
@@ -24,15 +20,15 @@ using System.Linq;
         }
     }
 
-    public class UIActionPoint : UIParam
-    {
+    public class UIActionPoint : EventParam
+{
         public int _point;
 
         public UIActionPoint(int point) => _point = point;
     }
 
-    public class UIItem : UIParam
-    {
+    public class UIItem : EventParam
+{
         public Dictionary<Item, int> _itemCounter;
         public Action<Item> _onClickItemSlot;
         public UIItem(Dictionary<Item, int> itemCounter, Action<Item> onClickItemSlot)
@@ -42,14 +38,14 @@ using System.Linq;
         }
     }
 
-    public class UIPopup : UIParam
-    {
+    public class UIPopup : EventParam
+{
         public string _content;
-        public Vector2 _pos;
+        public Vector3 _pos;
         public UnityAction _yes;
         public UnityAction _no;
 
-        public UIPopup(string content, Vector2 pos, UnityAction yes, UnityAction no)
+        public UIPopup(string content, Vector3 pos, UnityAction yes, UnityAction no)
         {
             _content = content;
             _pos = pos;
@@ -58,27 +54,27 @@ using System.Linq;
         }
     }
 
-    public class UIStatus : UIParam
-    {
+    public class UIStatus : EventParam
+{
         public Unit _u;
 
         public UIStatus(Unit u) => _u = u;
     }
 
-    public class UISummon : UIParam
-    {
-        public Unit _unit;
+    public class UISummon : EventParam
+{
+        public List<Unit> _units;
         public bool _add;
 
-        public UISummon(Unit unit, bool add)
+        public UISummon(List<Unit> units, bool add)
         {
-            _unit = unit;
+            _units = units;
             _add = add;
         }
     }
 
-    public class UITurn : UIParam
-    {
+    public class UITurn : EventParam
+{
         
     }
 

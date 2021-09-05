@@ -16,19 +16,14 @@ public class UnitParam : EventParam
 
 public class GameMgr_Positioning_ : GameMgr_State_
 {
-    SummonPanel _summonPanel;
-
     List<Unit> _unitPrefabs;
     List<Cube> _canSummonCubes;
 
     Cube _prevRaycastedCube = null;
     Unit _selectedUnit;
 
-    EventListener el_onUnitSummonEnd = new EventListener();
-
-    public GameMgr_Positioning_(BattleMgr owner, SummonPanel summonPanel, List<Unit> unitPrefabs, List<Cube> canSummonCubes) : base(owner)
+    public GameMgr_Positioning_(BattleMgr owner, List<Unit> unitPrefabs, List<Cube> canSummonCubes) : base(owner)
     {
-        _summonPanel = summonPanel;
         _unitPrefabs = unitPrefabs;
         _canSummonCubes = canSummonCubes;
     }
@@ -36,19 +31,7 @@ public class GameMgr_Positioning_ : GameMgr_State_
     public override void Enter()
     {
         Debug.Log("Positioning State Enter");
-        EventMgr.Instance.onGamePositioningEnter.Invoke();
-
-        foreach (Unit unit in _unitPrefabs) 
-            _summonPanel.SetPanel(new UISummon(unit, true)); // summonUI에 unit에 해당하는 버튼 세팅
-
-        EventMgr.Instance.onUnitSummonEnd.Register(
-            el_onUnitSummonEnd, 
-            (param) => 
-                {
-                    Unit u = ((UnitParam)param)._unit;
-                    _summonPanel.SetPanel(new UISummon(u, false));
-                }
-            );  
+        EventMgr.Instance.onGamePositioningEnter.Invoke(new UISummon(_unitPrefabs, true)); // 여기서 SummonUI에 세팅
     }
 
     public override void Execute()

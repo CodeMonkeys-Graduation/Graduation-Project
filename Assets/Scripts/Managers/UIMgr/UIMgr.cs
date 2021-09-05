@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using UnityEngine.Events;
 using ObserverPattern;
+using RotaryHeart.Lib.SerializableDictionary;
 
 public enum CanvasType
 {
@@ -15,7 +16,10 @@ public class UIMgr : SingletonBehaviour<UIMgr>
 {
     public StateMachine<UIMgr> stateMachine;
 
-    [SerializeField] List<Canvas> canvasPrefabs; 
+    [System.Serializable]
+    public class CanvasDictionary : SerializableDictionaryBase<CanvasType, Canvas> { }
+
+    [SerializeField] CanvasDictionary canvasPrefab_Dictionary;
     [SerializeField] List<Battle_UI> battleUIPrefabs; // 배틀에 사용될 UI 프리팹
     [SerializeField] List<Normal_UI> normalUIPrefabs; // 일단 UI 프리팹
 
@@ -28,7 +32,7 @@ public class UIMgr : SingletonBehaviour<UIMgr>
     {
         RegisterEvent();
         
-        stateMachine = new StateMachine<UIMgr>(new UIBattleState(this, canvasPrefabs[(int)CanvasType.Battle], CanvasType.Battle, battleUIPrefabs, BattleMgr.Instance, TurnMgr.Instance));
+        stateMachine = new StateMachine<UIMgr>(new UIBattleState(this, canvasPrefab_Dictionary[CanvasType.Battle], CanvasType.Battle, battleUIPrefabs, BattleMgr.Instance, TurnMgr.Instance));
         currCanvasType = CanvasType.Battle;
     }
 
@@ -63,12 +67,12 @@ public class UIMgr : SingletonBehaviour<UIMgr>
 
         if(curr_scenename.Contains("Battle")) // 배틀씬
         {
-            stateMachine.ChangeState(new UIBattleState(this, canvasPrefabs[(int)CanvasType.Battle], CanvasType.Battle, battleUIPrefabs, BattleMgr.Instance, TurnMgr.Instance), StateMachine<UIMgr>.StateTransitionMethod.JustPush);
+            stateMachine.ChangeState(new UIBattleState(this, canvasPrefab_Dictionary[CanvasType.Battle], CanvasType.Battle, battleUIPrefabs, BattleMgr.Instance, TurnMgr.Instance), StateMachine<UIMgr>.StateTransitionMethod.JustPush);
             currCanvasType = CanvasType.Battle;
         }
         else // 그 외
         {
-            stateMachine.ChangeState(new UINormalState(this, canvasPrefabs[(int)CanvasType.Normal], CanvasType.Normal, MakeActiveUIList(curr_scenename)), StateMachine<UIMgr>.StateTransitionMethod.JustPush);
+            stateMachine.ChangeState(new UINormalState(this, canvasPrefab_Dictionary[CanvasType.Normal], CanvasType.Normal, MakeActiveUIList(curr_scenename)), StateMachine<UIMgr>.StateTransitionMethod.JustPush);
             currCanvasType = CanvasType.Normal;
         }
     }

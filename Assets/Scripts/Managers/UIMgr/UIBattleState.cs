@@ -27,6 +27,7 @@ public class UIBattleState : UIControlState
     EventListener el_GameInitEnter = new EventListener();
     EventListener el_GameInitExit = new EventListener();
     EventListener el_GamePositioningEnter = new EventListener();
+    EventListener el_GamePositioningExecute = new EventListener();
     EventListener el_GamePositioningExit = new EventListener();
     EventListener el_GameBattleEnter = new EventListener();
     EventListener el_GameBattleExit = new EventListener();
@@ -43,6 +44,8 @@ public class UIBattleState : UIControlState
     EventListener el_TurnActionExit = new EventListener();
     EventListener el_TurnItemEnter = new EventListener();
     EventListener el_TurnItemExit = new EventListener();
+    EventListener el_TurnPopupEnter = new EventListener();
+    EventListener el_TurnPopupExit = new EventListener();
     EventListener el_TurnMove = new EventListener();
     EventListener el_TurnNobody = new EventListener();
     EventListener el_TurnPlan = new EventListener();
@@ -79,8 +82,10 @@ public class UIBattleState : UIControlState
         #region RegisterEvent
         EventMgr.Instance.onGameInitEnter.Register(el_GameInitEnter, (param) => SetUIGameInit(true)); // ÃÊ±âÈ­
         EventMgr.Instance.onGameInitExit.Register(el_GameInitExit, (param) => SetUIGameInit(false));
-        EventMgr.Instance.onGamePositioningEnter.Register(el_GamePositioningEnter, (param) => SetUIGamePositioning(true)); // À¯´Ö ¼±ÅÃ
-        EventMgr.Instance.onGamePositioningExit.Register(el_GamePositioningExit, (param) => SetUIGamePositioning(false));
+        EventMgr.Instance.onGamePositioningEnter.Register(el_GamePositioningEnter, (param) => SetUIGamePositioning(true, param)); // À¯´Ö ¼±ÅÃÃ¢ ¶ç¿ì±â
+        EventMgr.Instance.onGamePositioningExecute.Register(el_GamePositioningExecute, SetUIGamePositioning); // À¯´Ö ¹èÄ¡
+        EventMgr.Instance.onGamePositioningExit.Register(el_GamePositioningExit, (param) => SetUIGamePositioning(false, param)); // À¯´Ö ¼±ÅÃÃ¢ ²ô±â
+        
         EventMgr.Instance.onGameBattleEnter.Register(el_GameBattleEnter, (param) => { }); // ¹èÆ² ½ÃÀÛ
         EventMgr.Instance.onGameBattleExit.Register(el_GameBattleExit, (param) => { });
         EventMgr.Instance.onGameVictoryEnter.Register(el_GameVictoryEnter, (param) => { }); // ¹èÆ² ½Â¸®
@@ -94,6 +99,8 @@ public class UIBattleState : UIControlState
         EventMgr.Instance.onTurnBeginExit.Register(el_TurnBeginExit, (param) => SetUITurnBegin(false));
         EventMgr.Instance.onTurnItemEnter.Register(el_TurnItemEnter, (param) => SetUITurnItem(true));
         EventMgr.Instance.onTurnItemExit.Register(el_TurnItemExit, (param) => SetUITurnItem(false));
+        EventMgr.Instance.onTurnPopupEnter.Register(el_TurnPopupEnter, (param) => SetUITurnPopup(true, param));
+        EventMgr.Instance.onTurnPopupExit.Register(el_TurnPopupExit, (param) => SetUITurnPopup(false, param));
 
         EventMgr.Instance.onTurnMove.Register(el_TurnMove, SetUITurnMove);
         EventMgr.Instance.onTurnNobody.Register(el_TurnNobody, SetUITurnNobody);
@@ -128,21 +135,38 @@ public class UIBattleState : UIControlState
 
         }
     }
-    void SetUIGamePositioning(bool b)
+    void SetUIGamePositioning(bool isEnter, EventParam param)
     {
-        _uiList[(int)BattleUIType.Play].gameObject.SetActive(!b);
-        _uiList[(int)BattleUIType.Summon].gameObject.SetActive(b);
-        _uiList[(int)BattleUIType.Next].gameObject.SetActive(b);
+        if (isEnter)
+        {
+            if (param != null)
+            {
+                UISummon us = (UISummon)param;
 
-        _uiList[(int)BattleUIType.Play].gameObject.SetActive(!b);
-        _uiList[(int)BattleUIType.Summon].gameObject.SetActive(b);
-        _uiList[(int)BattleUIType.Next].gameObject.SetActive(b);
+                _uiList[(int)BattleUIType.Play].UnsetPanel();
+                _uiList[(int)BattleUIType.Summon].SetPanel(new UISummon(us._units, true));
+                _uiList[(int)BattleUIType.Next].SetPanel();
+            }
+        }
+        else
+        {
+            _uiList[(int)BattleUIType.Play].SetPanel();
+            _uiList[(int)BattleUIType.Summon].UnsetPanel();
+            _uiList[(int)BattleUIType.Next].UnsetPanel();
+        }
+      
+    }
+    void SetUIGamePositioning(EventParam param)
+    {
+        List<Unit> _units = new List<Unit>();
+        _units.Add(((UnitParam)param)._unit);
+        _uiList[(int)BattleUIType.Summon].SetPanel(new UISummon(_units, false));
     }
 
     #endregion
 
     #region SetUIByTurns
-   
+
     void SetUITurnBegin(bool isEnter)
     {
         if(isEnter)
@@ -193,6 +217,18 @@ public class UIBattleState : UIControlState
         else
         {
             ip.UnsetPanel();
+        }
+    }
+
+    void SetUITurnPopup(bool isEntered, EventParam param)
+    { 
+        if(isEntered)
+        {
+            _uiList[(int)BattleUIType.Popup].SetPanel((UIPopup)param);
+        }
+        else
+        {
+            _uiList[(int)BattleUIType.Popup].UnsetPanel();
         }
     }
 

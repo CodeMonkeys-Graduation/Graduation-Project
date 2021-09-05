@@ -22,10 +22,7 @@ public class BattleMgr : SingletonBehaviour<BattleMgr>
 
     public void Start()
     {
-        _summonUI = FindObjectOfType<SummonPanel>();
-
         _canSummonCubes = new List<Cube>(FindObjectsOfType<Cube>());
-
         _stateMachine = new StateMachine<BattleMgr>(new GameMgr_Init_(this));
 
     }
@@ -43,7 +40,7 @@ public class BattleMgr : SingletonBehaviour<BattleMgr>
     {
         if (_stateMachine.IsStateType(typeof(GameMgr_Init_)))
         {
-            _stateMachine.ChangeState(new GameMgr_Positioning_(this, _summonUI, _unitPrefabs, _canSummonCubes), StateMachine<BattleMgr>.StateTransitionMethod.ClearNPush);
+            _stateMachine.ChangeState(new GameMgr_Positioning_(this, _unitPrefabs, _canSummonCubes), StateMachine<BattleMgr>.StateTransitionMethod.JustPush);
         }
         else if (_stateMachine.IsStateType(typeof(GameMgr_Positioning_)))
         {

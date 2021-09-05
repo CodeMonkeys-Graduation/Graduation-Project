@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using ObserverPattern;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,32 +15,39 @@ public class SummonPanel : Battle_UI
 
     }
 
-    public override void SetPanel(UIParam u)
+    public override void SetPanel(EventParam u) // 유닛을 받아 그 유닛을 판넬에 세팅하는 함수
     {
         if (u == null) return;
 
         UISummon us = (UISummon)u;
-        Unit unit = us._unit;
+        List<Unit> units = us._units;
         bool add = us._add;
 
-        foreach(SummonBtn summonBtn in summonBtnPrefabs) // Dictionary를 Setting한 후
+        foreach(Unit unit in units)
         {
-            if(unit == summonBtn.unitPrefab)
+            foreach (SummonBtn summonBtn in summonBtnPrefabs) // Dictionary를 Setting한 후
             {
-                if(add)
+                if (unit == summonBtn.unitPrefab)
                 {
-                    if (SummonBtnCount.ContainsKey(summonBtn)) SummonBtnCount[summonBtn]++;
-                    else SummonBtnCount.Add(summonBtn, 1);
-                }
-                else
-                {
-                    if (SummonBtnCount.ContainsKey(summonBtn) && SummonBtnCount[summonBtn] > 1) SummonBtnCount[summonBtn]--;
-                    else SummonBtnCount.Remove(summonBtn);
+                    if (add)
+                    {
+                        if (SummonBtnCount.ContainsKey(summonBtn)) SummonBtnCount[summonBtn]++;
+                        else SummonBtnCount.Add(summonBtn, 1);
+                    }
+                    else
+                    {
+                        if (SummonBtnCount.ContainsKey(summonBtn) && SummonBtnCount[summonBtn] > 1) SummonBtnCount[summonBtn]--;
+                        else SummonBtnCount.Remove(summonBtn);
+                    }
                 }
             }
         }
 
+       
+
         UpdateSummonBtns();
+
+        gameObject.SetActive(true);
     }
 
     public void UpdateSummonBtns()
