@@ -45,9 +45,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 0
   _lifeCycles: 
-  canvasPrefabs:
-  - {fileID: 7291966241044905970, guid: 706998cc4dbc0bd42b4365a0f1492ee5, type: 3}
-  - {fileID: 7291966241044905970, guid: 706998cc4dbc0bd42b4365a0f1492ee5, type: 3}
+  canvasPrefab_Dictionary:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 0
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 0
+    _keyValues: 0100000000000000
+    _keys: 0100000000000000
+    _values:
+    - {fileID: 7291966241044905970, guid: 706998cc4dbc0bd42b4365a0f1492ee5, type: 3}
+    - {fileID: 7291966241044905970, guid: 706998cc4dbc0bd42b4365a0f1492ee5, type: 3}
   battleUIPrefabs:
   - {fileID: 3869887982127670184, guid: 167fc138fb3f4464487057d5326ab375, type: 3}
   - {fileID: 8948062014891496318, guid: 23cb8a30dc4bfbc4bba0aeef5c15c9d5, type: 3}

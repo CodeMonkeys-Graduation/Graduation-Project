@@ -17,13 +17,12 @@ public class TurnMgr_Popup_ : TurnMgr_State_
     Action onPopupExecute; 
     Action onPopupExit;
 
-    PopupPanel _popup;
-    Vector2 _popupPos;
+    Vector3 _popupPos;
     string _popupContent;
     UnityAction _onClickYes;
     UnityAction _onClickNo;
 
-    public TurnMgr_Popup_(TurnMgr owner, Unit unit, Vector2 popupPos, 
+    public TurnMgr_Popup_(TurnMgr owner, Unit unit, Vector3 popupPos, 
         string popupContent, UnityAction onClickYes, UnityAction onClickNo,
         Action onPopupEnter = null, Action onPopupExecute = null, Action onPopupExit = null) : base(owner, unit)
     {
@@ -43,7 +42,7 @@ public class TurnMgr_Popup_ : TurnMgr_State_
     public override void Enter() 
     {
         // TODO delete
-        _popup.SetPanel(new UIPopup(_popupContent, _popupPos, _onClickYes, _onClickNo));
+        EventMgr.Instance.onTurnPopupEnter.Invoke(new UIPopup(_popupContent, _popupPos, _onClickYes, _onClickNo));
 
         // TODO param ����
         //TurnPopupParam param = new TurnPopupParam(...);
@@ -61,9 +60,8 @@ public class TurnMgr_Popup_ : TurnMgr_State_
 
     public override void Exit()
     {
-        _popup.UnsetPanel();
 
-        //EventMgr.Instance.onTurnPopupExit.Invoke(param);
+        EventMgr.Instance.onTurnPopupExit.Invoke();
 
 
         if (onPopupExit != null)

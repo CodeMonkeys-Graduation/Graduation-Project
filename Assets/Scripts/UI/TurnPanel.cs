@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using ObserverPattern;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -60,7 +61,7 @@ public class TurnPanel : Battle_UI
         float gridY = content.GetComponent<GridLayoutGroup>().cellSize.y;
         content.GetComponent<RectTransform>().sizeDelta = new Vector2(gridX * turns.Count - GetComponent<RectTransform>().sizeDelta.x, gridY);
     }
-    public override void SetPanel(UIParam u = null) { if(u == null) gameObject.SetActive(true); }
+    public override void SetPanel(EventParam u = null) { if(u == null) gameObject.SetActive(true); }
 
 public override void UnsetPanel()
     {

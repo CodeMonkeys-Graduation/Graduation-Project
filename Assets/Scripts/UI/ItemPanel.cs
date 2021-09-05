@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ObserverPattern;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ public class ItemPanel : Battle_UI
     
     }
 
-    public override void SetPanel(UIParam u)
+    public override void SetPanel(EventParam u)
     {
         if (u == null) return;
 

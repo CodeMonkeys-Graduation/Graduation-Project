@@ -70,12 +70,16 @@ MonoBehaviour:
   onTurnBeginExit: {fileID: 11400000, guid: c338e38df103d614eb5c21a7bc242215, type: 2}
   onTurnItemEnter: {fileID: 11400000, guid: 7d7413baa9d131a4987a597349a693ea, type: 2}
   onTurnItemExit: {fileID: 11400000, guid: 63895d563aec5d24dbf298b7e8871811, type: 2}
+  onTurnPopupEnter: {fileID: 11400000, guid: 42b41f28fab449e44bc0ce3c042d9d48, type: 2}
+  onTurnPopupExit: {fileID: 11400000, guid: bf1f579029162b047ba29f7219ba2d71, type: 2}
   onTurnMove: {fileID: 11400000, guid: 21eaa094aa7ec65448bc6dd7e5dd52e1, type: 2}
   onTurnNobody: {fileID: 11400000, guid: b517919fc49fc9840897635a5b15785f, type: 2}
   onTurnPlan: {fileID: 11400000, guid: 47b2b3178eac02244a0008105d9137d3, type: 2}
   onGameInitEnter: {fileID: 11400000, guid: 149ceb97438b07e439bdb631d81e3084, type: 2}
   onGameInitExit: {fileID: 11400000, guid: c0661a9039bfa2b44a5cbae433fab816, type: 2}
   onGamePositioningEnter: {fileID: 11400000, guid: 57e7f51f4acf2e64a8f37eb14d0832f9,
+    type: 2}
+  onGamePositioningExecute: {fileID: 11400000, guid: 254ca249b70a61b4f9d7fd31e1fc16fb,
     type: 2}
   onGamePositioningExit: {fileID: 11400000, guid: fd5a3839fea33834fa947d9df6e1d4f0,
     type: 2}

@@ -44,7 +44,7 @@ public class TurnMgr_PlayerAttack_ : TurnMgr_State_
                     List<Cube> cubesInAttackSplash = MapMgr.Instance.GetCubes(
                         unit.basicAttackSplash.range, unit.basicAttackSplash.centerX, unit.basicAttackSplash.centerZ, cubeClicked);
 
-                    string popupContent = $"It is {cubeClicked.GetUnit().name} r u Attack?";
+                    string popupContent = $"It is {cubeClicked.GetUnit().name} r u Attack?"; // 죽기 전에 잘못 클릭하면 null
 
                     owner.stateMachine.ChangeState(
                         new TurnMgr_Popup_(owner, unit, Input.mousePosition,
