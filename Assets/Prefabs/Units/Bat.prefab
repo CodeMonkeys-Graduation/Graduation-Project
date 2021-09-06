@@ -198,6 +198,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -598,7 +599,7 @@ MonoBehaviour:
   maxHealth: 5
   basicAttackDamageMax: 3
   basicAttackDamageMin: 2
-  actionPoints: 12
+  actionPoints: 10
   agility: 10
   skill: {fileID: 0}
   actionSlots:
