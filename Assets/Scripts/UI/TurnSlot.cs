@@ -18,15 +18,22 @@ public class TurnSlot : MonoBehaviour
         frame.sprite = unit.team.teamTurnSlotFrame;
         GetComponent<Toggle>().group = group;
         GetComponent<Toggle>().onValueChanged.AddListener((isOn) => {
-            if (isOn)
-            {
-                statusPanel.SetPanel(new UIStatus(unit));
-                CameraMgr.Instance.SetTarget(unit);
-            }
-            else
-            {
-                statusPanel.UnsetPanel();
-            }
+
+            statusPanel.SetPanel(new UIStatus(unit));
+            CameraMgr.Instance.SetTarget(unit, true);
+
+            // isOn을 체크하지말고 그냥 클릭되었으면 StatusPanel을 Set한다.
+            // 하지만 TurnMgr에 변화가 있으면 StatusPanel을 Unset하는 방법이...
+            // 어떻게해야할까... - wondong
+            //if (isOn)
+            //{
+            //    statusPanel.SetPanel(new UIStatus(unit));
+            //    CameraMgr.Instance.SetTarget(unit, true);
+            //}
+            //else
+            //{
+            //    statusPanel.UnsetPanel();
+            //}
         });
         if (isFirstTurn)
         {

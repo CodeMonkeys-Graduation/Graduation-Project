@@ -22,7 +22,7 @@ public class TurnMgr_PlayerAttack_ : TurnMgr_State_
 
     public override void Enter()
     {
-        CameraMgr.Instance.SetTarget(unit);
+        CameraMgr.Instance.SetTarget(unit, true);
 
         MapMgr.Instance.BlinkCubes(cubesAttackRange, 0.3f);
         MapMgr.Instance.BlinkCubes(cubesCanAttack, 0.7f);

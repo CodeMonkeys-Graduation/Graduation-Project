@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using ObserverPattern;
 
-public class ItemSlot : MonoBehaviour, Ipanel
+public class ItemSlot : MonoBehaviour, IPanel
 {
     [SerializeField] Image icon;
     [SerializeField] TextMeshProUGUI text;

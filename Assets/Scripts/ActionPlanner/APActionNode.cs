@@ -189,6 +189,7 @@ public class ActionNode_Move : APActionNode
     public override void OnWaitEnter()
     {
         (_path.destination as Cube).SetBlink(0.7f);
+        CameraMgr.Instance.SetTarget(_gameState.self.owner);
     }
 
     public override void OnWaitExecute()
@@ -199,6 +200,7 @@ public class ActionNode_Move : APActionNode
     public override void OnWaitExit()
     {
         (_path.destination as Cube).StopBlink();
+        CameraMgr.Instance.UnsetTarget();
     }
 
     public override int GetScoreToAdd(APGameState prevState)

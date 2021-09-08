@@ -20,7 +20,7 @@ public class TurnMgr_AIPlan_ : TurnMgr_State_
 
 
         unit.StartBlink();
-        CameraMgr.Instance.SetTarget(unit);
+        CameraMgr.Instance.SetTarget(unit, true);
 
         ActionPlanner.Instance.Plan(
             unit, 

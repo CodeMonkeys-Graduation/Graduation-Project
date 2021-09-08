@@ -11,7 +11,7 @@ public class TurnMgr_AIAction_ : TurnMgr_State_
     APActionNode _currAction;
     public TurnMgr_AIAction_(TurnMgr owner, Unit unit, List<APActionNode> actions) : base(owner, unit)
     {
-        this._actions = new Queue<APActionNode>(actions);
+        _actions = new Queue<APActionNode>(actions);
     }
 
     public override void Enter()
@@ -27,15 +27,16 @@ public class TurnMgr_AIAction_ : TurnMgr_State_
         }
 
         unit.StartBlink();
-        CameraMgr.Instance.SetTarget(unit);
+        CameraMgr.Instance.SetTarget(unit, true);
 
         // 이전 액션한 결과, ShouldReplan이라면 AITurnPlan로 돌아가서 Replan
         // 첫 Enter는 _currAction == null
         if (_currAction != null && _currAction.ShouldReplan(owner.turns.ToList(), MapMgr.Instance.map.Cubes.ToList()))
         {
             owner.stateMachine.ChangeState(
-            new TurnMgr_AIPlan_(owner, unit),
-            StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+                new TurnMgr_AIPlan_(owner, unit),
+                StateMachine<TurnMgr>.StateTransitionMethod.JustPush
+            );
 
             return;
         }
@@ -47,7 +48,7 @@ public class TurnMgr_AIAction_ : TurnMgr_State_
         }
         else
         {
-            owner.StartCoroutine(Action());
+            owner.StartCoroutine(ExecuteAction());
         }
 
     }
@@ -72,7 +73,7 @@ public class TurnMgr_AIAction_ : TurnMgr_State_
         owner.NextTurn();
     }
 
-    private IEnumerator Action()
+    private IEnumerator ExecuteAction()
     {
         if (_actions.Count <= 0) yield break;
 

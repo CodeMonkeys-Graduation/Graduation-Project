@@ -56,7 +56,7 @@ public class TurnMgr_PlayerBegin_ : TurnMgr_State_
         
         EventMgr.Instance.onTurnBeginEnter.Invoke();
 
-        CameraMgr.Instance.SetTarget(unit);
+        CameraMgr.Instance.SetTarget(unit, true);
     }
 
     public override void Execute()

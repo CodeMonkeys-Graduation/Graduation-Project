@@ -16,7 +16,7 @@ public class PlayerTurnMove : TurnMgr_State_
 
     public override void Enter()
     {
-        CameraMgr.Instance.SetTarget(unit);
+        CameraMgr.Instance.SetTarget(unit, true);
 
         MapMgr.Instance.BlinkCubes(cubesCanGo, 0.5f);
         unit.StartBlink();
@@ -66,7 +66,7 @@ public class PlayerTurnMove : TurnMgr_State_
             unit.EnqueueCommand(moveCommand);
 
             // update paths in the destination cube
-            (cubeClicked as Cube).UpdatePaths(
+            cubeClicked.UpdatePaths(
                 unit.actionPoints / unit.GetActionSlot(ActionType.Move).cost,
                 cube => (cube as Cube).GetUnit() != null && (cube as Cube).GetUnit() != unit);
         }
@@ -99,6 +99,7 @@ public class PlayerTurnMove : TurnMgr_State_
     {
         cubeClicked.SetBlink(0.5f);
         EventMgr.Instance.onTurnActionExit.Invoke();
+        CameraMgr.Instance.SetTarget(unit);
     }
 
     private void OnWaitExecute()
@@ -109,6 +110,7 @@ public class PlayerTurnMove : TurnMgr_State_
     private void OnWaitExit()
     {
         cubeClicked.StopBlink();
+        CameraMgr.Instance.UnsetTarget();
     }
 
 }

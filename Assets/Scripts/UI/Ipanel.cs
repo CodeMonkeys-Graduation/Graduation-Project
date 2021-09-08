@@ -5,13 +5,13 @@ using System.Collections;
 using System.Collections.Generic;
 using ObserverPattern;
 
-public interface Ipanel
+public interface IPanel
 {
     void SetPanel(EventParam u = null);
     void UnsetPanel();
 }
 
-public abstract class Battle_UI : MonoBehaviour, Ipanel
+public abstract class Battle_UI : MonoBehaviour, IPanel
 {
     BattleUIType _battle_ui_type;
 
@@ -24,7 +24,7 @@ public abstract class Battle_UI : MonoBehaviour, Ipanel
     public abstract void UnsetPanel();
 }
 
-public abstract class Normal_UI : MonoBehaviour, Ipanel
+public abstract class Normal_UI : MonoBehaviour, IPanel
 {
     NormalUIType _uitype;
 
