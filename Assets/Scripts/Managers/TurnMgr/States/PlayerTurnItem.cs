@@ -13,7 +13,7 @@ public class PlayerTurnItem : TurnMgr_State_
 
     public override void Enter()
     {
-        CameraMgr.Instance.SetTarget(unit);
+        CameraMgr.Instance.SetTarget(unit, true);
         EventMgr.Instance.onTurnItemEnter.Invoke();
         EventMgr.Instance.onTurnActionEnter.Invoke();
     }

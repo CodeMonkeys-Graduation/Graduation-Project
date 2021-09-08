@@ -24,7 +24,7 @@ public class TurnMgr_PlayerSkill_ : TurnMgr_State_
     }
     public override void Enter()
     {
-        CameraMgr.Instance.SetTarget(unit);
+        CameraMgr.Instance.SetTarget(unit, true);
 
         MapMgr.Instance.BlinkCubes(cubesCastRange, 0.3f);
         MapMgr.Instance.BlinkCubes(cubesCanCast, 0.7f);
