@@ -14,7 +14,7 @@ public class UnitParam : EventParam
 }
 
 
-public class GameMgr_Positioning_ : GameMgr_State_
+public class BattleMgr_Positioning_ : BattleMgr_State_
 {
     List<Unit> _unitPrefabs;
     List<Cube> _canSummonCubes;
@@ -22,7 +22,7 @@ public class GameMgr_Positioning_ : GameMgr_State_
     Cube _prevRaycastedCube = null;
     Unit _selectedUnit;
 
-    public GameMgr_Positioning_(BattleMgr owner, List<Unit> unitPrefabs, List<Cube> canSummonCubes) : base(owner)
+    public BattleMgr_Positioning_(BattleMgr owner, List<Unit> unitPrefabs, List<Cube> canSummonCubes) : base(owner)
     {
         _unitPrefabs = unitPrefabs;
         _canSummonCubes = canSummonCubes;

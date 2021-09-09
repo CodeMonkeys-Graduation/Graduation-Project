@@ -102,7 +102,7 @@ public class GameInstance : SingletonBehaviour<GameInstance>
                 }
             }
         }
-
+        EventMgr.Instance.OnSceneChanged.Invoke(new SceneChanged(SceneMgr.sceneMap[scene.name]));
     }
 
 

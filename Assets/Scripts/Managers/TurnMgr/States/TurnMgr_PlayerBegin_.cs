@@ -5,10 +5,11 @@ using UnityEngine.Events;
 
 public class TurnMgr_PlayerBegin_ : TurnMgr_State_
 {
-    public TurnMgr_PlayerBegin_(TurnMgr owner, Unit unit) : base(owner, unit)
+    public TurnMgr_PlayerBegin_(TurnMgr owner, Unit unit) : base(owner, owner.turns.Peek()) // 여기서 turns 큐가 비어있음
     {
-    }
+    
 
+    }
     public override void Enter()
     {
         // 턴의 첫 액션임

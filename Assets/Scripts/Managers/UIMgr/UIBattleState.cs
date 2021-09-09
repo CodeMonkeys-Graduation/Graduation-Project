@@ -78,6 +78,7 @@ public class UIBattleState : UIControlState
             _uiList.Add(MonoBehaviour.Instantiate(u, _battleCanvas.transform));
         }
         // ui들 모두 생성
+        Debug.Log("배틀 스테이트에 진입함");
 
         #region RegisterEvent
         EventMgr.Instance.onGameInitEnter.Register(el_GameInitEnter, (param) => SetUIGameInit(true)); // 초기화
@@ -106,6 +107,8 @@ public class UIBattleState : UIControlState
         EventMgr.Instance.onTurnNobody.Register(el_TurnNobody, SetUITurnNobody);
         EventMgr.Instance.onTurnPlan.Register(el_TurnPlan, SetUIPlan);
         #endregion
+
+        EventMgr.Instance.onUICompleted.Invoke(); // UI 생성이 완료되었음, 이제 이벤트를 받겠음
     }
 
     public override void Execute()
@@ -115,7 +118,8 @@ public class UIBattleState : UIControlState
 
     public override void Exit()
     {
-        MonoBehaviour.Destroy(_battleCanvas);
+        Debug.Log("배틀 스테이트에서 나감");
+        //MonoBehaviour.Destroy(_battleCanvas.gameObject);
     }
 
     #region SetUIByGames

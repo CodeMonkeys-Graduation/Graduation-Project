@@ -43,8 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74dfa43f717a0014d801af7ea7afb396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
-  _lifeCycles: 
+  Type: 8
+  _lifeCycles: 0000000003000000
   canvasPrefab_Dictionary:
     reorderableList:
       canAdd: 1
@@ -52,7 +52,7 @@ MonoBehaviour:
       draggable: 1
       expandable: 1
       multipleSelection: 1
-      isExpanded: 0
+      isExpanded: 1
       label:
         m_Text: Keys
         m_Image: {fileID: 0}
@@ -67,7 +67,7 @@ MonoBehaviour:
       elementNameOverride: 
       elementIcon: {fileID: 0}
     reqReferences: {fileID: 0}
-    isExpanded: 0
+    isExpanded: 1
     _keyValues: 0100000000000000
     _keys: 0100000000000000
     _values:
@@ -85,4 +85,5 @@ MonoBehaviour:
   - {fileID: 7009132371826327025, guid: 5dab125834ef72648bfb787b12eefde8, type: 3}
   - {fileID: 8819214805487652758, guid: 5a77e7f93f0edf24a855121de0232b0f, type: 3}
   - {fileID: 7073010292704358077, guid: 4a79ae64fc9c6544c828e131665bd42f, type: 3}
-  normalUIPrefabs: []
+  normalUIPrefabs:
+  - {fileID: 6417461907490758405, guid: 2ef2a34661a04174ea7c73a1d6e03ec5, type: 3}
