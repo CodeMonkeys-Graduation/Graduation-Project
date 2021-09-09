@@ -13,12 +13,12 @@ public class GameResult : EventParam
     }
 }
 
-public class GameMgr_Battle_ : GameMgr_State_
+public class BattleMgr_Battle_ : BattleMgr_State_
 {
     EventListener el_GameBattleExit = new EventListener();
     public GameResult _gameResult;
 
-    public GameMgr_Battle_(BattleMgr owner) : base(owner)
+    public BattleMgr_Battle_(BattleMgr owner) : base(owner)
     {
     }
 
@@ -45,9 +45,9 @@ public class GameMgr_Battle_ : GameMgr_State_
         _gameResult = (GameResult)param;
         
         if(_gameResult._isVictory) 
-            owner._stateMachine.ChangeState(new GameMgr_Victory_(owner, _gameResult), StateMachine<BattleMgr>.StateTransitionMethod.ClearNPush);
+            owner.stateMachine.ChangeState(new BattleMgr_Victory_(owner, _gameResult), StateMachine<BattleMgr>.StateTransitionMethod.ClearNPush);
         else 
-            owner._stateMachine.ChangeState(new GameMgr_Defeat_(owner, _gameResult), StateMachine<BattleMgr>.StateTransitionMethod.ClearNPush);
+            owner.stateMachine.ChangeState(new BattleMgr_Defeat_(owner, _gameResult), StateMachine<BattleMgr>.StateTransitionMethod.ClearNPush);
     }
 
 }

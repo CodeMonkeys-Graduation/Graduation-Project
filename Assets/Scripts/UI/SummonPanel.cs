@@ -43,8 +43,6 @@ public class SummonPanel : Battle_UI
             }
         }
 
-       
-
         UpdateSummonBtns();
 
         gameObject.SetActive(true);

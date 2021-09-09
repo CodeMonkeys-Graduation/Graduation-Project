@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameMgr_Victory_ : GameMgr_State_
+public class BattleMgr_Defeat_: BattleMgr_State_
 {
     GameResult _result;
-    public GameMgr_Victory_(BattleMgr owner, GameResult result) : base(owner)
+    public BattleMgr_Defeat_(BattleMgr owner, GameResult result) : base(owner)
     {
         _result = result;
     }
@@ -14,7 +14,7 @@ public class GameMgr_Victory_ : GameMgr_State_
     {
         Debug.Log("Game Over, Retrieve permissions from TurnMgr");
 
-        EventMgr.Instance.onGameVictoryEnter.Invoke();
+        EventMgr.Instance.onGameDefeatEnter.Invoke();
     }
 
     public override void Execute()
@@ -24,7 +24,7 @@ public class GameMgr_Victory_ : GameMgr_State_
 
     public override void Exit()
     {
-        EventMgr.Instance.onGameVictoryExit.Invoke();
+        EventMgr.Instance.onGameDefeatExit.Invoke();
     }
 
 }

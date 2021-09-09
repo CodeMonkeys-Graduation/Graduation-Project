@@ -19,20 +19,20 @@ public class UIMgr : SingletonBehaviour<UIMgr>
     [System.Serializable]
     public class CanvasDictionary : SerializableDictionaryBase<CanvasType, Canvas> { }
 
-    [SerializeField] CanvasDictionary canvasPrefab_Dictionary;
-    [SerializeField] List<Battle_UI> battleUIPrefabs; // 배틀에 사용될 UI 프리팹
-    [SerializeField] List<Normal_UI> normalUIPrefabs; // 일단 UI 프리팹
+    [SerializeField] CanvasDictionary canvasPrefab_Dictionary = new CanvasDictionary();
+    [SerializeField] List<Battle_UI> battleUIPrefabs = new List<Battle_UI>(); // 배틀에 사용될 UI 프리팹
+    [SerializeField] List<Normal_UI> normalUIPrefabs = new List<Normal_UI>(); // 일단 UI 프리팹
 
     [HideInInspector] public EventListener sceneListener = new EventListener(); // 씬이 변경되면 이벤트 발생
     CanvasType currCanvasType; // 디버깅용
 
-    [HideInInspector] public Dictionary<string, List<NormalUIType>> normalUIDictionary; // 씬마다 들어갈 UI 리스트를 만들어야 함
+    [SerializeField] public Dictionary<string, List<NormalUIType>> normalUIDictionaryByScene = new Dictionary<string, List<NormalUIType>>(); // 씬마다 들어갈 UI 리스트를 만들어야 함
 
     public void Start()
     {
         RegisterEvent();
-        
-        stateMachine = new StateMachine<UIMgr>(new UIBattleState(this, canvasPrefab_Dictionary[CanvasType.Battle], CanvasType.Battle, battleUIPrefabs, BattleMgr.Instance, TurnMgr.Instance));
+        SetNormalUIDictionary(); // 방법없나?
+        stateMachine = new StateMachine<UIMgr>(new UINormalState(this, canvasPrefab_Dictionary[CanvasType.Normal], CanvasType.Normal, MakeActiveUIList("Main")));
         currCanvasType = CanvasType.Battle;
     }
 
@@ -41,12 +41,21 @@ public class UIMgr : SingletonBehaviour<UIMgr>
         stateMachine.Run();
     }
 
+    void SetNormalUIDictionary()
+    {
+        List<NormalUIType> activeUIList = new List<NormalUIType>();
+        activeUIList.Add(NormalUIType.Start);
+        normalUIDictionaryByScene.Add("Main", activeUIList);
+    }
+
     void RegisterEvent() => EventMgr.Instance.OnSceneChanged.Register(sceneListener, ChangedScene);
 
     List<Normal_UI> MakeActiveUIList(string scenename)
     {
         List<Normal_UI> activeNormalUIList = new List<Normal_UI>();
-        List<NormalUIType> activeNormalUITypeList = normalUIDictionary[scenename];
+        List<NormalUIType> activeNormalUITypeList = normalUIDictionaryByScene?[scenename];
+
+        if(activeNormalUITypeList == null) return null;
 
         foreach (NormalUIType t in activeNormalUITypeList)
         {

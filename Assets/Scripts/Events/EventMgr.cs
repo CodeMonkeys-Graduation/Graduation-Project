@@ -8,6 +8,9 @@ public class EventMgr : SingletonBehaviour<EventMgr>
     [Header("SceneChanged")]
     [SerializeField] public ObserverEvent OnSceneChanged;
 
+    [Header("UI Event")]
+    [SerializeField] public ObserverEvent onUICompleted;
+
     [Header("PathFinding Event")]
     [SerializeField] public ObserverEvent onPathfindRequesterCountZero;
     [SerializeField] public ObserverEvent onPathUpdatingStart;

@@ -19,7 +19,8 @@ public class TurnMgr : SingletonBehaviour<TurnMgr>
     public StateMachine<TurnMgr> stateMachine;
     public enum TMState { 
         Nobody, 
-        PlayerTurnBegin, PlayerTurnMove, PlayerTurnAttack, PlayerTurnItem, PlayerTurnSkill, PlayerTurnPopup, 
+        PlayerTurnBegin, PlayerTurnMove, PlayerTurnAttack, 
+        PlayerTurnItem, PlayerTurnSkill, PlayerTurnPopup, 
         AITurnBegin, AITurnPlan, AITurnAction,
         WaitSingleEvent, WaitMultipleEvent }
     public TMState tmState;
