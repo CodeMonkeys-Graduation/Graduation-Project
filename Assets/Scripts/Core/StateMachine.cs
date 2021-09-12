@@ -13,16 +13,27 @@ public class StateMachine<T>
     public int StackCount { get => stateStack.Count; }
     Type defaultState;
 
+    private bool isStarted = false;
+
     public StateMachine(State<T> initialState)
     {
         stateStack.Push(initialState);
-        initialState.Enter();
+        // 여기에 Enter() 있었음
         defaultState = initialState.GetType();
     }
 
     public void Run()
     {
-        stateStack.Peek().Execute();
+        if (!isStarted)
+        {
+            stateStack.Peek().Enter();
+            isStarted = true;
+        }
+        else
+        {
+            stateStack.Peek().Execute();
+        }
+        
     }
 
 

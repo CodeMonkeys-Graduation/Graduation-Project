@@ -84,7 +84,7 @@ public class UIBattleState : UIControlState
         EventMgr.Instance.onGameInitEnter.Register(el_GameInitEnter, (param) => SetUIGameInit(true)); // 초기화
         EventMgr.Instance.onGameInitExit.Register(el_GameInitExit, (param) => SetUIGameInit(false));
         EventMgr.Instance.onGamePositioningEnter.Register(el_GamePositioningEnter, (param) => SetUIGamePositioning(true, param)); // 유닛 선택창 띄우기
-        EventMgr.Instance.onGamePositioningExecute.Register(el_GamePositioningExecute, SetUIGamePositioning); // 유닛 배치
+        EventMgr.Instance.onGamePositioningExecute.Register(el_GamePositioningExecute, SetUIGamePosition); // 유닛 배치
         EventMgr.Instance.onGamePositioningExit.Register(el_GamePositioningExit, (param) => SetUIGamePositioning(false, param)); // 유닛 선택창 끄기
         
         EventMgr.Instance.onGameBattleEnter.Register(el_GameBattleEnter, (param) => { }); // 배틀 시작
@@ -119,7 +119,6 @@ public class UIBattleState : UIControlState
     public override void Exit()
     {
         Debug.Log("배틀 스테이트에서 나감");
-        //MonoBehaviour.Destroy(_battleCanvas.gameObject);
     }
 
     #region SetUIByGames
@@ -160,10 +159,10 @@ public class UIBattleState : UIControlState
         }
       
     }
-    void SetUIGamePositioning(EventParam param)
+    void SetUIGamePosition(EventParam param)
     {
         List<Unit> _units = new List<Unit>();
-        _units.Add(((UnitParam)param)._unit);
+        _units.Add(((UnitParam)param)?._unit); // 여기서 터졌음
         _uiList[(int)BattleUIType.Summon].SetPanel(new UISummon(_units, false));
     }
 

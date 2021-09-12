@@ -49,6 +49,7 @@ public class SummonBtn : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         if (u != null)
         {
             EventMgr.Instance.onGamePositioningExecute.Invoke(new UnitParam(selectedUnit));
+            Debug.Log(u + "소환 완료");
             u.StopTransparent();
         }
 

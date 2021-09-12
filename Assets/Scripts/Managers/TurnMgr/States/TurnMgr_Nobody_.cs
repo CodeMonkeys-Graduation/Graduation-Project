@@ -10,8 +10,7 @@ public class TurnMgr_Nobody_ : TurnMgr_State_
     public override void Enter()
     {
         Debug.Log("턴 매니저 노바디 진입");
-
-        EventMgr.Instance.onTurnNobody.Invoke(); // 여기서 문제가 터짐!
+        EventMgr.Instance.onTurnNobody.Invoke();
     }
 
     public override void Execute()

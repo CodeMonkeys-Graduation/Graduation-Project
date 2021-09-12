@@ -20,12 +20,11 @@ public class BattleMgr : SingletonBehaviour<BattleMgr>
     public void Start()
     {
         _canSummonCubes = new List<Cube>(FindObjectsOfType<Cube>());
-
-        BattleMgr_State_ nextState = new BattleMgr_Positioning_(this, _unitPrefabs, _canSummonCubes);
-
-        stateMachine = new StateMachine<BattleMgr>(new BattleMgr_WaitSingleEvent_(this, EventMgr.Instance.onUICompleted, nextState));
-
+        //BattleMgr_State_ nextState = new BattleMgr_Positioning_(this, _unitPrefabs, _canSummonCubes);
+        //stateMachine = new StateMachine<BattleMgr>(new BattleMgr_WaitSingleEvent_(this, EventMgr.Instance.onUICompleted, nextState));   
+        stateMachine = new StateMachine<BattleMgr>(new BattleMgr_Init_(this));
     }
+
     public void Update()
     {
         stateMachine.Run();
@@ -51,7 +50,7 @@ public class BattleMgr : SingletonBehaviour<BattleMgr>
         }
         else
         {
-            stateMachine.ChangeState(new BattleMgr_Init_(this, _unitPrefabs , _canSummonCubes), StateMachine<BattleMgr>.StateTransitionMethod.ClearNPush);
+            stateMachine.ChangeState(new BattleMgr_Init_(this), StateMachine<BattleMgr>.StateTransitionMethod.ClearNPush);
         }
     }
 

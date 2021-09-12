@@ -10,6 +10,7 @@ public class TurnMgr : SingletonBehaviour<TurnMgr>
     //--- Events ---//
     private EventListener el_onUnitDeadEnter = new EventListener();
     private EventListener el_onUnitDeadExit = new EventListener();
+    private EventListener el_onSummonEnd = new EventListener();
 
     //--- Set in Runtime ---//
     public List<Unit> units = new List<Unit>(); // all present units on the scene including ones in UnitDead State
@@ -28,24 +29,13 @@ public class TurnMgr : SingletonBehaviour<TurnMgr>
     public void Start()
     {
         RegisterEvents();
-        
-        // get all units in the scene
-        units.Clear();
-        units.AddRange(FindObjectsOfType<Unit>());
 
-        // calculate turns
-        turns.Clear();
-        foreach (var u in units.OrderByDescending((u) => u.agility))
-        {
-            turns.Enqueue(u);
-        }
-
-        stateMachine = new StateMachine<TurnMgr>(new TurnMgr_Nobody_(this));
+        stateMachine = new StateMachine<TurnMgr>(new TurnMgr_WaitSingleEvent_(this, null, EventMgr.Instance.onGamePositioningExit, new TurnMgr_Nobody_(this)));
     }
 
     private void Update()
     {
-        stateMachine.Run();
+        stateMachine.Run(); // 업데이트의 런이 최초 실행될 때 Enter가 실행되는 것은 어떤가?
 
         // 디버깅용
         CheckTurnState();
@@ -75,7 +65,6 @@ public class TurnMgr : SingletonBehaviour<TurnMgr>
 
         Unit unitForNextTurn = turns.Peek();
 
-
         TurnMgr_State_ nextState;
         // 플레이어가 컨트롤하는 팀의 유닛이라면
         if (unitForNextTurn.team.controller == Team.Controller.Player)
@@ -90,7 +79,21 @@ public class TurnMgr : SingletonBehaviour<TurnMgr>
     {
         EventMgr.Instance.onUnitDeadEnter.Register(el_onUnitDeadEnter, OnUnitDeadEnter_RefreshQueueNWait);
         EventMgr.Instance.onUnitDeadEnter.Register(el_onUnitDeadExit, OnUnitDeadExit);
+        EventMgr.Instance.onUnitSummonEnd.Register(el_onSummonEnd, OnUnitTurnsInit);
+    }
 
+    private void OnUnitTurnsInit(EventParam param)
+    {
+        // get all units in the scene
+        units.Clear();
+        units.AddRange(FindObjectsOfType<Unit>());
+
+        // calculate turns
+        turns.Clear();
+        foreach (var u in units.OrderByDescending((u) => u.agility))
+        {
+            turns.Enqueue(u);
+        }
     }
 
     private void OnUnitDeadExit(EventParam param)
