@@ -20,6 +20,7 @@ public class BattleMgr_Battle_ : BattleMgr_State_
 
     public BattleMgr_Battle_(BattleMgr owner) : base(owner)
     {
+
     }
 
     public override void Enter()
