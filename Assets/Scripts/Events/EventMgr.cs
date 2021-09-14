@@ -17,7 +17,6 @@ public class EventMgr : SingletonBehaviour<EventMgr>
 
     [Header("Positioning Event")]
     [SerializeField] public ObserverEvent onUnitInitEnd;
-    [SerializeField] public ObserverEvent onUnitSummonEnd;
 
     [Header("Unit Event")]
     [SerializeField] public ObserverEvent onUnitCommandResult;

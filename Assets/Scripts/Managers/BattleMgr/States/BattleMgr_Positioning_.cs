@@ -88,7 +88,6 @@ public class BattleMgr_Positioning_ : BattleMgr_State_
     public override void Exit()
     {
         Debug.Log("Positioning State Exit");
-        EventMgr.Instance.onUnitSummonEnd.Invoke();
         EventMgr.Instance.onGamePositioningExit.Invoke();
     }
 
