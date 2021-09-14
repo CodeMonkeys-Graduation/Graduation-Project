@@ -31,7 +31,7 @@ public class StatusPanel : Battle_UI
         unitName.text = unit.name;
         unitDescription.text = "Description For Unit.";
         unitDamage.text = $"{unit.basicAttackDamageMin.ToString()} ~ {unit.basicAttackDamageMax.ToString()}";
-        unitcurrHealth.fillAmount = unit.currHealth / unit.maxHealth;
+        unitcurrHealth.fillAmount = unit.currHealth / (float)unit.maxHealth;
         unitImage.sprite = unit.icon;
 
         // -> skill은 아직 이미지가 없어서~
