@@ -4,75 +4,124 @@ using UnityEngine;
 
 public class CameraMgr : SingletonBehaviour<CameraMgr>
 {
-    [SerializeField] private float lerpTime = 1f; // lerpTime만에 Target으로 갑니다.
+    [SerializeField] private float _lerpTime = 1f; // lerpTime만에 Target으로 갑니다.
 
-    [SerializeField] private float cameraMoveSpeed = 5f;
+    [SerializeField] private float _cameraMoveSpeed = 5f;
 
-    private Func<bool> unsetCondition;
-    
-    private bool unsetWhenArrivedTrigger = false;
+    [SerializeField] private float _cameraMaxHeightOffset = 10f;
 
-    private Vector3 offset;
-   
-    private Transform target;
-    
-    private float lerp = 0f;
+    [SerializeField] private float _cameraHeightSpeed = 3f;
 
-    private Vector3 screenXInWorld;
-    
-    private Vector3 screenYInWorld;
+    [SerializeField] private Vector3 _offsetFromGround;
+
+    private Vector3 _screenXInWorld;
+
+    private Vector3 _screenYInWorld;
+
+    [SerializeField /*DEBUG*/] private Vector3 _cameraDirection;
+
+    private StateMachine<CameraMgr> _stateMachine;
+
+    private Vector3 DesiredPosition { 
+        get {
+            return _desiredPositionWithoutHeight - _cameraDirection * _cameraHeightOffset; 
+        } 
+    }
+
+    private Vector3 _desiredPositionWithoutHeight;
+
+    private float _cameraHeightOffset = 0f;
+
+    /////////////////////////////////
+    // Targeting
+    private Transform _target;
+
+    private Func<bool> _unsetCondition;
+
+    private bool _unsetWhenArrivedTrigger = false;
 
     void Start()
     {
-        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-        float height = Camera.main.transform.position.y;
-        Vector3 posFromScreenCenter = ray.GetPoint(height / Mathf.Cos(Camera.main.transform.rotation.x));
-        offset = Camera.main.transform.position - posFromScreenCenter;
-
+        _stateMachine = new StateMachine<CameraMgr>(new CameraMgr_NormalState_(this));
+        _cameraDirection = Camera.main.transform.rotation * Vector3.forward;
+        CalculateInitialOffsetFromYZero();
+        CalculateScreenDirectionInWorld();
+        _desiredPositionWithoutHeight = Camera.main.transform.position;
         Cursor.lockState = CursorLockMode.Confined;
-
-        screenXInWorld = Camera.main.transform.right;
-        screenXInWorld.y = 0f;
-        screenXInWorld.Normalize();
-        screenYInWorld = Camera.main.transform.up;
-        screenYInWorld.y = 0f;
-        screenYInWorld.Normalize();
     }
-
     void Update()
     {
-        
+        _stateMachine.Run();
     }
 
-    void LateUpdate()
+    public void ProcessCameraMove()
     {
-        // NonTargeting
-        if (target == null)
+        Vector2 direction = Vector2.zero;
+        HandleKeyInputWASD(ref direction);
+        GetMousePositionIfEdge(ref direction);
+        Vector3 directionInWorld = direction.x * _screenXInWorld + direction.y * _screenYInWorld;
+        _desiredPositionWithoutHeight += _cameraMoveSpeed * Time.deltaTime * (directionInWorld.normalized);
+
+        HandleMouseScroll();
+
+        Camera.main.transform.position = DesiredPosition;
+    }
+
+    private void HandleMouseScroll()
+    {
+        float scrollDelta = Input.GetAxis("Mouse ScrollWheel");
+        _cameraHeightOffset = Mathf.Clamp(_cameraHeightOffset - _cameraHeightSpeed * scrollDelta * Time.deltaTime, -_cameraMaxHeightOffset, 0f);
+    }
+
+    public void ProcessTargetFollowing(Vector3 startPosition, float time)
+    {
+        HandleMouseScroll();
+
+        float lerp = Mathf.Clamp(time / _lerpTime, 0f, 1f);
+        _desiredPositionWithoutHeight = _target.position + _offsetFromGround;
+        Camera.main.transform.position = Vector3.Lerp(startPosition, DesiredPosition, lerp);
+
+        if (IsTargetFollowingDone())
+            _stateMachine.ChangeState(new CameraMgr_NormalState_(this), StateMachine<CameraMgr>.StateTransitionMethod.PopNPush);
+    }
+
+    private bool IsTargetFollowingDone()
+    {
+        if(_unsetWhenArrivedTrigger)
         {
-            lerp = 0f;
-
-            Vector2 direction = Vector2.zero;
-            GetMousePositionIfEdge(ref direction);
-            GeKeyInputWASD(ref direction); // 만약 WASD키가 눌리면 mouse는 override
-
-            MoveCamera(direction);
+            return Vector3.Distance(Camera.main.transform.position, DesiredPosition) <= Mathf.Epsilon;
         }
 
-        // Targeting
+        if(_unsetCondition != null && _unsetCondition.Invoke())
+        {
+            return true;
+        }
         else
         {
-            lerp = Mathf.Clamp((lerp + Time.deltaTime) / lerpTime, 0f, 1f);
-            LerpToDesiredPos(target.position, lerp);
-
-            if(CheckUnsettingTargetCondition(target.position))
-            {
-                unsetCondition = null;
-                target = null;
-            }
+            return false;
         }
     }
 
-    private Vector2 GeKeyInputWASD(ref Vector2 direction)
+    private void CalculateScreenDirectionInWorld()
+    {
+        _screenXInWorld = Camera.main.transform.right;
+        _screenXInWorld.y = 0f;
+        _screenXInWorld.Normalize();
+        _screenYInWorld = Camera.main.transform.up;
+        _screenYInWorld.y = 0f;
+        _screenYInWorld.Normalize();
+    }
+
+    private void CalculateInitialOffsetFromYZero()
+    {
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        float height = Camera.main.transform.position.y;
+        float xAngle = Quaternion.FromToRotation(Camera.main.transform.forward, Vector3.down).eulerAngles.x;
+        Vector3 posFromScreenCenter = ray.GetPoint(height / Mathf.Cos(xAngle));
+        _offsetFromGround = (Camera.main.transform.position - posFromScreenCenter) / 2f;
+    }
+
+    private Vector2 HandleKeyInputWASD(ref Vector2 direction)
     {
         // Camera Move by Mouse
         if (Input.GetKey(KeyCode.A))
@@ -123,61 +172,18 @@ public class CameraMgr : SingletonBehaviour<CameraMgr>
     private bool IsMousePositionRightMost() => Mathf.Abs(Input.mousePosition.x - Screen.width) < (Screen.width / 100f);
     private bool IsMousePositionTopMost() => Mathf.Abs(Input.mousePosition.y - Screen.height) < (Screen.height / 100f);
 
-    private bool CheckUnsettingTargetCondition(Vector3 targetPos)
-    {
-        // 도착하면 타겟을 해제하는 트리거가 set되어있고
-        // 도착했으면 return true
-        // 아직 도착하지 못했다면 return false
-        if (unsetWhenArrivedTrigger)
-        {
-            Vector3 desiredCameraPos = targetPos + offset;
-            if (Vector3.Distance(Camera.main.transform.position, desiredCameraPos) <= Mathf.Epsilon)
-            {
-                unsetWhenArrivedTrigger = false;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        // 따로 전달받은 unset predicate이 존재한다면 해당 predicate로 unset해야할지 판정.
-        if(unsetCondition != null && unsetCondition.Invoke())
-        {
-            return true;
-        }
-
-        //전부 아니라면 unset은 안하는 것으로 return false
-        return false;
-    }
-
-    private void LerpToDesiredPos(Vector3 targetPos, float lerp)
-    {
-        Vector3 desiredCameraPos = targetPos + offset;
-        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, desiredCameraPos, lerp);
-    }
-
     public void SetTarget(Unit unit, bool unsetWhenArrived = false, Func<bool> unsetCondition = null)
     {
-        lerp = 0f;
-        target = unit.transform;
+        _target = unit.transform;
+        _unsetWhenArrivedTrigger = unsetWhenArrived;
+        _unsetCondition = unsetCondition;
 
-        unsetWhenArrivedTrigger = unsetWhenArrived;
-
-        if (unsetCondition != null)
-            this.unsetCondition = unsetCondition;
+        _stateMachine.ChangeState(new CameraMgr_TargetState_(this), StateMachine<CameraMgr>.StateTransitionMethod.PopNPush);
     }
 
     public void UnsetTarget()
     {
-        lerp = 0f;
-        target = null;
+        _target = null;
     }
 
-    public void MoveCamera(Vector2 screenDirection) // 화면을 기준으로 x,y
-    {
-        Vector3 worldDirection = screenDirection.x * screenXInWorld + screenDirection.y * screenYInWorld;
-        Camera.main.transform.position += Time.deltaTime * cameraMoveSpeed * (worldDirection.normalized);
-    }
 }
