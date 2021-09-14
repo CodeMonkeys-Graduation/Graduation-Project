@@ -79,10 +79,10 @@ public class TurnMgr : SingletonBehaviour<TurnMgr>
     {
         EventMgr.Instance.onUnitDeadEnter.Register(el_onUnitDeadEnter, OnUnitDeadEnter_RefreshQueueNWait);
         EventMgr.Instance.onUnitDeadEnter.Register(el_onUnitDeadExit, OnUnitDeadExit);
-        EventMgr.Instance.onUnitSummonEnd.Register(el_onSummonEnd, OnUnitTurnsInit);
+        EventMgr.Instance.onGamePositioningExit.Register(el_onSummonEnd, OnGamePositioningExit);
     }
 
-    private void OnUnitTurnsInit(EventParam param)
+    private void OnGamePositioningExit(EventParam param)
     {
         // get all units in the scene
         units.Clear();
@@ -98,17 +98,19 @@ public class TurnMgr : SingletonBehaviour<TurnMgr>
 
     private void OnUnitDeadExit(EventParam param)
     {
-        if(param is UnitStateEvent)
-        {
-            Unit deadUnit = ((UnitStateEvent)param)._owner;
-            this.units.Remove(deadUnit);
-        }
+        // 죽은 유닛을 턴에서 제외시키고 
+        // 이벤트를 발생
 
-        foreach(var unit in units)
-        {
-            if (!turns.Contains(unit))
-                return;
-        }
+        Debug.Assert(param is UnitStateEvent);
+
+        Unit deadUnit = ((UnitStateEvent)param)._owner;
+        units.Remove(deadUnit);
+
+        //foreach (var unit in units)
+        //{
+        //    if (!turns.Contains(unit))
+        //        return;
+        //}
 
         EventMgr.Instance.onUnitDeadCountZero.Invoke();
     }
