@@ -47,7 +47,7 @@ MonoBehaviour:
   _lifeCycles: 03000000040000000500000006000000
   _lerpTime: 0.35
   _cameraMoveSpeed: 7
-  _cameraMaxHeightOffset: 7
+  _cameraMaxHeightOffset: -5
   _cameraHeightSpeed: 500
   _offsetFromGround: {x: 0, y: 0, z: 0}
   _cameraDirection: {x: 0, y: 0, z: 0}

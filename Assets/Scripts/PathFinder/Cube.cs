@@ -26,6 +26,7 @@ public class Cube : MonoBehaviour, INavable
     // Platform Set이 SetNeighbor보다 선행되어야함
     private void Awake()
     {
+        gameObject.layer = LayerMask.NameToLayer("Cube"); // HARD CODED
         Platform = transform.Find("Platform");
         if (Platform == null)
         {
