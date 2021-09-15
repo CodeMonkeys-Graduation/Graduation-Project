@@ -28,12 +28,10 @@ public class SceneMgr : SingletonBehaviour<SceneMgr>
         { Scene.Battle3.ToString(), Scene.Battle3 },
         { Scene.Battle4.ToString(), Scene.Battle4 },
     };
-
     public void LoadScene(Scene sceneEnum, Action<float> onSceneLoad = null)
     {
         StartCoroutine(OnLoadSceneCoroutine(sceneEnum, onSceneLoad));
     }
-
     private IEnumerator OnLoadSceneCoroutine(Scene SceneEnum, Action<float> onSceneLoad)
     {
         var asyncOperation = SceneManager.LoadSceneAsync(SceneEnum.ToString(), LoadSceneMode.Single);
@@ -41,7 +39,7 @@ public class SceneMgr : SingletonBehaviour<SceneMgr>
 
         while (asyncOperation.progress < 0.9f)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return null;
 
             if(onSceneLoad != null)
                 onSceneLoad(asyncOperation.progress);

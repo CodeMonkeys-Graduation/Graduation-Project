@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CameraMgr : SingletonBehaviour<CameraMgr>
 {
@@ -40,7 +41,23 @@ public class CameraMgr : SingletonBehaviour<CameraMgr>
 
     private bool _unsetWhenArrivedTrigger = false;
 
+    private float xMin, xMax, zMin, zMax;
     void Start()
+    {
+        InitData();
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    void Update()
+    {
+        _stateMachine.Run();
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        InitData();
+    }
+
+    private void InitData()
     {
         _stateMachine = new StateMachine<CameraMgr>(new CameraMgr_NormalState_(this));
         _cameraDirection = Camera.main.transform.rotation * Vector3.forward;
@@ -48,10 +65,68 @@ public class CameraMgr : SingletonBehaviour<CameraMgr>
         CalculateScreenDirectionInWorld();
         _desiredPositionWithoutHeight = Camera.main.transform.position;
         Cursor.lockState = CursorLockMode.Confined;
+
+        foreach (var cube in FindObjectsOfType<Cube>())
+        {
+            xMin = Mathf.Min(cube.transform.position.x, xMin);
+            xMax = Mathf.Max(cube.transform.position.x, xMax);
+            zMin = Mathf.Min(cube.transform.position.z, zMin);
+            zMax = Mathf.Max(cube.transform.position.z, zMax);
+        }
     }
-    void Update()
+
+    private void OnDrawGizmos()
     {
-        _stateMachine.Run();
+        // b *--------------------------------* d
+        //   |                                |
+        //   |                                |
+        //   |                                |
+        //   |                                |
+        // a *--------------------------------* c
+
+        Ray aRay = new Ray(new Vector3(xMin, 0f, zMin), -Camera.main.transform.forward);
+        Ray bRay = new Ray(new Vector3(xMin, 0f, zMax), -Camera.main.transform.forward);
+        Ray cRay = new Ray(new Vector3(xMax, 0f, zMin), -Camera.main.transform.forward);
+        Ray dRay = new Ray(new Vector3(xMax, 0f, zMax), -Camera.main.transform.forward);
+
+        float cameraHeight = Camera.main.transform.position.y;
+        float xAngle = Quaternion.FromToRotation(-Camera.main.transform.forward, Vector3.up).eulerAngles.x;
+        Vector3 aRayCameraHeight = aRay.GetPoint(cameraHeight / Mathf.Cos(Mathf.Deg2Rad * xAngle));
+        Vector3 bRayCameraHeight = bRay.GetPoint(cameraHeight / Mathf.Cos(Mathf.Deg2Rad * xAngle));
+        Vector3 cRayCameraHeight = cRay.GetPoint(cameraHeight / Mathf.Cos(Mathf.Deg2Rad * xAngle));
+        Vector3 dRayCameraHeight = dRay.GetPoint(cameraHeight / Mathf.Cos(Mathf.Deg2Rad * xAngle));
+
+        Bounds bounds = new Bounds((aRayCameraHeight + bRayCameraHeight + cRayCameraHeight + dRayCameraHeight) / 4f,
+            new Vector3(Mathf.Abs(xMax - xMin), 1f, Mathf.Abs(zMax - zMin)));
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(bounds.center, bounds.size);
+    }
+
+    private Vector3 ClampCameraPositionInConfinement(Vector3 nextPosition)
+    {
+        Ray aRay = new Ray(new Vector3(xMin, 0f, zMin), -Camera.main.transform.forward);
+        Ray bRay = new Ray(new Vector3(xMin, 0f, zMax), -Camera.main.transform.forward);
+        Ray cRay = new Ray(new Vector3(xMax, 0f, zMin), -Camera.main.transform.forward);
+        Ray dRay = new Ray(new Vector3(xMax, 0f, zMax), -Camera.main.transform.forward);
+
+        float cameraHeight = nextPosition.y;
+        float xAngle = Quaternion.FromToRotation(-Camera.main.transform.forward, Vector3.up).eulerAngles.x;
+        Vector3 aRayCameraHeight = aRay.GetPoint(cameraHeight / Mathf.Cos(Mathf.Deg2Rad * xAngle));
+        Vector3 bRayCameraHeight = bRay.GetPoint(cameraHeight / Mathf.Cos(Mathf.Deg2Rad * xAngle));
+        Vector3 cRayCameraHeight = cRay.GetPoint(cameraHeight / Mathf.Cos(Mathf.Deg2Rad * xAngle));
+        Vector3 dRayCameraHeight = dRay.GetPoint(cameraHeight / Mathf.Cos(Mathf.Deg2Rad * xAngle));
+
+        Bounds bounds = new Bounds((aRayCameraHeight + bRayCameraHeight + cRayCameraHeight + dRayCameraHeight) / 4f,
+            new Vector3(Mathf.Abs(xMax - xMin), 1f, Mathf.Abs(zMax - zMin)));
+
+        Vector3 result = nextPosition;
+        if (!bounds.Contains(result))
+        {
+            result = bounds.ClosestPoint(result);
+        }
+
+        return result;
     }
 
     public void ProcessCameraMove()
@@ -60,7 +135,7 @@ public class CameraMgr : SingletonBehaviour<CameraMgr>
         HandleKeyInputWASD(ref direction);
         GetMousePositionIfEdge(ref direction);
         Vector3 directionInWorld = direction.x * _screenXInWorld + direction.y * _screenYInWorld;
-        _desiredPositionWithoutHeight += _cameraMoveSpeed * Time.deltaTime * (directionInWorld.normalized);
+        _desiredPositionWithoutHeight = ClampCameraPositionInConfinement(_desiredPositionWithoutHeight + _cameraMoveSpeed * Time.deltaTime * (directionInWorld.normalized));
 
         HandleMouseScroll();
 
@@ -69,8 +144,16 @@ public class CameraMgr : SingletonBehaviour<CameraMgr>
 
     private void HandleMouseScroll()
     {
-        float scrollDelta = Input.GetAxis("Mouse ScrollWheel");
-        _cameraHeightOffset = Mathf.Clamp(_cameraHeightOffset - _cameraHeightSpeed * scrollDelta * Time.deltaTime, -_cameraMaxHeightOffset, 0f);
+        if(Physics.Raycast(Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f)), out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Cube")))
+        {
+            float distanceFromCube = Vector3.Distance(hit.point, Camera.main.transform.position);
+            float scrollDelta = Input.GetAxis("Mouse ScrollWheel");
+            _cameraHeightOffset = Mathf.Clamp(
+                _cameraHeightOffset - _cameraHeightSpeed * scrollDelta * Time.deltaTime,
+                -Mathf.Abs(distanceFromCube - _cameraMaxHeightOffset),
+                0f);
+        }
+        
     }
 
     public void ProcessTargetFollowing(Vector3 startPosition, float time)
@@ -117,7 +200,7 @@ public class CameraMgr : SingletonBehaviour<CameraMgr>
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         float height = Camera.main.transform.position.y;
         float xAngle = Quaternion.FromToRotation(Camera.main.transform.forward, Vector3.down).eulerAngles.x;
-        Vector3 posFromScreenCenter = ray.GetPoint(height / Mathf.Cos(xAngle));
+        Vector3 posFromScreenCenter = ray.GetPoint(height / Mathf.Cos(Mathf.Deg2Rad * xAngle));
         _offsetFromGround = (Camera.main.transform.position - posFromScreenCenter) / 2f;
     }
 
