@@ -80053,6 +80053,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Water
       objectReference: {fileID: 0}
+    - target: {fileID: 3142089568418960958, guid: b34283258d6f11942ae3e5aa186c32a8,
+        type: 3}
+      propertyPath: TileSize
+      value: 1.25
+      objectReference: {fileID: 0}
     - target: {fileID: 3142089568418960960, guid: b34283258d6f11942ae3e5aa186c32a8,
         type: 3}
       propertyPath: m_RootOrder
@@ -80061,17 +80066,17 @@ PrefabInstance:
     - target: {fileID: 3142089568418960960, guid: b34283258d6f11942ae3e5aa186c32a8,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3142089568418960960, guid: b34283258d6f11942ae3e5aa186c32a8,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3142089568418960960, guid: b34283258d6f11942ae3e5aa186c32a8,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -24.91
+      value: -39.14
       objectReference: {fileID: 0}
     - target: {fileID: 3142089568418960960, guid: b34283258d6f11942ae3e5aa186c32a8,
         type: 3}
@@ -80081,7 +80086,7 @@ PrefabInstance:
     - target: {fileID: 3142089568418960960, guid: b34283258d6f11942ae3e5aa186c32a8,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -33.93
+      value: -45.42
       objectReference: {fileID: 0}
     - target: {fileID: 3142089568418960960, guid: b34283258d6f11942ae3e5aa186c32a8,
         type: 3}
