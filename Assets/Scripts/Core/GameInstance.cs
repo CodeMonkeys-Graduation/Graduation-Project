@@ -37,6 +37,7 @@ public class GameInstance : SingletonBehaviour<GameInstance>
         TurnMgr,
         UIMgr,
         SceneMgr,
+        AudioMgr,
     }
 
     [SerializeField] public ManagerDictionary ManagerPrefabs;
