@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &621409040230146916
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 621409040230146907}
+  - component: {fileID: 4358413587114634574}
+  m_Layer: 0
+  m_Name: AudioMgr
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &621409040230146907
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621409040230146916}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 161.47137, y: 167.03647, z: 49.50598}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4358413587114634574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621409040230146916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6312817b3b843a04ab1067ccbcdd997a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 10
+  _lifeCycles: 00000000010000000200000003000000040000000500000006000000
+  sceneBGMs:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 1
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 1
+    _keyValues: 01000000000000000200000003000000040000000500000006000000
+    _keys: 01000000000000000200000003000000040000000500000006000000
+    _values:
+    - {fileID: 0}
+    - {fileID: 8300000, guid: b5b3a955ec1ad4245ac215d636d5b806, type: 3}
+    - {fileID: 0}
+    - {fileID: 8300000, guid: b5b3a955ec1ad4245ac215d636d5b806, type: 3}
+    - {fileID: 8300000, guid: b5b3a955ec1ad4245ac215d636d5b806, type: 3}
+    - {fileID: 8300000, guid: b5b3a955ec1ad4245ac215d636d5b806, type: 3}
+    - {fileID: 8300000, guid: b5b3a955ec1ad4245ac215d636d5b806, type: 3}
+  audioMixer: {fileID: 24100000, guid: 70afe4b0f7d801b428dcd9366d2ed1ba, type: 2}
