@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[CreateAssetMenu(order = 0, fileName = "TalkDataContainer", menuName = "Dialog/TalkDataContainer")]
+
 [System.Serializable]
-public class TalkDataContainer
+public class TalkDataContainer : ScriptableObject
 {
     public List<TalkData> talkDataContainer = new List<TalkData>();
     public List<SelectionData> selectionDataContainer = new List<SelectionData>();

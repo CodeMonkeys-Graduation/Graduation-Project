@@ -13,7 +13,7 @@ public class ActionPanel : Battle_UI
     {
         
     }
-    
+
     public override void SetPanel(EventParam u)
     {
         if (u == null) return;

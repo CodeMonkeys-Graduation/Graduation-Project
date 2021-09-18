@@ -19,7 +19,7 @@ public class SelectionState : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        dialogController.SetSelection(talkDataMgr.talkSet.selectionDataContainer[selectionIndex]);
+        dialogController.SetSelection(TalkDataMgr.talkSet.selectionDataContainer[selectionIndex]);
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
