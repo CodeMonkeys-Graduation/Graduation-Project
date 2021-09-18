@@ -79,6 +79,7 @@ MonoBehaviour:
   itemBag:
     items: []
   projectile: {fileID: 0}
+  attackSFX: {fileID: 8300000, guid: d46323e22e74e46baa241cbf48c85671, type: 3}
   moveSpeed: 2
   jumpTime: 0.5
   jumpHeight: 0.5

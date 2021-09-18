@@ -117,6 +117,7 @@ public class Unit : MonoBehaviour
     [SerializeField] public Team team;
     [SerializeField] public ItemBag itemBag;
     [SerializeField] public GameObject projectile;
+    [SerializeField] private AudioClip attackSFX;
 
     [Header("Movement")] //*** 움직임이 자연스러운 수치 기입 ***//
     [SerializeField] public float moveSpeed;
@@ -249,6 +250,14 @@ public class Unit : MonoBehaviour
         }
 
 
+    }
+
+    public void PlayAttackSFX()
+    {
+        if (attackSFX == null)
+            return;
+
+        AudioMgr.Instance.PlayAudio(attackSFX, AudioMgr.AudioType.SFX, false);
     }
 
 

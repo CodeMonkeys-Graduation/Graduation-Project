@@ -773,6 +773,7 @@ MonoBehaviour:
   itemBag:
     items: []
   projectile: {fileID: 0}
+  attackSFX: {fileID: 8300000, guid: d46323e22e74e46baa241cbf48c85671, type: 3}
   moveSpeed: 2
   jumpTime: 0.3
   jumpHeight: 0.1
@@ -1028,6 +1029,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1723,6 +1725,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
