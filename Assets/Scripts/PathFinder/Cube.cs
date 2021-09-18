@@ -19,6 +19,7 @@ public class Cube : MonoBehaviour, INavable
 
     [Header("Set in Editor")]
     [SerializeField] float maxNeighborHeightDiff = 0.6f;
+    [SerializeField] public bool _isPlacable = false;
 
     public List<INavable> Neighbors { get => _neighbors; set => _neighbors = value; }
     public Transform Platform { get => _platform; set => _platform = value; }
