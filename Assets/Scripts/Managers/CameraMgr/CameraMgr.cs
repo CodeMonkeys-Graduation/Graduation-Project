@@ -201,7 +201,7 @@ public class CameraMgr : SingletonBehaviour<CameraMgr>
         float height = Camera.main.transform.position.y;
         float xAngle = Quaternion.FromToRotation(Camera.main.transform.forward, Vector3.down).eulerAngles.x;
         Vector3 posFromScreenCenter = ray.GetPoint(height / Mathf.Cos(Mathf.Deg2Rad * xAngle));
-        _offsetFromGround = (Camera.main.transform.position - posFromScreenCenter) / 2f;
+        _offsetFromGround = (Camera.main.transform.position - posFromScreenCenter);
     }
 
     private Vector2 HandleKeyInputWASD(ref Vector2 direction)
