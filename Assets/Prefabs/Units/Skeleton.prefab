@@ -903,6 +903,7 @@ MonoBehaviour:
     items: []
   projectile: {fileID: 0}
   attackSFX: {fileID: 8300000, guid: d46323e22e74e46baa241cbf48c85671, type: 3}
+  hitSFX: {fileID: 8300000, guid: 1431552dc9bcc6348a8a00383c5a9625, type: 3}
   moveSpeed: 4
   jumpTime: 0.3
   jumpHeight: 0.3

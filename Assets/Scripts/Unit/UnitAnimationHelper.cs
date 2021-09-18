@@ -20,6 +20,11 @@ public class UnitAnimationHelper : MonoBehaviour
         unit.PlayAttackSFX();
     }
 
+    public void PlayHitSFX()
+    {
+        unit.PlayHitSFX();
+    }
+
     public void GiveDamageOnTargets()
     {
         unit.attacker.GiveDamageOnTargets();
