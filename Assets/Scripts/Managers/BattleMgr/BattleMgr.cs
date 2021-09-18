@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 public class BattleMgr : SingletonBehaviour<BattleMgr>
@@ -19,7 +20,7 @@ public class BattleMgr : SingletonBehaviour<BattleMgr>
 
     public void Start()
     {
-        _canSummonCubes = new List<Cube>(FindObjectsOfType<Cube>());
+        _canSummonCubes = new List<Cube>(FindObjectsOfType<Cube>().Where(cube => cube._isPlacable));
         //BattleMgr_State_ nextState = new BattleMgr_Positioning_(this, _unitPrefabs, _canSummonCubes);
         //stateMachine = new StateMachine<BattleMgr>(new BattleMgr_WaitSingleEvent_(this, EventMgr.Instance.onUICompleted, nextState));   
         stateMachine = new StateMachine<BattleMgr>(new BattleMgr_Init_(this));
