@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 
 public class DialogState : StateMachineBehaviour
 {
@@ -9,7 +10,8 @@ public class DialogState : StateMachineBehaviour
     DialogController dialogController;
 
     [Header("Set In Editor")]
-    [SerializeField] int talkIndex;
+    [SerializeField] public int talkIndex;
+    [SerializeField] public TalkData talkDataByIndex;
 
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -17,12 +19,17 @@ public class DialogState : StateMachineBehaviour
         talkDataMgr = FindObjectOfType<TalkDataMgr>();
         dialogController = FindObjectOfType<DialogController>();
 
-        dialogController.SetTalk(talkDataMgr.talkSet.talkDataContainer[talkIndex]);
+        dialogController.SetTalk(TalkDataMgr.talkSet.talkDataContainer[talkIndex]);
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         
+    }
+
+    public void GetTalk()
+    {
+        talkDataByIndex = TalkDataMgr.talkSet.talkDataContainer[talkIndex];
     }
 
 }

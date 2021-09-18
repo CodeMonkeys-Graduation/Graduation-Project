@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TalkDataMgr : MonoBehaviour
 {
-    public TalkDataContainer talkSet;
+    public static TalkDataContainer talkSet;
 
     [SerializeField] int stageProgress = 0;
 
