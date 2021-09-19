@@ -196,6 +196,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 218825779402830467, guid: 43082b7ac7d57f94caebc225485886b7,
+        type: 3}
+      propertyPath: _isPlacable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 834584387268537116, guid: 43082b7ac7d57f94caebc225485886b7,
+        type: 3}
+      propertyPath: _isPlacable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1149178183534780071, guid: 43082b7ac7d57f94caebc225485886b7,
+        type: 3}
+      propertyPath: _isPlacable
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1923523681379160236, guid: 43082b7ac7d57f94caebc225485886b7,
         type: 3}
       propertyPath: m_RootOrder
@@ -255,6 +270,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Lava Cave
+      objectReference: {fileID: 0}
+    - target: {fileID: 2473370345361264348, guid: 43082b7ac7d57f94caebc225485886b7,
+        type: 3}
+      propertyPath: _isPlacable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2541705277632136442, guid: 43082b7ac7d57f94caebc225485886b7,
+        type: 3}
+      propertyPath: _isPlacable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3440961639921735558, guid: 43082b7ac7d57f94caebc225485886b7,
+        type: 3}
+      propertyPath: _isPlacable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022594229059493655, guid: 43082b7ac7d57f94caebc225485886b7,
+        type: 3}
+      propertyPath: _isPlacable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7402807042668665094, guid: 43082b7ac7d57f94caebc225485886b7,
+        type: 3}
+      propertyPath: _isPlacable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8510542966772801252, guid: 43082b7ac7d57f94caebc225485886b7,
+        type: 3}
+      propertyPath: _isPlacable
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43082b7ac7d57f94caebc225485886b7, type: 3}
