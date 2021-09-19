@@ -1,4 +1,4 @@
-﻿using ObserverPattern;
+using ObserverPattern;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,6 +32,7 @@ public class BattleMgr_Positioning_ : BattleMgr_State_
     {
         Debug.Log("Positioning State Enter");
         EventMgr.Instance.onGamePositioningEnter.Invoke(new UISummon(_unitPrefabs, true)); // 여기서 SummonUI에 세팅
+        _canSummonCubes.ForEach(cube => cube.SetBlink(0.3f));
     }
 
     public override void Execute()
@@ -43,8 +44,6 @@ public class BattleMgr_Positioning_ : BattleMgr_State_
             if (Physics.Raycast(ray, out hitObj, Mathf.Infinity, LayerMask.GetMask("Unit")))
             {
                 if(hitObj.transform.GetComponent<Unit>().team.controller == Team.Controller.AI) return;
-
-                MapMgr.Instance.BlinkCubes(_canSummonCubes, 0.5f);
 
                 _selectedUnit = hitObj.transform.GetComponent<Unit>();
                 _selectedUnit.StartTransparent();
@@ -65,7 +64,9 @@ public class BattleMgr_Positioning_ : BattleMgr_State_
                 if (!currRaycastedCube.IsAccupied() && _canSummonCubes.Find((c) => currRaycastedCube == c) != null) // 비어있는 큐브
                     SetCubeNUnit(currRaycastedCube);
                 else // 유닛이 있는 큐브
+                {
                     _prevRaycastedCube = null;
+                }
             }
             else // 마우스포인트가 큐브에 있지않음
             {
@@ -75,9 +76,10 @@ public class BattleMgr_Positioning_ : BattleMgr_State_
 
         else if(Input.GetMouseButtonUp(0))
         {
-            MapMgr.Instance.StopBlinkAll();
-
-            _selectedUnit?.GetComponent<Unit>().StopTransparent();
+            if(_selectedUnit != null) // 배치가 되었음.
+            {
+                _selectedUnit.GetComponent<Unit>().StopTransparent();
+            }
 
             _selectedUnit = null;
             _prevRaycastedCube = null;
@@ -89,11 +91,14 @@ public class BattleMgr_Positioning_ : BattleMgr_State_
     {
         Debug.Log("Positioning State Exit");
         EventMgr.Instance.onGamePositioningExit.Invoke();
+        _canSummonCubes.ForEach(cube => cube.StopBlink());
     }
 
     private void SetCubeNUnit(Cube cube)
     {
-        if(_selectedUnit != null) _selectedUnit.transform.position = cube.Platform.position;
+        if(_selectedUnit != null) 
+            _selectedUnit.transform.position = cube.Platform.position;
+
         _prevRaycastedCube = cube;
     }
 

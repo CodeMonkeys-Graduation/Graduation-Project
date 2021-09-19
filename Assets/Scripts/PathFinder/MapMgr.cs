@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -94,24 +94,18 @@ public class MapMgr : SingletonBehaviour<MapMgr>
 
     public void BlinkCube(Cube cubeToBlink, float intensity)
     {
-        foreach (var cube in map.Cubes)
-            if (cube == cubeToBlink)
-            {
-                (cube as Cube).SetBlink(intensity);
-                return;
-            }                
+        cubeToBlink.SetBlink(intensity);
     }
 
     public void BlinkCubes(List<Cube> cubes, float intensity)
     {
-        foreach(var cube in cubes)
-            cube.SetBlink(intensity);
+        cubes.ForEach(cube => cube.SetBlink(intensity));
     }
 
     public void StopBlinkAll()
     {
         foreach(var cube in map.Cubes)
-            (cube as Cube).StopBlink();
+            cube.StopBlink();
     }
 
     public Cube GetNearestCube(Vector3 pos)
