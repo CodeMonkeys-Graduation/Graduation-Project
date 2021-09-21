@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,6 +23,7 @@ public class UnitAnimationHelper : MonoBehaviour
     public void PlayHitSFX()
     {
         unit.PlayHitSFX();
+        unit.HitCameraEffect();
     }
 
     public void GiveDamageOnTargets()

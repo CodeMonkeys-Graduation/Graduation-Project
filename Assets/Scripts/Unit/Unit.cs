@@ -251,6 +251,11 @@ public class Unit : MonoBehaviour
 
     }
 
+    public void HitCameraEffect()
+    {
+        if (team.controller == Team.Controller.Player)
+            CameraMgr.Instance.ShakeCamera(0.2f, 0.5f, 60);
+    }
     public void PlayHitSFX()
     {
         AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.Unit_Hit, AudioMgr.AudioType.SFX, false);
