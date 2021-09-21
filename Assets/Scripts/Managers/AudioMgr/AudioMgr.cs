@@ -1,4 +1,4 @@
-﻿using RotaryHeart.Lib.SerializableDictionary;
+using RotaryHeart.Lib.SerializableDictionary;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +12,12 @@ public class AudioMgr : SingletonBehaviour<AudioMgr>
     [System.Serializable]
     public class SceneBGMDictionary : SerializableDictionaryBase<SceneMgr.Scene, AudioClip> { }
 
+    [System.Serializable]
+    public class AudioClipDictionary : SerializableDictionaryBase<AudioClipType, AudioClip> { }
+
     [SerializeField] private SceneBGMDictionary sceneBGMs;
+
+    [SerializeField] private AudioClipDictionary audioClipDictionary;
 
     [SerializeField] private AudioMixer audioMixer;
 
@@ -28,6 +33,13 @@ public class AudioMgr : SingletonBehaviour<AudioMgr>
         BGM,
         SFX,
         UI,
+    }
+
+    public enum AudioClipType
+    {
+        Unit_Hit,
+        Unit_Attack,
+        UI_Clicked,
     }
 
     // Start is called before the first frame update
@@ -68,12 +80,35 @@ public class AudioMgr : SingletonBehaviour<AudioMgr>
         sceneBGMs.TryGetValue(SceneMgr.Instance._currScene, out AudioClip bgmClip);
         if(bgmClip != null)
         {
-            PlayAudio(bgmClip, AudioType.BGM, true);
+            PlayBGM(bgmClip);
         }
     }
 
-    public void PlayAudio(AudioClip clip, AudioType type, bool loop)
+    private void PlayBGM(AudioClip clip)
     {
+        if (!audioMixerGroups.TryGetValue(AudioType.BGM, out _))
+            return;
+
+        GameObject audioGO = new GameObject(AudioType.BGM.ToString());
+        DontDestroyOnLoad(audioGO);
+        AudioSource audioSource = audioGO.AddComponent<AudioSource>();
+
+        audioSource.playOnAwake = true;
+        audioSource.loop = true;
+        audioSource.clip = clip;
+        if (audioMixerGroups.TryGetValue(AudioType.BGM, out AudioMixerGroup group))
+            audioSource.outputAudioMixerGroup = group;
+
+        audioInstances.Add((AudioType.BGM, audioSource));
+
+        audioSource.Play();
+    }
+
+    public void PlayAudio(AudioClipType clipType, AudioType type, bool loop)
+    {
+        if (!audioClipDictionary.TryGetValue(clipType, out AudioClip clip))
+            return;
+
         GameObject audioGO = new GameObject(type.ToString());
         DontDestroyOnLoad(audioGO);
         AudioSource audioSource = audioGO.AddComponent<AudioSource>();

@@ -78,4 +78,33 @@ MonoBehaviour:
     - {fileID: 8300000, guid: b5b3a955ec1ad4245ac215d636d5b806, type: 3}
     - {fileID: 8300000, guid: b5b3a955ec1ad4245ac215d636d5b806, type: 3}
     - {fileID: 8300000, guid: b5b3a955ec1ad4245ac215d636d5b806, type: 3}
+  audioClipDictionary:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 1
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 1
+    _keyValues: 010000000000000002000000
+    _keys: 010000000000000002000000
+    _values:
+    - {fileID: 8300000, guid: d46323e22e74e46baa241cbf48c85671, type: 3}
+    - {fileID: 8300000, guid: 1431552dc9bcc6348a8a00383c5a9625, type: 3}
+    - {fileID: 8300000, guid: 99348d26b121bdf40bca2ff30b000207, type: 3}
   audioMixer: {fileID: 24100000, guid: 70afe4b0f7d801b428dcd9366d2ed1ba, type: 2}
