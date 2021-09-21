@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -117,8 +117,6 @@ public class Unit : MonoBehaviour
     [SerializeField] public Team team;
     [SerializeField] public ItemBag itemBag;
     [SerializeField] public GameObject projectile;
-    [SerializeField] private AudioClip attackSFX;
-    [SerializeField] private AudioClip hitSFX;
 
     [Header("Movement")] //*** 움직임이 자연스러운 수치 기입 ***//
     [SerializeField] public float moveSpeed;
@@ -255,18 +253,12 @@ public class Unit : MonoBehaviour
 
     public void PlayHitSFX()
     {
-        if (hitSFX == null)
-            return;
-
-        AudioMgr.Instance.PlayAudio(hitSFX, AudioMgr.AudioType.SFX, false);
+        AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.Unit_Hit, AudioMgr.AudioType.SFX, false);
     }
 
     public void PlayAttackSFX()
     {
-        if (attackSFX == null)
-            return;
-
-        AudioMgr.Instance.PlayAudio(attackSFX, AudioMgr.AudioType.SFX, false);
+        AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.Unit_Attack, AudioMgr.AudioType.SFX, false);
     }
 
 
