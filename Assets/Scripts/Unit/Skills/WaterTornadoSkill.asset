@@ -17,3 +17,4 @@ MonoBehaviour:
   skillVFX: {fileID: 782595691969465692, guid: f95e3187a7adf9b44acbeec3ff2bfcd0, type: 3}
   amountMin: 8
   amountMax: 12
+  skillSFX: 5

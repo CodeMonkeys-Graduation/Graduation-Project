@@ -1,4 +1,4 @@
-﻿using UnityEngine.Events;
+using UnityEngine.Events;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -24,7 +24,13 @@ public class PopupPanel : Battle_UI
         Description.text = up._content;
         transform.position = up._pos;
         yesBtn.onClick.AddListener(up._yes);
+        yesBtn.onClick.AddListener(() => {
+            AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_Clicked, AudioMgr.AudioType.UI, false);
+        });
         noBtn.onClick.AddListener(up._no);
+        noBtn.onClick.AddListener(() => {
+            AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_Clicked, AudioMgr.AudioType.UI, false);
+        });
 
         gameObject.SetActive(true);
 
