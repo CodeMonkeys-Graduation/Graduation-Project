@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -166,6 +167,11 @@ public class CameraMgr : SingletonBehaviour<CameraMgr>
 
         if (IsTargetFollowingDone())
             _stateMachine.ChangeState(new CameraMgr_NormalState_(this), StateMachine<CameraMgr>.StateTransitionMethod.PopNPush);
+    }
+
+    public void ShakeCamera(float duration, float strength, int vibrato)
+    {
+        Camera.main.DOShakePosition(duration, strength, vibrato);
     }
 
     private bool IsTargetFollowingDone()
