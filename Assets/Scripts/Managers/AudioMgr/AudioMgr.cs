@@ -110,6 +110,11 @@ public class AudioMgr : SingletonBehaviour<AudioMgr>
 
     public void PlayAudio(AudioClipType clipType, AudioType type, bool loop)
     {
+        // BGM은 AudioMgr프리팹에 sceneBGMs변수에 등록하여 사용해주세요.
+        if (type == AudioType.BGM)
+            return;
+
+        // 등록되지않은 Clip
         if (!audioClipDictionary.TryGetValue(clipType, out AudioClip clip))
             return;
 
