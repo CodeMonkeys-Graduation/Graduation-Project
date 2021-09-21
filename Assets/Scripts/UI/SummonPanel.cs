@@ -1,4 +1,4 @@
-﻿using ObserverPattern;
+using ObserverPattern;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -46,6 +46,11 @@ public class SummonPanel : Battle_UI
         UpdateSummonBtns();
 
         gameObject.SetActive(true);
+    }
+
+    public bool IsUnitToPositionLeft()
+    {
+        return content.GetComponentsInChildren<SummonBtn>().Length > 0;
     }
 
     public void UpdateSummonBtns()

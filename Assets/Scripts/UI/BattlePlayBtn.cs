@@ -2,11 +2,23 @@ using ObserverPattern;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class TestPlayBtn : Battle_UI
+public class BattlePlayBtn : Battle_UI
 {
 
-    public TestPlayBtn() : base(BattleUIType.Play)
+
+    public BattlePlayBtn() : base(BattleUIType.Play)
+    {
+
+    }
+
+    private void Start()
+    {
+
+    }
+
+    private void Update()
     {
 
     }
