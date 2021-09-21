@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,6 +24,8 @@ public class WaterTornado : Skill
 
     public override void OnUnitSkillEnter(Unit caster, List<Cube> targetCubes, Cube centerCube)
     {
+        base.OnUnitSkillEnter(caster, targetCubes, centerCube);
+
         foreach(var cube in targetCubes)
         {
             GameObject vfxGO = Instantiate(
@@ -35,6 +37,8 @@ public class WaterTornado : Skill
 
     public override void OnSkillAnimation(Unit caster)
     {
+        base.OnSkillAnimation(caster);
+
         foreach(var target in caster.targetCubes)
         {
             if(target.GetUnit() != null)

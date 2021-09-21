@@ -40,6 +40,10 @@ public class AudioMgr : SingletonBehaviour<AudioMgr>
         Unit_Hit,
         Unit_Attack,
         UI_Clicked,
+        UI_UnClicked,
+        Skill_Flame,
+        Skill_WaterTornado,
+        SFX_SwordBladeSwish,
     }
 
     // Start is called before the first frame update
