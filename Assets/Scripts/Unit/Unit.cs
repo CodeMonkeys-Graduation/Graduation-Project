@@ -129,17 +129,17 @@ public class Unit : MonoBehaviour
     [HideInInspector] public Cube GetCube { get => GetCubeOnPosition(); }
     [HideInInspector] public StateMachine<Unit> stateMachine;
     [SerializeField] public int currHealth;
-    public UnitMover mover;
-    public UnitAttacker attacker;
-    public UnitSkillCaster skillCaster;
-    public UnitItemUser itemUser;
+    [HideInInspector] public UnitMover mover;
+    [HideInInspector] public UnitAttacker attacker;
+    [HideInInspector] public UnitSkillCaster skillCaster;
+    [HideInInspector] public UnitItemUser itemUser;
     public int BasicAttackDamageAvg { get => (basicAttackDamageMax + basicAttackDamageMin) / 2; }
     public Range basicAttackRange;
     public Range basicAttackSplash;
 
 
     private List<Renderer> renderers = new List<Renderer>();
-    public List<Cube> targetCubes;
+    [HideInInspector] public List<Cube> targetCubes;
     private Queue<UnitCommand> commandQueue = new Queue<UnitCommand>();
     public int commandQueueCount { get => commandQueue.Count; }
     public float JumpTime { get => jumpTime; }
