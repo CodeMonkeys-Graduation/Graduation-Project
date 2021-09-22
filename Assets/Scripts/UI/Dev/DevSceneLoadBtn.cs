@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,10 +8,6 @@ public class DevSceneLoadBtn : Normal_UI
 {
     [SerializeField] public SceneMgr.Scene SceneToLoad;
 
-    public DevSceneLoadBtn() : base(NormalUIType.Start)
-    {
-
-    }
     private void Start()
     {
         GetComponent<Button>().onClick.AddListener(OnClickedBtn);

@@ -6,23 +6,6 @@ using UnityEngine.UI;
 
 public class BattlePlayBtn : Battle_UI
 {
-
-
-    public BattlePlayBtn() : base(BattleUIType.Play)
-    {
-
-    }
-
-    private void Start()
-    {
-
-    }
-
-    private void Update()
-    {
-
-    }
-
     public void OnClickPlay()
     {
         AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_Clicked, AudioMgr.AudioType.UI, false);

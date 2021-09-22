@@ -13,10 +13,6 @@ public class BattleNextStateBtn : Battle_UI
     private bool isPositioning = false;
 
     private EventListener el_ongamePositionEnter = new EventListener();
-    public BattleNextStateBtn() : base(BattleUIType.Next)
-    {
-
-    }
 
     private void Start()
     {

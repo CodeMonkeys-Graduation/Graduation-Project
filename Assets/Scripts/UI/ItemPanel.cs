@@ -1,4 +1,4 @@
-﻿using ObserverPattern;
+using ObserverPattern;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,11 +8,6 @@ using UnityEngine;
 public class ItemPanel : Battle_UI
 {
     [SerializeField] List<ItemSlot> itemSlots;
-
-    public ItemPanel() : base(BattleUIType.Item) 
-    { 
-    
-    }
 
     public override void SetPanel(EventParam u)
     {

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,11 +13,6 @@ public class StatusPanel : Battle_UI
     [SerializeField] public Image unitcurrHealth;
     [SerializeField] public Image unitImage;
     [SerializeField] public Image unitSkill;
-
-    public StatusPanel() : base(BattleUIType.Status)
-    {
-
-    }
 
     public override void SetPanel(EventParam u)
     {

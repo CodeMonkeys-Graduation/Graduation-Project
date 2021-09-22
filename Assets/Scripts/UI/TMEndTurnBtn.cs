@@ -3,11 +3,6 @@ using UnityEngine;
 
 public class TMEndTurnBtn : Battle_UI
 {
-    public TMEndTurnBtn() : base(BattleUIType.End)
-    {
-
-    }
-
     public void OnClick_EndTurnBtn()
     {
         AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_Clicked, AudioMgr.AudioType.UI, false);
