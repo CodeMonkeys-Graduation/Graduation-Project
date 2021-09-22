@@ -1,0 +1,249 @@
+{
+	"init": {
+		"coins": 1000,
+		"exp": 0,
+		"golds": 0,
+		"character": "wizard"
+	},
+	"buildings": {
+		"barrack": {
+			"color": "blue",
+			"width": 200,
+			"height": 200
+		},
+		"mine": {
+			"color": "yellow",
+			"width": 200,
+			"height": 100
+		},
+		"gas": {
+			"color": "red",
+			"width": 100,
+			"height": 100
+		},
+		"townhall": {
+			"color": "black",
+			"width": 200,
+			"height": 200
+		}
+	},
+	"reqcoins": {
+		"barrack": [
+			100,
+			500,
+			1000,
+			1500,
+			2000,
+			2500,
+			0,
+			"상점",
+			"이름",
+			"name",
+			"blade",
+			"dagger",
+			"thorn_dagger",
+			"mail",
+			0,
+			"초기 인벤토리",
+			"이름",
+			"type",
+			"blade",
+			"thorn_dagger",
+			"mail",
+			0,
+			0,
+			"$key",
+			"michael",
+			"tobby",
+			"tony",
+			"gump"
+		],
+		"mine": [
+			100,
+			500,
+			1000,
+			0,
+			0,
+			0,
+			0,
+			0,
+			"가격",
+			"price",
+			100,
+			200,
+			300,
+			100,
+			0,
+			0,
+			"가격",
+			"attrib[]",
+			"oil,diamond",
+			"saphire",
+			"diamond,saphire,rune",
+			0,
+			0,
+			"$value[]",
+			"tobby,cory,cain",
+			"michael,cory",
+			"sarah,john",
+			0
+		],
+		"gas": [
+			100,
+			500,
+			1000,
+			0,
+			0,
+			0,
+			0,
+			0,
+			"최소 레벨",
+			"req_level",
+			1,
+			2,
+			2,
+			2,
+			0,
+			0,
+			"최소 레벨",
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0
+		]
+	},
+	"shop": [
+		{
+			"name": "blade",
+			"price": 100,
+			"req_level": 1,
+			"category": "attack",
+			"desc": "칼"
+		},
+		{
+			"name": "dagger",
+			"price": 200,
+			"req_level": 2,
+			"category": "attack",
+			"desc": "단검"
+		},
+		{
+			"name": "thorn_dagger",
+			"price": 300,
+			"req_level": 2,
+			"category": "attack",
+			"desc": "뿔단검"
+		},
+		{
+			"name": "mail",
+			"price": 100,
+			"req_level": 2,
+			"category": "wear",
+			"desc": "갑옷"
+		}
+	],
+	"inventory": [
+		{
+			"type": "blade",
+			"attrib": [
+				"oil",
+				"diamond"
+			],
+			"dur": 100
+		},
+		{
+			"type": "thorn_dagger",
+			"attrib": [
+				"saphire"
+			],
+			"dur": 150
+		},
+		{
+			"type": "mail",
+			"attrib": [
+				"diamond",
+				"saphire",
+				"rune"
+			],
+			"dur": 100
+		},
+		{
+			"type": 0,
+			"attrib": [
+				0
+			],
+			"dur": 0
+		},
+		{
+			"type": 0,
+			"attrib": [
+				0
+			],
+			"dur": 0
+		},
+		{
+			"type": "$key",
+			"attrib": [
+				"$value[]"
+			],
+			"dur": 0
+		},
+		{
+			"type": "michael",
+			"attrib": [
+				"tobby",
+				"cory",
+				"cain"
+			],
+			"dur": 0
+		},
+		{
+			"type": "tobby",
+			"attrib": [
+				"michael",
+				"cory"
+			],
+			"dur": 0
+		},
+		{
+			"type": "tony",
+			"attrib": [
+				"sarah",
+				"john"
+			],
+			"dur": 0
+		},
+		{
+			"type": "gump",
+			"attrib": [
+				0
+			],
+			"dur": 0
+		}
+	],
+	"friends": {
+		"michael": [
+			"tobby",
+			"cory",
+			"cain"
+		],
+		"tobby": [
+			"michael",
+			"cory"
+		],
+		"tony": [
+			"sarah",
+			"john"
+		],
+		"gump": [
+			0
+		]
+	}
+}
