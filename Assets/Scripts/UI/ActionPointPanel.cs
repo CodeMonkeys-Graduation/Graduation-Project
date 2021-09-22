@@ -1,4 +1,4 @@
-﻿using ObserverPattern;
+using ObserverPattern;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,11 +6,6 @@ using UnityEngine;
 public class ActionPointPanel : Battle_UI
 {
     [SerializeField] TextMeshProUGUI actionPointText;
-
-    public ActionPointPanel() : base(BattleUIType.ActionPoint)
-    {
-
-    }
 
     public override void SetPanel(EventParam u)
     {

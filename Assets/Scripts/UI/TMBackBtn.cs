@@ -2,12 +2,7 @@ using ObserverPattern;
 using UnityEngine;
 
 public class TMBackBtn : Battle_UI
-{
-    public TMBackBtn() : base(BattleUIType.Back)
-    {
-
-    }
-
+{ 
     public void OnClick_BackBtn()
     {
         TurnMgr.Instance.stateMachine.ChangeState(null, StateMachine<TurnMgr>.StateTransitionMethod.ReturnToPrev);

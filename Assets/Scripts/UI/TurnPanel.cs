@@ -1,4 +1,4 @@
-﻿using ObserverPattern;
+using ObserverPattern;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +12,6 @@ public class TurnPanel : Battle_UI
     [SerializeField] TurnSlot slotPrefab;
     [SerializeField] GameObject glowFramePrefab;
     [SerializeField] Transform content;
-
-    public TurnPanel() : base(BattleUIType.Turn)
-    {
-
-    }
-    
 
     public bool ShouldUpdateSlots(List<Unit> turns)
     {

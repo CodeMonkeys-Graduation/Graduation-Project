@@ -10,11 +10,6 @@ public class PopupPanel : Battle_UI
     [SerializeField] public Button noBtn;
     [SerializeField] public TextMeshProUGUI Description;
 
-    public PopupPanel() : base(BattleUIType.Popup)
-    {
-
-    }
-
     public override void SetPanel(EventParam u)
     {
         if (u == null) return;

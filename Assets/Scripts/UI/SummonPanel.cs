@@ -10,11 +10,6 @@ public class SummonPanel : Battle_UI
 
     public Dictionary<SummonBtn, int> SummonBtnCount = new Dictionary<SummonBtn, int>();
 
-    public SummonPanel() : base(BattleUIType.Summon)
-    {
-
-    }
-
     public override void SetPanel(EventParam u) // 유닛을 받아 그 유닛을 판넬에 세팅하는 함수
     {
         if (u == null) return;
