@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,6 +24,8 @@ public class Archer : Unit
             {   0,0,1,1,1,0,0 },
             {   0,0,0,1,0,0,0 }
         });
-        basicAttackSplash = new Range(new int[1, 1] { { 1 } });
+        basicAttackSplash = new Range(new int[1, 1] { 
+            { 1 },
+        });
     }
 }

@@ -1,4 +1,4 @@
-﻿using ObserverPattern;
+using ObserverPattern;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -41,10 +41,9 @@ public class TurnMgr_PlayerAttack_ : TurnMgr_State_
                 cubeClicked = hit.transform.GetComponent<Cube>();
                 if (cubesCanAttack.Contains(cubeClicked))
                 {
-                    List<Cube> cubesInAttackSplash = MapMgr.Instance.GetCubes(
-                        unit.basicAttackSplash.range, unit.basicAttackSplash.centerX, unit.basicAttackSplash.centerZ, cubeClicked);
+                    List<Cube> cubesInAttackSplash = MapMgr.Instance.GetCubes(unit.basicAttackSplash, cubeClicked);
 
-                    string popupContent = $"It is {cubeClicked.GetUnit().name} r u Attack?";
+                    string popupContent = $"Are you Sure?";
 
                     owner.stateMachine.ChangeState(
                         new TurnMgr_Popup_(owner, unit, Input.mousePosition,
@@ -63,10 +62,15 @@ public class TurnMgr_PlayerAttack_ : TurnMgr_State_
     }
 
     private bool CubeCanAttackConditions(Cube cube)
-        => cube != unit.GetCube && // 자신이 서있는 큐브 제외
-            cube.GetUnit() != null && // 아무도 없는 큐브 제외
-            unit.team.enemyTeams.Contains(cube.GetUnit().team) && // 자신의 적이 서있는 큐브
-            cube.GetUnit().currHealth > 0; // 그리고 죽고 있는 유닛이면 안됨
+    {
+        List<Cube> splashCubes = MapMgr.Instance.GetCubes(unit.basicAttackSplash, cube);
+        // 스플래쉬 범위에 살아있는 적군이 하나라도 존재하면 공격 가능한 큐브
+        if (splashCubes.Where(cube => cube.GetUnit() != null && cube.GetUnit().currHealth >= 0 && unit.team.enemyTeams.Contains(cube.GetUnit().team)).Count() > 0)
+            return true;
+
+        return false;
+    }
+
 
     private bool RaycastWithCubeMask(out RaycastHit hit)
     {
