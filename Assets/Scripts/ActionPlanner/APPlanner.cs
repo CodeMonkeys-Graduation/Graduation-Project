@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -106,18 +106,19 @@ public class AttackPlanner : APPlanner
         // 공격 가능한 모든 곳으로 공격하는 모든 경우의 수는 List로 생성
         foreach (Cube cube in cubesInAttackRange)
         {
+            List<Cube> splashCubes = MapMgr.Instance.GetCubes(_gameState.self.owner.basicAttackSplash, cube);
+            List<APUnit> splashUnits = _gameState._unitPos.Where(unitPos => splashCubes.Contains(unitPos.Value)).Select(unitPos => unitPos.Key).ToList();
             // 자기 자신의 위치를 공격하는 것은 예외처리
-            if (cube == centerCube) continue;
+            if (cube == centerCube) 
+                continue;
+            // 스플래쉬 범위에 자기 자신이 있는 것도 제외
+            else if (splashCubes.Contains(_gameState._unitPos[_gameState.self]))
+                continue;
 
-            // cubesInAttackRange안의 적유닛이 있는 한 큐브를 공격하는 AttackActionNode
-            if(_gameState._unitPos.ContainsValue(cube))
+            // cubesInAttackRange안의 적유닛이 하나라도 있는 큐브를 공격하는 AttackActionNode (Splash 포함)
+            if(splashUnits.Any(units => _gameState.self.owner.team.enemyTeams.Contains(units.owner.team)))
             {
-                APUnit apUnit = _gameState._unitPos.FirstOrDefault(p => p.Value == cube).Key;
-                Cube gameStateCube = _gameState._unitPos[apUnit];
-                if (gameStateCube != null && 
-                    _gameState._unitPos[_gameState.self] != gameStateCube && 
-                    _gameState.self.owner.team.enemyTeams.Contains(apUnit.owner.team))
-                    attackNodes.Add(ActionNode_Attack.Create(_gameState, _prevScore, _actionPointPanel, apUnit.owner));
+                attackNodes.Add(ActionNode_Attack.Create(_gameState, _prevScore, _actionPointPanel, cube));
             }
 
 

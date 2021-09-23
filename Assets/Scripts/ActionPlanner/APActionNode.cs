@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -250,18 +250,19 @@ public class ActionNode_Move : APActionNode
 
 public class ActionNode_Attack : APActionNode
 {
-    public Unit _target;
+    public Cube _target;
+    private List<Cube> _splashCubes;
+    private List<APUnit> _splashUnits;
     private bool couldntAttack = false;
     private EventListener el_onUnitDead;
     private UnitCommand _command;
     public override UnitCommand Command { get => _command; set { _command = value; } }
 
-    public static APActionNode Create(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, Unit target)
+    public static APActionNode Create(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, Cube target)
     {
         APActionNode node;
 
-        AttackCommand command;
-        AttackCommand.ForceCreateCommand(target.GetCube, out command);
+        AttackCommand.ForceCreateCommand(target, out AttackCommand command);
 
         // Pool에 남는 Node가 없을 경우 직접 만들어서 Add하고 return
         if (!APNodePool.Instance.GetNode(APNodePool.NodeType.Attack, out node))
@@ -286,7 +287,7 @@ public class ActionNode_Attack : APActionNode
         
     }
 
-    private ActionNode_Attack(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, Unit target)
+    private ActionNode_Attack(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, Cube target)
      : base(prevGameState, prevScore, actionPointPanel)
     {
         // node의 정보 set
@@ -296,16 +297,19 @@ public class ActionNode_Attack : APActionNode
         ChangeState(prevGameState, target);
     }
 
-    private void SetNode(Unit target)
+    private void SetNode(Cube target)
     {
         _target = target;
+        _splashCubes = MapMgr.Instance.GetCubes(_gameState.self.owner.basicAttackSplash, target);
+        _splashUnits = _gameState._unitPos.Where(unitPos => _splashCubes.Contains(unitPos.Value)).Select(unitPos => unitPos.Key).ToList();
     }
 
-    private void ChangeState(APGameState prevGameState, Unit target)
+    private void ChangeState(APGameState prevGameState, Cube target)
     {
+        
         // 가상 gameState 변경
         _gameState.self.actionPoint -= _gameState.self.owner.GetActionSlot(ActionType.Attack).cost;
-        _gameState.Attack(_gameState.APFind(target));
+        _splashUnits.ForEach(unit => _gameState.Attack(unit));
 
         // 바꾼 GameState와 prev를 비교하여 점수계산
         _score += GetScoreToAdd(prevGameState);
@@ -313,7 +317,7 @@ public class ActionNode_Attack : APActionNode
 
     public override void OnWaitEnter()
     {
-        _target.GetCube.SetBlink(0.7f);
+        _splashCubes.ForEach(cube => cube.SetBlink(0.7f));
     }
 
     public override void OnWaitExecute()
@@ -323,7 +327,7 @@ public class ActionNode_Attack : APActionNode
 
     public override void OnWaitExit()
     {
-        _target.GetCube.StopBlink();
+        _splashCubes.ForEach(cube => cube.StopBlink());
     }
 
     public override bool ShouldReplan(List<Unit> units, List<Cube> cubes)
@@ -339,8 +343,9 @@ public class ActionNode_Attack : APActionNode
         // 체력이 많은 적보다
         // 체력이 조금 남은 적을 공격하기 (+ 2000 * (자신의공격력/적의체력))
         int score = (int)(2000 * (
-            _gameState.self.owner.BasicAttackDamageAvg /
-            (float)prevState._units.Find(u => u.owner == _target).health
+            _splashUnits
+            .Select(unit => (float)unit.health)
+            .Aggregate((accum, health) => accum + _gameState.self.owner.BasicAttackDamageAvg / health)
             ));
 
         // 적을 죽이는 plan이면 +2000
