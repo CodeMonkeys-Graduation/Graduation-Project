@@ -1,4 +1,4 @@
-﻿using ObserverPattern;
+using ObserverPattern;
 using RotaryHeart.Lib.SerializableDictionary;
 using System.Collections;
 using System.Collections.Generic;
@@ -42,6 +42,8 @@ public class GameInstance : SingletonBehaviour<GameInstance>
 
     [SerializeField] public ManagerDictionary ManagerPrefabs;
 
+    [SerializeField] public GameDB gameDB;
+
     [SerializeField] public ObserverEvent e_onSceneChanged;
 
     public EventListener el_onSceneChanged = new EventListener();
@@ -63,6 +65,7 @@ public class GameInstance : SingletonBehaviour<GameInstance>
             Instantiate(Mgr.Value);
 
         SceneManager.sceneLoaded += OnSceneLoaded;
+        gameDB.Init();
     }
 
     // Start is called before the first frame update

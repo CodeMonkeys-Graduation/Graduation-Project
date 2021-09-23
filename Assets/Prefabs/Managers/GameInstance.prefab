@@ -81,4 +81,5 @@ MonoBehaviour:
     - {fileID: 7658463604238734188, guid: 391ea2c202655f640ac10e52e1809698, type: 3}
     - {fileID: 7554061240196775122, guid: f665ef834602a1840bbaec2845ff25cf, type: 3}
     - {fileID: 4358413587114634574, guid: 666e45e67e26e7d42a0a92fe2c9d5af2, type: 3}
+  gameDB: {fileID: 11400000, guid: d31cae94e5173b6459a0b4f8ef602a87, type: 2}
   e_onSceneChanged: {fileID: 11400000, guid: ae612a7fab9e72744adb378a19b3d41e, type: 2}
