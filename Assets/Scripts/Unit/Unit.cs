@@ -104,31 +104,33 @@ public class Unit : MonoBehaviour
     [Header ("Set in Editor")]
     [SerializeField] public Animator anim;
     [SerializeField] public Transform body;
-
-    [Header("Stat")]
-    [SerializeField] public int maxHealth;
-    [SerializeField] public int basicAttackDamageMax;
-    [SerializeField] public int basicAttackDamageMin;
-    [SerializeField] public int actionPoints;
-    [SerializeField] public int agility;
-    [SerializeField] public Skill skill;
-    [SerializeField] public List<ActionSlot> actionSlots;
-    [SerializeField] public Sprite icon;
-    [SerializeField] public Team team;
-    [SerializeField] public ItemBag itemBag;
-    [SerializeField] public GameObject projectile;
-
-    [Header("Movement")] //*** 움직임이 자연스러운 수치 기입 ***//
-    [SerializeField] public float moveSpeed;
-    [SerializeField] [Range(0f, 2f)] float jumpTime; // 점프를 실행할 timespan
-    [SerializeField] [Range(0f, 3f)] float jumpHeight; // 점프 높이
-    [SerializeField] [Range(0.1f, 0.3f)] public float cubeHeightToJump; // 유닛이 점프로 큐브를 이동할 큐브높이 최소차이.
+    [SerializeField] public UnitStaticData.UnitType unitType;
 
     [Header ("Set in Runtime")]
+
+    ///////////////////////////////////////////////////////
+    // FROM STAT
+    [HideInInspector] public int maxHealth;
+    [HideInInspector] public int basicAttackDamageMax;
+    [HideInInspector] public int basicAttackDamageMin;
+    [HideInInspector] public int actionPoints;
+    [HideInInspector] public int agility;
+    [HideInInspector] public Skill skill;
+    [HideInInspector] public List<ActionSlot> actionSlots;
+    [HideInInspector] public Sprite icon;
+    [HideInInspector] public Team team;
+    [HideInInspector] public ItemBag itemBag;
+    [HideInInspector] public GameObject projectile;
+    [HideInInspector] public float moveSpeed;
+    [HideInInspector] float jumpTime; // 점프를 실행할 timespan
+    [HideInInspector] float jumpHeight; // 점프 높이
+    [HideInInspector] public float cubeHeightToJump; // 유닛이 점프로 큐브를 이동할 큐브높이 최소차이.
+    ///////////////////////////////////////////////////////
+
     [HideInInspector] public int actionPointsRemain;
     [HideInInspector] public Cube GetCube { get => GetCubeOnPosition(); }
     [HideInInspector] public StateMachine<Unit> stateMachine;
-    [SerializeField] public int currHealth;
+    [HideInInspector] public int currHealth;
     [HideInInspector] public UnitMover mover;
     [HideInInspector] public UnitAttacker attacker;
     [HideInInspector] public UnitSkillCaster skillCaster;
@@ -152,6 +154,7 @@ public class Unit : MonoBehaviour
 
     public virtual void Start()
     {
+        SetStat();
         TraverseChildren((tr) => { if (tr.GetComponent<Renderer>()) renderers.Add(tr.GetComponent<Renderer>()); });
         currHealth = maxHealth;
         ResetActionPoint();
@@ -167,6 +170,24 @@ public class Unit : MonoBehaviour
             Debug.LogError("Action Skill을 갖고 있지만 Skill을 설정하지 않았습니다.");
 
         EventMgr.Instance.onUnitInitEnd.Invoke();
+    }
+
+    private void SetStat()
+    {
+        maxHealth = UnitStaticData.Instance.unitStats[unitType].maxHealth;
+        basicAttackDamageMax = UnitStaticData.Instance.unitStats[unitType].basicAttackDamageMax;
+        basicAttackDamageMin = UnitStaticData.Instance.unitStats[unitType].basicAttackDamageMin;
+        actionPoints = UnitStaticData.Instance.unitStats[unitType].actionPoints;
+        agility = UnitStaticData.Instance.unitStats[unitType].agility;
+        skill = UnitStaticData.Instance.unitStats[unitType].skill;
+        actionSlots = UnitStaticData.Instance.unitStats[unitType].actionSlots;
+        icon = UnitStaticData.Instance.unitStats[unitType].icon;
+        team = UnitStaticData.Instance.unitStats[unitType].team;
+        itemBag = UnitStaticData.Instance.unitStats[unitType].itemBag;
+        moveSpeed = UnitStaticData.Instance.unitStats[unitType].moveSpeed;
+        jumpTime = UnitStaticData.Instance.unitStats[unitType].jumpTime;
+        jumpHeight = UnitStaticData.Instance.unitStats[unitType].jumpHeight;
+        cubeHeightToJump = UnitStaticData.Instance.unitStats[unitType].cubeHeightToJump;
     }
 
     private void SetActionComponents()

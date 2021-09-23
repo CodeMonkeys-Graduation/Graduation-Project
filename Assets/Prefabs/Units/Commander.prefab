@@ -257,6 +257,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 2092830165235362270}
   body: {fileID: 2092830165235657825}
+  unitType: 3
   maxHealth: 20
   basicAttackDamageMax: 9
   basicAttackDamageMin: 6
@@ -276,8 +277,6 @@ MonoBehaviour:
     items: []
   projectile: {fileID: 0}
   moveSpeed: 2
-  jumpTime: 0.5
-  jumpHeight: 0.2
   cubeHeightToJump: 0.2
   actionPointsRemain: 0
   currHealth: 0

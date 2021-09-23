@@ -884,6 +884,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 7001721207053277209}
   body: {fileID: 7001721207053277210}
+  unitType: 5
   maxHealth: 10
   basicAttackDamageMax: 7
   basicAttackDamageMin: 5
@@ -902,11 +903,7 @@ MonoBehaviour:
   itemBag:
     items: []
   projectile: {fileID: 0}
-  attackSFX: {fileID: 8300000, guid: d46323e22e74e46baa241cbf48c85671, type: 3}
-  hitSFX: {fileID: 8300000, guid: 1431552dc9bcc6348a8a00383c5a9625, type: 3}
   moveSpeed: 4
-  jumpTime: 0.3
-  jumpHeight: 0.3
   cubeHeightToJump: 0.2
   actionPointsRemain: 0
   currHealth: 0
