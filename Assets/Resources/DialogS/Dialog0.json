@@ -1,0 +1,13 @@
+{
+	"talkDataSet": [
+		{
+			"name": "FireBat",
+			"dialogue": "I wanna have a friend. Please with me...",
+			"emotion": "Sad"
+		}
+	],
+	"selectionData": {
+		"yes": "Yes, we 're a friend.",
+		"no": "No, I'll fight with you."
+	}
+}

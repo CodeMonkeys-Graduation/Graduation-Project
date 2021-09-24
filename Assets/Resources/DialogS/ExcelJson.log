@@ -1,221 +1,98 @@
 
-Loading: C:\Graduation-Project\excel2json-master\Dialog.xlsx
+Loading: C:\Graduation-Project\excel2json-master\Dialog0.xlsx
 Parse sheet: Sheet1
-Parsing: C:\Graduation-Project\excel2json-master\Dialog.xlsx.$$$\Sheet1.csv
-Closing: C:\Graduation-Project\excel2json-master\Dialog.xlsx
+Parsing: C:\Graduation-Project\excel2json-master\Dialog0.xlsx.$$$\Sheet1.csv
+Closing: C:\Graduation-Project\excel2json-master\Dialog0.xlsx
 ------------------------------------------------------------------------------
-[Dialog.xlsx(Sheet1): ROW 2]
-Found object mark: '#TalkDataSet_0[{}]'
-[Dialog.xlsx(Sheet1): ROW 2]
- Key: Unit at 1
-[Dialog.xlsx(Sheet1): ROW 2]
- Key: Dialogue at 2
-[Dialog.xlsx(Sheet1): ROW 2]
- Key: Emotion at 3
-Parsing Array Object Table...
-------------------------------------------------------------------------------
-[Dialog.xlsx(Sheet1): ROW 6]
-Found object mark: '#SelectionData_0{}'
-[Dialog.xlsx(Sheet1): ROW 6]
- Key: $key at 1
-[Dialog.xlsx(Sheet1): ROW 6]
- Key: $value at 2
-Parsing Simple Table...
-Using key index: 1 value index: 2
-------------------------------------------------------------------------------
-[Dialog.xlsx(Sheet1): ROW 11]
-Found object mark: '#TalkDataSet_0_0[{}]'
-[Dialog.xlsx(Sheet1): ROW 11]
- Key: Unit at 1
-[Dialog.xlsx(Sheet1): ROW 11]
- Key: Dialogue at 2
-[Dialog.xlsx(Sheet1): ROW 11]
- Key: Emotion at 3
-Parsing Array Object Table...
-------------------------------------------------------------------------------
-[Dialog.xlsx(Sheet1): ROW 16]
-Found object mark: '#TalkDataSet_0_1[{}]'
-[Dialog.xlsx(Sheet1): ROW 16]
- Key: Unit at 1
-[Dialog.xlsx(Sheet1): ROW 16]
- Key: Dialogue at 2
-[Dialog.xlsx(Sheet1): ROW 16]
- Key: Emotion at 3
-Parsing Array Object Table...
-------------------------------------------------------------------------------
-[Dialog.xlsx(Sheet1): ROW 21]
-Found object mark: '#SelectionData_0_0{}'
-[Dialog.xlsx(Sheet1): ROW 21]
- Key: $key at 1
-[Dialog.xlsx(Sheet1): ROW 21]
- Key: $value at 2
-Parsing Simple Table...
-Using key index: 1 value index: 2
-------------------------------------------------------------------------------
-[Dialog.xlsx(Sheet1): ROW 26]
-Found object mark: '#TalkDataSet_0_0_0[{}]'
-[Dialog.xlsx(Sheet1): ROW 26]
- Key: Unit at 1
-[Dialog.xlsx(Sheet1): ROW 26]
- Key: Dialogue at 2
-[Dialog.xlsx(Sheet1): ROW 26]
- Key: Emotion at 3
-Parsing Array Object Table...
-------------------------------------------------------------------------------
-[Dialog.xlsx(Sheet1): ROW 31]
-Found object mark: '#TalkDataSet_0_0_1[{}]'
-[Dialog.xlsx(Sheet1): ROW 31]
- Key: Unit at 1
-[Dialog.xlsx(Sheet1): ROW 31]
- Key: Dialogue at 2
-[Dialog.xlsx(Sheet1): ROW 31]
- Key: Emotion at 3
-Parsing Array Object Table...
-
-Loading: C:\Graduation-Project\excel2json-master\sample.xlsx
-Parse sheet: Sheet1
-Parsing: C:\Graduation-Project\excel2json-master\sample.xlsx.$$$\Sheet1.csv
-Parse sheet: Sheet2
-Parsing: C:\Graduation-Project\excel2json-master\sample.xlsx.$$$\Sheet2.csv
-Parse sheet: Sheet3
-Parsing: C:\Graduation-Project\excel2json-master\sample.xlsx.$$$\Sheet3.csv
-Closing: C:\Graduation-Project\excel2json-master\sample.xlsx
-------------------------------------------------------------------------------
-[sample.xlsx(Sheet1): ROW 3]
-Found object mark: '#init{}'
-[sample.xlsx(Sheet1): ROW 3]
- Key: $key at 1
-[sample.xlsx(Sheet1): ROW 3]
- Key: $value at 2
-Parsing Simple Table...
-Using key index: 1 value index: 2
-------------------------------------------------------------------------------
-[sample.xlsx(Sheet1): ROW 12]
-Found object mark: '#buildings{{}}'
-[sample.xlsx(Sheet1): ROW 12]
- Key: $key at 1
-[sample.xlsx(Sheet1): ROW 12]
- Key: color at 2
-[sample.xlsx(Sheet1): ROW 12]
- Key: width at 3
-[sample.xlsx(Sheet1): ROW 12]
- Key: height at 4
-Parsing Object Object Table...
-Using key index: 1
-------------------------------------------------------------------------------
-[sample.xlsx(Sheet1): ROW 20]
-Found object mark: '#reqcoins{[]}'
-[sample.xlsx(Sheet1): ROW 20]
- Key: barrack at 1
-[sample.xlsx(Sheet1): ROW 20]
- Key: mine at 2
-[sample.xlsx(Sheet1): ROW 20]
- Key: gas at 3
-Parsing Object Array Table...
-------------------------------------------------------------------------------
-[sample.xlsx(Sheet1): ROW 30]
-Found object mark: '#shop[{}]'
-[sample.xlsx(Sheet1): ROW 30]
+[Dialog0.xlsx(Sheet1): ROW 2]
+Found object mark: '#talkDataSet[{}]'
+[Dialog0.xlsx(Sheet1): ROW 2]
  Key: name at 1
-[sample.xlsx(Sheet1): ROW 30]
- Key: price at 2
-[sample.xlsx(Sheet1): ROW 30]
- Key: req_level at 3
-[sample.xlsx(Sheet1): ROW 30]
- Key: category at 4
-[sample.xlsx(Sheet1): ROW 30]
- Key: desc at 5
+[Dialog0.xlsx(Sheet1): ROW 2]
+ Key: dialogue at 2
+[Dialog0.xlsx(Sheet1): ROW 2]
+ Key: emotion at 3
 Parsing Array Object Table...
+ddddddd[object Object]
 ------------------------------------------------------------------------------
-[sample.xlsx(Sheet1): ROW 38]
-Found object mark: '#inventory[{}]'
-[sample.xlsx(Sheet1): ROW 38]
- Key: type at 1
-[sample.xlsx(Sheet1): ROW 38]
- Key: attrib[] at 2
-[sample.xlsx(Sheet1): ROW 38]
- Key: dur at 5
-Parsing Array Object Table...
-------------------------------------------------------------------------------
-[sample.xlsx(Sheet1): ROW 44]
-Found object mark: '#friends{}'
-[sample.xlsx(Sheet1): ROW 44]
+[Dialog0.xlsx(Sheet1): ROW 6]
+Found object mark: '#selectionData{}'
+[Dialog0.xlsx(Sheet1): ROW 6]
  Key: $key at 1
-[sample.xlsx(Sheet1): ROW 44]
- Key: $value[] at 2
+[Dialog0.xlsx(Sheet1): ROW 6]
+ Key: $value at 2
 Parsing Simple Table...
 Using key index: 1 value index: 2
 
-Loading: C:\Graduation-Project\excel2json-master\sample_ko.xlsx
+Loading: C:\Graduation-Project\excel2json-master\Dialog00.xlsx
 Parse sheet: Sheet1
-Parsing: C:\Graduation-Project\excel2json-master\sample_ko.xlsx.$$$\Sheet1.csv
-Parse sheet: Sheet2
-Parsing: C:\Graduation-Project\excel2json-master\sample_ko.xlsx.$$$\Sheet2.csv
-Parse sheet: Sheet3
-Parsing: C:\Graduation-Project\excel2json-master\sample_ko.xlsx.$$$\Sheet3.csv
-Closing: C:\Graduation-Project\excel2json-master\sample_ko.xlsx
+Parsing: C:\Graduation-Project\excel2json-master\Dialog00.xlsx.$$$\Sheet1.csv
+Closing: C:\Graduation-Project\excel2json-master\Dialog00.xlsx
 ------------------------------------------------------------------------------
-[sample_ko.xlsx(Sheet1): ROW 3]
-Found object mark: '#init{}'
-[sample_ko.xlsx(Sheet1): ROW 3]
+[Dialog00.xlsx(Sheet1): ROW 2]
+Found object mark: '#talkDataSet[{}]'
+[Dialog00.xlsx(Sheet1): ROW 2]
+ Key: name at 1
+[Dialog00.xlsx(Sheet1): ROW 2]
+ Key: dialogue at 2
+[Dialog00.xlsx(Sheet1): ROW 2]
+ Key: emotion at 3
+Parsing Array Object Table...
+ddddddd[object Object],[object Object]
+------------------------------------------------------------------------------
+[Dialog00.xlsx(Sheet1): ROW 7]
+Found object mark: '#selectionData{}'
+[Dialog00.xlsx(Sheet1): ROW 7]
  Key: $key at 1
-[sample_ko.xlsx(Sheet1): ROW 3]
+[Dialog00.xlsx(Sheet1): ROW 7]
  Key: $value at 2
 Parsing Simple Table...
 Using key index: 1 value index: 2
+
+Loading: C:\Graduation-Project\excel2json-master\Dialog000.xlsx
+Parse sheet: Sheet1
+Parsing: C:\Graduation-Project\excel2json-master\Dialog000.xlsx.$$$\Sheet1.csv
+Closing: C:\Graduation-Project\excel2json-master\Dialog000.xlsx
 ------------------------------------------------------------------------------
-[sample_ko.xlsx(Sheet1): ROW 12]
-Found object mark: '#buildings{{}}'
-[sample_ko.xlsx(Sheet1): ROW 12]
- Key: $key at 1
-[sample_ko.xlsx(Sheet1): ROW 12]
- Key: color at 2
-[sample_ko.xlsx(Sheet1): ROW 12]
- Key: width at 3
-[sample_ko.xlsx(Sheet1): ROW 12]
- Key: height at 4
-Parsing Object Object Table...
-Using key index: 1
-------------------------------------------------------------------------------
-[sample_ko.xlsx(Sheet1): ROW 20]
-Found object mark: '#reqcoins{[]}'
-[sample_ko.xlsx(Sheet1): ROW 20]
- Key: barrack at 1
-[sample_ko.xlsx(Sheet1): ROW 20]
- Key: mine at 2
-[sample_ko.xlsx(Sheet1): ROW 20]
- Key: gas at 3
-Parsing Object Array Table...
-------------------------------------------------------------------------------
-[sample_ko.xlsx(Sheet1): ROW 30]
-Found object mark: '#shop[{}]'
-[sample_ko.xlsx(Sheet1): ROW 30]
+[Dialog000.xlsx(Sheet1): ROW 2]
+Found object mark: '#talkDataSet[{}]'
+[Dialog000.xlsx(Sheet1): ROW 2]
  Key: name at 1
-[sample_ko.xlsx(Sheet1): ROW 30]
- Key: price at 2
-[sample_ko.xlsx(Sheet1): ROW 30]
- Key: req_level at 3
-[sample_ko.xlsx(Sheet1): ROW 30]
- Key: category at 4
-[sample_ko.xlsx(Sheet1): ROW 30]
- Key: desc at 5
+[Dialog000.xlsx(Sheet1): ROW 2]
+ Key: dialogue at 2
+[Dialog000.xlsx(Sheet1): ROW 2]
+ Key: emotion at 3
 Parsing Array Object Table...
+ddddddd[object Object],[object Object]
+
+Loading: C:\Graduation-Project\excel2json-master\Dialog001.xlsx
+Parse sheet: Sheet1
+Parsing: C:\Graduation-Project\excel2json-master\Dialog001.xlsx.$$$\Sheet1.csv
+Closing: C:\Graduation-Project\excel2json-master\Dialog001.xlsx
 ------------------------------------------------------------------------------
-[sample_ko.xlsx(Sheet1): ROW 38]
-Found object mark: '#inventory[{}]'
-[sample_ko.xlsx(Sheet1): ROW 38]
- Key: type at 1
-[sample_ko.xlsx(Sheet1): ROW 38]
- Key: attrib[] at 2
-[sample_ko.xlsx(Sheet1): ROW 38]
- Key: dur at 5
+[Dialog001.xlsx(Sheet1): ROW 2]
+Found object mark: '#talkDataSet[{}]'
+[Dialog001.xlsx(Sheet1): ROW 2]
+ Key: name at 1
+[Dialog001.xlsx(Sheet1): ROW 2]
+ Key: dialogue at 2
+[Dialog001.xlsx(Sheet1): ROW 2]
+ Key: emotion at 3
 Parsing Array Object Table...
+ddddddd[object Object]
+
+Loading: C:\Graduation-Project\excel2json-master\Dialog01.xlsx
+Parse sheet: Sheet1
+Parsing: C:\Graduation-Project\excel2json-master\Dialog01.xlsx.$$$\Sheet1.csv
+Closing: C:\Graduation-Project\excel2json-master\Dialog01.xlsx
 ------------------------------------------------------------------------------
-[sample_ko.xlsx(Sheet1): ROW 44]
-Found object mark: '#friends{}'
-[sample_ko.xlsx(Sheet1): ROW 44]
- Key: $key at 1
-[sample_ko.xlsx(Sheet1): ROW 44]
- Key: $value[] at 2
-Parsing Simple Table...
-Using key index: 1 value index: 2
+[Dialog01.xlsx(Sheet1): ROW 2]
+Found object mark: '#talkDataSet[{}]'
+[Dialog01.xlsx(Sheet1): ROW 2]
+ Key: name at 1
+[Dialog01.xlsx(Sheet1): ROW 2]
+ Key: dialogue at 2
+[Dialog01.xlsx(Sheet1): ROW 2]
+ Key: emotion at 3
+Parsing Array Object Table...
+ddddddd[object Object],[object Object]

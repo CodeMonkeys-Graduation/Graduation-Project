@@ -1,0 +1,14 @@
+{
+	"talkDataSet": [
+		{
+			"name": "FireBat",
+			"dialogue": "That's too bad.",
+			"emotion": "Glad"
+		},
+		{
+			"name": "FireBat",
+			"dialogue": "Come on...",
+			"emotion": "Normal"
+		}
+	]
+}
