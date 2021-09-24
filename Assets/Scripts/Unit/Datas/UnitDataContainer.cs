@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,8 +9,17 @@ public class UnitDataContainer : ScriptableObject
 {
     public List<UnitData> unitDataContainer = new List<UnitData>();
 
-    public Sprite GetSprite(int id, int emotion) => unitDataContainer.Find((u) => u.id == id).illustArr[emotion];
-    public string GetName(int id) => unitDataContainer.Find((u) => u.id == id).name;
+    public Sprite GetSprite(string name, int emotion) => unitDataContainer.Find((u) => u.name == name)?.illustArr[emotion];
+    public int GetEmotion(string emotion)
+    {
+        switch (emotion)
+        {
+            case "Sad": return 1;
+            case "Glad": return 2;
+            case "Upset": return 3;
+            default: return 0;
+        }
+    }
 }
 
 [System.Serializable]
@@ -19,12 +28,5 @@ public class UnitData
     public int id;
     public string name;
     public Sprite[] illustArr;
-
-    public UnitData()
-    {
-        id = 0;
-        name = null;
-        illustArr = null;
-    }
 
 }

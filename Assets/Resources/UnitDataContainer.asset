@@ -19,3 +19,9 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 695bf1a0f9b004b57b57a6b3f78e4322, type: 3}
     - {fileID: 21300000, guid: f802ceda35f5c4662a240c6ceef56a64, type: 3}
     - {fileID: 21300000, guid: ee6c8f37bd0f143a89513cadc662c0b0, type: 3}
+  - id: 1
+    name: FireBat
+    illustArr:
+    - {fileID: 21300000, guid: 695bf1a0f9b004b57b57a6b3f78e4322, type: 3}
+    - {fileID: 21300000, guid: f802ceda35f5c4662a240c6ceef56a64, type: 3}
+    - {fileID: 21300000, guid: ee6c8f37bd0f143a89513cadc662c0b0, type: 3}

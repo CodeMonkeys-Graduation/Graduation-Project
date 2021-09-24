@@ -777,6 +777,7 @@ function compileArrayObjectTable(sheet, row, keyIndex) {
 		value.push(obj);
 		row++;
 	}
+	log("ddddddd" + value);
 	return value;
 }
 
@@ -803,6 +804,7 @@ function compileObjectArrayTable(sheet, row, keyIndex) {
 		}
 		value[subkey] = obj;
 	}
+	log("ddddddd" + value);
 	return value;
 }
 

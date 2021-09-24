@@ -1,13 +1,11 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class DialogController : MonoBehaviour
+public class DialogController : SingletonBehaviour<DialogController>
 {
-    UnitDataContainer unitDataContainer;
-
     [Header("Set in Editor")]
     [SerializeField] public Animator dialogAnimator;
     [SerializeField] public DialogEffect dialogEffect;
@@ -17,13 +15,13 @@ public class DialogController : MonoBehaviour
     [SerializeField] Image illust;
     [SerializeField] TextMeshProUGUI npcname;
     [SerializeField] TextMeshProUGUI context;
-    [SerializeField] int stageProgress;
-    [SerializeField] int talkDataSize;
 
-    void Awake()
+    [SerializeField] public int stageProgress;
+
+    private void Start()
     {
+        DialogDataMgr.InitDialogData();
         dialogAnimator.runtimeAnimatorController  = Resources.Load("DialogSystem-" + stageProgress) as RuntimeAnimatorController;
-        unitDataContainer = UnitDataMgr.unitDataContainer;
         InitDialogUI();
     }
 
@@ -36,21 +34,21 @@ public class DialogController : MonoBehaviour
     {
         illustAnim.SetTrigger("isTalk");
 
-        illust.sprite = unitDataContainer.GetSprite(talkData.id, talkData.emotion);
-        npcname.text = unitDataContainer.GetName(talkData.id);
-        dialogEffect.SetMsg(this.context, talkData.context);
+        int emotion = UnitDataMgr.unitDataContainer.GetEmotion(talkData.emotion);
+
+        illust.sprite = UnitDataMgr.unitDataContainer.GetSprite(talkData.name, emotion);
+        npcname.text = talkData.name;
+        dialogEffect.SetMsg(this.context, talkData.dialogue);
     }
 
     public void SetSelection(SelectionData selectionData)
     {
-        dialogPopup.SetPopup(dialogAnimator, selectionData);
+        dialogPopup.SetPopup(selectionData);
     }
 
     public void OnClickNext()
     {
         if (dialogPopup.gameObject.activeSelf) return;
-
-        // 여기서 애니메이터 exit 해야함
 
         if (dialogEffect.isTyping)
         {
@@ -58,15 +56,9 @@ public class DialogController : MonoBehaviour
         }
         else if(dialogEffect.isEnded)
         {
-            dialogAnimator.SetTrigger("Next");
+            dialogAnimator.SetBool("isTalkEnd", true);
         }
-        // 마지막 대화라면 씬 이동
-    }
-
-    public void OnClickSkip()
-    {
-        // anystate를 이용해 종료
-        // 마지막 대화라면 씬 이동
+        
     }
 
 }
