@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1573bf0f78f2fdc48b3f155cfe3765b3, type: 3}
-  m_Name: Maze
+  m_Name: EvilMaze
   m_EditorClassIdentifier: 
   maxHealth: 7
   basicAttackDamageMax: 3

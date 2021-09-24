@@ -356,3 +356,100 @@ public class ActionNode_Attack : APActionNode
     }
 }
 
+public class ActionNode_Skill : APActionNode
+{
+    public Cube _target;
+    private List<Cube> _splashCubes;
+    private List<APUnit> _splashUnits;
+    private bool couldntAttack = false;
+    private EventListener el_onUnitDead;
+    private UnitCommand _command;
+    public override UnitCommand Command { get => _command; set { _command = value; } }
+
+    public static APActionNode Create(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, Cube target)
+    {
+        APActionNode node;
+
+        SkillCommand.ForceCreateCommand(target, out SkillCommand command);
+
+        // Pool에 남는 Node가 없을 경우 직접 만들어서 Add하고 return
+        if (!APNodePool.Instance.GetNode(APNodePool.NodeType.Skill, out node))
+        {
+            node = new ActionNode_Skill(prevGameState, prevScore, actionPointPanel, target);
+            APNodePool.Instance.AddNode(node);
+            APNodePool.Instance.GetNode(APNodePool.NodeType.Skill, out node);
+            node.Command = command;
+
+            return node;
+        }
+        else
+        {
+            ActionNode_Skill skillNode = node as ActionNode_Skill;
+            skillNode.SetNode(prevGameState, prevScore, actionPointPanel);
+            skillNode.SetNode(target);
+            skillNode.ChangeState(prevGameState, target);
+            skillNode.Command = command;
+
+            return skillNode;
+        }
+
+    }
+
+    private ActionNode_Skill(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, Cube target)
+     : base(prevGameState, prevScore, actionPointPanel)
+    {
+        // node의 정보 set
+        SetNode(target);
+
+        // 정보를 바탕으로 preform한후 예상되는 GameState로 Change
+        ChangeState(prevGameState, target);
+    }
+
+    private void SetNode(Cube target)
+    {
+        _target = target;
+        _splashCubes = MapMgr.Instance.GetCubes(_gameState.self.owner.basicAttackSplash, target);
+        _splashUnits = _gameState._unitPos.Where(unitPos => _splashCubes.Contains(unitPos.Value)).Select(unitPos => unitPos.Key).ToList();
+    }
+
+    private void ChangeState(APGameState prevGameState, Cube target)
+    {
+        // 가상 gameState 변경
+        _gameState.self.actionPoint -= _gameState.self.owner.GetActionSlot(ActionType.Skill).cost;
+        _splashUnits.ForEach(unit => _gameState.self.owner.skill.SimulateSkillCasting(unit));
+
+        // 바꾼 GameState와 prev를 비교하여 점수계산
+        _score += GetScoreToAdd(prevGameState);
+    }
+
+    public override void OnWaitEnter()
+    {
+        _splashCubes.ForEach(cube => cube.SetBlink(0.7f));
+    }
+
+    public override void OnWaitExecute()
+    {
+        _actionPointPanel.SetPanel(new UIActionPoint(_gameState.self.owner.actionPointsRemain));
+    }
+
+    public override void OnWaitExit()
+    {
+        _splashCubes.ForEach(cube => cube.StopBlink());
+    }
+
+    public override bool ShouldReplan(List<Unit> units, List<Cube> cubes)
+    {
+        if (couldntAttack)
+            return true;
+        else
+            return base.ShouldReplan(units, cubes);
+    }
+
+    public override int GetScoreToAdd(APGameState prevState)
+    {
+        List<APUnit> prevSplashUnits = prevState._units.Where(prevUnit => _splashUnits.Any(unit => unit.owner == prevUnit.owner)).ToList();
+        int score = _gameState.self.owner.skill.GetScoreToAdd(prevSplashUnits, prevState, _gameState);
+
+        return score;
+    }
+}

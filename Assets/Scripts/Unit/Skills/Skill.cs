@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,14 @@ public abstract class Skill : ScriptableObject
     [SerializeField] public ParticleSystem skillVFX;
     [SerializeField] public int amountMin; // damage or heal amount anything
     [SerializeField] public int amountMax;
+
+    public int amountAvg { 
+        get 
+        { 
+            return (amountMin + amountMax) / 2; 
+        } 
+    }
+
     [SerializeField] public AudioMgr.AudioClipType skillSFX;
     public readonly Range skillRange;
     public readonly Range skillSplash;
@@ -17,8 +26,6 @@ public abstract class Skill : ScriptableObject
         this.skillRange = new Range(skillRange);
         this.skillSplash = new Range(skillSplash);
     }
-
-    public int amountAvg { get => (amountMax + amountMin) / 2; }
 
     /// <summary>
     /// UnitSkill Enter 에서 호출됩니다. 
@@ -33,5 +40,19 @@ public abstract class Skill : ScriptableObject
     /// </summary>
     public virtual void OnSkillAnimation(Unit caster)
     {
+    }
+
+    public virtual int GetScoreIfTheseUnitsSplashed(Team ownerTeam, List<APUnit> splashedUnits)
+    {
+        return 0;
+    }
+
+    public virtual void SimulateSkillCasting(APUnit unit)
+    {
+    }
+
+    public virtual int GetScoreToAdd(List<APUnit> splashUnits, APGameState prevState, APGameState gameState)
+    {
+        return 0;
     }
 }
