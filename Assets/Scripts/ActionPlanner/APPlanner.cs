@@ -27,8 +27,19 @@ public class MovePlanner : APPlanner
         _actionPointPanel = actionPointPanel;
     }
 
-    public override bool IsAvailable(APActionNode prevNode) 
-        => prevNode.GetType() != typeof(ActionNode_Move) && _gameState.self.actionPoint > 0;
+    public override bool IsAvailable(APActionNode prevNode)
+    {
+        if (!_gameState.self.owner.HasAction(ActionType.Attack))
+            return false;
+
+        if (prevNode.GetType() == typeof(ActionNode_Move))
+            return false;
+
+        if (_gameState.self.actionPoint < _gameState.self.owner.GetActionSlot(ActionType.Move).cost)
+            return false;
+
+        return true;
+    }
 
     public override void Simulate(MonoBehaviour coroutineOwner, Action OnSimulationCompleted, out List<APActionNode> moveNodes)
     {
@@ -75,6 +86,9 @@ public class AttackPlanner : APPlanner
 
     public override bool IsAvailable(APActionNode prevNode)
     {
+        if (!_gameState.self.owner.HasAction(ActionType.Attack))
+            return false;
+
         if (_gameState.self.actionPoint < _gameState.self.owner.GetActionSlot(ActionType.Attack).cost)
             return false;
         else
@@ -121,6 +135,68 @@ public class AttackPlanner : APPlanner
                 attackNodes.Add(ActionNode_Attack.Create(_gameState, _prevScore, _actionPointPanel, cube));
             }
 
+
+            yield return null;
+        }
+
+        OnSimulationCompleted();
+    }
+}
+
+public class SkillPlanner : APPlanner
+{
+    public SkillPlanner(APGameState gameState, int prevScore, ActionPointPanel actionPointPanel)
+         : base(gameState, prevScore, actionPointPanel)
+    {
+        _gameState = gameState.Clone();
+        _prevScore = prevScore;
+        _actionPointPanel = actionPointPanel;
+    }
+
+    public override bool IsAvailable(APActionNode prevNode)
+    {
+        if (!_gameState.self.owner.HasAction(ActionType.Skill))
+            return false;
+
+        if (_gameState.self.actionPoint < _gameState.self.owner.GetActionSlot(ActionType.Skill).cost)
+            return false;
+        else
+            return true;
+    }
+
+    public override void Simulate(MonoBehaviour coroutineOwner, Action OnSimulationCompleted, out List<APActionNode> skillNodes)
+    {
+        skillNodes = new List<APActionNode>();
+        coroutineOwner.StartCoroutine(Simulate_Coroutine(OnSimulationCompleted, skillNodes));
+    }
+
+    private IEnumerator Simulate_Coroutine(Action OnSimulationCompleted, List<APActionNode> skillNodes)
+    {
+        // 액션포인트가 충분한지부터 체크
+        if (_gameState.self.actionPoint < _gameState.self.owner.GetActionSlot(ActionType.Skill).cost)
+        {
+            OnSimulationCompleted();
+            yield break;
+        }
+
+        // 현실 큐브로 스킬 범위를 먼저 Get
+        Cube centerCube = _gameState._unitPos[_gameState.self];
+        List<Cube> cubesInSkillRange = MapMgr.Instance.GetCubes(
+            _gameState.self.owner.skill.skillRange,
+            centerCube
+            );
+
+        // 스킬 가능한 모든 곳으로 캐스팅하는 모든 경우의 수를 순회
+        foreach (Cube cube in cubesInSkillRange)
+        {
+            List<Cube> splashCubes = MapMgr.Instance.GetCubes(_gameState.self.owner.skill.skillSplash, cube);
+            List<APUnit> splashUnits = _gameState._unitPos.Where(unitPos => splashCubes.Contains(unitPos.Value)).Select(unitPos => unitPos.Key).ToList();
+
+            // cubesInSkillRange안의 스코어가 음수가 아닌 액션의 경우의 수를 전부 생성
+            if (_gameState.self.owner.skill.GetScoreIfTheseUnitsSplashed(_gameState.self.owner.team, splashUnits) > 0)
+            {
+                skillNodes.Add(ActionNode_Skill.Create(_gameState, _prevScore, _actionPointPanel, cube));
+            }
 
             yield return null;
         }

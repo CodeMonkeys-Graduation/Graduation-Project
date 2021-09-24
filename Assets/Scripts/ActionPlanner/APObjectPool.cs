@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -63,16 +63,17 @@ public class APNodePool
         {
             pool[NodeType.Attack].Add(newNode, false);
         }
+        else if (newNode is ActionNode_Skill)
+        {
+            pool[NodeType.Skill].Add(newNode, false);
+        }
 
         // TODO
         //else if (newNode is ActionNode_Item)
         //{
-            //pool[NodeType.Item].Add(newNode, false);
+        //pool[NodeType.Item].Add(newNode, false);
         //}
-        //else if (newNode is ActionNode_Skill)
-        //{
-            //pool[NodeType.Skill].Add(newNode, false);  
-        //}
+
 
     }
 

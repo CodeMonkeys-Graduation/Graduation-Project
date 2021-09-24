@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,12 +78,31 @@ public class ActionPlanner : SingletonBehaviour<ActionPlanner>
             }
 
 
-            //************** ITEM NODES **************// 
-
-
-
-
             //************** SKILL NODES **************// 
+            SkillPlanner skillPlanner = new SkillPlanner(parentNode._gameState, parentNode._score, actionPointPanel);
+            if (skillPlanner.IsAvailable(parentNode))
+            {
+                // 시뮬레이션
+                List<APActionNode> skillNodes;
+                bool simulCompleted = false;
+                skillPlanner.Simulate(this, () => simulCompleted = true, out skillNodes);
+
+                // // // // // // // // // // // // // // // // // // // // // // // //
+                while (!simulCompleted) yield return null;
+                // // // // // // // // // // // // // // // // // // // // // // // //
+
+                // 부모노드 세팅 및 인큐
+                foreach (var node in skillNodes)
+                {
+                    node._parent = parentNode;
+                    childCount++;
+                    queue.Enqueue(node);
+                }
+            }
+
+
+
+            //************** ITEM NODES **************// 
 
 
 
