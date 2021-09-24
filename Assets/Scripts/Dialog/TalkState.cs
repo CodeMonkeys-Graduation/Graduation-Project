@@ -22,14 +22,14 @@ public class TalkState : StateMachineBehaviour
     
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(animator.GetBool("isTalkEnd"))
+        if(animator.GetBool("isTalkEnd")) // 현재 토크가 종료되었다면?
         {
-            if (talkProgress < talkDataSet.Count)
+            if (talkProgress < talkDataSet.Count) // 토크셋의 모든 토크가 사용되지 않았다면
             {
-                DialogController.Instance.SetTalk(talkDataSet[talkProgress++]);
-                animator.SetBool("isTalkEnd", false);
+                DialogController.Instance.SetTalk(talkDataSet[talkProgress++]); // 다음 토크를 세팅하고
+                animator.SetBool("isTalkEnd", false); // 토크가 종료되지 않음
             }
-            else animator.SetTrigger("Next");
+            else animator.SetTrigger("Next"); // 다음 스테이트
         }
     }
 

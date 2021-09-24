@@ -1,27 +1,26 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
 public class TimelineController : MonoBehaviour
 {
-    public static TimelineController instance;
-    public PlayableDirector pd;
-    [SerializeField] int timelineIdx;
+    public PlayableDirector pd; // 타임라인을 실행시키고, 타임라인으로 
+    public DialogController dc;
 
-    void Awake()
+    public void TimelineEnd()
     {
-        instance = this;
-        
-    }
+        Debug.Log("애니메이션 종료, 다이얼로그 시작");
 
-    public void TimelineEnded()
-    {
-        Debug.Log("타임라인이 마무리되었습니다. Dialog가 시작됩니다.");
+        //pd.gameObject.SetActive(false);
+        dc.gameObject.SetActive(true);
     }
     
     public void TimelineStart()
     {
-        Debug.Log("마지막 대화가 종료되어 새 타임라인이 시작됩니다.");
+        Debug.Log("다이얼로그 종료, 애니메이션 실행");
+
+        dc.gameObject.SetActive(false);
+        pd.Play();
     }
 }
