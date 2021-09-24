@@ -52,10 +52,10 @@ public class UIBattleState : UIControlState
     #endregion
 
     Canvas _battleCanvasPrefab;
-    List<Battle_UI> _uiprefabs; // ¾ê´Â ÇöÀç ÇÁ¸®ÆÕ¸®½ºÆ®ÀÓ
+    List<Battle_UI> _uiprefabs; // ì–˜ëŠ” í˜„ì¬ í”„ë¦¬íŒ¹ë¦¬ìŠ¤íŠ¸ì„
 
     Canvas _battleCanvas;
-    List<Battle_UI> _uiList; // ¾ê°¡ »ı¼ºµÈ ¾ÆÀÌµé
+    List<Battle_UI> _uiList; // ì–˜ê°€ ìƒì„±ëœ ì•„ì´ë“¤
     BattleMgr _battleMgr;
     TurnMgr _turnMgr;
 
@@ -70,28 +70,28 @@ public class UIBattleState : UIControlState
 
     public override void Enter()
     {
-        // canvas »ı¼º
+        // canvas ìƒì„±
         _battleCanvas = MonoBehaviour.Instantiate(_battleCanvasPrefab);
 
         foreach (Battle_UI u in _uiprefabs)
         {
             _uiList.Add(MonoBehaviour.Instantiate(u, _battleCanvas.transform));
         }
-        // uiµé ¸ğµÎ »ı¼º
-        Debug.Log("¹èÆ² ½ºÅ×ÀÌÆ®¿¡ ÁøÀÔÇÔ");
+        // uië“¤ ëª¨ë‘ ìƒì„±
+        Debug.Log("ë°°í‹€ ìŠ¤í…Œì´íŠ¸ì— ì§„ì…í•¨");
 
         #region RegisterEvent
-        EventMgr.Instance.onGameInitEnter.Register(el_GameInitEnter, (param) => SetUIGameInit(true)); // ÃÊ±âÈ­
+        EventMgr.Instance.onGameInitEnter.Register(el_GameInitEnter, (param) => SetUIGameInit(true)); // ì´ˆê¸°í™”
         EventMgr.Instance.onGameInitExit.Register(el_GameInitExit, (param) => SetUIGameInit(false));
-        EventMgr.Instance.onGamePositioningEnter.Register(el_GamePositioningEnter, (param) => SetUIGamePositioning(true, param)); // À¯´Ö ¼±ÅÃÃ¢ ¶ç¿ì±â
-        EventMgr.Instance.onGamePositioningExecute.Register(el_GamePositioningExecute, SetUIGamePosition); // À¯´Ö ¹èÄ¡
-        EventMgr.Instance.onGamePositioningExit.Register(el_GamePositioningExit, (param) => SetUIGamePositioning(false, param)); // À¯´Ö ¼±ÅÃÃ¢ ²ô±â
+        EventMgr.Instance.onGamePositioningEnter.Register(el_GamePositioningEnter, (param) => SetUIGamePositioning(true, param)); // ìœ ë‹› ì„ íƒì°½ ë„ìš°ê¸°
+        EventMgr.Instance.onGamePositioningExecute.Register(el_GamePositioningExecute, SetUIGamePosition); // ìœ ë‹› ë°°ì¹˜
+        EventMgr.Instance.onGamePositioningExit.Register(el_GamePositioningExit, (param) => SetUIGamePositioning(false, param)); // ìœ ë‹› ì„ íƒì°½ ë„ê¸°
         
-        EventMgr.Instance.onGameBattleEnter.Register(el_GameBattleEnter, (param) => { }); // ¹èÆ² ½ÃÀÛ
+        EventMgr.Instance.onGameBattleEnter.Register(el_GameBattleEnter, (param) => { }); // ë°°í‹€ ì‹œì‘
         EventMgr.Instance.onGameBattleExit.Register(el_GameBattleExit, (param) => { });
-        EventMgr.Instance.onGameVictoryEnter.Register(el_GameVictoryEnter, (param) => { }); // ¹èÆ² ½Â¸®
+        EventMgr.Instance.onGameVictoryEnter.Register(el_GameVictoryEnter, (param) => { }); // ë°°í‹€ ìŠ¹ë¦¬
         EventMgr.Instance.onGameVictoryExit.Register(el_GameVictoryEnter, (param) => { });
-        EventMgr.Instance.onGameDefeatEnter.Register(el_GameDefeatExit, (param) => { }); // ¹èÆ² ÆĞ¹è
+        EventMgr.Instance.onGameDefeatEnter.Register(el_GameDefeatExit, (param) => { }); // ë°°í‹€ íŒ¨ë°°
         EventMgr.Instance.onGameDefeatExit.Register(el_GameDefeatExit, (param) => { });
 
         EventMgr.Instance.onTurnActionEnter.Register(el_TurnActionEnter, (param) => SetUITurnAction(true));
@@ -108,7 +108,7 @@ public class UIBattleState : UIControlState
         EventMgr.Instance.onTurnPlan.Register(el_TurnPlan, SetUIPlan);
         #endregion
 
-        EventMgr.Instance.onUICompleted.Invoke(); // UI »ı¼ºÀÌ ¿Ï·áµÇ¾úÀ½, ÀÌÁ¦ ÀÌº¥Æ®¸¦ ¹Ş°ÚÀ½
+        EventMgr.Instance.onUICompleted.Invoke(); // UI ìƒì„±ì´ ì™„ë£Œë˜ì—ˆìŒ, ì´ì œ ì´ë²¤íŠ¸ë¥¼ ë°›ê² ìŒ
     }
 
     public override void Execute()
@@ -118,7 +118,8 @@ public class UIBattleState : UIControlState
 
     public override void Exit()
     {
-        Debug.Log("¹èÆ² ½ºÅ×ÀÌÆ®¿¡¼­ ³ª°¨");
+        MonoBehaviour.Destroy(_battleCanvas);
+        Debug.Log("ë°°í‹€ ìŠ¤í…Œì´íŠ¸ì—ì„œ ë‚˜ê°");
     }
 
     #region SetUIByGames
@@ -162,7 +163,7 @@ public class UIBattleState : UIControlState
     void SetUIGamePosition(EventParam param)
     {
         List<Unit> _units = new List<Unit>();
-        _units.Add(((UnitParam)param)?._unit); // ¿©±â¼­ ÅÍÁ³À½
+        _units.Add(((UnitParam)param)?._unit); // ì—¬ê¸°ì„œ í„°ì¡ŒìŒ
         _uiList[(int)BattleUIType.Summon].SetPanel(new UISummon(_units, false));
     }
 
@@ -296,7 +297,7 @@ public class UIBattleState : UIControlState
         }
     }
 
-    void OnClickItemSlotBtn(Item item) // itemÀº ¾îµğ¼­ ¹ŞÁö?
+    void OnClickItemSlotBtn(Item item) // itemì€ ì–´ë””ì„œ ë°›ì§€?
     {
         ItemPanel ip = (ItemPanel)_uiList[(int)BattleUIType.Item];
 

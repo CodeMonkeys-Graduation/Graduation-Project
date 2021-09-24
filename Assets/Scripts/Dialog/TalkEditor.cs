@@ -15,7 +15,6 @@ public class TalkEditor : Editor
         if (GUILayout.Button("This State's TalkData"))
         {
             selected.talkDataSet = DialogDataMgr.GetTalkDataForEditing(selected.talkDataNumber);
-            Debug.Log(selected.talkDataSet[0].dialogue);
         }
     }
 }
