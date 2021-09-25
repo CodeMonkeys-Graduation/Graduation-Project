@@ -84,7 +84,25 @@ public class GameInstance : SingletonBehaviour<GameInstance>
         Debug.Log($"OnSceneLoaded");
         Debug.Assert(SceneMgr.sceneMap.TryGetValue(scene.name, out _));
 
-        List<ManagerBehaviour> managersToSpawn = new List<ManagerBehaviour>();
+        // Coroutine으로 하는 이유는 모든 매니저를 파괴하고 
+        // 라이프 사이클인 매니저만 다시 스폰해야 하는데,
+        // 이를 한 프레임에 하면 모든 매니저를 파괴하는 것으로 마킹하면 Instaniate이 안먹힌다.
+        // 그래서 모든 매니저를 파괴하고 한 프레임을 쉬어줘야하여 코루틴으로 한다.
+        StartCoroutine(UpdateAllManagersInTwoFrames(scene));
+    }
+
+    private IEnumerator UpdateAllManagersInTwoFrames(Scene scene)
+    {
+        foreach (var mgr in ManagerPrefabs)
+        {
+            if (mgr.Value.GetInstance() != null)
+            {
+                Destroy(mgr.Value.GetInstance().gameObject);
+            }
+        }
+
+        // 한 프레임을 쉬어줘야 매니저들이 파괴됩니다.
+        yield return null;
 
         foreach (var mgr in ManagerPrefabs)
         {
@@ -94,29 +112,10 @@ public class GameInstance : SingletonBehaviour<GameInstance>
                 if (mgr.Value.GetInstance() == null)
                 {
                     Instantiate(mgr.Value);
-                    managersToSpawn.Add(mgr.Value);
-                }
-            }
-            // 이 Manager의 LifeCycle에 해당하지 않는 Scene임.
-            else
-            {
-                if (mgr.Value.GetInstance() != null)
-                {
-                    Destroy(mgr.Value.GetInstance().gameObject);
                 }
             }
         }
         EventMgr.Instance.OnSceneChanged.Invoke(new SceneChanged(SceneMgr.sceneMap[scene.name]));
-    }
-
-
-    private IEnumerator SpawnManagersInFrames(List<ManagerBehaviour> managersToSpawn)
-    {
-        foreach(var mgr in managersToSpawn)
-        {
-            yield return null;
-            Instantiate(mgr);
-        }
     }
 
 }
