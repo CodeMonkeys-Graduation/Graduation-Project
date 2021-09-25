@@ -4,11 +4,22 @@
 
 > 에디터상에서 보고 싶은 경우 에셋들을 임포트해야합니다. 아래 에셋들을 임포트하여 "Assets/_AssetStore" 경로에 넣어주세요.
 - [Toony Tiny RTS Set](https://assetstore.unity.com/packages/3d/characters/toony-tiny-rts-set-135258)
-- [RPG Monster Wave Polyart](https://assetstore.unity.com/packages/3d/characters/creatures/rpg-monster-wave-polyart-157652)
 - [Cube World - Proto Series](https://assetstore.unity.com/packages/3d/environments/cube-world-proto-series-144159)
+- [GUI PRO Kit - Fantasy RPG](https://assetstore.unity.com/packages/2d/gui/gui-pro-kit-fantasy-rpg-170168) (+ pictogram 256*256 임포트하고 폴더로 옮겨놓기 )
+- [URP Stylized Water Shader - Proto Series](https://assetstore.unity.com/packages/vfx/shaders/urp-stylized-water-shader-proto-series-187485)
 - [RPG Monster Duo PBR Polyart](https://assetstore.unity.com/packages/3d/characters/creatures/rpg-monster-duo-pbr-polyart-157762)
-- [GUI PRO Kit - Fantasy RPG](https://assetstore.unity.com/packages/2d/gui/gui-pro-kit-fantasy-rpg-170168)
+- [RPG Monster Wave PBR](https://assetstore.unity.com/packages/3d/characters/creatures/rpg-monster-wave-pbr-158727)
 - [Epic Toon VFX 2](https://assetstore.unity.com/packages/vfx/particles/spells/epic-toon-vfx-2-157651)
+- [Monster Icon](https://drive.google.com/file/d/1r3V0Hq499oxauPPCBQgr8Tr-wJTvCcnU/view?usp=sharing) 
+- [Demo Ancient Magic Pack FREE](https://assetstore.unity.com/packages/audio/sound-fx/weapons/demo-ancient-magic-pack-free-175093)
+- [AllSky Free - 10 Sky / Skybox Set](https://assetstore.unity.com/packages/2d/textures-materials/sky/allsky-free-10-sky-skybox-set-146014)
+- [Bow and Hammer Sound Effects](https://assetstore.unity.com/packages/audio/sound-fx/weapons/bow-and-hammer-sound-effects-163948)
+- [Casual Kingdom World Sounds - Free](https://assetstore.unity.com/packages/audio/music/casual-kingdom-world-sounds-free-136406)
+- [Casual Game Sounds](https://assetstore.unity.com/packages/audio/music/casual-kingdom-world-sounds-free-136406)
+- [Minimal UI Sounds](https://assetstore.unity.com/packages/audio/sound-fx/minimal-ui-sounds-78266)
+- [GUI PRO Kit - Casual Game](https://assetstore.unity.com/packages/2d/gui/gui-pro-kit-casual-game-176695)
+- [Tiny Fantasy Loot](https://assetstore.unity.com/packages/3d/environments/fantasy/tiny-fantasy-loot-53326)
+
 
 ## 개발 일지: [Youtube](https://youtube.com/playlist?list=PLUnoDCtQAT-4vgxizujnRzX_ROiHMac2x)
 
