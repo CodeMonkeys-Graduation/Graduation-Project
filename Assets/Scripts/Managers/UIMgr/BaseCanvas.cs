@@ -35,6 +35,11 @@ public class BaseCanvas : MonoBehaviour
         }
     }
 
+    public UIComponent GetUIComponent(UIType ut)
+    {
+        return _dictionary[ut];
+    }
+
     public void TurnOnUIComponent(UIType ut)
     {
         _dictionary[ut].gameObject.SetActive(true);

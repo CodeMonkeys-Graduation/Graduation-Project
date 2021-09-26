@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class NormalCanvas : BaseCanvas
 {
-
+    // UI API 작성란
 }

@@ -6,6 +6,6 @@ public abstract class UIState : State<UIMgr>
 {
     public UIState(UIMgr owner) : base(owner)
     {
-        
+
     }
 }
