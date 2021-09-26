@@ -4,8 +4,10 @@ using UnityEngine;
 
 public abstract class UIState : State<UIMgr>
 {
-    public UIState(UIMgr owner) : base(owner)
-    {
+    protected BaseCanvas _canvasPrefab;
 
+    public UIState(UIMgr owner, BaseCanvas canvasPrefab) : base(owner)
+    {
+        _canvasPrefab = canvasPrefab;
     }
 }

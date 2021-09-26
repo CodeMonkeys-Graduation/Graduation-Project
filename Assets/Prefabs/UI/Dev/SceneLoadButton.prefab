@@ -134,6 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e136173380685144ba3a686c059deae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _uitype: 8
   SceneToLoad: 3
 --- !u!1 &6417461908515171008
 GameObject:
