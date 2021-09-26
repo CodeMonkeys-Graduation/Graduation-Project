@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 [CreateAssetMenu (order = 2, menuName = "Item/HealthPotion", fileName = "HealthPotion")]
 public class HealthPotion : Item
