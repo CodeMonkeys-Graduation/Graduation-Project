@@ -1,4 +1,4 @@
-﻿using ObserverPattern;
+using ObserverPattern;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,6 +34,12 @@ public class Unit_Move_ : State<Unit>
 
         if(!ProcessCubeToGo())
         {
+            FieldItem item = owner.GetCube.GetItem();
+            if (item != null)
+            {
+                item.Acquire(owner);
+            }
+
             owner.stateMachine.ChangeState(new Unit_Idle_(owner), StateMachine<Unit>.StateTransitionMethod.PopNPush);
         }
     }

@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameDatas:
   - {fileID: 11400000, guid: ecc504c5abe0d4042af9db601444dfaf, type: 2}
+  - {fileID: 11400000, guid: 8f7fce4d4176b194ab88afcc6e039681, type: 2}

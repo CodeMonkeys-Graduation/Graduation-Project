@@ -665,13 +665,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b3d8094aa0a45a478020ce4eff2c30c, type: 3}
---- !u!43 &707795607
+--- !u!43 &766808659
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WaterVolume--46676
+  m_Name: WaterVolume--268866
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1540,7 +1540,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 707795607}
+      objectReference: {fileID: 766808659}
     - target: {fileID: 5991309151205111477, guid: 41ec87fa3611a1043be6a30f86870b01,
         type: 3}
       propertyPath: m_Mesh
@@ -2434,3 +2434,72 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1001 &6264596804849464918
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6264596804762029334, guid: 561e643d32f759646966cadcb8eda7ee,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6264596804762029334, guid: 561e643d32f759646966cadcb8eda7ee,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6264596804762029334, guid: 561e643d32f759646966cadcb8eda7ee,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6264596804762029334, guid: 561e643d32f759646966cadcb8eda7ee,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6264596804762029334, guid: 561e643d32f759646966cadcb8eda7ee,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6264596804762029334, guid: 561e643d32f759646966cadcb8eda7ee,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6264596804762029334, guid: 561e643d32f759646966cadcb8eda7ee,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6264596804762029334, guid: 561e643d32f759646966cadcb8eda7ee,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6264596804762029334, guid: 561e643d32f759646966cadcb8eda7ee,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6264596804762029334, guid: 561e643d32f759646966cadcb8eda7ee,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6264596804762029334, guid: 561e643d32f759646966cadcb8eda7ee,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6264596804762029417, guid: 561e643d32f759646966cadcb8eda7ee,
+        type: 3}
+      propertyPath: m_Name
+      value: HealthPotion
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 561e643d32f759646966cadcb8eda7ee, type: 3}

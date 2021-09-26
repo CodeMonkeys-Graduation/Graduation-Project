@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,6 +60,16 @@ public class Cube : MonoBehaviour, INavable
         Ray ray = new Ray(transform.position, Vector3.up);
         if (Physics.Raycast(ray, out hit, 3f, LayerMask.GetMask("Unit")))
             return hit.transform.GetComponent<Unit>();
+        else
+            return null;
+    }
+
+    public FieldItem GetItem()
+    {
+        RaycastHit hit;
+        Ray ray = new Ray(transform.position, Vector3.up);
+        if (Physics.Raycast(ray, out hit, 3f, LayerMask.GetMask("Item")))
+            return hit.transform.GetComponent<FieldItem>();
         else
             return null;
     }
