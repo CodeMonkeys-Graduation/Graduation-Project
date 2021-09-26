@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FlameSkill
   m_EditorClassIdentifier: 
   skillName: Flame
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 7db48ffcba5274062b9fd2837121eefc, type: 3}
   skillVFX: {fileID: 661307058896348757, guid: 348affcb6fd9af84bab10dc1f235ecc1, type: 3}
   amountMin: 6
   amountMax: 10
