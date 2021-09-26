@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ObserverPattern;
@@ -6,8 +6,6 @@ using ObserverPattern;
 
 public class BattleMgr_Init_ : BattleMgr_State_
 {
-
-
     public BattleMgr_Init_(BattleMgr owner) : base(owner)
     {
 
@@ -15,7 +13,7 @@ public class BattleMgr_Init_ : BattleMgr_State_
 
     public override void Enter()
     {
-        Debug.Log("Init State Enter");
+        Debug.Log("Battle Init State Enter");
         EventMgr.Instance.onGameInitEnter.Invoke();
     }
 
@@ -26,7 +24,7 @@ public class BattleMgr_Init_ : BattleMgr_State_
 
     public override void Exit()
     {
-        Debug.Log("Init State Exit");
+        Debug.Log("Battle Init State Exit");
         EventMgr.Instance.onGameInitExit.Invoke();
     }
 

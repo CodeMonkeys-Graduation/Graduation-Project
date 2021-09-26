@@ -381,7 +381,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   talkDataNumber: 0
   talkDataSet:
-  - name: Firebat
+  - name: FireBat
     dialogue: I wanna have a friend. Please with me...
     emotion: Sad
   talkProgress: 0
@@ -700,7 +700,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   talkDataNumber: 01
-  talkDataSet: []
+  talkDataSet:
+  - name: FireBat
+    dialogue: That's too bad.
+    emotion: Glad
+  - name: FireBat
+    dialogue: Come on...
+    emotion: Normal
   talkProgress: 0
 --- !u!1101 &6132847336510383814
 AnimatorStateTransition:
@@ -784,7 +790,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   talkDataNumber: 000
-  talkDataSet: []
+  talkDataSet:
+  - name: FireBat
+    dialogue: That's the best friendship.
+    emotion: Glad
+  - name: FireBat
+    dialogue: Come On. You are died
+    emotion: Normal
   talkProgress: 0
 --- !u!114 &7355703480459156641
 MonoBehaviour:

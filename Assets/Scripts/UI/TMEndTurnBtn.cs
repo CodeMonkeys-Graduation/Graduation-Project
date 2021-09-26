@@ -1,7 +1,7 @@
 using ObserverPattern;
 using UnityEngine;
 
-public class TMEndTurnBtn : Battle_UI
+public class TMEndTurnBtn : UIComponent
 {
     public void OnClick_EndTurnBtn()
     {

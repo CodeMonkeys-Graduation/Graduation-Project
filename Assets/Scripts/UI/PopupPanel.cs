@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using ObserverPattern;
 
-public class PopupPanel : Battle_UI
+public class PopupPanel : UIComponent
 {
     [SerializeField] public Button yesBtn;
     [SerializeField] public Button noBtn;

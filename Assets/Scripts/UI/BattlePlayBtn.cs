@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattlePlayBtn : Battle_UI
+public class BattlePlayBtn : UIComponent
 {
     public void OnClickPlay()
     {

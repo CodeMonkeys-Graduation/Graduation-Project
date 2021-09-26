@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleNextStateBtn : Battle_UI
+public class BattleNextStateBtn : UIComponent
 {
     private SummonPanel summonPanel;
 

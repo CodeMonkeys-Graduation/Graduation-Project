@@ -46,13 +46,11 @@ MonoBehaviour:
   Type: 4
   _lifeCycles: 00000000010000000200000003000000040000000500000006000000
   OnSceneChanged: {fileID: 11400000, guid: ae612a7fab9e72744adb378a19b3d41e, type: 2}
-  onUICompleted: {fileID: 11400000, guid: 16e5892edd4cd2c4c858272b1a09ee3c, type: 2}
   onPathfindRequesterCountZero: {fileID: 11400000, guid: 9ff65ca66f58723409b2a13e08bbbed5,
     type: 2}
   onPathUpdatingStart: {fileID: 11400000, guid: 53dc6cb665e1f0849885d27f53e37798,
     type: 2}
   onUnitInitEnd: {fileID: 11400000, guid: a89a89060b4d8a04baa43c69acd734b5, type: 2}
-  onUnitSummonEnd: {fileID: 11400000, guid: 254ca249b70a61b4f9d7fd31e1fc16fb, type: 2}
   onUnitCommandResult: {fileID: 11400000, guid: 8fdb4b3ed1fc0d74da5b38535499871d,
     type: 2}
   onUnitAttackExit: {fileID: 11400000, guid: 2079106fc3680b44ba8b64dcc785cf18, type: 2}
@@ -65,6 +63,7 @@ MonoBehaviour:
   onUnitSkillExit: {fileID: 11400000, guid: fdcb3b5fa987bd648a833a522ec80cf2, type: 2}
   onUnitDeadCountZero: {fileID: 11400000, guid: d187802a6d0999c4f8b139289c3d1bf8,
     type: 2}
+  onUICreated: {fileID: 11400000, guid: 16e5892edd4cd2c4c858272b1a09ee3c, type: 2}
   onTurnActionEnter: {fileID: 11400000, guid: 4522122548770bf4397a733b0daa379a, type: 2}
   onTurnActionExit: {fileID: 11400000, guid: e46a14bf2846f43419c2abf0b0954f3c, type: 2}
   onTurnBeginEnter: {fileID: 11400000, guid: e175047550a988044b3194b4b2abb23b, type: 2}
@@ -86,7 +85,3 @@ MonoBehaviour:
     type: 2}
   onGameBattleEnter: {fileID: 11400000, guid: a382a0abf0ae7c943a65a0b2dc274774, type: 2}
   onGameBattleExit: {fileID: 11400000, guid: 71de499fcdd865b44a433b41df984a57, type: 2}
-  onGameVictoryEnter: {fileID: 11400000, guid: c8109fada91ac664290586388ab3478c, type: 2}
-  onGameVictoryExit: {fileID: 11400000, guid: 7fda8a0e081480846a6715e7831a93da, type: 2}
-  onGameDefeatEnter: {fileID: 11400000, guid: 0cefdc7d27f35d24689969c09c0bb96a, type: 2}
-  onGameDefeatExit: {fileID: 11400000, guid: 7479db5a97c6d9b4a943571ee09072db, type: 2}

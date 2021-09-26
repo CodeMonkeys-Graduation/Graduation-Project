@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26177efc341b4cf459189224df8384eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battle_ui_type: 10
+  _uitype: 11
   slots: []
   slotPrefab: {fileID: 8320531014324953246, guid: f304b4472a9606045a09378f640a47fd,
     type: 3}

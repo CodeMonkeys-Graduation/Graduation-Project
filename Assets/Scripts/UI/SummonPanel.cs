@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SummonPanel : Battle_UI
+public class SummonPanel : UIComponent
 {
     [SerializeField] public List<SummonBtn> summonBtnPrefabs;
     [SerializeField] public Transform content;

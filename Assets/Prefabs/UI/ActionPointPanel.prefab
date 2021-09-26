@@ -300,5 +300,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be92039ae5a63bd41aa581092acca595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battle_ui_type: 1
+  _uitype: 1
   actionPointText: {fileID: 8948062014417160184}

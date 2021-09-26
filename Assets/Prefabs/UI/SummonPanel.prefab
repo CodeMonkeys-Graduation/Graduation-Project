@@ -611,7 +611,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6021e8244e0b9e841b1a0e74d42416fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battle_ui_type: 9
+  _uitype: 10
   summonBtnPrefabs:
   - {fileID: 3209373352914551523, guid: 8bb9c5ec7ac89df43ba6f1d39a857756, type: 3}
   - {fileID: 92470210142111737, guid: 5ae2c94d98afe5d45aed223427c1c211, type: 3}

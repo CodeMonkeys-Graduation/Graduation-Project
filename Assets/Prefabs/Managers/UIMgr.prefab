@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 8
-  _lifeCycles: 0000000003000000
+  _lifeCycles: 0000000003000000040000000500000006000000
   canvasPrefab_Dictionary:
     reorderableList:
       canAdd: 1
@@ -71,19 +71,5 @@ MonoBehaviour:
     _keyValues: 0100000000000000
     _keys: 0100000000000000
     _values:
-    - {fileID: 7291966241044905970, guid: 706998cc4dbc0bd42b4365a0f1492ee5, type: 3}
-    - {fileID: 7291966241044905970, guid: 706998cc4dbc0bd42b4365a0f1492ee5, type: 3}
-  battleUIPrefabs:
-  - {fileID: 3869887982127670184, guid: 167fc138fb3f4464487057d5326ab375, type: 3}
-  - {fileID: 8948062014891496318, guid: 23cb8a30dc4bfbc4bba0aeef5c15c9d5, type: 3}
-  - {fileID: 4288348786587585537, guid: 0e7925379cfa7484288df31428c022c7, type: 3}
-  - {fileID: 4699184060849207399, guid: 6260fd98c11f8f24688eefd7a1221ded, type: 3}
-  - {fileID: 2559020914478534006, guid: 9bb0e2107fda6ac4eb86a2d3e0f5b6f5, type: 3}
-  - {fileID: 1934562568237661069, guid: da9d62e1f8225f746ae571116b58f1bb, type: 3}
-  - {fileID: 6797552524488251228, guid: a43d64d589fbcd54db9cb38f5c0d5099, type: 3}
-  - {fileID: 57251538121215964, guid: 48cd7599f8277754b84ef7358f248736, type: 3}
-  - {fileID: 7009132371826327025, guid: 5dab125834ef72648bfb787b12eefde8, type: 3}
-  - {fileID: 8819214805487652758, guid: 5a77e7f93f0edf24a855121de0232b0f, type: 3}
-  - {fileID: 7073010292704358077, guid: 4a79ae64fc9c6544c828e131665bd42f, type: 3}
-  normalUIPrefabs:
-  - {fileID: 6417461907490758405, guid: 2ef2a34661a04174ea7c73a1d6e03ec5, type: 3}
+    - {fileID: 2078270482501369129, guid: 706998cc4dbc0bd42b4365a0f1492ee5, type: 3}
+    - {fileID: 9215474289964830466, guid: b997cdb92be7ee8488acdda845dc6f2c, type: 3}

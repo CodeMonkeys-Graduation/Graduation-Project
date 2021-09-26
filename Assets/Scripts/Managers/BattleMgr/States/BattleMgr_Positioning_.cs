@@ -30,7 +30,7 @@ public class BattleMgr_Positioning_ : BattleMgr_State_
 
     public override void Enter()
     {
-        Debug.Log("Positioning State Enter");
+        Debug.Log("Battle Positioning State Enter");
         EventMgr.Instance.onGamePositioningEnter.Invoke(new UISummon(_unitPrefabs, true)); // 여기서 SummonUI에 세팅
         _canSummonCubes.ForEach(cube => cube.SetBlink(0.3f));
     }
@@ -89,7 +89,7 @@ public class BattleMgr_Positioning_ : BattleMgr_State_
 
     public override void Exit()
     {
-        Debug.Log("Positioning State Exit");
+        Debug.Log("Battle Positioning State Exit");
         EventMgr.Instance.onGamePositioningExit.Invoke();
         _canSummonCubes.ForEach(cube => cube.StopBlink());
     }

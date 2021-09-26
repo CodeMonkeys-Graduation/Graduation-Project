@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ItemPanel : Battle_UI
+public class ItemPanel : UIComponent
 {
     [SerializeField] List<ItemSlot> itemSlots;
 
