@@ -1,9 +1,10 @@
-﻿using System.Collections;
+using ObserverPattern;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SceneLoadTestBtn : MonoBehaviour
+public class SceneLoadTestBtn : UIComponent
 {
     [SerializeField] public string sceneName;
     Button _Btn;
@@ -13,6 +14,15 @@ public class SceneLoadTestBtn : MonoBehaviour
     void Start()
     {
         _Btn = GetComponent<Button>();
+    }
+
+    public override void SetPanel(EventParam u = null)
+    {
+        throw new System.NotImplementedException();
+    }
+    public override void UnsetPanel()
+    {
+        throw new System.NotImplementedException();
     }
 
     // Update is called once per frame

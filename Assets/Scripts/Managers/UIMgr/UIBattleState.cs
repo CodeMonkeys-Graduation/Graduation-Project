@@ -6,12 +6,13 @@ using System;
 
 public class UIBattleState : UIState
 {
-    public BattleCanvas _canvas;
-    BattleCanvas _canvasPrefab;
-    public UIBattleState(UIMgr owner, BattleCanvas canvasPrefab) : base(owner)
+    public BaseCanvas _canvas;
+    
+    public UIBattleState(UIMgr owner, BaseCanvas canvasPrefab) : base(owner, canvasPrefab)
     {
-        _canvasPrefab = canvasPrefab;
+        
     }
+
     public override void Enter()
     {
         Debug.Log("배틀 스테이트에 진입함");

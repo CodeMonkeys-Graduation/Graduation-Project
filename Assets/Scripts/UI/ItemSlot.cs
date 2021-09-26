@@ -22,6 +22,7 @@ public class ItemSlot : MonoBehaviour, IPanel
         btn.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
         text.text = count.ToString();
         btn.onClick.AddListener(onClickSlot);
+        GetComponent<Transform>();
     }
 
     public void SetPanel(EventParam u) => gameObject.SetActive(true);

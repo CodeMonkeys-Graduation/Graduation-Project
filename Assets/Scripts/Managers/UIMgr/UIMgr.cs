@@ -15,6 +15,23 @@ public enum CanvasType
     Dialog,
     Ending
 }
+public enum UIType
+{
+    ActionPanel,
+    ActionPointPanel,
+    TMBackBtn,
+    TMEndTurnBtn,
+    ItemPanel,
+    BattleNextStateBtn,
+    BattlePlayBtn,
+    PopupPanel,
+    DevSceneLoadBtn,
+    StatusPanel,
+    SummonPanel,
+    TurnPanel,
+}
+
+
 public class UIMgr : SingletonBehaviour<UIMgr>
 {
     public StateMachine<UIMgr> stateMachine;
@@ -27,12 +44,12 @@ public class UIMgr : SingletonBehaviour<UIMgr>
     {
         if (SceneMgr.Instance._currScene.ToString().Contains("Battle"))
         {
-            stateMachine = new StateMachine<UIMgr>(new UIBattleState(this, (BattleCanvas)canvasPrefab_Dictionary[CanvasType.Battle]));
+            stateMachine = new StateMachine<UIMgr>(new UIBattleState(this, canvasPrefab_Dictionary[CanvasType.Battle]));
             canvasType = CanvasType.Battle;
         }
         else
         {
-            stateMachine = new StateMachine<UIMgr>(new UINormalState(this, (NormalCanvas)canvasPrefab_Dictionary[CanvasType.Normal]));
+            stateMachine = new StateMachine<UIMgr>(new UINormalState(this, canvasPrefab_Dictionary[CanvasType.Normal]));
             canvasType = CanvasType.Normal;
         }     
     }
@@ -44,36 +61,36 @@ public class UIMgr : SingletonBehaviour<UIMgr>
 
     public void SetUI(UIType uitype, bool isOn)
     {
-        UIState uiState = (UIState)stateMachine.stateStack.Peek();
-
         switch(canvasType)
         {
             case CanvasType.Normal:
-                UINormalState normalState = (UINormalState)uiState;
+                UINormalState normalState = (UINormalState)stateMachine.stateStack.Peek();
+
                 if(isOn) normalState._canvas.TurnOnUIComponent(uitype);
                 else normalState._canvas.TurnOffUIComponent(uitype);
                 break;
             case CanvasType.Battle:
-                UIBattleState battleState = (UIBattleState)uiState;
+                UIBattleState battleState = (UIBattleState)stateMachine.stateStack.Peek();
+
                 if (isOn) battleState._canvas.TurnOnUIComponent(uitype);
                 else battleState._canvas.TurnOffUIComponent(uitype);
                 break;
         }
     }
 
-    public UIComponent GetUIComponent(UIType ut)
+    public T GetUIComponent<T>(bool evenInactive = false) where T : UIComponent
     {
         UIState uiState = (UIState)stateMachine.stateStack.Peek();
-
+            
         switch (canvasType)
         {
             case CanvasType.Normal:
                 UINormalState normalState = (UINormalState)uiState;
-                return normalState._canvas.GetUIComponent(ut);
+                return normalState._canvas.GetUIComponent<T>(evenInactive);
 
             case CanvasType.Battle:
                 UIBattleState battleState = (UIBattleState)uiState;
-                return battleState._canvas.GetUIComponent(ut);
+                return battleState._canvas.GetUIComponent<T>(evenInactive);
 
             default:
                 return null;

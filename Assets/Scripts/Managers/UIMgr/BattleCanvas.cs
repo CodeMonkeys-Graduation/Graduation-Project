@@ -60,7 +60,7 @@ public class BattleCanvas : BaseCanvas
     void SetUIGameInitEnter(EventParam param)
     {
         TurnOffAllUI();
-        TurnOnUIComponent(UIType.Next);
+        TurnOnUIComponent(UIType.BattleNextStateBtn);
     }
     void SetUIGameInitExit(EventParam param) // 구현 없음
     {
@@ -72,20 +72,20 @@ public class BattleCanvas : BaseCanvas
         if (param != null)
         {
             UISummon us = (UISummon)param;
-            _dictionary[UIType.Summon].SetPanel(new UISummon(us._units, true));
+            _dictionary[UIType.SummonPanel].SetPanel(new UISummon(us._units, true));
         }
     }
     void SetUIGamePositioningExecute(EventParam param)
     {
         List<Unit> _units = new List<Unit>();
         _units.Add(((UnitParam)param)?._unit);
-        _dictionary[UIType.Summon].SetPanel(new UISummon(_units, false));
+        _dictionary[UIType.SummonPanel].SetPanel(new UISummon(_units, false));
     }
 
     void SetUIGamePositioningExit(EventParam param)
     {
         TurnOffAllUI();
-        TurnOnUIComponent(UIType.Play);
+        TurnOnUIComponent(UIType.BattlePlayBtn);
     }
 
     #endregion
@@ -103,52 +103,52 @@ public class BattleCanvas : BaseCanvas
         btnEvents.Add(ActionType.Skill, OnClickSkillBtn);
 
         Unit nextTurnUnit = _turnMgr.turns.Peek();
-        TurnPanel tp = (TurnPanel)_dictionary[UIType.Turn];
+        TurnPanel tp = (TurnPanel)_dictionary[UIType.TurnPanel];
 
-        _dictionary[UIType.Action].SetPanel(new UIAction(nextTurnUnit.actionSlots, nextTurnUnit.actionPointsRemain, btnEvents));
-        _dictionary[UIType.ActionPoint].SetPanel(new UIActionPoint(nextTurnUnit.actionPointsRemain));
-        _dictionary[UIType.Turn].SetPanel();
+        _dictionary[UIType.ActionPanel].SetPanel(new UIAction(nextTurnUnit.actionSlots, nextTurnUnit.actionPointsRemain, btnEvents));
+        _dictionary[UIType.ActionPointPanel].SetPanel(new UIActionPoint(nextTurnUnit.actionPointsRemain));
+        _dictionary[UIType.TurnPanel].SetPanel();
 
         if (tp.ShouldUpdateSlots(_turnMgr.turns.ToList()))
-            tp.SetSlots((StatusPanel)_dictionary[UIType.Status], _turnMgr.turns.ToList());
+            tp.SetSlots((StatusPanel)_dictionary[UIType.StatusPanel], _turnMgr.turns.ToList());
 
-        TurnOnUIComponent(UIType.End);
+        TurnOnUIComponent(UIType.TMEndTurnBtn);
     }
     void SetUITurnBeginExit(EventParam param)
     {
-        TurnOffUIComponent(UIType.Action);
+        TurnOffUIComponent(UIType.ActionPanel);
     }
     void SetUITurnMove(EventParam param)
     {
-        _dictionary[UIType.ActionPoint].SetPanel(new UIActionPoint(_turnMgr.turns.Peek().actionPointsRemain));
+        _dictionary[UIType.ActionPointPanel].SetPanel(new UIActionPoint(_turnMgr.turns.Peek().actionPointsRemain));
     }
     void SetUITurnItemEnter(EventParam param)
     {
-        _dictionary[UIType.Item].SetPanel(new UIItem(_turnMgr.turns.Peek().itemBag.GetItem(), OnClickItemSlotBtn));
+        _dictionary[UIType.ItemPanel].SetPanel(new UIItem(_turnMgr.turns.Peek().itemBag.GetItem(), OnClickItemSlotBtn));
     }
     void SetUITurnItemExit(EventParam param)
     {
-        TurnOffUIComponent(UIType.Item);
+        TurnOffUIComponent(UIType.ItemPanel);
     }
     void SetUITurnPopupEnter(EventParam param)
     {
-        _dictionary[UIType.Popup].SetPanel((UIPopup)param);
+        _dictionary[UIType.PopupPanel].SetPanel((UIPopup)param);
     }
     void SetUITurnPopupExit(EventParam param)
     {
-        TurnOffUIComponent(UIType.Popup);
+        TurnOffUIComponent(UIType.PopupPanel);
     }
     void SetUITurnNobody(EventParam param)
     {
         TurnOffAllUI();
-        TurnOnUIComponent(UIType.Play);
+        TurnOnUIComponent(UIType.BattlePlayBtn);
     }
     void SetUITurnActionEnter(EventParam param)
     {
         List<UIType> list = new List<UIType>();
 
-        list.Add(UIType.End);
-        list.Add(UIType.Back);
+        list.Add(UIType.TMEndTurnBtn);
+        list.Add(UIType.TMBackBtn);
 
         TurnOnUIs(list);
     }
@@ -156,8 +156,8 @@ public class BattleCanvas : BaseCanvas
     {
         List<UIType> list = new List<UIType>();
 
-        list.Add(UIType.End);
-        list.Add(UIType.Back);
+        list.Add(UIType.TMEndTurnBtn);
+        list.Add(UIType.TMBackBtn);
 
         TurnOffUIs(list);
     }
@@ -165,19 +165,19 @@ public class BattleCanvas : BaseCanvas
     {
         List<UIType> list = new List<UIType>();
 
-        list.Add(UIType.End);
-        list.Add(UIType.Back);
-        list.Add(UIType.Play);
-        list.Add(UIType.Action);
+        list.Add(UIType.TMEndTurnBtn);
+        list.Add(UIType.TMBackBtn);
+        list.Add(UIType.BattlePlayBtn);
+        list.Add(UIType.ActionPanel);
 
         TurnOffUIs(list);
-        _dictionary[UIType.ActionPoint].SetPanel(new UIActionPoint(_turnMgr.turns.Peek().actionPointsRemain));
+        _dictionary[UIType.ActionPointPanel].SetPanel(new UIActionPoint(_turnMgr.turns.Peek().actionPointsRemain));
 
-        TurnPanel tp = (TurnPanel)_dictionary[UIType.Turn];
+        TurnPanel tp = (TurnPanel)_dictionary[UIType.TurnPanel];
         tp.SetPanel();
 
         if (tp.ShouldUpdateSlots(_turnMgr.turns.ToList()))
-            tp.SetSlots((StatusPanel)_dictionary[UIType.Status], _turnMgr.turns.ToList());
+            tp.SetSlots((StatusPanel)_dictionary[UIType.StatusPanel], _turnMgr.turns.ToList());
     }
     #endregion
     private void OnClickMoveBtn()
@@ -206,7 +206,7 @@ public class BattleCanvas : BaseCanvas
     }
     void OnClickItemSlotBtn(Item item) 
     {
-        ItemPanel ip = (ItemPanel)_dictionary[UIType.Item];
+        ItemPanel ip = (ItemPanel)_dictionary[UIType.ItemPanel];
 
         string popupContent = $"r u sure u wanna use {item.name}?";
         _turnMgr.stateMachine.ChangeState(

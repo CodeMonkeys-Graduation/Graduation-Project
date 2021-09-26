@@ -1,31 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RotaryHeart.Lib.SerializableDictionary;
-public enum UIType
-{
-    Action,
-    ActionPoint,
-    Back,
-    End,
-    Item,
-    Next,
-    Play,
-    Popup,
-    Start,
-    Status,
-    Summon,
-    Turn
-}
 public class BaseCanvas : MonoBehaviour
 {
-    public Canvas canvasPrefab;
-
     [System.Serializable] 
     public class UIDictionary : SerializableDictionaryBase<UIType, UIComponent> { }
     public UIDictionary _prefab_dictionary = new UIDictionary();
     
     protected UIDictionary _dictionary = new UIDictionary();
+    protected Dictionary<Type, UIType> TypeToEnumConverter = new Dictionary<Type, UIType>(); 
+
     protected void Awake()
     {
         foreach (var u in _prefab_dictionary)
@@ -35,9 +21,15 @@ public class BaseCanvas : MonoBehaviour
         }
     }
 
-    public UIComponent GetUIComponent(UIType ut)
+    public T GetUIComponent<T>(bool evenInactive = false) where T : UIComponent
     {
-        return _dictionary[ut];
+        UIType ut = (UIType)Enum.Parse(typeof(UIType), typeof(T).ToString()); // 이렇게 변환해도 되긴 하는데, 이러면 Type명과 enum이 같아야 함
+
+        if (!_dictionary[ut].gameObject.activeSelf && evenInactive) return null;
+
+        Debug.Log((T)_dictionary[ut]);
+;
+        return (T)_dictionary[ut];
     }
 
     public void TurnOnUIComponent(UIType ut)
