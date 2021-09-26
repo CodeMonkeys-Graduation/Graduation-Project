@@ -471,7 +471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10ed7931e88b1c946ae59ebe5703618b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battle_ui_type: 7
+  _uitype: 7
   yesBtn: {fileID: 615039121890188315}
   noBtn: {fileID: 615039122808562622}
   Description: {fileID: 615039121720944357}

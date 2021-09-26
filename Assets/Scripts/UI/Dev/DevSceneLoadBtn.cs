@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using ObserverPattern;
 
-public class DevSceneLoadBtn : Normal_UI
+public class DevSceneLoadBtn : UIComponent
 {
     [SerializeField] public SceneMgr.Scene SceneToLoad;
 

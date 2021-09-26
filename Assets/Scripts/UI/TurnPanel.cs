@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class TurnPanel : Battle_UI
+public class TurnPanel : UIComponent
 {
     public List<TurnSlot> slots;
     [SerializeField] TurnSlot slotPrefab;

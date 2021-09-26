@@ -1,7 +1,7 @@
 using ObserverPattern;
 using UnityEngine;
 
-public class TMBackBtn : Battle_UI
+public class TMBackBtn : UIComponent
 { 
     public void OnClick_BackBtn()
     {

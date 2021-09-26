@@ -857,7 +857,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d26e3dee12045ae408855515fbd27202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battle_ui_type: 8
+  _uitype: 9
   unitName: {fileID: 7009132371498929130}
   unitDescription: {fileID: 7009132372455115567}
   unitDamage: {fileID: 7009132373216370891}

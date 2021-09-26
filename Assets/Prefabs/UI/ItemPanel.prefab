@@ -119,7 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f556ad6ac246b8645a4756ba4e8f9c4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battle_ui_type: 4
+  _uitype: 4
   itemSlots:
   - {fileID: 4314438394490094379}
   - {fileID: 1038898177474585252}

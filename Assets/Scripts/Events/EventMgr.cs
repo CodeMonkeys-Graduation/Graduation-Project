@@ -1,4 +1,4 @@
-﻿using ObserverPattern;
+using ObserverPattern;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,9 +7,6 @@ public class EventMgr : SingletonBehaviour<EventMgr>
 {
     [Header("SceneChanged")]
     [SerializeField] public ObserverEvent OnSceneChanged;
-
-    [Header("UI Event")]
-    [SerializeField] public ObserverEvent onUICompleted;
 
     [Header("PathFinding Event")]
     [SerializeField] public ObserverEvent onPathfindRequesterCountZero;
@@ -29,6 +26,9 @@ public class EventMgr : SingletonBehaviour<EventMgr>
     [SerializeField] public ObserverEvent onUnitRunExit;
     [SerializeField] public ObserverEvent onUnitSkillExit;
     [SerializeField] public ObserverEvent onUnitDeadCountZero;
+
+    [Header("UI Event")]
+    [SerializeField] public ObserverEvent onUICreated;
 
     [Header("Turn Event")]
     [SerializeField] public ObserverEvent onTurnActionEnter; // begin, popup을 제외한 모든 TurnState
@@ -51,10 +51,6 @@ public class EventMgr : SingletonBehaviour<EventMgr>
     [SerializeField] public ObserverEvent onGamePositioningExit;
     [SerializeField] public ObserverEvent onGameBattleEnter;
     [SerializeField] public ObserverEvent onGameBattleExit;
-    [SerializeField] public ObserverEvent onGameVictoryEnter;
-    [SerializeField] public ObserverEvent onGameVictoryExit;
-    [SerializeField] public ObserverEvent onGameDefeatEnter;
-    [SerializeField] public ObserverEvent onGameDefeatExit;
 
 
 }

@@ -1,41 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public enum NormalUIType
+public class UINormalState : UIState
 {
-    Start
-}
-
-public class UINormalState : UIControlState
-{
-    Canvas _normalCanvasPrefab;
-    Canvas _normalCanvas;
-    List<Normal_UI> _activeUIPrefabs;
-    List<Normal_UI> _activeUIList = new List<Normal_UI>();
-
-    public UINormalState(UIMgr owner, Canvas canvas, CanvasType canvasType, List<Normal_UI> activeUIPrefabs) : base(owner, canvas, canvasType)
+    public NormalCanvas _canvas;
+    NormalCanvas _canvasprefab;
+    public UINormalState(UIMgr owner, NormalCanvas canvasPrefab) : base(owner)
     {
-        _normalCanvasPrefab = canvas;
-        _activeUIPrefabs = activeUIPrefabs;
+        _canvasprefab = canvasPrefab;
     }
-
     public override void Enter()
     {
-        // canvas »ı¼º
-        _normalCanvas = MonoBehaviour.Instantiate(_normalCanvasPrefab);
-
-        foreach (Normal_UI u in _activeUIPrefabs)
-        {
-            _activeUIList.Add(MonoBehaviour.Instantiate(u, _normalCanvas.transform));
-        }
-
-        Debug.Log("³ë¸» ½ºÅ×ÀÌÆ®¿¡ µé¾î¿È");
-        // uiµé ¸ğµÎ »ı¼º
-        // curr_canvas°¡ ÀÌ¹Ì »ı¼ºµÇ¾îÀÖ´Ù¸é setactive, ¾Æ´Ï¶ó¸é »ı¼º
-        // normal ui ÇÁ¸®ÆÕ ¸®½ºÆ®·Î »ı¼º, »ı¼ºµÇ¾îÀÖ´Ù¸é setactive
+        Debug.Log("ë…¸ë§ ìŠ¤í…Œì´íŠ¸ì— ë“¤ì–´ì˜´");
+        _canvas = MonoBehaviour.Instantiate(_canvasprefab);
     }
-
     public override void Execute()
     {
         
@@ -43,7 +21,7 @@ public class UINormalState : UIControlState
 
     public override void Exit()
     {
-        Debug.Log("³ë¸» ½ºÅ×ÀÌÆ®¿¡¼­ ³ª°¨");
-        //MonoBehaviour.Destroy(_normalCanvas.gameObject);
+        Debug.Log("ë…¸ë§ ìŠ¤í…Œì´íŠ¸ì—ì„œ ë‚˜ê°");
+        MonoBehaviour.Destroy(_canvas);
     }
 }

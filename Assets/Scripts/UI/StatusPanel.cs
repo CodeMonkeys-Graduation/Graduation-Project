@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using ObserverPattern;
 
-public class StatusPanel : Battle_UI
+public class StatusPanel : UIComponent
 {
     [SerializeField] public TextMeshProUGUI unitName;
     [SerializeField] public TextMeshProUGUI unitDescription;

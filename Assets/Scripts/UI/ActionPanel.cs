@@ -5,10 +5,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class ActionPanel : Battle_UI
+public class ActionPanel : UIComponent
 {
     [SerializeField] List<ActionBtn> actionBtns;
-
     public override void SetPanel(EventParam u)
     {
         if (u == null) return;

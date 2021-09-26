@@ -11,16 +11,9 @@ public interface IPanel
     void UnsetPanel();
 }
 
-public abstract class Battle_UI : MonoBehaviour, IPanel
+public abstract class UIComponent : MonoBehaviour, IPanel
 {
-    [SerializeField] BattleUIType _battle_ui_type;
+    [SerializeField] public UIType _uitype;
     public abstract void SetPanel(EventParam u = null);
-    public abstract void UnsetPanel();
-}
-
-public abstract class Normal_UI : MonoBehaviour, IPanel
-{
-    [SerializeField] NormalUIType _uitype;
-    public abstract void SetPanel(EventParam u);
     public abstract void UnsetPanel();
 }
