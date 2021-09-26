@@ -27,7 +27,7 @@ MonoBehaviour:
     cost: 3
   - type: 3
     cost: 4
-  icon: {fileID: 21300000, guid: 1810a83537919406ea939e941a5eaa7a, type: 3}
+  icon: {fileID: 21300000, guid: 1fa0997ad55094754a0a3a3b627d276e, type: 3}
   team: {fileID: 11400000, guid: 157136e1c92388342b8f678cabad00c3, type: 2}
   itemBag:
     items: []
