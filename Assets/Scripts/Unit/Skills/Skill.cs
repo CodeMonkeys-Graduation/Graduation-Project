@@ -32,7 +32,7 @@ public abstract class Skill : ScriptableObject
     /// </summary>
     public virtual void OnUnitSkillEnter(Unit caster, List<Cube> targetCubes, Cube centerCube)
     {
-        AudioMgr.Instance.PlayAudio(skillSFX, AudioMgr.AudioType.SFX, false);
+        AudioMgr.Instance.PlayAudio(skillSFX, AudioMgr.AudioType.SFX);
     }
 
     /// <summary>

@@ -7,13 +7,11 @@ using UnityEngine;
 public abstract class APPlanner
 {
     public APGameState _gameState;
-    protected ActionPointPanel _actionPointPanel;
     protected int _prevScore;
-    public APPlanner(APGameState gameState, int prevScore, ActionPointPanel actionPointPanel)
+    public APPlanner(APGameState gameState, int prevScore)
     {
         _gameState = gameState.Clone();
         _prevScore = prevScore;
-        _actionPointPanel = actionPointPanel;
     }
     public abstract void Simulate(MonoBehaviour coroutineOwner, Action OnSimulationCompleted, out List<APActionNode> actionNodes);
     public abstract bool IsAvailable(APActionNode prevNode);
@@ -21,10 +19,9 @@ public abstract class APPlanner
 
 public class MovePlanner : APPlanner
 {
-    public MovePlanner(APGameState gameState, int prevScore, ActionPointPanel actionPointPanel)
-        : base(gameState, prevScore, actionPointPanel)
+    public MovePlanner(APGameState gameState, int prevScore)
+        : base(gameState, prevScore)
     {
-        _actionPointPanel = actionPointPanel;
     }
 
     public override bool IsAvailable(APActionNode prevNode)
@@ -64,7 +61,7 @@ public class MovePlanner : APPlanner
             if (path.destination == path.start) continue;
 
             // path에 따라 이동하고 actionPoint를 소모하는 MoveActionNode
-            moveNodes.Add(ActionNode_Move.Create(_gameState, _prevScore, _actionPointPanel, path));
+            moveNodes.Add(ActionNode_Move.Create(_gameState, _prevScore, path));
 
             yield return null;
         }
@@ -76,12 +73,11 @@ public class MovePlanner : APPlanner
 
 public class AttackPlanner : APPlanner
 {
-    public AttackPlanner(APGameState gameState, int prevScore, ActionPointPanel actionPointPanel)
-         : base(gameState, prevScore, actionPointPanel)
+    public AttackPlanner(APGameState gameState, int prevScore)
+         : base(gameState, prevScore)
     {
         _gameState = gameState.Clone();
         _prevScore = prevScore;
-        _actionPointPanel = actionPointPanel;
     }
 
     public override bool IsAvailable(APActionNode prevNode)
@@ -132,7 +128,7 @@ public class AttackPlanner : APPlanner
             // cubesInAttackRange안의 적유닛이 하나라도 있는 큐브를 공격하는 AttackActionNode (Splash 포함)
             if(splashUnits.Any(units => _gameState.self.owner.team.enemyTeams.Contains(units.owner.team)))
             {
-                attackNodes.Add(ActionNode_Attack.Create(_gameState, _prevScore, _actionPointPanel, cube));
+                attackNodes.Add(ActionNode_Attack.Create(_gameState, _prevScore, cube));
             }
 
 
@@ -145,12 +141,11 @@ public class AttackPlanner : APPlanner
 
 public class SkillPlanner : APPlanner
 {
-    public SkillPlanner(APGameState gameState, int prevScore, ActionPointPanel actionPointPanel)
-         : base(gameState, prevScore, actionPointPanel)
+    public SkillPlanner(APGameState gameState, int prevScore)
+         : base(gameState, prevScore)
     {
         _gameState = gameState.Clone();
         _prevScore = prevScore;
-        _actionPointPanel = actionPointPanel;
     }
 
     public override bool IsAvailable(APActionNode prevNode)
@@ -195,7 +190,7 @@ public class SkillPlanner : APPlanner
             // cubesInSkillRange안의 스코어가 음수가 아닌 액션의 경우의 수를 전부 생성
             if (_gameState.self.owner.skill.GetScoreIfTheseUnitsSplashed(_gameState.self.owner.team, splashUnits) > 0)
             {
-                skillNodes.Add(ActionNode_Skill.Create(_gameState, _prevScore, _actionPointPanel, cube));
+                skillNodes.Add(ActionNode_Skill.Create(_gameState, _prevScore, cube));
             }
 
             yield return null;

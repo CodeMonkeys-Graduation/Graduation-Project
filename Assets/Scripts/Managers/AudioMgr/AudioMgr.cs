@@ -58,7 +58,6 @@ public class AudioMgr : SingletonBehaviour<AudioMgr>
             }
         }
 
-        SceneManager.sceneLoaded += OnSceneLoaded;
         UpdateBGM();
     }
 
@@ -67,20 +66,30 @@ public class AudioMgr : SingletonBehaviour<AudioMgr>
     {
     }
 
+    private void OnDestroy()
+    {
+        DestroyAllBGMs();
+    }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         UpdateBGM();
     }
 
-    private void UpdateBGM()
+    private void DestroyAllBGMs()
     {
         var bgmAudiosTuple = audioInstances.FindAll(tuple => tuple.type == AudioType.BGM);
-        foreach(var tuple in bgmAudiosTuple)
+        foreach (var tuple in bgmAudiosTuple)
         {
             audioInstances.Remove(tuple);
             Destroy(tuple.audioSource.gameObject);
         }
-        
+    }
+
+    private void UpdateBGM()
+    {
+        DestroyAllBGMs();
+
         sceneBGMs.TryGetValue(SceneMgr.Instance._currScene, out AudioClip bgmClip);
         if(bgmClip != null)
         {
@@ -108,7 +117,7 @@ public class AudioMgr : SingletonBehaviour<AudioMgr>
         audioSource.Play();
     }
 
-    public void PlayAudio(AudioClipType clipType, AudioType type, bool loop)
+    public void PlayAudio(AudioClipType clipType, AudioType type)
     {
         // BGM은 AudioMgr프리팹에 sceneBGMs변수에 등록하여 사용해주세요.
         if (type == AudioType.BGM)
@@ -123,7 +132,7 @@ public class AudioMgr : SingletonBehaviour<AudioMgr>
         AudioSource audioSource = audioGO.AddComponent<AudioSource>();
 
         audioSource.playOnAwake = true;
-        audioSource.loop = loop;
+        audioSource.loop = false;
         audioSource.clip = clip;
         if (audioMixerGroups.TryGetValue(type, out AudioMixerGroup group))
             audioSource.outputAudioMixerGroup = group;
@@ -132,10 +141,7 @@ public class AudioMgr : SingletonBehaviour<AudioMgr>
 
         audioSource.Play();
 
-        if (!loop)
-        {
-            StartCoroutine(DestroyOnEnd(audioGO, clip.length));
-        }
+        StartCoroutine(DestroyOnEnd(audioGO, clip.length));
     }
 
     private IEnumerator DestroyOnEnd(GameObject audioGO, float seconds)

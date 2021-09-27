@@ -8,8 +8,8 @@ public class BattlePlayBtn : UIComponent
 {
     public void OnClickPlay()
     {
-        AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_Clicked, AudioMgr.AudioType.UI, false);
-        AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.SFX_SwordBladeSwish, AudioMgr.AudioType.SFX, false);
+        AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_Clicked, AudioMgr.AudioType.UI);
+        AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.SFX_SwordBladeSwish, AudioMgr.AudioType.SFX);
         TurnMgr.Instance.NextTurn();
     }
     public override void SetPanel(EventParam u = null) { if (u == null) gameObject.SetActive(true); }

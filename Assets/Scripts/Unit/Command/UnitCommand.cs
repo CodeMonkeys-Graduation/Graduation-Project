@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -118,7 +118,7 @@ public class ItemCommand : UnitCommand
     // 생성자대용으로 사용합니다.
     public static bool CreateCommand(Unit unit, Item item, out ItemCommand itemCommand)
     {
-        if (unit.itemBag.items.Contains(item))
+        if (unit.itemBag.Contains(item))
         {
             itemCommand = new ItemCommand(item);
             return true;
@@ -143,7 +143,7 @@ public class ItemCommand : UnitCommand
     public override bool Perform<TKey>(Unit unit) 
     {
         int apCost = unit.GetActionSlot(ActionType.Item).cost;
-        if (unit.itemBag.items.Contains(_item) &&
+        if (unit.itemBag.Contains(_item) &&
         unit.actionPointsRemain >= apCost)
         {
             unit.stateMachine.ChangeState(new Unit_Item_(unit, _item), StateMachine<Unit>.StateTransitionMethod.PopNPush);

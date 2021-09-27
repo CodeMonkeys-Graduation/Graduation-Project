@@ -6,11 +6,8 @@ using UnityEngine;
 
 public class ActionPlanner : SingletonBehaviour<ActionPlanner>
 {
-    [SerializeField] ActionPointPanel actionPointPanel;
-
     private void Start()
     {
-        actionPointPanel = FindObjectOfType<ActionPointPanel>();
     }
 
     public void Plan(Unit requester, Action<List<APActionNode>> OnPlanCompleted)
@@ -34,7 +31,7 @@ public class ActionPlanner : SingletonBehaviour<ActionPlanner>
             int childCount = 0;
 
             //************** MOVE NODES **************// 
-            MovePlanner movePlanner = new MovePlanner(parentNode._gameState, parentNode._score, actionPointPanel);
+            MovePlanner movePlanner = new MovePlanner(parentNode._gameState, parentNode._score);
             if (movePlanner.IsAvailable(parentNode))
             {
                 // 시뮬레이션
@@ -56,7 +53,7 @@ public class ActionPlanner : SingletonBehaviour<ActionPlanner>
             }
 
             //************** ATTACK NODES **************// 
-            AttackPlanner attackPlanner = new AttackPlanner(parentNode._gameState, parentNode._score, actionPointPanel);
+            AttackPlanner attackPlanner = new AttackPlanner(parentNode._gameState, parentNode._score);
             if (attackPlanner.IsAvailable(parentNode))
             {
                 // 시뮬레이션
@@ -79,7 +76,7 @@ public class ActionPlanner : SingletonBehaviour<ActionPlanner>
 
 
             //************** SKILL NODES **************// 
-            SkillPlanner skillPlanner = new SkillPlanner(parentNode._gameState, parentNode._score, actionPointPanel);
+            SkillPlanner skillPlanner = new SkillPlanner(parentNode._gameState, parentNode._score);
             if (skillPlanner.IsAvailable(parentNode))
             {
                 // 시뮬레이션

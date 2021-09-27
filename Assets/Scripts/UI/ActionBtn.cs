@@ -12,7 +12,7 @@ public class ActionBtn : MonoBehaviour
     {
         costText.text = cost.ToString();
         btn.onClick.AddListener(action);
-        btn.onClick.AddListener(() => { AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_Clicked, AudioMgr.AudioType.UI, false); });
+        btn.onClick.AddListener(() => { AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_Clicked, AudioMgr.AudioType.UI); });
     }
     public void SetBtnActive(bool active) => btn.interactable = active;
     public void Unset() => btn.onClick.RemoveAllListeners();
