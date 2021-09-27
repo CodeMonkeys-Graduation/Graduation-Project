@@ -5,7 +5,7 @@ public class TMEndTurnBtn : UIComponent
 {
     public void OnClick_EndTurnBtn()
     {
-        AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_Clicked, AudioMgr.AudioType.UI, false);
+        AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_Clicked, AudioMgr.AudioType.UI);
         TurnMgr.Instance.NextTurn();
     }
 

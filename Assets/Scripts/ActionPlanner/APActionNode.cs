@@ -9,17 +9,15 @@ public abstract class APActionNode
     public APActionNode _parent;
     public APGameState _gameState;
     public int _score = 0;
-    public ActionPointPanel _actionPointPanel;
     public abstract UnitCommand Command { get; set; }
-    protected APActionNode(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel)
+    protected APActionNode(APGameState prevGameState, int prevScore)
     {
-        SetNode(prevGameState, prevScore, actionPointPanel);
+        SetNode(prevGameState, prevScore);
     }
-    protected void SetNode(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel)
+    protected void SetNode(APGameState prevGameState, int prevScore)
     {
         _gameState = prevGameState.Clone();
         _score = prevScore;
-        _actionPointPanel = actionPointPanel;
     }
     public abstract int GetScoreToAdd(APGameState prevState);
     public virtual bool ShouldReplan(List<Unit> units, List<Cube> cubes)
@@ -103,7 +101,7 @@ public class RootNode : APActionNode
     public override UnitCommand Command { get => null; set => _command = null; }
 
     public RootNode(APGameState gameState)
-        : base(gameState, 0, null)
+        : base(gameState, 0)
     {
         _parent = null;
     }
@@ -128,7 +126,7 @@ public class ActionNode_Move : APActionNode
     private UnitCommand _command;
     public override UnitCommand Command { get => _command; set { _command = value; } }
 
-    public static APActionNode Create(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, PFPath path)
+    public static APActionNode Create(APGameState prevGameState, int prevScore, PFPath path)
     {
         APActionNode node;
 
@@ -139,7 +137,7 @@ public class ActionNode_Move : APActionNode
         // Pool에 남는 Node가 없을 경우 직접 만들어서 Add하고 return
         if (!APNodePool.Instance.GetNode(APNodePool.NodeType.Move, out node))
         {
-            node = new ActionNode_Move(prevGameState, prevScore, actionPointPanel, path);
+            node = new ActionNode_Move(prevGameState, prevScore, path);
             APNodePool.Instance.AddNode(node);
             APNodePool.Instance.GetNode(APNodePool.NodeType.Move, out node);
             node.Command = command;
@@ -149,7 +147,7 @@ public class ActionNode_Move : APActionNode
         else
         {
             ActionNode_Move moveNode = node as ActionNode_Move;
-            moveNode.SetNode(prevGameState, prevScore, actionPointPanel);
+            moveNode.SetNode(prevGameState, prevScore);
             moveNode.SetNode(path);
             moveNode.ChangeState(prevGameState);
             moveNode.Command = command;
@@ -159,8 +157,8 @@ public class ActionNode_Move : APActionNode
         }
     }
 
-    private ActionNode_Move(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, PFPath path)
-        : base(prevGameState, prevScore, actionPointPanel)
+    private ActionNode_Move(APGameState prevGameState, int prevScore, PFPath path)
+        : base(prevGameState, prevScore)
     {
         // node의 정보 set
         SetNode(path);
@@ -194,7 +192,8 @@ public class ActionNode_Move : APActionNode
 
     public override void OnWaitExecute()
     {
-        _actionPointPanel.SetPanel(new UIActionPoint(_gameState.self.owner.actionPointsRemain));
+        UIMgr.Instance.GetUIComponent<ActionPointPanel>()
+            .SetPanel(new UIActionPoint(_gameState.self.owner.actionPointsRemain));
     }
 
     public override void OnWaitExit()
@@ -258,7 +257,7 @@ public class ActionNode_Attack : APActionNode
     private UnitCommand _command;
     public override UnitCommand Command { get => _command; set { _command = value; } }
 
-    public static APActionNode Create(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, Cube target)
+    public static APActionNode Create(APGameState prevGameState, int prevScore, Cube target)
     {
         APActionNode node;
 
@@ -267,7 +266,7 @@ public class ActionNode_Attack : APActionNode
         // Pool에 남는 Node가 없을 경우 직접 만들어서 Add하고 return
         if (!APNodePool.Instance.GetNode(APNodePool.NodeType.Attack, out node))
         {
-            node = new ActionNode_Attack(prevGameState, prevScore, actionPointPanel, target);
+            node = new ActionNode_Attack(prevGameState, prevScore, target);
             APNodePool.Instance.AddNode(node);
             APNodePool.Instance.GetNode(APNodePool.NodeType.Attack, out node);
             node.Command = command;
@@ -277,7 +276,7 @@ public class ActionNode_Attack : APActionNode
         else
         {
             ActionNode_Attack attackNode = node as ActionNode_Attack;
-            attackNode.SetNode(prevGameState, prevScore, actionPointPanel);
+            attackNode.SetNode(prevGameState, prevScore);
             attackNode.SetNode(target);
             attackNode.ChangeState(prevGameState, target);
             attackNode.Command = command;
@@ -287,8 +286,8 @@ public class ActionNode_Attack : APActionNode
         
     }
 
-    private ActionNode_Attack(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, Cube target)
-     : base(prevGameState, prevScore, actionPointPanel)
+    private ActionNode_Attack(APGameState prevGameState, int prevScore, Cube target)
+     : base(prevGameState, prevScore)
     {
         // node의 정보 set
         SetNode(target);
@@ -322,7 +321,8 @@ public class ActionNode_Attack : APActionNode
 
     public override void OnWaitExecute()
     {
-        _actionPointPanel.SetPanel(new UIActionPoint(_gameState.self.owner.actionPointsRemain));
+        UIMgr.Instance.GetUIComponent<ActionPointPanel>()
+            .SetPanel(new UIActionPoint(_gameState.self.owner.actionPointsRemain));
     }
 
     public override void OnWaitExit()
@@ -366,7 +366,7 @@ public class ActionNode_Skill : APActionNode
     private UnitCommand _command;
     public override UnitCommand Command { get => _command; set { _command = value; } }
 
-    public static APActionNode Create(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, Cube target)
+    public static APActionNode Create(APGameState prevGameState, int prevScore, Cube target)
     {
         APActionNode node;
 
@@ -375,7 +375,7 @@ public class ActionNode_Skill : APActionNode
         // Pool에 남는 Node가 없을 경우 직접 만들어서 Add하고 return
         if (!APNodePool.Instance.GetNode(APNodePool.NodeType.Skill, out node))
         {
-            node = new ActionNode_Skill(prevGameState, prevScore, actionPointPanel, target);
+            node = new ActionNode_Skill(prevGameState, prevScore, target);
             APNodePool.Instance.AddNode(node);
             APNodePool.Instance.GetNode(APNodePool.NodeType.Skill, out node);
             node.Command = command;
@@ -385,7 +385,7 @@ public class ActionNode_Skill : APActionNode
         else
         {
             ActionNode_Skill skillNode = node as ActionNode_Skill;
-            skillNode.SetNode(prevGameState, prevScore, actionPointPanel);
+            skillNode.SetNode(prevGameState, prevScore);
             skillNode.SetNode(target);
             skillNode.ChangeState(prevGameState, target);
             skillNode.Command = command;
@@ -395,8 +395,8 @@ public class ActionNode_Skill : APActionNode
 
     }
 
-    private ActionNode_Skill(APGameState prevGameState, int prevScore, ActionPointPanel actionPointPanel, Cube target)
-     : base(prevGameState, prevScore, actionPointPanel)
+    private ActionNode_Skill(APGameState prevGameState, int prevScore, Cube target)
+     : base(prevGameState, prevScore)
     {
         // node의 정보 set
         SetNode(target);
@@ -429,7 +429,8 @@ public class ActionNode_Skill : APActionNode
 
     public override void OnWaitExecute()
     {
-        _actionPointPanel.SetPanel(new UIActionPoint(_gameState.self.owner.actionPointsRemain));
+        UIMgr.Instance.GetUIComponent<ActionPointPanel>()
+            .SetPanel(new UIActionPoint(_gameState.self.owner.actionPointsRemain));
     }
 
     public override void OnWaitExit()

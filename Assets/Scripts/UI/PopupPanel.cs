@@ -20,11 +20,11 @@ public class PopupPanel : UIComponent
         transform.position = up._pos;
         yesBtn.onClick.AddListener(up._yes);
         yesBtn.onClick.AddListener(() => {
-            AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_Clicked, AudioMgr.AudioType.UI, false);
+            AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_Clicked, AudioMgr.AudioType.UI);
         });
         noBtn.onClick.AddListener(up._no);
         noBtn.onClick.AddListener(() => {
-            AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_Clicked, AudioMgr.AudioType.UI, false);
+            AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_Clicked, AudioMgr.AudioType.UI);
         });
 
         gameObject.SetActive(true);

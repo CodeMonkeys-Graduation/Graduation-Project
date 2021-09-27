@@ -46,7 +46,7 @@ public class BattleNextStateBtn : UIComponent
     public void OnClickNextState()
     {
         BattleMgr.Instance.NextState();
-        AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_Clicked, AudioMgr.AudioType.UI, false);
+        AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_Clicked, AudioMgr.AudioType.UI);
     }
 
     public override void SetPanel(EventParam u = null)

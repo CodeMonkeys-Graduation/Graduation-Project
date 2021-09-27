@@ -9,71 +9,40 @@ public enum ActionType { Move, Attack, Item, Skill }
 [System.Serializable]
 public class ItemBag
 {
-    public List<Item> items = new List<Item>();
-    public Dictionary<string, int> itemFinder = new Dictionary<string, int>();
+    private Dictionary<Item, int> items = new Dictionary<Item, int>();
 
-
-    public Dictionary<Item, int> GetItem()
-    {
-        Dictionary<Item, int> itemDictionary = new Dictionary<Item, int>();
-        foreach(var item in items)
-        {
-            if(itemDictionary.ContainsKey(item))
-                itemDictionary[item]++;
-
-            else
-                itemDictionary.Add(item, 1);
-        }
-        return itemDictionary;
-    }
+    public Dictionary<Item, int> GetItem() => items;
 
     public void AddItem(Item item)
     {
-        items.Add(item);
-        SetItemFinder(item.itemCode);
-    }
-
-    public Item GetItembyCode(string code)
-    {
-        for (int i = 0; i < items.Count; i++)
+        if(items.TryGetValue(item, out _))
         {
-            if (items[i].itemCode == code) return items[i];
+            items[item]++;
         }
-
-        return null;
-    }
-
-    public void RemoveItem(Item item)
-    {
-        items.Remove(items.Find(i => i == item));
-    }
-
-    public void RemoveItem(string code)
-    {
-        items.Remove(items.Find(item => item.itemCode == code));
-    }
-
-    public void SetItemFinder(string code)
-    {
-        int count = 0;
-
-        foreach (KeyValuePair<string, int> dic in itemFinder) // 현재 가방 탐색기에 존재하는 아이템은 그냥 리턴
+        else 
         {
-            if (code == dic.Key) return;
+            items.Add(item, 1);
         }
+    }
 
-        for (int i = 0; i < items.Count; i++) // 아이템 갯수 세기
+    public bool RemoveItem(Item item)
+    {
+        if (items.TryGetValue(item, out _))
         {
-            if (items[i].itemCode == code)
+            if(--items[item] <= 0)
             {
-                count++;
+                items.Remove(item);
             }
+            return true;
         }
-
-        if (count == 0) return; // 갯수가 0개면 리턴
-
-        itemFinder.Add(code, count);
+        else
+        {
+            return false;
+        }
     }
+
+    public bool Contains(Item item) => items.TryGetValue(item, out _);
+
 }
 public class Range
 {
@@ -279,12 +248,12 @@ public class Unit : MonoBehaviour
     }
     public void PlayHitSFX()
     {
-        AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.Unit_Hit, AudioMgr.AudioType.SFX, false);
+        AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.Unit_Hit, AudioMgr.AudioType.SFX);
     }
 
     public void PlayAttackSFX()
     {
-        AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.Unit_Attack, AudioMgr.AudioType.SFX, false);
+        AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.Unit_Attack, AudioMgr.AudioType.SFX);
     }
 
 
