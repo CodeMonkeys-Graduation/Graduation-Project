@@ -10,7 +10,7 @@ public class SummonPanel : UIComponent
 
     public Dictionary<SummonBtn, int> SummonBtnCount = new Dictionary<SummonBtn, int>();
 
-    public override void SetPanel(EventParam u) // 유닛을 받아 그 유닛을 판넬에 세팅하는 함수
+    public override void SetPanel(UIParam u) // 유닛을 받아 그 유닛을 판넬에 세팅하는 함수
     {
         if (u == null) return;
 

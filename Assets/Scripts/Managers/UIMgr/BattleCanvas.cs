@@ -145,12 +145,8 @@ public class BattleCanvas : BaseCanvas
     }
     void SetUITurnActionEnter(EventParam param)
     {
-        List<UIType> list = new List<UIType>();
-
-        list.Add(UIType.TMEndTurnBtn);
-        list.Add(UIType.TMBackBtn);
-
-        TurnOnUIs(list);
+        TurnOnUIComponent(UIType.TMEndTurnBtn);
+        TurnOnUIComponent(UIType.TMBackBtn);
     }
     void SetUITurnActionExit(EventParam param)
     {
@@ -159,7 +155,7 @@ public class BattleCanvas : BaseCanvas
         list.Add(UIType.TMEndTurnBtn);
         list.Add(UIType.TMBackBtn);
 
-        TurnOffUIs(list);
+        TurnOffUIComponents(list);
     }
     void SetUIPlan(EventParam param)
     {
@@ -170,7 +166,7 @@ public class BattleCanvas : BaseCanvas
         list.Add(UIType.BattlePlayBtn);
         list.Add(UIType.ActionPanel);
 
-        TurnOffUIs(list);
+        TurnOffUIComponents(list);
         _dictionary[UIType.ActionPointPanel].SetPanel(new UIActionPoint(_turnMgr.turns.Peek().actionPointsRemain));
 
         TurnPanel tp = (TurnPanel)_dictionary[UIType.TurnPanel];

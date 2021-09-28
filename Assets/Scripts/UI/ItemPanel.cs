@@ -9,11 +9,11 @@ public class ItemPanel : UIComponent
 {
     [SerializeField] List<ItemSlot> itemSlots;
 
-    public override void SetPanel(EventParam u)
+    public override void SetPanel(UIParam param)
     {
-        if (u == null) return;
+        if (param == null) return;
 
-        UIItem uit = (UIItem)u;
+        UIItem uit = (UIItem)param;
 
         Dictionary<Item, int> itemCounter = uit._itemCounter;
         Action<Item> onClickItemSlot = uit._onClickItemSlot;

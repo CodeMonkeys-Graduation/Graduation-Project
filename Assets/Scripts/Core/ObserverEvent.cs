@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +12,11 @@ namespace ObserverPattern
     {
         public Unit _owner;
         public UnitStateEvent(Unit owner) { _owner = owner; }
+    }
+
+    public interface UIChangeEvent : EventParam
+    {
+
     }
 
     [CreateAssetMenu(order = 0, fileName = "E_OnXXX", menuName = "New Event")]

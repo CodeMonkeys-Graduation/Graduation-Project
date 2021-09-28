@@ -10,7 +10,7 @@ public class PopupPanel : UIComponent
     [SerializeField] public Button noBtn;
     [SerializeField] public TextMeshProUGUI Description;
 
-    public override void SetPanel(EventParam u)
+    public override void SetPanel(UIParam u)
     {
         if (u == null) return;
 

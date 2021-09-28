@@ -13,7 +13,7 @@ public class DevSceneLoadBtn : UIComponent
         GetComponent<Button>().onClick.AddListener(OnClickedBtn);
     }
 
-    public override void SetPanel(EventParam param)
+    public override void SetPanel(UIParam param = null)
     {
 
     }

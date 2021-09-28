@@ -16,7 +16,7 @@ public class SceneLoadTestBtn : UIComponent
         _Btn = GetComponent<Button>();
     }
 
-    public override void SetPanel(EventParam u = null)
+    public override void SetPanel(UIParam u = null)
     {
         throw new System.NotImplementedException();
     }
