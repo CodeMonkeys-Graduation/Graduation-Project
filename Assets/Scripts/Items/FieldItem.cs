@@ -9,6 +9,7 @@ public class FieldItem : MonoBehaviour
     public void Acquire(Unit acquirer)
     {
         acquirer.itemBag.AddItem(ItemStaticData.Instance.items[itemType]);
+        AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.SFX_AcquireItem, AudioMgr.AudioType.SFX);
 
         Destroy(gameObject);
     }

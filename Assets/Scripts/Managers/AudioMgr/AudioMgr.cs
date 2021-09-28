@@ -44,6 +44,8 @@ public class AudioMgr : SingletonBehaviour<AudioMgr>
         Skill_Flame,
         Skill_WaterTornado,
         SFX_SwordBladeSwish,
+        SFX_AcquireItem,
+        SFX_UsePotion,
     }
 
     // Start is called before the first frame update

@@ -174,7 +174,10 @@ public class Unit : MonoBehaviour
     public void ResetActionPoint() => actionPointsRemain = actionPoints;
     public void ResetActionPoint(int add) => actionPointsRemain = actionPoints + add;
 
-    public void EnqueueCommand(UnitCommand command) => commandQueue.Enqueue(command);
+    public void EnqueueCommand(UnitCommand command)
+    {
+        commandQueue.Enqueue(command);
+    }
     public UnitCommand TryDequeueCommand()
     {
         if (commandQueue.Count > 0)
