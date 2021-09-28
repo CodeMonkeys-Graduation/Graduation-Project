@@ -37,7 +37,7 @@ public class BaseCanvas : MonoBehaviour
 
     public void TurnOffUIComponent(UIType ut)
     {
-        _dictionary[ut].gameObject.SetActive(false);
+        _dictionary[ut].UnsetPanel();
     }
 
     public void TurnOffUIComponents(List<UIType> l_ui)
