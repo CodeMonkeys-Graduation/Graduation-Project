@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using System.Linq;
 using ObserverPattern;
 
-public abstract class UIParam
+public abstract class UIParam // Event성 파라미터를 넘길 필요없는 UI는 이 UIParam만 상속받을 것
 {
     public abstract UIType _uitype
     {
@@ -14,7 +14,7 @@ public abstract class UIParam
     }
 }
 
-public class UIAction : UIParam, UIChangeEvent 
+public class UIAction : UIParam, EventParam
 {
     UIParam p;
     public List<Unit.ActionSlot> _actionSlots;
@@ -33,7 +33,7 @@ public class UIAction : UIParam, UIChangeEvent
     }
 }
 
-public class UIActionPoint : UIParam, UIChangeEvent
+public class UIActionPoint : UIParam, EventParam
 {
     public int _point;
     public UIActionPoint(int point) => _point = point;
@@ -43,7 +43,7 @@ public class UIActionPoint : UIParam, UIChangeEvent
     }
 }
 
-public class UIItem : UIParam, UIChangeEvent
+public class UIItem : UIParam, EventParam
 {
     public Dictionary<Item, int> _itemCounter;
     public Action<Item> _onClickItemSlot;
@@ -58,7 +58,7 @@ public class UIItem : UIParam, UIChangeEvent
     }
 }
 
-public class UIPopup : UIParam, UIChangeEvent
+public class UIPopup : UIParam, EventParam
 {
     public string _content;
     public Vector3 _pos;
@@ -78,7 +78,7 @@ public class UIPopup : UIParam, UIChangeEvent
     }
 }
 
-public class UIStatus : UIParam, UIChangeEvent
+public class UIStatus : UIParam, EventParam
 {
     public Unit _u;
 
@@ -90,7 +90,7 @@ public class UIStatus : UIParam, UIChangeEvent
     }
 }
 
-public class UISummon : UIParam, UIChangeEvent
+public class UISummon : UIParam, EventParam
 {
     public List<Unit> _units;
     public bool _add;
@@ -104,3 +104,5 @@ public class UISummon : UIParam, UIChangeEvent
         get { return UIType.SummonPanel; }
     }
 }
+
+

@@ -14,11 +14,6 @@ namespace ObserverPattern
         public UnitStateEvent(Unit owner) { _owner = owner; }
     }
 
-    public interface UIChangeEvent : EventParam
-    {
-
-    }
-
     [CreateAssetMenu(order = 0, fileName = "E_OnXXX", menuName = "New Event")]
     public class ObserverEvent : ScriptableObject
     {
