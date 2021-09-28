@@ -8,10 +8,8 @@ using UnityEngine.UI;
 public class ActionPanel : UIComponent
 {
     [SerializeField] List<ActionBtn> actionBtns;
-    public override void SetPanel(EventParam u)
+    public override void SetPanel(UIParam u)
     {
-        if (u == null) return;
-
         UIAction ua = (UIAction)u;
         actionBtns.ForEach(b => b.SetBtnActive(false));
 

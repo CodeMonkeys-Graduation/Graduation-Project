@@ -14,7 +14,7 @@ public class StatusPanel : UIComponent
     [SerializeField] public Image unitImage;
     [SerializeField] public Image unitSkill;
 
-    public override void SetPanel(EventParam u)
+    public override void SetPanel(UIParam u)
     {
         if (u == null) return;
 

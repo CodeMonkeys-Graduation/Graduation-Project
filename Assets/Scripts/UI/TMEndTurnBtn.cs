@@ -9,6 +9,6 @@ public class TMEndTurnBtn : UIComponent
         TurnMgr.Instance.NextTurn();
     }
 
-    public override void SetPanel(EventParam u = null) { if (u == null) gameObject.SetActive(true); }
+    public override void SetPanel(UIParam u = null) { if (u == null) gameObject.SetActive(true); }
     public override void UnsetPanel() => gameObject.SetActive(false);
 }

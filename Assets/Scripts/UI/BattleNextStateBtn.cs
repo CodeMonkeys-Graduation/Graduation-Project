@@ -49,9 +49,9 @@ public class BattleNextStateBtn : UIComponent
         AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_Clicked, AudioMgr.AudioType.UI);
     }
 
-    public override void SetPanel(EventParam u = null)
+    public override void SetPanel(UIParam u = null)
     {
-
+        gameObject.SetActive(true);
     }
     public override void UnsetPanel()
     {

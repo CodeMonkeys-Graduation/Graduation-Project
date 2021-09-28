@@ -7,7 +7,7 @@ public class ActionPointPanel : UIComponent
 {
     [SerializeField] TextMeshProUGUI actionPointText;
 
-    public override void SetPanel(EventParam u)
+    public override void SetPanel(UIParam u)
     {
         if (u == null) return;
 

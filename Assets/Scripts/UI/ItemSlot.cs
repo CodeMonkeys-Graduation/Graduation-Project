@@ -25,7 +25,7 @@ public class ItemSlot : MonoBehaviour, IPanel
         GetComponent<Transform>();
     }
 
-    public void SetPanel(EventParam u) => gameObject.SetActive(true);
+    public void SetPanel(UIParam u) => gameObject.SetActive(true);
 
     public void UnsetPanel()
     {

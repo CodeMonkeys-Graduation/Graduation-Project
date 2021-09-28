@@ -96,4 +96,9 @@ public class UIMgr : SingletonBehaviour<UIMgr>
                 return null;
         }
     }
+
+    public static UIType TypeToUITypeConverter(Type t)
+    {
+        return (UIType)Enum.Parse(typeof(UIType), t.ToString()); // 이렇게 변환해도 되긴 하는데, 이러면 Type명과 enum이 같아야 함
+    }
 }
