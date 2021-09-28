@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: HealthPotion
   m_EditorClassIdentifier: 
   itemCode: R1
-  itemCount: 2
   itemName: "\uBE68\uAC04\uD3EC\uC158"
-  itemImage: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  amount: 300
+  itemType: 0
+  itemImage: {fileID: 21300000, guid: e030cedfecbc78245bb3d527a5315055, type: 3}
+  amount: 15
+  useVFX: {fileID: 198566116396328362, guid: 6943138a0c4a8fd4ea27b63049acac96, type: 3}

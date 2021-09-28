@@ -273,6 +273,8 @@ public class CameraMgr : SingletonBehaviour<CameraMgr>
     public void UnsetTarget()
     {
         _target = null;
+
+        _stateMachine.ChangeState(new CameraMgr_NormalState_(this), StateMachine<CameraMgr>.StateTransitionMethod.PopNPush);
     }
 
 }
