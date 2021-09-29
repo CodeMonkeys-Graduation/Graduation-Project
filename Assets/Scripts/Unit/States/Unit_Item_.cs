@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,14 +8,16 @@ using ObserverPattern;
 public class Unit_Item_ : State<Unit>
 {
     Item _item;
-    public Unit_Item_(Unit owner, Item item) : base(owner)
+    List<Cube> _useCubes;
+    public Unit_Item_(Unit owner, Item item, List<Cube> useCubes) : base(owner)
     {
+        _useCubes = useCubes;
         _item = item;
     }
 
     public override void Enter()
     {
-        _item.Use(owner);
+        _item.Use(owner, _useCubes);
 
         owner.itemBag.RemoveItem(_item);
 

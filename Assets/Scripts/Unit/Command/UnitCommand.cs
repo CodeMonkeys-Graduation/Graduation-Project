@@ -109,18 +109,22 @@ public class MoveCommand : UnitCommand
 public class ItemCommand : UnitCommand
 {
     Item _item;
-    private ItemCommand(Item item)
+    List<Cube> _useCubes;
+
+
+    private ItemCommand(Item item, List<Cube> useCubes)
     {
+        _useCubes = useCubes;
         _item = item;
     }
 
     // Command를 할수 있는지 없는지만 검사합니다.
     // 생성자대용으로 사용합니다.
-    public static bool CreateCommand(Unit unit, Item item, out ItemCommand itemCommand)
+    public static bool CreateCommand(Unit unit, Item item, List<Cube> useCubes, out ItemCommand itemCommand)
     {
         if (unit.itemBag.Contains(item))
         {
-            itemCommand = new ItemCommand(item);
+            itemCommand = new ItemCommand(item, useCubes);
             return true;
         }
         else
@@ -131,9 +135,9 @@ public class ItemCommand : UnitCommand
     }
 
     // AI Simulation에서만 사용할 함수입니다.
-    public static void ForceCreateCommand(Item item, out ItemCommand itemCommand)
+    public static void ForceCreateCommand(Item item, List<Cube> useCubes, out ItemCommand itemCommand)
     {
-        itemCommand = new ItemCommand(item);
+        itemCommand = new ItemCommand(item, useCubes);
     }
 
 
@@ -146,7 +150,7 @@ public class ItemCommand : UnitCommand
         if (unit.itemBag.Contains(_item) &&
         unit.actionPointsRemain >= apCost)
         {
-            unit.stateMachine.ChangeState(new Unit_Item_(unit, _item), StateMachine<Unit>.StateTransitionMethod.PopNPush);
+            unit.stateMachine.ChangeState(new Unit_Item_(unit, _item, _useCubes), StateMachine<Unit>.StateTransitionMethod.PopNPush);
             return true;
         }
         else

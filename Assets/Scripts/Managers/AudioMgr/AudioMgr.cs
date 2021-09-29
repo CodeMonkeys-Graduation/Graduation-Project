@@ -46,6 +46,7 @@ public class AudioMgr : SingletonBehaviour<AudioMgr>
         SFX_SwordBladeSwish,
         SFX_AcquireItem,
         SFX_UsePotion,
+        UI_NoAccept,
     }
 
     // Start is called before the first frame update

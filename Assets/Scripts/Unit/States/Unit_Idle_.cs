@@ -1,4 +1,4 @@
-﻿using ObserverPattern;
+using ObserverPattern;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +15,11 @@ public class CommandResultParam : EventParam
 
 public class Unit_Idle_ : State<Unit>
 {
-    private class UnitKey : Unit, IKey { }
+    private class UnitKey : Unit, IKey // just for friend implementation in c++
+    {
+        protected override void SetRange() { } // do nothing
+    }
+
     public Unit_Idle_(Unit owner) : base(owner) { }
 
     public override void Enter()
