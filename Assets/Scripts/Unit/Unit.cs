@@ -61,7 +61,7 @@ public class Range
     }
 }
 
-public class Unit : MonoBehaviour
+public abstract class Unit : MonoBehaviour
 {
     [System.Serializable]
     public class ActionSlot
@@ -119,7 +119,7 @@ public class Unit : MonoBehaviour
     /// <summary>
     /// basicAttackRange, basicAttackSplash 두 변수를 꼭 유닛별로 초기화해주세요.
     /// </summary>
-    protected virtual void SetRange() { basicAttackRange = basicAttackSplash = null; }
+    protected abstract void SetRange();
 
     public virtual void Start()
     {

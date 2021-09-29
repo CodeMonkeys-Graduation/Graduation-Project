@@ -36,6 +36,10 @@ public class TurnMgr_PlayerMove_ : TurnMgr_State_
                 {
                     OnClickCubeCanGo(cubeClicked);
                 }
+                else
+                {
+                    AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_NoAccept, AudioMgr.AudioType.UI);
+                }
             }
         }
     }

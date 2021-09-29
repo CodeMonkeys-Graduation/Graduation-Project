@@ -28,7 +28,6 @@ public class BattleCanvas : BaseCanvas
     EventListener el_TurnPlan = new EventListener();
     #endregion
 
-    TurnMgr _turnMgr = TurnMgr.Instance;
     private void Start()
     {
         #region RegisterEvent
@@ -102,15 +101,15 @@ public class BattleCanvas : BaseCanvas
         btnEvents.Add(ActionType.Item, OnClickItemBtn);
         btnEvents.Add(ActionType.Skill, OnClickSkillBtn);
 
-        Unit nextTurnUnit = _turnMgr.turns.Peek();
+        Unit nextTurnUnit = TurnMgr.Instance.turns.Peek();
         TurnPanel tp = (TurnPanel)_dictionary[UIType.TurnPanel];
 
         _dictionary[UIType.ActionPanel].SetPanel(new UIAction(nextTurnUnit.actionSlots, nextTurnUnit.actionPointsRemain, btnEvents));
         _dictionary[UIType.ActionPointPanel].SetPanel(new UIActionPoint(nextTurnUnit.actionPointsRemain));
         _dictionary[UIType.TurnPanel].SetPanel();
 
-        if (tp.ShouldUpdateSlots(_turnMgr.turns.ToList()))
-            tp.SetSlots((StatusPanel)_dictionary[UIType.StatusPanel], _turnMgr.turns.ToList());
+        if (tp.ShouldUpdateSlots(TurnMgr.Instance.turns.ToList()))
+            tp.SetSlots((StatusPanel)_dictionary[UIType.StatusPanel], TurnMgr.Instance.turns.ToList());
 
         TurnOnUIComponent(UIType.TMEndTurnBtn);
     }
@@ -120,11 +119,11 @@ public class BattleCanvas : BaseCanvas
     }
     void SetUITurnMove(EventParam param)
     {
-        _dictionary[UIType.ActionPointPanel].SetPanel(new UIActionPoint(_turnMgr.turns.Peek().actionPointsRemain));
+        _dictionary[UIType.ActionPointPanel].SetPanel(new UIActionPoint(TurnMgr.Instance.turns.Peek().actionPointsRemain));
     }
     void SetUITurnItemEnter(EventParam param)
     {
-        _dictionary[UIType.ItemPanel].SetPanel(new UIItem(_turnMgr.turns.Peek().itemBag.GetItem(), OnClickItemSlotBtn));
+        //_dictionary[UIType.ItemPanel].SetPanel(new UIItem(TurnMgr.Instance.turns.Peek().itemBag.GetItem(), OnClickItemSlotBtn));
     }
     void SetUITurnItemExit(EventParam param)
     {
@@ -167,49 +166,72 @@ public class BattleCanvas : BaseCanvas
         list.Add(UIType.ActionPanel);
 
         TurnOffUIComponents(list);
-        _dictionary[UIType.ActionPointPanel].SetPanel(new UIActionPoint(_turnMgr.turns.Peek().actionPointsRemain));
+        _dictionary[UIType.ActionPointPanel].SetPanel(new UIActionPoint(TurnMgr.Instance.turns.Peek().actionPointsRemain));
 
         TurnPanel tp = (TurnPanel)_dictionary[UIType.TurnPanel];
         tp.SetPanel();
 
-        if (tp.ShouldUpdateSlots(_turnMgr.turns.ToList()))
-            tp.SetSlots((StatusPanel)_dictionary[UIType.StatusPanel], _turnMgr.turns.ToList());
+        if (tp.ShouldUpdateSlots(TurnMgr.Instance.turns.ToList()))
+            tp.SetSlots((StatusPanel)_dictionary[UIType.StatusPanel], TurnMgr.Instance.turns.ToList());
     }
     #endregion
     private void OnClickMoveBtn()
-  => _turnMgr.stateMachine.ChangeState(new TurnMgr_PlayerMove_(_turnMgr, _turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+        => TurnMgr.Instance.stateMachine.ChangeState(
+              new TurnMgr_PlayerMove_(TurnMgr.Instance, TurnMgr.Instance.turns.Peek()), 
+              StateMachine<TurnMgr>.StateTransitionMethod.JustPush
+            );
+
     private void OnClickAttackBtn()
-        => _turnMgr.stateMachine.ChangeState(new TurnMgr_PlayerAttack_(_turnMgr, _turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+        => TurnMgr.Instance.stateMachine.ChangeState(
+                new TurnMgr_PlayerAttack_(TurnMgr.Instance, TurnMgr.Instance.turns.Peek()), 
+                StateMachine<TurnMgr>.StateTransitionMethod.JustPush
+            );
     private void OnClickItemBtn()
-        => _turnMgr.stateMachine.ChangeState(new TurnMgr_PlayerItem_(_turnMgr, _turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+        => TurnMgr.Instance.stateMachine.ChangeState(
+                new TurnMgr_PlayerItemBag_(TurnMgr.Instance, TurnMgr.Instance.turns.Peek()), 
+                StateMachine<TurnMgr>.StateTransitionMethod.JustPush
+            );
     private void OnClickSkillBtn()
-    => _turnMgr.stateMachine.ChangeState(new TurnMgr_PlayerSkill_(_turnMgr, _turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
-    void UseItem(Item item)
+        => TurnMgr.Instance.stateMachine.ChangeState(
+            new TurnMgr_PlayerSkill_(TurnMgr.Instance, TurnMgr.Instance.turns.Peek()), 
+            StateMachine<TurnMgr>.StateTransitionMethod.JustPush
+        );
+    
+    void OnClickYesItemPopup(Item item)
     {
-        _turnMgr = TurnMgr.Instance;
-
-        TurnMgr_State_ nextState = new TurnMgr_PlayerBegin_(_turnMgr, _turnMgr.turns.Peek());
-        _turnMgr.stateMachine.ChangeState(
-            new TurnMgr_WaitSingleEvent_(_turnMgr, _turnMgr.turns.Peek(), EventMgr.Instance.onUnitIdleEnter, nextState),
-            StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+        //TurnMgr_State_ nextState = new TurnMgr_PlayerBegin_(TurnMgr.Instance, TurnMgr.Instance.turns.Peek());
+        //TurnMgr.Instance.stateMachine.ChangeState(
+        //    new TurnMgr_WaitSingleEvent_(TurnMgr.Instance, TurnMgr.Instance.turns.Peek(), EventMgr.Instance.onUnitIdleEnter, nextState),
+        //    StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
 
 
-        ItemCommand itemCommand;
-        if (ItemCommand.CreateCommand(_turnMgr.turns.Peek(), item, out itemCommand))
-        {
-            _turnMgr.turns.Peek().EnqueueCommand(itemCommand);
-        }
+        //ItemCommand itemCommand;
+        //if (ItemCommand.CreateCommand(TurnMgr.Instance.turns.Peek(), item, out itemCommand))
+        //{
+        //    TurnMgr.Instance.turns.Peek().EnqueueCommand(itemCommand);
+        //}
     }
     void OnClickItemSlotBtn(Item item) 
     {
-        ItemPanel ip = (ItemPanel)_dictionary[UIType.ItemPanel];
+        //ItemPanel ip = UIMgr.Instance.GetUIComponent<ItemPanel>(true); /*(ItemPanel)_dictionary[UIType.ItemPanel];*/
 
-        string popupContent = $"r u sure u wanna use {item.name}?";
-        _turnMgr.stateMachine.ChangeState(
-            new TurnMgr_Popup_(_turnMgr, _turnMgr.turns.Peek(), Input.mousePosition, popupContent,
-            () => UseItem(item), () => _turnMgr.stateMachine.ChangeState(null, StateMachine<TurnMgr>.StateTransitionMethod.ReturnToPrev),
-            () => ip.SetPanel(new UIItem(_turnMgr.turns.Peek().itemBag.GetItem(), OnClickItemSlotBtn)), null,
-            () => ip.UnsetPanel()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+        //string popupContent = $"r u sure u wanna use {item.name}?";
+        //TurnMgr.Instance.stateMachine.ChangeState(
+        //    new TurnMgr_Popup_(
+        //        owner: TurnMgr.Instance, 
+        //        unit: TurnMgr.Instance.turns.Peek(), 
+        //        popupPos: Input.mousePosition, 
+        //        popupContent: popupContent,
+        //        onClickYes: () => OnClickYesItemPopup(item), 
+        //        onClickNo: () => TurnMgr.Instance.stateMachine.ChangeState(null, StateMachine<TurnMgr>.StateTransitionMethod.ReturnToPrev),
+        //        onPopupEnter: null /*() => ip.SetPanel(new UIItem(_turnMgr.turns.Peek().itemBag.GetItem(), OnClickItemSlotBtn))*/, 
+        //        onPopupExecute: null,
+        //        onPopupExit: () => ip.UnsetPanel()
+        //    ), 
+        //    StateMachine<TurnMgr>.StateTransitionMethod.JustPush
+        // );
+
+
     }
 
 }

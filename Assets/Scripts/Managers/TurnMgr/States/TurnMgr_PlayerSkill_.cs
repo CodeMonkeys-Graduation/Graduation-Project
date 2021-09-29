@@ -1,4 +1,4 @@
-﻿using ObserverPattern;
+using ObserverPattern;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -55,6 +55,15 @@ public class TurnMgr_PlayerSkill_ : TurnMgr_State_
                         StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
    
                 }
+                else
+                {
+                    AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_NoAccept, AudioMgr.AudioType.UI);
+                }
+
+            }
+            else
+            {
+                AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_NoAccept, AudioMgr.AudioType.UI);
             }
         }
     }

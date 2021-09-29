@@ -7,9 +7,13 @@ public class TurnMgr_PlayerAttack_ : TurnMgr_State_
 {
     List<Cube> cubesCanAttack;
     List<Cube> cubesAttackRange;
-    protected Cube cubeClicked;
+    private Cube cubeClicked;
 
     public TurnMgr_PlayerAttack_(TurnMgr owner, Unit unit) : base(owner, unit)
+    {
+    }
+
+    public override void Enter()
     {
         // get all cubes in range
         cubesAttackRange = MapMgr.Instance.GetCubes(unit.basicAttackRange, unit.GetCube);
@@ -18,13 +22,10 @@ public class TurnMgr_PlayerAttack_ : TurnMgr_State_
         cubesCanAttack = cubesAttackRange
             .Where(CubeCanAttackConditions)
             .ToList();
-    }
 
-    public override void Enter()
-    {
         CameraMgr.Instance.SetTarget(unit, true);
 
-        MapMgr.Instance.BlinkCubes(cubesAttackRange, 0.3f);
+        MapMgr.Instance.BlinkCubes(cubesAttackRange, 0.1f);
         MapMgr.Instance.BlinkCubes(cubesCanAttack, 0.7f);
         unit.StartBlink();
 
@@ -50,9 +51,14 @@ public class TurnMgr_PlayerAttack_ : TurnMgr_State_
                         popupContent, AttackOnClickedCube, OnClickNo, () => cubesInAttackSplash.ForEach(c => c.SetBlink(0.7f)), null, () => MapMgr.Instance.StopBlinkAll()),
                         StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
                 }
+
+                else
+                {
+                    AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_NoAccept, AudioMgr.AudioType.UI);
+                }
             }
 
-            if(RaycatWithEnemyUnitMask(out hit))
+            else if(RaycatWithEnemyUnitMask(out hit))
             {
                 cubeClicked = hit.transform.GetComponent<Unit>().GetCube;
                 if (cubesCanAttack.Contains(cubeClicked))
@@ -65,6 +71,11 @@ public class TurnMgr_PlayerAttack_ : TurnMgr_State_
                         new TurnMgr_Popup_(owner, unit, Input.mousePosition,
                         popupContent, AttackOnClickedCube, OnClickNo, () => cubesInAttackSplash.ForEach(c => c.SetBlink(0.7f)), null, () => MapMgr.Instance.StopBlinkAll()),
                         StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+                }
+
+                else
+                {
+                    AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.UI_NoAccept, AudioMgr.AudioType.UI);
                 }
             }
         }
@@ -98,7 +109,8 @@ public class TurnMgr_PlayerAttack_ : TurnMgr_State_
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Unit"));
-        return unit.team.enemyTeams.Contains(hit.transform.GetComponent<Unit>().team);
+        return hit.transform != null && 
+            unit.team.enemyTeams.Contains(hit.transform.GetComponent<Unit>().team);
     }
 
     private void AttackOnClickedCube()

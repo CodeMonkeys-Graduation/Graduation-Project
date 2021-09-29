@@ -142,7 +142,7 @@ public class TurnMgr : SingletonBehaviour<TurnMgr>
         else if (stateMachine.IsStateType(typeof(TurnMgr_PlayerAttack_)))
             tmState = TMState.PlayerTurnAttack;
 
-        else if (stateMachine.IsStateType(typeof(TurnMgr_PlayerItem_)))
+        else if (stateMachine.IsStateType(typeof(TurnMgr_PlayerItemBag_)))
             tmState = TMState.PlayerTurnItem;
 
         else if (stateMachine.IsStateType(typeof(TurnMgr_PlayerSkill_)))
