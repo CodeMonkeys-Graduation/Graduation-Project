@@ -51,6 +51,22 @@ public class TurnMgr_PlayerAttack_ : TurnMgr_State_
                         StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
                 }
             }
+
+            if(RaycatWithEnemyUnitMask(out hit))
+            {
+                cubeClicked = hit.transform.GetComponent<Unit>().GetCube;
+                if (cubesCanAttack.Contains(cubeClicked))
+                {
+                    List<Cube> cubesInAttackSplash = MapMgr.Instance.GetCubes(unit.basicAttackSplash, cubeClicked);
+
+                    string popupContent = $"Are you Sure?";
+
+                    owner.stateMachine.ChangeState(
+                        new TurnMgr_Popup_(owner, unit, Input.mousePosition,
+                        popupContent, AttackOnClickedCube, OnClickNo, () => cubesInAttackSplash.ForEach(c => c.SetBlink(0.7f)), null, () => MapMgr.Instance.StopBlinkAll()),
+                        StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+                }
+            }
         }
     }
 
@@ -76,6 +92,13 @@ public class TurnMgr_PlayerAttack_ : TurnMgr_State_
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         return Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Cube"));
+    }
+
+    private bool RaycatWithEnemyUnitMask(out RaycastHit hit)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Unit"));
+        return unit.team.enemyTeams.Contains(hit.transform.GetComponent<Unit>().team);
     }
 
     private void AttackOnClickedCube()
