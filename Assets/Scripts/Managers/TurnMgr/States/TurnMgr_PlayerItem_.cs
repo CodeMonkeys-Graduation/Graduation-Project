@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerTurnItem : TurnMgr_State_
+public class TurnMgr_PlayerItem_ : TurnMgr_State_
 {
-    public PlayerTurnItem(TurnMgr owner, Unit unit) : base(owner, unit)
+    public TurnMgr_PlayerItem_(TurnMgr owner, Unit unit) : base(owner, unit)
     {
     }
 
