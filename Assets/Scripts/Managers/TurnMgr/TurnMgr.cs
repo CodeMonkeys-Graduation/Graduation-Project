@@ -72,7 +72,7 @@ public class TurnMgr : SingletonBehaviour<TurnMgr>
 
         // AI가 컨트롤하는 팀의 유닛이라면
         else if (unitForNextTurn.team.controller == Team.Controller.AI)
-            stateMachine.ChangeState(new AITurnBegin(this, unitForNextTurn), StateMachine<TurnMgr>.StateTransitionMethod.ClearNPush);
+            stateMachine.ChangeState(new TurnMgr_AIBegin_(this, unitForNextTurn), StateMachine<TurnMgr>.StateTransitionMethod.ClearNPush);
     }
 
     private void RegisterEvents()
@@ -136,13 +136,13 @@ public class TurnMgr : SingletonBehaviour<TurnMgr>
         else if (stateMachine.IsStateType(typeof(TurnMgr_PlayerBegin_)))
             tmState = TMState.PlayerTurnBegin;
 
-        else if (stateMachine.IsStateType(typeof(PlayerTurnMove)))
+        else if (stateMachine.IsStateType(typeof(TurnMgr_PlayerMove_)))
             tmState = TMState.PlayerTurnMove;
 
         else if (stateMachine.IsStateType(typeof(TurnMgr_PlayerAttack_)))
             tmState = TMState.PlayerTurnAttack;
 
-        else if (stateMachine.IsStateType(typeof(PlayerTurnItem)))
+        else if (stateMachine.IsStateType(typeof(TurnMgr_PlayerItem_)))
             tmState = TMState.PlayerTurnItem;
 
         else if (stateMachine.IsStateType(typeof(TurnMgr_PlayerSkill_)))
@@ -157,7 +157,7 @@ public class TurnMgr : SingletonBehaviour<TurnMgr>
         else if (stateMachine.IsStateType(typeof(TurnMgr_WaitMultipleEvents_)))
             tmState = TMState.WaitMultipleEvent;
 
-        else if (stateMachine.IsStateType(typeof(AITurnBegin)))
+        else if (stateMachine.IsStateType(typeof(TurnMgr_AIBegin_)))
             tmState = TMState.AITurnBegin;
 
         else if (stateMachine.IsStateType(typeof(TurnMgr_AIPlan_)))

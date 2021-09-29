@@ -1,12 +1,12 @@
-﻿using ObserverPattern;
+using ObserverPattern;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerTurnMove : TurnMgr_State_
+public class TurnMgr_PlayerMove_ : TurnMgr_State_
 {
     List<Cube> cubesCanGo;
     Cube cubeClicked;
-    public PlayerTurnMove(TurnMgr owner, Unit unit) : base(owner, unit)
+    public TurnMgr_PlayerMove_(TurnMgr owner, Unit unit) : base(owner, unit)
     {
         cubesCanGo = MapMgr.Instance.GetCubes(
             unit.GetCube,

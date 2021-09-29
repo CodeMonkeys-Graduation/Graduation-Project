@@ -1,11 +1,11 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class AITurnBegin : TurnMgr_State_
+public class TurnMgr_AIBegin_ : TurnMgr_State_
 {
-    public AITurnBegin(TurnMgr owner, Unit unit) : base(owner, unit)
+    public TurnMgr_AIBegin_(TurnMgr owner, Unit unit) : base(owner, unit)
     {
     }
 

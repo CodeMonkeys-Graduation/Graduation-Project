@@ -177,11 +177,11 @@ public class BattleCanvas : BaseCanvas
     }
     #endregion
     private void OnClickMoveBtn()
-  => _turnMgr.stateMachine.ChangeState(new PlayerTurnMove(_turnMgr, _turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+  => _turnMgr.stateMachine.ChangeState(new TurnMgr_PlayerMove_(_turnMgr, _turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     private void OnClickAttackBtn()
         => _turnMgr.stateMachine.ChangeState(new TurnMgr_PlayerAttack_(_turnMgr, _turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     private void OnClickItemBtn()
-        => _turnMgr.stateMachine.ChangeState(new PlayerTurnItem(_turnMgr, _turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
+        => _turnMgr.stateMachine.ChangeState(new TurnMgr_PlayerItem_(_turnMgr, _turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     private void OnClickSkillBtn()
     => _turnMgr.stateMachine.ChangeState(new TurnMgr_PlayerSkill_(_turnMgr, _turnMgr.turns.Peek()), StateMachine<TurnMgr>.StateTransitionMethod.JustPush);
     void UseItem(Item item)
