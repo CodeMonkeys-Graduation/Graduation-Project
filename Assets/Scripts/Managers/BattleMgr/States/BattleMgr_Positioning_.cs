@@ -31,7 +31,7 @@ public class BattleMgr_Positioning_ : BattleMgr_State_
     public override void Enter()
     {
         Debug.Log("Battle Positioning State Enter");
-        EventMgr.Instance.onGamePositioningEnter.Invoke(new UISummon(_unitPrefabs, true)); // 여기서 SummonUI에 세팅
+        EventMgr.Instance.onGamePositioningEnter.Invoke(new UISummonParam(_unitPrefabs, true)); // 여기서 SummonUI에 세팅
         _canSummonCubes.ForEach(cube => cube.SetBlink(0.3f));
     }
 

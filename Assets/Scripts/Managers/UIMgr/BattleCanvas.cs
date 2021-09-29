@@ -70,15 +70,15 @@ public class BattleCanvas : BaseCanvas
     {
         if (param != null)
         {
-            UISummon us = (UISummon)param;
-            _dictionary[UIType.SummonPanel].SetPanel(new UISummon(us._units, true));
+            UISummonParam us = (UISummonParam)param;
+            _dictionary[UIType.SummonPanel].SetPanel(new UISummonParam(us._units, true));
         }
     }
     void SetUIGamePositioningExecute(EventParam param)
     {
         List<Unit> _units = new List<Unit>();
         _units.Add(((UnitParam)param)?._unit);
-        _dictionary[UIType.SummonPanel].SetPanel(new UISummon(_units, false));
+        _dictionary[UIType.SummonPanel].SetPanel(new UISummonParam(_units, false));
     }
 
     void SetUIGamePositioningExit(EventParam param)
@@ -104,8 +104,8 @@ public class BattleCanvas : BaseCanvas
         Unit nextTurnUnit = TurnMgr.Instance.turns.Peek();
         TurnPanel tp = (TurnPanel)_dictionary[UIType.TurnPanel];
 
-        _dictionary[UIType.ActionPanel].SetPanel(new UIAction(nextTurnUnit.actionSlots, nextTurnUnit.actionPointsRemain, btnEvents));
-        _dictionary[UIType.ActionPointPanel].SetPanel(new UIActionPoint(nextTurnUnit.actionPointsRemain));
+        _dictionary[UIType.ActionPanel].SetPanel(new UIActionParam(nextTurnUnit.actionSlots, nextTurnUnit.actionPointsRemain, btnEvents));
+        _dictionary[UIType.ActionPointPanel].SetPanel(new UIActionPointParam(nextTurnUnit.actionPointsRemain));
         _dictionary[UIType.TurnPanel].SetPanel();
 
         if (tp.ShouldUpdateSlots(TurnMgr.Instance.turns.ToList()))
@@ -119,7 +119,7 @@ public class BattleCanvas : BaseCanvas
     }
     void SetUITurnMove(EventParam param)
     {
-        _dictionary[UIType.ActionPointPanel].SetPanel(new UIActionPoint(TurnMgr.Instance.turns.Peek().actionPointsRemain));
+        _dictionary[UIType.ActionPointPanel].SetPanel(new UIActionPointParam(TurnMgr.Instance.turns.Peek().actionPointsRemain));
     }
     void SetUITurnItemEnter(EventParam param)
     {
@@ -131,7 +131,7 @@ public class BattleCanvas : BaseCanvas
     }
     void SetUITurnPopupEnter(EventParam param)
     {
-        _dictionary[UIType.PopupPanel].SetPanel((UIPopup)param);
+        _dictionary[UIType.PopupPanel].SetPanel((UIPopupParam)param);
     }
     void SetUITurnPopupExit(EventParam param)
     {
@@ -166,7 +166,7 @@ public class BattleCanvas : BaseCanvas
         list.Add(UIType.ActionPanel);
 
         TurnOffUIComponents(list);
-        _dictionary[UIType.ActionPointPanel].SetPanel(new UIActionPoint(TurnMgr.Instance.turns.Peek().actionPointsRemain));
+        _dictionary[UIType.ActionPointPanel].SetPanel(new UIActionPointParam(TurnMgr.Instance.turns.Peek().actionPointsRemain));
 
         TurnPanel tp = (TurnPanel)_dictionary[UIType.TurnPanel];
         tp.SetPanel();

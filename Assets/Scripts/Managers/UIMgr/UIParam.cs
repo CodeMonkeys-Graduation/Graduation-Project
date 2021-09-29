@@ -14,13 +14,13 @@ public abstract class UIParam // Event성 파라미터를 넘길 필요없는 UI
     }
 }
 
-public class UIAction : UIParam, EventParam
+public class UIActionParam : UIParam, EventParam
 {
     UIParam p;
     public List<Unit.ActionSlot> _actionSlots;
     public int _actionPointRemain;
     public Dictionary<ActionType, UnityAction> _btnEvents;
-    public UIAction(List<Unit.ActionSlot> actionSlots, int actionPointRemain, Dictionary<ActionType, UnityAction> btnEvents)
+    public UIActionParam(List<Unit.ActionSlot> actionSlots, int actionPointRemain, Dictionary<ActionType, UnityAction> btnEvents)
     {
         _actionSlots = actionSlots;
         _actionPointRemain = actionPointRemain;
@@ -33,21 +33,21 @@ public class UIAction : UIParam, EventParam
     }
 }
 
-public class UIActionPoint : UIParam, EventParam
+public class UIActionPointParam : UIParam, EventParam
 {
     public int _point;
-    public UIActionPoint(int point) => _point = point;
+    public UIActionPointParam(int point) => _point = point;
     public override UIType _uitype
     {
         get { return UIType.ActionPointPanel; }
     }
 }
 
-public class UIItem : UIParam, EventParam
+public class UIItemParam : UIParam, EventParam
 {
     public Dictionary<Item, int> _itemCounter;
     public Action<Item> _onClickItemSlot;
-    public UIItem(Dictionary<Item, int> itemCounter, Action<Item> onClickItemSlot)
+    public UIItemParam(Dictionary<Item, int> itemCounter, Action<Item> onClickItemSlot)
     {
         _itemCounter = itemCounter;
         _onClickItemSlot = onClickItemSlot;
@@ -58,14 +58,14 @@ public class UIItem : UIParam, EventParam
     }
 }
 
-public class UIPopup : UIParam, EventParam
+public class UIPopupParam : UIParam, EventParam
 {
     public string _content;
     public Vector3 _pos;
     public UnityAction _yes;
     public UnityAction _no;
 
-    public UIPopup(string content, Vector3 pos, UnityAction yes, UnityAction no)
+    public UIPopupParam(string content, Vector3 pos, UnityAction yes, UnityAction no)
     {
         _content = content;
         _pos = pos;
@@ -78,11 +78,11 @@ public class UIPopup : UIParam, EventParam
     }
 }
 
-public class UIStatus : UIParam, EventParam
+public class UIStatusParam : UIParam, EventParam
 {
     public Unit _u;
 
-    public UIStatus(Unit u) => _u = u;
+    public UIStatusParam(Unit u) => _u = u;
 
     public override UIType _uitype
     {
@@ -90,11 +90,11 @@ public class UIStatus : UIParam, EventParam
     }
 }
 
-public class UISummon : UIParam, EventParam
+public class UISummonParam : UIParam, EventParam
 {
     public List<Unit> _units;
     public bool _add;
-    public UISummon(List<Unit> units, bool add)
+    public UISummonParam(List<Unit> units, bool add)
     {
         _units = units;
         _add = add;
@@ -105,4 +105,14 @@ public class UISummon : UIParam, EventParam
     }
 }
 
+public class UIStageSelectPopupParam : UIParam
+{
+    public SceneMgr.Scene nextScene;
+
+    public UIStageSelectPopupParam(SceneMgr.Scene scene) => nextScene = scene;
+    public override UIType _uitype
+    {
+        get { return UIType.StageSelectPopup; }
+    }
+}
 

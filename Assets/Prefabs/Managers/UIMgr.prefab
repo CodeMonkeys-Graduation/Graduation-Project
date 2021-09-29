@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 8
-  _lifeCycles: 0000000003000000040000000500000006000000
+  _lifeCycles: 000000000300000004000000050000000600000002000000
   canvasPrefab_Dictionary:
     reorderableList:
       canAdd: 1
@@ -68,8 +68,9 @@ MonoBehaviour:
       elementIcon: {fileID: 0}
     reqReferences: {fileID: 0}
     isExpanded: 1
-    _keyValues: 0100000000000000
-    _keys: 0100000000000000
+    _keyValues: 010000000000000002000000
+    _keys: 010000000000000002000000
     _values:
     - {fileID: 2078270482501369129, guid: 706998cc4dbc0bd42b4365a0f1492ee5, type: 3}
     - {fileID: 9215474289964830466, guid: b997cdb92be7ee8488acdda845dc6f2c, type: 3}
+    - {fileID: 8323525404050317141, guid: 3bf35d99b431975479eebaf3b2b7fe96, type: 3}
