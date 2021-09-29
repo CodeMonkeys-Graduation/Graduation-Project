@@ -84,7 +84,8 @@ public class AudioMgr : SingletonBehaviour<AudioMgr>
         foreach (var tuple in bgmAudiosTuple)
         {
             audioInstances.Remove(tuple);
-            Destroy(tuple.audioSource.gameObject);
+            if(tuple.audioSource != null && tuple.audioSource.gameObject != null)
+                Destroy(tuple.audioSource.gameObject);
         }
     }
 
