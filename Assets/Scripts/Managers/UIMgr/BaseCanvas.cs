@@ -8,7 +8,7 @@ using ObserverPattern;
 public class BaseCanvas : MonoBehaviour
 {
     [System.Serializable] 
-    public class UIDictionary : SerializableDictionaryBase<UIType, UIComponent> { }
+    public class UIDictionary : SerializableDictionaryBase<UIType, PanelUIComponent> { }
     public UIDictionary _prefab_dictionary = new UIDictionary();
     
     protected UIDictionary _dictionary = new UIDictionary();
@@ -16,12 +16,12 @@ public class BaseCanvas : MonoBehaviour
     {
         foreach (var u in _prefab_dictionary)
         {
-            UIComponent ui = Instantiate(u.Value, transform);
+            PanelUIComponent ui = Instantiate(u.Value, transform);
             _dictionary.Add(ui._uitype, ui);
         }
     }
 
-    public T GetUIComponent<T>(bool evenInactive = false) where T : UIComponent
+    public T GetUIComponent<T>(bool evenInactive = false) where T : PanelUIComponent
     {
         UIType ut = UIMgr.TypeToUITypeConverter(typeof(T));
 

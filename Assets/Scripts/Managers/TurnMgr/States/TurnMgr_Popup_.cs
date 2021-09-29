@@ -42,7 +42,7 @@ public class TurnMgr_Popup_ : TurnMgr_State_
     public override void Enter() 
     {
         // TODO delete
-        EventMgr.Instance.onTurnPopupEnter.Invoke(new UIPopup(_popupContent, _popupPos, _onClickYes, _onClickNo));
+        EventMgr.Instance.onTurnPopupEnter.Invoke(new UIPopupParam(_popupContent, _popupPos, _onClickYes, _onClickNo));
 
         // TODO param ����
         //TurnPopupParam param = new TurnPopupParam(...);

@@ -193,7 +193,7 @@ public class ActionNode_Move : APActionNode
     public override void OnWaitExecute()
     {
         UIMgr.Instance.GetUIComponent<ActionPointPanel>()
-            .SetPanel(new UIActionPoint(_gameState.self.owner.actionPointsRemain));
+            .SetPanel(new UIActionPointParam(_gameState.self.owner.actionPointsRemain));
     }
 
     public override void OnWaitExit()
@@ -322,7 +322,7 @@ public class ActionNode_Attack : APActionNode
     public override void OnWaitExecute()
     {
         UIMgr.Instance.GetUIComponent<ActionPointPanel>()
-            .SetPanel(new UIActionPoint(_gameState.self.owner.actionPointsRemain));
+            .SetPanel(new UIActionPointParam(_gameState.self.owner.actionPointsRemain));
     }
 
     public override void OnWaitExit()
@@ -430,7 +430,7 @@ public class ActionNode_Skill : APActionNode
     public override void OnWaitExecute()
     {
         UIMgr.Instance.GetUIComponent<ActionPointPanel>()
-            .SetPanel(new UIActionPoint(_gameState.self.owner.actionPointsRemain));
+            .SetPanel(new UIActionPointParam(_gameState.self.owner.actionPointsRemain));
     }
 
     public override void OnWaitExit()

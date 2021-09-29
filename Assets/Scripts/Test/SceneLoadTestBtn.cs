@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SceneLoadTestBtn : UIComponent
+public class SceneLoadTestBtn : PanelUIComponent
 {
     [SerializeField] public string sceneName;
     Button _Btn;

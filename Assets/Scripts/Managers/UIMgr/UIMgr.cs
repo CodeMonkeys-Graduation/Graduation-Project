@@ -9,29 +9,12 @@ using RotaryHeart.Lib.SerializableDictionary;
 
 public enum CanvasType
 {
-    Normal,
+    Main,
     Battle,
     Select,
     Dialog,
     Ending
 }
-public enum UIType
-{
-    ActionPanel,
-    ActionPointPanel,
-    TMBackBtn,
-    TMEndTurnBtn,
-    ItemPanel,
-    BattleNextStateBtn,
-    BattlePlayBtn,
-    PopupPanel,
-    DevSceneLoadBtn,
-    StatusPanel,
-    SummonPanel,
-    TurnPanel,
-}
-
-
 public class UIMgr : SingletonBehaviour<UIMgr>
 {
     public StateMachine<UIMgr> stateMachine;
@@ -47,11 +30,16 @@ public class UIMgr : SingletonBehaviour<UIMgr>
             stateMachine = new StateMachine<UIMgr>(new UIBattleState(this, canvasPrefab_Dictionary[CanvasType.Battle]));
             canvasType = CanvasType.Battle;
         }
-        else
+        else if(SceneMgr.Instance._currScene.ToString().Contains("Main"))
         {
-            stateMachine = new StateMachine<UIMgr>(new UINormalState(this, canvasPrefab_Dictionary[CanvasType.Normal]));
-            canvasType = CanvasType.Normal;
-        }     
+            stateMachine = new StateMachine<UIMgr>(new UINormalState(this, canvasPrefab_Dictionary[CanvasType.Main]));
+            canvasType = CanvasType.Main;
+        }
+        else if (SceneMgr.Instance._currScene.ToString().Contains("UnitSelection"))
+        {
+            stateMachine = new StateMachine<UIMgr>(new UINormalState(this, canvasPrefab_Dictionary[CanvasType.Select]));
+            canvasType = CanvasType.Select;
+        }
     }
 
     public void Update()
@@ -63,7 +51,8 @@ public class UIMgr : SingletonBehaviour<UIMgr>
     {
         switch(canvasType)
         {
-            case CanvasType.Normal:
+            case CanvasType.Main:
+            case CanvasType.Select:
                 UINormalState normalState = (UINormalState)stateMachine.stateStack.Peek();
 
                 if(isOn) normalState._canvas.TurnOnUIComponent(uitype);
@@ -78,13 +67,14 @@ public class UIMgr : SingletonBehaviour<UIMgr>
         }
     }
 
-    public T GetUIComponent<T>(bool evenInactive = false) where T : UIComponent
+    public T GetUIComponent<T>(bool evenInactive = false) where T : PanelUIComponent
     {
         UIState uiState = (UIState)stateMachine.stateStack.Peek();
             
         switch (canvasType)
         {
-            case CanvasType.Normal:
+            case CanvasType.Main:
+            case CanvasType.Select:
                 UINormalState normalState = (UINormalState)uiState;
                 return normalState._canvas.GetUIComponent<T>(evenInactive);
 
