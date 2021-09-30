@@ -79,7 +79,7 @@ MonoBehaviour:
   onGameInitExit: {fileID: 11400000, guid: c0661a9039bfa2b44a5cbae433fab816, type: 2}
   onGamePositioningEnter: {fileID: 11400000, guid: 57e7f51f4acf2e64a8f37eb14d0832f9,
     type: 2}
-  onGamePositioningExecute: {fileID: 11400000, guid: 254ca249b70a61b4f9d7fd31e1fc16fb,
+  onUnitSummonedInBattlePositioning: {fileID: 11400000, guid: 254ca249b70a61b4f9d7fd31e1fc16fb,
     type: 2}
   onGamePositioningExit: {fileID: 11400000, guid: fd5a3839fea33834fa947d9df6e1d4f0,
     type: 2}

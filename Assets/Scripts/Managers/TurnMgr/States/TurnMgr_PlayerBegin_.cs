@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
@@ -54,8 +54,8 @@ public class TurnMgr_PlayerBegin_ : TurnMgr_State_
 
 
         unit.StartBlink();
-        
-        EventMgr.Instance.onTurnBeginEnter.Invoke();
+
+        SetUI();
 
         CameraMgr.Instance.SetTarget(unit, true);
     }
@@ -67,7 +67,34 @@ public class TurnMgr_PlayerBegin_ : TurnMgr_State_
     public override void Exit()
     {
         unit.StopBlink();
+
+        UIMgr.Instance.UnsetUIComponentAll();
+
         EventMgr.Instance.onTurnBeginExit.Invoke();
+    }
+
+    private void SetUI()
+    {
+        UIMgr.Instance.UnsetUIComponentAll();
+
+        Dictionary<ActionType, UnityAction> btnEvents = new Dictionary<ActionType, UnityAction>()
+        {
+            { ActionType.Move, OnClickMoveBtn },
+            { ActionType.Attack, OnClickAttackBtn },
+            { ActionType.Item, OnClickItemBtn },
+            { ActionType.Skill, OnClickSkillBtn },
+        };
+
+        UIMgr.Instance.SetUIComponent<ActionPanel>(new UIActionParam(unit.actionSlots, unit.actionPointsRemain, btnEvents), true);
+        UIMgr.Instance.SetUIComponent<ActionPointPanel>(new UIActionPointParam(unit.actionPointsRemain), true);
+        UIMgr.Instance.SetUIComponent<TurnPanel>(null, true);
+        UIMgr.Instance.SetUIComponent<TMEndTurnBtn>(null, true);
+
+        TurnPanel tp = UIMgr.Instance.GetUIComponent<TurnPanel>();
+        if (tp.ShouldUpdateSlots(TurnMgr.Instance.turns.ToList()))
+            tp.SetSlots(UIMgr.Instance.GetUIComponent<StatusPanel>(), owner.turns.ToList());
+
+        EventMgr.Instance.onTurnBeginEnter.Invoke();
     }
 
 
@@ -82,5 +109,26 @@ public class TurnMgr_PlayerBegin_ : TurnMgr_State_
             (cube) => (cube as Cube).GetUnit() != null && (cube as Cube).GetUnit().currHealth > 0);
     }
 
+    private void OnClickMoveBtn()
+    => TurnMgr.Instance.stateMachine.ChangeState(
+          new TurnMgr_PlayerMove_(TurnMgr.Instance, TurnMgr.Instance.turns.Peek()),
+          StateMachine<TurnMgr>.StateTransitionMethod.JustPush
+        );
+
+    private void OnClickAttackBtn()
+        => TurnMgr.Instance.stateMachine.ChangeState(
+                new TurnMgr_PlayerAttack_(TurnMgr.Instance, TurnMgr.Instance.turns.Peek()),
+                StateMachine<TurnMgr>.StateTransitionMethod.JustPush
+            );
+    private void OnClickItemBtn()
+        => TurnMgr.Instance.stateMachine.ChangeState(
+                new TurnMgr_PlayerItemBag_(TurnMgr.Instance, TurnMgr.Instance.turns.Peek()),
+                StateMachine<TurnMgr>.StateTransitionMethod.JustPush
+            );
+    private void OnClickSkillBtn()
+        => TurnMgr.Instance.stateMachine.ChangeState(
+            new TurnMgr_PlayerSkill_(TurnMgr.Instance, TurnMgr.Instance.turns.Peek()),
+            StateMachine<TurnMgr>.StateTransitionMethod.JustPush
+        );
 
 }

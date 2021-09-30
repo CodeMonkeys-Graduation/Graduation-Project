@@ -47,7 +47,25 @@ public class UIMgr : SingletonBehaviour<UIMgr>
         stateMachine.Run();
     }
 
-    public void SetUI(UIType uitype, bool isOn)
+    public void UnsetUIComponentAll()
+    {
+        switch (canvasType)
+        {
+            case CanvasType.Main:
+            case CanvasType.Select:
+                UINormalState normalState = (UINormalState)stateMachine.stateStack.Peek();
+
+                normalState._canvas.TurnOffAllUI();
+                break;
+            case CanvasType.Battle:
+                UIBattleState battleState = (UIBattleState)stateMachine.stateStack.Peek();
+
+                battleState._canvas.TurnOffAllUI();
+                break;
+        }
+    }
+
+    public void SetUIComponent<T>(UIParam uiParam, bool isOn) where T : PanelUIComponent
     {
         switch(canvasType)
         {
@@ -55,14 +73,14 @@ public class UIMgr : SingletonBehaviour<UIMgr>
             case CanvasType.Select:
                 UINormalState normalState = (UINormalState)stateMachine.stateStack.Peek();
 
-                if(isOn) normalState._canvas.TurnOnUIComponent(uitype);
-                else normalState._canvas.TurnOffUIComponent(uitype);
+                if(isOn) normalState._canvas.GetUIComponent<T>().SetPanel(uiParam);
+                else normalState._canvas.GetUIComponent<T>().UnsetPanel();
                 break;
             case CanvasType.Battle:
                 UIBattleState battleState = (UIBattleState)stateMachine.stateStack.Peek();
 
-                if (isOn) battleState._canvas.TurnOnUIComponent(uitype);
-                else battleState._canvas.TurnOffUIComponent(uitype);
+                if (isOn) battleState._canvas.GetUIComponent<T>().SetPanel(uiParam);
+                else battleState._canvas.GetUIComponent<T>().UnsetPanel();
                 break;
         }
     }
