@@ -47,7 +47,7 @@ public class EventMgr : SingletonBehaviour<EventMgr>
     [SerializeField] public ObserverEvent onGameInitEnter;
     [SerializeField] public ObserverEvent onGameInitExit;
     [SerializeField] public ObserverEvent onGamePositioningEnter;
-    [SerializeField] public ObserverEvent onGamePositioningExecute;
+    [SerializeField] public ObserverEvent onUnitSummonedInBattlePositioning;
     [SerializeField] public ObserverEvent onGamePositioningExit;
     [SerializeField] public ObserverEvent onGameBattleEnter;
     [SerializeField] public ObserverEvent onGameBattleExit;

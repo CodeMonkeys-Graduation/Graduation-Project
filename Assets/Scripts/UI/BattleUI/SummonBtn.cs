@@ -49,7 +49,7 @@ public class SummonBtn : UIComponent, IDragHandler, IBeginDragHandler, IEndDragH
 
         if (u != null)
         {
-            EventMgr.Instance.onGamePositioningExecute.Invoke(new UnitParam(selectedUnit));
+            UIMgr.Instance.SetUIComponent<SummonPanel>(new UISummonParam(new List<Unit>() { selectedUnit }, false), true);
             Debug.Log(u + "소환 완료");
             u.StopTransparent();
         }

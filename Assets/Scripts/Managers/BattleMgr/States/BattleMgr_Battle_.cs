@@ -14,7 +14,8 @@ public class BattleMgr_Battle_ : BattleMgr_State_
         Debug.Log("Transferring rights to TurnMgr");
 
         EventMgr.Instance.onGameBattleEnter.Invoke(); // 이 부분에서 턴 매니저에게 양도를 함
-        // 여기서 턴 매니저가 종료를 알리는 신호를 보내는 것을 레지스터함
+
+        // TODO: 여기서 턴 매니저가 종료를 알리는 신호를 보내는 것을 레지스터하기로 한다.
     }
 
     public override void Execute()

@@ -31,6 +31,9 @@ public class BattleMgr_Positioning_ : BattleMgr_State_
     public override void Enter()
     {
         Debug.Log("Battle Positioning State Enter");
+
+        UIMgr.Instance.SetUIComponent<SummonPanel>(new UISummonParam(_unitPrefabs, true), true);
+
         EventMgr.Instance.onGamePositioningEnter.Invoke(new UISummonParam(_unitPrefabs, true)); // 여기서 SummonUI에 세팅
         _canSummonCubes.ForEach(cube => cube.SetBlink(0.3f));
     }
@@ -90,6 +93,10 @@ public class BattleMgr_Positioning_ : BattleMgr_State_
     public override void Exit()
     {
         Debug.Log("Battle Positioning State Exit");
+
+        UIMgr.Instance.UnsetUIComponentAll();
+        UIMgr.Instance.SetUIComponent<BattlePlayBtn>(null, true);
+
         EventMgr.Instance.onGamePositioningExit.Invoke();
         _canSummonCubes.ForEach(cube => cube.StopBlink());
     }

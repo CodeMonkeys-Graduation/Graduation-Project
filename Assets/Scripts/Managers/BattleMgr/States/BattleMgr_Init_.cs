@@ -14,6 +14,10 @@ public class BattleMgr_Init_ : BattleMgr_State_
     public override void Enter()
     {
         Debug.Log("Battle Init State Enter");
+
+        UIMgr.Instance.UnsetUIComponentAll();
+        UIMgr.Instance.SetUIComponent<BattleNextStateBtn>(null, true);
+
         EventMgr.Instance.onGameInitEnter.Invoke();
     }
 
