@@ -109,6 +109,7 @@ public class TurnMgr_PlayerMove_ : TurnMgr_State_
     private void OnWaitExecute()
     {
         EventMgr.Instance.onTurnMove.Invoke();
+        UIMgr.Instance.SetUIComponent<ActionPointPanel>(new UIActionPointParam(owner.turns.Peek().actionPointsRemain), true);
     }
 
     private void OnWaitExit()

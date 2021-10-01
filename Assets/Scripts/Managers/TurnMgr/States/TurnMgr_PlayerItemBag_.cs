@@ -20,7 +20,7 @@ public class TurnMgr_PlayerItemBag_ : TurnMgr_State_
         EventMgr.Instance.onTurnItemEnter.Invoke();
         EventMgr.Instance.onTurnActionEnter.Invoke();
 
-        UIMgr.Instance.GetUIComponent<ItemPanel>().SetPanel(new UIItemParam(unit.itemBag.GetItem(), OnClickItemSlot));
+        UIMgr.Instance.SetUIComponent<ItemPanel>(new UIItemParam(unit.itemBag.GetItem(), OnClickItemSlot), true);
     }
 
     public override void Execute() 
@@ -29,6 +29,8 @@ public class TurnMgr_PlayerItemBag_ : TurnMgr_State_
 
     public override void Exit()
     {
+        UIMgr.Instance.SetUIComponent<ItemPanel>(null, false);
+
         EventMgr.Instance.onTurnItemExit.Invoke();
         EventMgr.Instance.onTurnActionExit.Invoke();
     }
