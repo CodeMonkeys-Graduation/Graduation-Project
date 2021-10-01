@@ -48,6 +48,8 @@ public class TurnMgr_Popup_ : TurnMgr_State_
         //TurnPopupParam param = new TurnPopupParam(...);
         //EventMgr.Instance.onTurnPopupEnter.Invoke(param);
 
+        UIMgr.Instance.SetUIComponent<PopupPanel>(new UIPopupParam(_popupContent, _popupPos, _onClickYes, _onClickNo), true);
+
         if (onPopupEnter != null)
             onPopupEnter.Invoke();
     }
@@ -60,6 +62,7 @@ public class TurnMgr_Popup_ : TurnMgr_State_
 
     public override void Exit()
     {
+        UIMgr.Instance.SetUIComponent<PopupPanel>(null, false);
 
         EventMgr.Instance.onTurnPopupExit.Invoke();
 

@@ -25,6 +25,9 @@ public class TurnMgr_PlayerAttack_ : TurnMgr_State_
 
         CameraMgr.Instance.SetTarget(unit, true);
 
+        UIMgr.Instance.SetUIComponent<TMEndTurnBtn>(null, true);
+        UIMgr.Instance.SetUIComponent<TMBackBtn>(null, true);
+
         MapMgr.Instance.BlinkCubes(cubesAttackRange, 0.1f);
         MapMgr.Instance.BlinkCubes(cubesCanAttack, 0.7f);
         unit.StartBlink();
@@ -84,6 +87,10 @@ public class TurnMgr_PlayerAttack_ : TurnMgr_State_
     public override void Exit()
     {
         unit.StopBlink();
+
+        UIMgr.Instance.SetUIComponent<TMEndTurnBtn>(null, false);
+        UIMgr.Instance.SetUIComponent<TMBackBtn>(null, false);
+
         MapMgr.Instance.StopBlinkAll();
         EventMgr.Instance.onTurnActionExit.Invoke();
     }
