@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class BattleMgr : SingletonBehaviour<BattleMgr>
 {
     //-- Set in Editor --//
-    [SerializeField] List<Unit> _unitPrefabs;
+    [SerializeField] PlayerData playerData;
 
     public static List<Cube> _canSummonCubes;
     public StateMachine<BattleMgr> stateMachine;
@@ -32,7 +32,7 @@ public class BattleMgr : SingletonBehaviour<BattleMgr>
     {
         if (stateMachine.IsStateType(typeof(BattleMgr_Init_)))
         {
-            stateMachine.ChangeState(new BattleMgr_Positioning_(this, _unitPrefabs, _canSummonCubes), StateMachine<BattleMgr>.StateTransitionMethod.JustPush);
+            stateMachine.ChangeState(new BattleMgr_Positioning_(this, playerData.hasUnitList, _canSummonCubes), StateMachine<BattleMgr>.StateTransitionMethod.JustPush);
         }
 
         else if (stateMachine.IsStateType(typeof(BattleMgr_Positioning_)))
