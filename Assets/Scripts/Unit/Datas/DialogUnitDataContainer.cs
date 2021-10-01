@@ -5,11 +5,11 @@ using UnityEngine;
 [CreateAssetMenu(order = 0, menuName = "Data/UnitDataContainer", fileName = "UnitDataContainer")]
 
 [System.Serializable]
-public class UnitDataContainer : ScriptableObject
+public class DialogUnitDataContainer : ScriptableObject
 {
-    public List<UnitData> unitDataContainer = new List<UnitData>();
+    public List<DialogUnitData> dialogUnitDataContainer = new List<DialogUnitData>();
 
-    public Sprite GetSprite(string name, int emotion) => unitDataContainer.Find((u) => u.name == name)?.illustArr[emotion];
+    public Sprite GetSprite(string name, int emotion) => dialogUnitDataContainer.Find((u) => u.name == name)?.illustArr[emotion];
     public int GetEmotion(string emotion)
     {
         switch (emotion)
@@ -23,7 +23,7 @@ public class UnitDataContainer : ScriptableObject
 }
 
 [System.Serializable]
-public class UnitData
+public class DialogUnitData
 {
     public int id;
     public string name;

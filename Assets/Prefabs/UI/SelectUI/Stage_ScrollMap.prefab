@@ -649,6 +649,7 @@ GameObject:
   - component: {fileID: 2604490674287797189}
   - component: {fileID: 2604490674287797188}
   - component: {fileID: 2604490674287797195}
+  - component: {fileID: 1260378168564901234}
   m_Layer: 5
   m_Name: Stage
   m_TagString: Untagged
@@ -757,19 +758,23 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2604490674287797188}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2604490674404852945}
-        m_TargetAssemblyTypeName: StageSelect, Assembly-CSharp
-        m_MethodName: OnClickStage
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+--- !u!114 &1260378168564901234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2604490674287797193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cb13909c1888eb4d9f1672e201fae19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uitype: 21
+  nextScene: 3
+  glow: {fileID: 2604490674310026686}
+  button: {fileID: 2604490674287797195}
 --- !u!1 &2604490674310026686
 GameObject:
   m_ObjectHideFlags: 0
@@ -970,6 +975,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _uitype: 19
+  stageBtns:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &2604490674437374946
 GameObject:
   m_ObjectHideFlags: 0
@@ -1305,6 +1315,7 @@ GameObject:
   - component: {fileID: 2604490674508540084}
   - component: {fileID: 2604490674508540091}
   - component: {fileID: 2604490674508540090}
+  - component: {fileID: 4802776965867069283}
   m_Layer: 5
   m_Name: Stage
   m_TagString: Untagged
@@ -1413,19 +1424,23 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2604490674508540091}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2604490674404852945}
-        m_TargetAssemblyTypeName: StageSelect, Assembly-CSharp
-        m_MethodName: OnClickStage
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 5
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+--- !u!114 &4802776965867069283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2604490674508540088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cb13909c1888eb4d9f1672e201fae19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uitype: 21
+  nextScene: 5
+  glow: {fileID: 2604490675571868799}
+  button: {fileID: 2604490674508540090}
 --- !u!1 &2604490674514375045
 GameObject:
   m_ObjectHideFlags: 0
@@ -2295,6 +2310,7 @@ GameObject:
   - component: {fileID: 2604490674993265586}
   - component: {fileID: 2604490674993265585}
   - component: {fileID: 2604490674993265584}
+  - component: {fileID: 5896541894916008782}
   m_Layer: 5
   m_Name: Stage
   m_TagString: Untagged
@@ -2403,19 +2419,23 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2604490674993265585}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2604490674404852945}
-        m_TargetAssemblyTypeName: StageSelect, Assembly-CSharp
-        m_MethodName: OnClickStage
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 6
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+--- !u!114 &5896541894916008782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2604490674993265590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cb13909c1888eb4d9f1672e201fae19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uitype: 21
+  nextScene: 6
+  glow: {fileID: 2604490675568027930}
+  button: {fileID: 2604490674993265584}
 --- !u!1 &2604490675066390453
 GameObject:
   m_ObjectHideFlags: 0
@@ -3014,6 +3034,7 @@ GameObject:
   - component: {fileID: 2604490675527797162}
   - component: {fileID: 2604490675527797161}
   - component: {fileID: 2604490675527797160}
+  - component: {fileID: 5369381701155581457}
   m_Layer: 5
   m_Name: Stage
   m_TagString: Untagged
@@ -3122,19 +3143,23 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2604490675527797161}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2604490674404852945}
-        m_TargetAssemblyTypeName: StageSelect, Assembly-CSharp
-        m_MethodName: OnClickStage
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+--- !u!114 &5369381701155581457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2604490675527797166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cb13909c1888eb4d9f1672e201fae19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uitype: 21
+  nextScene: 4
+  glow: {fileID: 2604490674874525577}
+  button: {fileID: 2604490675527797160}
 --- !u!1 &2604490675533169168
 GameObject:
   m_ObjectHideFlags: 0

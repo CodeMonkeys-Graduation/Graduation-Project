@@ -45,10 +45,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 2
   _lifeCycles: 03000000040000000500000006000000
-  _unitPrefabs:
-  - {fileID: 5783308623365600305, guid: f718be1aed9d7ac489a1d4fae79836ff, type: 3}
-  - {fileID: 1555109558, guid: 76032b6ea6507f442ba2c816944ee397, type: 3}
-  - {fileID: 575295730912583316, guid: 96d49b415117a2340a0e798db751561d, type: 3}
-  - {fileID: 1555109558, guid: 76032b6ea6507f442ba2c816944ee397, type: 3}
-  _summonUI: {fileID: 0}
-  gmState: 0
+  playerData: {fileID: 11400000, guid: 03d23dda63a4513419e0ffdd41a831f8, type: 2}
+  bmState: 0

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class UINormalState : UIState
+public class UINormalState : UIState // UI 자동 제어가 필요없는 영역
 {
     public BaseCanvas _canvas; // 나는 생성된 얘를 넘기고 싶다
 

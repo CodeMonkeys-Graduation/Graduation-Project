@@ -4,9 +4,24 @@ using UnityEngine;
 
 public class StageSelectPopup : PanelUIComponent, IPopup
 {
-    SceneMgr.Scene nextScene;
+    [Header("Set By Runtime")]
+    [SerializeField] SceneMgr.Scene nextScene;
+
+    [Header("Set In Editor")]
+    [SerializeField] public SelectUnitBtn[] selectUnitBtns;
+    [SerializeField] public PlayerData playerData;
+
+    void Start()
+    {
+        selectUnitBtns = GetComponentsInChildren<SelectUnitBtn>();
+    }
     public void OnClickOK()
     {
+        foreach(var v in selectUnitBtns)
+        {
+            playerData.AddUnitToList(v.unit, v.upgradeCount);
+        }
+        
         SceneMgr.Instance.LoadScene(nextScene);
     }
     public void OnClickClose()
@@ -15,7 +30,6 @@ public class StageSelectPopup : PanelUIComponent, IPopup
     }
     public override void SetPanel(UIParam u)
     {
-        Debug.Log("ㅋㅋ");
         UIStageSelectPopupParam usspp = (UIStageSelectPopupParam)u;
 
         nextScene = usspp.nextScene;

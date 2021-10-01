@@ -34,9 +34,9 @@ public class DialogController : SingletonBehaviour<DialogController>
     {
         illustAnim.SetTrigger("isTalk");
 
-        int emotion = UnitDataMgr.unitDataContainer.GetEmotion(talkData.emotion);
+        int emotion = DialogUnitDataMgr.dialogUnitDataContainer.GetEmotion(talkData.emotion);
 
-        illust.sprite = UnitDataMgr.unitDataContainer.GetSprite(talkData.name, emotion);
+        illust.sprite = DialogUnitDataMgr.dialogUnitDataContainer.GetSprite(talkData.name, emotion);
         npcname.text = talkData.name;
         dialogEffect.SetMsg(this.context, talkData.dialogue);
     }

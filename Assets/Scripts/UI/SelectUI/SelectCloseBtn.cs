@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class SelectCloseBtn : UIComponent
+public class SelectCloseBtn : CloseBtn
 {
-    [SerializeField] GameObject target;
-    public void OnClickClose()
+    public override void OnClickClose()
     {
-        target.SetActive(false);
+        base.OnClickClose();
     }
 }
+
