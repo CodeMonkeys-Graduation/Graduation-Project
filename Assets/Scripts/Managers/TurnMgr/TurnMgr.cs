@@ -75,6 +75,28 @@ public class TurnMgr : SingletonBehaviour<TurnMgr>
             stateMachine.ChangeState(new TurnMgr_AIBegin_(this, unitForNextTurn), StateMachine<TurnMgr>.StateTransitionMethod.ClearNPush);
     }
 
+    public bool IsAllEnemyDead()
+    {
+        foreach(var unit in units)
+        {
+            if (unit.team.controller == Team.Controller.AI)
+                return false;
+        }
+
+        return true;
+    }
+
+    public bool IsAllFriendlyDead()
+    {
+        foreach (var unit in units)
+        {
+            if (unit.team.controller == Team.Controller.Player)
+                return false;
+        }
+
+        return true;
+    }
+
     private void RegisterEvents()
     {
         EventMgr.Instance.onUnitDeadEnter.Register(el_onUnitDeadEnter, OnUnitDeadEnter_RefreshQueueNWait);

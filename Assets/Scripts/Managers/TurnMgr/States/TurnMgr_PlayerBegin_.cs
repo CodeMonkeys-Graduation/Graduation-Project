@@ -43,7 +43,7 @@ public class TurnMgr_PlayerBegin_ : TurnMgr_State_
         }
 
         // 죽는 중인(UnitDead) 유닛이 존재 => 사라지고 다시 이 State로 돌아오기
-        if (owner.units.Any(unit => unit.stateMachine.IsStateType(typeof(Unit_Dead_))))
+        if (owner.units.Any(unit => unit.currHealth <= 0))
         {
             owner.stateMachine.ChangeState(
                 new TurnMgr_WaitSingleEvent_(owner, unit, EventMgr.Instance.onUnitDeadCountZero, this),
