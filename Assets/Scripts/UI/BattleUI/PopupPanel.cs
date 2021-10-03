@@ -16,6 +16,32 @@ public class PopupPanel : PanelUIComponent
 
         UIPopupParam up = (UIPopupParam)u;
 
+        // popup position dynamic
+        Vector3 viewportPos = Camera.main.ScreenToViewportPoint(up._pos);
+        if(viewportPos.x < 0.5f) // left
+        {
+            if(viewportPos.y < 0.5f) // bottom
+            {
+                GetComponent<RectTransform>().pivot = new Vector2(0f, 0f);
+            }
+            else // top
+            {
+                GetComponent<RectTransform>().pivot = new Vector2(0f, 1f);
+            }
+        }
+        else // right
+        {
+            if (viewportPos.y < 0.5f) // bottom
+            {
+                GetComponent<RectTransform>().pivot = new Vector2(1f, 0f);
+            }
+            else // top
+            {
+                GetComponent<RectTransform>().pivot = new Vector2(1f, 1f);
+            }
+        }
+
+
         Description.text = up._content;
         transform.position = up._pos;
         yesBtn.onClick.AddListener(up._yes);

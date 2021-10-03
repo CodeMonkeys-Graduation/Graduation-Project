@@ -20,7 +20,19 @@ public class BattleMgr_Battle_ : BattleMgr_State_
 
     public override void Execute()
     {
-        
+        if(TurnMgr.Instance.IsAllEnemyDead())
+        {
+            owner.stateMachine.ChangeState(
+                new BattleMgr_Victory_(owner), 
+                StateMachine<BattleMgr>.StateTransitionMethod.ClearNPush);
+        }
+
+        else if (TurnMgr.Instance.IsAllFriendlyDead())
+        {
+            owner.stateMachine.ChangeState(
+                new BattleMgr_Defeat_(owner), 
+                StateMachine<BattleMgr>.StateTransitionMethod.ClearNPush);
+        }
     }
 
     public override void Exit()

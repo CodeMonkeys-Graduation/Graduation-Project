@@ -40,9 +40,9 @@ public class BattleMgr : SingletonBehaviour<BattleMgr>
             stateMachine.ChangeState(new BattleMgr_Battle_(this), StateMachine<BattleMgr>.StateTransitionMethod.ClearNPush);
         }
 
-        else if(stateMachine.IsStateType(typeof(BattleMgr_Battle_)))
+        else
         {
-           
+            Debug.Assert(false, "Battle State에서는 더 이상 BattleMgr.NextState를 호출해서는 안됨");
         }
     }
 
