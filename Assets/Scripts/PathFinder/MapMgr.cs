@@ -10,7 +10,6 @@ public class MapMgr : SingletonBehaviour<MapMgr>
     [SerializeField] private bool showPaths = true;
     [SerializeField] public Map map;
 
-
     void Start()
     {
         map = new Map(FindObjectsOfType<Cube>().ToList());
