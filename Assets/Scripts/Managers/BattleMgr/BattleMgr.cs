@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ public class BattleMgr : SingletonBehaviour<BattleMgr>
 
     public enum BMState
     {
-        Init, Positioning, Battle
+        Init, Positioning, Battle, Victory, Defeat, WaitSingleEvent
     }
     public BMState bmState;
 
@@ -26,6 +27,39 @@ public class BattleMgr : SingletonBehaviour<BattleMgr>
     public void Update()
     {
         stateMachine.Run();
+
+        UpdateBMState();
+    }
+
+    // DEBUG
+    private void UpdateBMState()
+    {
+        Type stateType = stateMachine.stateStack.Peek().GetType();
+        if (stateType == typeof(BattleMgr_Init_))
+        {
+            bmState = BMState.Init;
+        }
+        else if(stateType == typeof(BattleMgr_Positioning_)) 
+        {
+            bmState = BMState.Positioning;
+        }
+        else if (stateType == typeof(BattleMgr_Battle_))
+        {
+            bmState = BMState.Battle;
+        }
+        else if (stateType == typeof(BattleMgr_Victory_))
+        {
+            bmState = BMState.Victory;
+        }
+        else if (stateType == typeof(BattleMgr_Defeat_))
+        {
+            bmState = BMState.Defeat;
+        }
+        else if (stateType == typeof(BattleMgr_WaitSingleEvent_))
+        {
+            bmState = BMState.WaitSingleEvent;
+        }
+
     }
 
     public void NextState()
