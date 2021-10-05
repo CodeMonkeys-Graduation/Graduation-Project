@@ -11,7 +11,7 @@ public class StagePlayerGold : UIComponent
 
     public void OnEnable()
     {
-        stagePlayerGold.SetText($"{playerGold}");
+        Clear();
     }
 
     public bool UseGold(int amount)
@@ -25,5 +25,11 @@ public class StagePlayerGold : UIComponent
         playerGold -= amount;
         stagePlayerGold.SetText($"{playerGold}");
         return true;
+    }
+
+    public void Clear()
+    {
+        playerGold = 70;
+        stagePlayerGold.SetText($"{playerGold}");
     }
 }

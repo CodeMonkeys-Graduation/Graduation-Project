@@ -27,8 +27,7 @@ public class SelectUnitBtn : UIComponent
 
     public void OnEnable()
     {
-        upgradeCount = 0;
-        upgradeCountText.SetText($"x{upgradeCount.ToString()}");
+        Clear();
     }
 
     public void OnClickUnitBuy()
@@ -45,6 +44,12 @@ public class SelectUnitBtn : UIComponent
 
         stagePlayerGold.UseGold(-unitPrice);
         upgradeCount--;
+        upgradeCountText.SetText($"x{upgradeCount.ToString()}");
+    }
+
+    public void Clear()
+    {
+        upgradeCount = 0;
         upgradeCountText.SetText($"x{upgradeCount.ToString()}");
     }
 }
