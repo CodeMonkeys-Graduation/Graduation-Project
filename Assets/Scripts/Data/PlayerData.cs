@@ -8,7 +8,7 @@ public class PlayerData : ScriptableObject
 {
     public List<Unit> hasUnitList = new List<Unit>();
 
-    public void AddUnitToList(Unit u, uint count)
+    public void AddUnitToList(Unit u, int count)
     {
         for(int i=0; i<count; i++)
         {

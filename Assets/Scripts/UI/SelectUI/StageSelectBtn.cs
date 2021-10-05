@@ -7,6 +7,7 @@ public class StageSelectBtn : UIComponent
 {
     [Header("Set In Editor")]
     [SerializeField] public SceneMgr.Scene nextScene;
+    [SerializeField] public int nextStageIdx;
     [SerializeField] public GameObject glow;
     public Button button;
 

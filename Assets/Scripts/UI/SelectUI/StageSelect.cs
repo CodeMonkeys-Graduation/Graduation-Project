@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class StageSelect : PanelUIComponent
 {
     [SerializeField] public StageSelectBtn[] stageBtns;
+    [SerializeField] public StageDataSet stageDataSet;
+    
     StageSelectPopup stageSelectPopup;
 
     private void Start()
@@ -28,7 +30,9 @@ public class StageSelect : PanelUIComponent
 
         btn.TurnOnGlow();
 
-        stageSelectPopup.SetPanel(new UIStageSelectPopupParam(btn.nextScene));
+        StageData nextStageData = stageDataSet.GetStageData(btn.nextStageIdx);
+
+        stageSelectPopup.SetPanel(new UIStageSelectPopupParam(nextStageData, btn.nextScene));
     }
 
     public override void SetPanel(UIParam u = null)

@@ -8,11 +8,11 @@ public class SelectUnitBtn : UIComponent
 {
     [Header("Set In Editor")]
     [SerializeField] public Unit unit;
-    [SerializeField] public int unitPrice;
-
     [SerializeField] TextMeshProUGUI upgradeCountText;
-    public uint upgradeCount = 0;
+    [SerializeField] TextMeshProUGUI priceText;
+    public int upgradeCount = 0;
 
+    int unitPrice;
     StagePlayerGold stagePlayerGold;
     Button[] btns;
 
@@ -24,18 +24,11 @@ public class SelectUnitBtn : UIComponent
         btns[0].onClick.AddListener(OnClickUnitSell);
         btns[1].onClick.AddListener(OnClickUnitBuy);
     }
-
-    public void OnEnable()
-    {
-        Clear();
-    }
-
     public void OnClickUnitBuy()
     {
         if (!stagePlayerGold.UseGold(unitPrice)) return;
 
-        upgradeCount++;
-        upgradeCountText.SetText($"x{upgradeCount.ToString()}");
+        SetUpgradeCount(upgradeCount + 1);
     }
 
     public void OnClickUnitSell()
@@ -43,13 +36,20 @@ public class SelectUnitBtn : UIComponent
         if (upgradeCount <= 0) return;
 
         stagePlayerGold.UseGold(-unitPrice);
-        upgradeCount--;
+        SetUpgradeCount(upgradeCount - 1);
+    }
+
+    public void SetPrice(int price)
+    {
+        unitPrice = price;
+        priceText.SetText($"{price.ToString()}");
+    }
+
+    public void SetUpgradeCount(int count)
+    {
+        upgradeCount = count;
         upgradeCountText.SetText($"x{upgradeCount.ToString()}");
     }
 
-    public void Clear()
-    {
-        upgradeCount = 0;
-        upgradeCountText.SetText($"x{upgradeCount.ToString()}");
-    }
+
 }

@@ -108,8 +108,13 @@ public class UISummonParam : UIParam, EventParam
 public class UIStageSelectPopupParam : UIParam
 {
     public SceneMgr.Scene nextScene;
+    public StageData nextStageData;
+    public UIStageSelectPopupParam(StageData stageData, SceneMgr.Scene scene)
+    {
+        nextStageData = stageData;
+        nextScene = scene;
+    }
 
-    public UIStageSelectPopupParam(SceneMgr.Scene scene) => nextScene = scene;
     public override UIType _uitype
     {
         get { return UIType.StageSelectPopup; }
