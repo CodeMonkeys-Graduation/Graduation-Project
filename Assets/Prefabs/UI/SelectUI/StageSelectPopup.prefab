@@ -967,7 +967,7 @@ GameObject:
   - component: {fileID: 8581643372782350037}
   - component: {fileID: 8581643372782350038}
   m_Layer: 5
-  m_Name: Text_Cost
+  m_Name: PriceText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1546,6 +1546,7 @@ GameObject:
   - component: {fileID: 8581643373001928259}
   - component: {fileID: 8581643373001928257}
   - component: {fileID: 8581643373001928258}
+  - component: {fileID: 4068158363462012118}
   m_Layer: 5
   m_Name: Stats_Gold
   m_TagString: Untagged
@@ -1612,6 +1613,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4068158363462012118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8581643373001928124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d89f8207ea9b73545ba97df5c639e7c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uitype: 24
+  stagePlayerGold: {fileID: 8581643373259341353}
+  playerGold: 70
 --- !u!1 &8581643373123684027
 GameObject:
   m_ObjectHideFlags: 0
@@ -1760,6 +1776,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uitype: 16
   target: {fileID: 8581643373669461442}
+  stageSelect: {fileID: 0}
 --- !u!1 &8581643373159073360
 GameObject:
   m_ObjectHideFlags: 0
@@ -2093,7 +2110,7 @@ GameObject:
   - component: {fileID: 8581643373259341353}
   - component: {fileID: 8581643373259341354}
   m_Layer: 5
-  m_Name: Text_Value
+  m_Name: GoldText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2331,6 +2348,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uitype: 0
   unit: {fileID: 575295730912583316, guid: 96d49b415117a2340a0e798db751561d, type: 3}
+  unitPrice: 30
   upgradeCountText: {fileID: 8581643374050718385}
   upgradeCount: 0
 --- !u!1 &8581643373281466131
@@ -2495,7 +2513,7 @@ GameObject:
   - component: {fileID: 8581643373363720570}
   - component: {fileID: 8581643373363720571}
   m_Layer: 5
-  m_Name: Text_Cost
+  m_Name: PriceText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2923,6 +2941,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uitype: 18
   unit: {fileID: 2092830164088438869, guid: 49b9d43b1e56f374aaf855018f4a53c8, type: 3}
+  unitPrice: 30
   upgradeCountText: {fileID: 8581643373177441227}
   upgradeCount: 0
 --- !u!1 &8581643373511660055
@@ -3764,11 +3783,11 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1120.343, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &8581643373669461447
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5166,7 +5185,7 @@ GameObject:
   - component: {fileID: 8581643374126639890}
   - component: {fileID: 8581643374126639891}
   m_Layer: 5
-  m_Name: Text_Cost
+  m_Name: PriceText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6023,6 +6042,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uitype: 18
   unit: {fileID: 1555109558, guid: 76032b6ea6507f442ba2c816944ee397, type: 3}
+  unitPrice: 10
   upgradeCountText: {fileID: 8581643374423036182}
   upgradeCount: 0
 --- !u!1 &8581643374312114373
@@ -6037,7 +6057,7 @@ GameObject:
   - component: {fileID: 8581643374312114378}
   - component: {fileID: 8581643374312114379}
   m_Layer: 5
-  m_Name: Text_Cost
+  m_Name: PriceText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6376,6 +6396,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uitype: 18
   unit: {fileID: 5783308623365600305, guid: f718be1aed9d7ac489a1d4fae79836ff, type: 3}
+  unitPrice: 15
   upgradeCountText: {fileID: 8581643373877273321}
   upgradeCount: 0
 --- !u!1 &8581643374423036176

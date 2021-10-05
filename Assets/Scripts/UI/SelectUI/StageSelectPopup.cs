@@ -11,23 +11,26 @@ public class StageSelectPopup : PanelUIComponent, IPopup
     [SerializeField] public SelectUnitBtn[] selectUnitBtns;
     [SerializeField] public PlayerData playerData;
 
-    void Start()
+    void Awake()
     {
         selectUnitBtns = GetComponentsInChildren<SelectUnitBtn>();
     }
+
     public void OnClickOK()
     {
         foreach(var v in selectUnitBtns)
         {
             playerData.AddUnitToList(v.unit, v.upgradeCount);
         }
-        
+
         SceneMgr.Instance.LoadScene(nextScene);
     }
+
     public void OnClickClose()
     {
         UnsetPanel();
     }
+
     public override void SetPanel(UIParam u)
     {
         UIStageSelectPopupParam usspp = (UIStageSelectPopupParam)u;
