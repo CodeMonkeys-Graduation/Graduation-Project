@@ -5,13 +5,12 @@ using UnityEngine.UI;
 
 public class StageSelect : PanelUIComponent
 {
-    [SerializeField] public StageSelectBtn[] stageBtns;
-    [SerializeField] public StageDataSet stageDataSet;
-    
+    StageDataSet stageDataSet;
     StageSelectPopup stageSelectPopup;
-
+    [HideInInspector] public StageSelectBtn[] stageBtns;
     private void Start()
     {
+        stageDataSet = Resources.Load<StageDataSet>("GameDB/StageDataSet");
         stageBtns = FindObjectsOfType<StageSelectBtn>();
         stageSelectPopup = FindObjectOfType<StageSelectPopup>();
         stageSelectPopup.UnsetPanel();
@@ -31,7 +30,6 @@ public class StageSelect : PanelUIComponent
         btn.TurnOnGlow();
 
         StageData nextStageData = stageDataSet.GetStageData(btn.nextStageIdx);
-
         stageSelectPopup.SetPanel(new UIStageSelectPopupParam(nextStageData, btn.nextScene));
     }
 

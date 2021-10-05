@@ -8,7 +8,6 @@ public class StagePlayerGold : UIComponent
 {
     [SerializeField] public TextMeshProUGUI PlayerGoldText;
     int playerGold;
-
     public bool UseGold(int amount)
     {
         if(playerGold - amount < 0)
@@ -17,8 +16,7 @@ public class StagePlayerGold : UIComponent
             return false;
         }
 
-        playerGold -= amount;
-        PlayerGoldText.SetText($"{playerGold}");
+        SetGold(playerGold - amount);
         return true;
     }
 

@@ -10,12 +10,12 @@ public class SelectUnitBtn : UIComponent
     [SerializeField] public Unit unit;
     [SerializeField] TextMeshProUGUI upgradeCountText;
     [SerializeField] TextMeshProUGUI priceText;
-    public int upgradeCount = 0;
 
-    int unitPrice;
+    [Header("Set In Runtime")]
+    [HideInInspector] public int upgradeCount = 0;
+    int unitPrice = 0;
     StagePlayerGold stagePlayerGold;
     Button[] btns;
-
     void Awake()
     {
         stagePlayerGold = FindObjectOfType<StagePlayerGold>();
