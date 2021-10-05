@@ -4,9 +4,12 @@ using UnityEngine;
 public class SelectCloseBtn : CloseBtn
 {
     public StageSelect stageSelect;
+    public StageSelectPopup stageSelectPopup;
+
     public void Start()
     {
         stageSelect = FindObjectOfType<StageSelect>();
+        stageSelectPopup = FindObjectOfType<StageSelectPopup>();
     }
     public override void OnClickClose()
     {
@@ -15,7 +18,7 @@ public class SelectCloseBtn : CloseBtn
             btn.TurnOffGlow();
         }
 
-        base.OnClickClose();
+        stageSelectPopup.UnsetPanel();
     }
 }
 

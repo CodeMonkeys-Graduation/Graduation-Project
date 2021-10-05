@@ -9,11 +9,13 @@ public class StageSelectPopup : PanelUIComponent, IPopup
 
     [Header("Set In Editor")]
     [SerializeField] public SelectUnitBtn[] selectUnitBtns;
+    [SerializeField] public StagePlayerGold stagePlayerGold;
     [SerializeField] public PlayerData playerData;
 
     void Awake()
     {
         selectUnitBtns = GetComponentsInChildren<SelectUnitBtn>();
+        stagePlayerGold = GetComponentInChildren<StagePlayerGold>();
     }
 
     public void OnClickOK()
@@ -40,6 +42,13 @@ public class StageSelectPopup : PanelUIComponent, IPopup
     }
     public override void UnsetPanel()
     {
+        foreach(var btn in selectUnitBtns)
+        {
+            btn.Clear();
+        }
+
+        stagePlayerGold.Clear();
+
         gameObject.SetActive(false);
     }
 }
