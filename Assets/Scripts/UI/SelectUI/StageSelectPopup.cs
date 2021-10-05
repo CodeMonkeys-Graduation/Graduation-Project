@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class StageSelectPopup : PanelUIComponent, IPopup
 {
-    [Header("Set By Runtime")]
-    SceneMgr.Scene nextScene;
+    PlayerData playerData;
     StageData stageData;
 
-    [Header("Set In Editor")]
-    [SerializeField] public SelectUnitBtn[] selectUnitBtns;
-    [SerializeField] public StagePlayerGold stagePlayerGold;
-    [SerializeField] public PlayerData playerData;
-
+    SceneMgr.Scene nextScene;
+    
+    SelectUnitBtn[] selectUnitBtns;
+    StagePlayerGold stagePlayerGold;
     void Awake()
     {
+        playerData = Resources.Load<PlayerData>("GameDB/PlayerData");
         selectUnitBtns = GetComponentsInChildren<SelectUnitBtn>();
         stagePlayerGold = GetComponentInChildren<StagePlayerGold>();
     }
@@ -41,24 +40,23 @@ public class StageSelectPopup : PanelUIComponent, IPopup
         stageData = usspp.nextStageData;
         nextScene = usspp.nextScene;
 
-        Clear();
+        ResetUI();
 
         gameObject.SetActive(true);
     }
     public override void UnsetPanel()
     {
-        //Clear();
-
         gameObject.SetActive(false);
     }
 
-    void Clear()
+    void ResetUI()
     {
         foreach (var btn in selectUnitBtns)
         {
             btn.SetPrice(stageData.unitPriceDictionary[btn.unit.unitType]);
             btn.SetUpgradeCount(0);
         }
+
         stagePlayerGold.SetGold(stageData.playerGold);
     }
 }
