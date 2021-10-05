@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -49,6 +49,7 @@ public class UnitMover : MonoBehaviour
 
             if (distanceRemain < Mathf.Epsilon)
             {
+                transform.position = nextDestination;
                 OnWalkDone();
                 yield break;
             }

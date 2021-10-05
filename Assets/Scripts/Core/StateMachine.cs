@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -15,6 +15,8 @@ public class StateMachine<T>
 
     private bool isStarted = false;
 
+    private bool isActive = true;
+
     public StateMachine(State<T> initialState)
     {
         stateStack.Push(initialState);
@@ -24,6 +26,8 @@ public class StateMachine<T>
 
     public void Run()
     {
+        if (!isActive) return;
+
         if (!isStarted)
         {
             stateStack.Peek().Enter();
@@ -36,11 +40,14 @@ public class StateMachine<T>
         
     }
 
+    public void SetActive(bool active) => isActive = active;
 
     public bool IsStateType(System.Type type) => stateStack.Peek().GetType() == type;
 
     public void ChangeState(State<T> nextState, StateTransitionMethod method)
     {
+        if (!isActive) return;
+
         switch (method)
         {
             case StateTransitionMethod.PopNPush:

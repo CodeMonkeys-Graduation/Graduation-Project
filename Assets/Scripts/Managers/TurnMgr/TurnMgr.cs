@@ -18,6 +18,7 @@ public class TurnMgr : SingletonBehaviour<TurnMgr>
     [HideInInspector] public Dictionary<Unit, int> actionPointRemains = new Dictionary<Unit, int>();
 
     public StateMachine<TurnMgr> stateMachine;
+
     public enum TMState { 
         Nobody, 
         PlayerTurnBegin, PlayerTurnMove, PlayerTurnAttack, 
@@ -35,7 +36,7 @@ public class TurnMgr : SingletonBehaviour<TurnMgr>
 
     private void Update()
     {
-        stateMachine.Run(); // 업데이트의 런이 최초 실행될 때 Enter가 실행되는 것은 어떤가?
+        stateMachine.Run();
 
         // 디버깅용
         CheckTurnState();
