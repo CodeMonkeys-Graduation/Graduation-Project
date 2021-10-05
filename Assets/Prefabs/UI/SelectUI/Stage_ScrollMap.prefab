@@ -773,6 +773,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uitype: 21
   nextScene: 3
+  nextStageIdx: 0
   glow: {fileID: 2604490674310026686}
   button: {fileID: 2604490674287797195}
 --- !u!1 &2604490674310026686
@@ -974,12 +975,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d1377745a5cb444afff547c6ae3c82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uitype: 19
+  _uitype: 22
   stageBtns:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  stageDataSet: {fileID: 11400000, guid: 47e7ab1257eb82847b99dd184eff1ee6, type: 2}
 --- !u!1 &2604490674437374946
 GameObject:
   m_ObjectHideFlags: 0
@@ -1439,6 +1441,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uitype: 21
   nextScene: 5
+  nextStageIdx: 0
   glow: {fileID: 2604490675571868799}
   button: {fileID: 2604490674508540090}
 --- !u!1 &2604490674514375045
@@ -2434,6 +2437,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uitype: 21
   nextScene: 6
+  nextStageIdx: 0
   glow: {fileID: 2604490675568027930}
   button: {fileID: 2604490674993265584}
 --- !u!1 &2604490675066390453
@@ -3158,6 +3162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uitype: 21
   nextScene: 4
+  nextStageIdx: 0
   glow: {fileID: 2604490674874525577}
   button: {fileID: 2604490675527797160}
 --- !u!1 &2604490675533169168

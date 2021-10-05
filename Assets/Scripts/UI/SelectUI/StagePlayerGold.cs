@@ -6,13 +6,8 @@ using TMPro;
 
 public class StagePlayerGold : UIComponent
 {
-    [SerializeField] public TextMeshProUGUI stagePlayerGold;
-    public int playerGold = 70;
-
-    public void OnEnable()
-    {
-        Clear();
-    }
+    [SerializeField] public TextMeshProUGUI PlayerGoldText;
+    int playerGold;
 
     public bool UseGold(int amount)
     {
@@ -23,13 +18,13 @@ public class StagePlayerGold : UIComponent
         }
 
         playerGold -= amount;
-        stagePlayerGold.SetText($"{playerGold}");
+        PlayerGoldText.SetText($"{playerGold}");
         return true;
     }
 
-    public void Clear()
+    public void SetGold(int gold)
     {
-        playerGold = 70;
-        stagePlayerGold.SetText($"{playerGold}");
+        playerGold = gold;
+        PlayerGoldText.SetText($"{playerGold}");
     }
 }

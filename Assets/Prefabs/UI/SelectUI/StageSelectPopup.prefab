@@ -1625,9 +1625,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d89f8207ea9b73545ba97df5c639e7c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uitype: 24
-  stagePlayerGold: {fileID: 8581643373259341353}
-  playerGold: 70
+  _uitype: 25
+  PlayerGoldText: {fileID: 8581643373259341353}
 --- !u!1 &8581643373123684027
 GameObject:
   m_ObjectHideFlags: 0
@@ -1774,9 +1773,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abffd8aeb497224409e4085e57b07f68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uitype: 16
+  _uitype: 19
   target: {fileID: 8581643373669461442}
   stageSelect: {fileID: 0}
+  stageSelectPopup: {fileID: 0}
 --- !u!1 &8581643373159073360
 GameObject:
   m_ObjectHideFlags: 0
@@ -2346,10 +2346,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37817c8822e58254ca44f988ae263327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uitype: 0
+  _uitype: 21
   unit: {fileID: 575295730912583316, guid: 96d49b415117a2340a0e798db751561d, type: 3}
-  unitPrice: 30
   upgradeCountText: {fileID: 8581643374050718385}
+  priceText: {fileID: 8581643373363720571}
   upgradeCount: 0
 --- !u!1 &8581643373281466131
 GameObject:
@@ -2939,10 +2939,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37817c8822e58254ca44f988ae263327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uitype: 18
+  _uitype: 21
   unit: {fileID: 2092830164088438869, guid: 49b9d43b1e56f374aaf855018f4a53c8, type: 3}
-  unitPrice: 30
   upgradeCountText: {fileID: 8581643373177441227}
+  priceText: {fileID: 8581643372782350038}
   upgradeCount: 0
 --- !u!1 &8581643373511660055
 GameObject:
@@ -3435,7 +3435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f2c4a598b6d56e49b7500a7897aae33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uitype: 15
+  _uitype: 18
   scene: 0
 --- !u!1 &8581643373577146993
 GameObject:
@@ -3838,9 +3838,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b96b16c1e63f36441af3fab07beea816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uitype: 20
-  nextScene: 0
+  _uitype: 23
   selectUnitBtns: []
+  stagePlayerGold: {fileID: 4068158363462012118}
   playerData: {fileID: 11400000, guid: 03d23dda63a4513419e0ffdd41a831f8, type: 2}
 --- !u!1 &8581643373679163131
 GameObject:
@@ -6040,10 +6040,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37817c8822e58254ca44f988ae263327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uitype: 18
+  _uitype: 21
   unit: {fileID: 1555109558, guid: 76032b6ea6507f442ba2c816944ee397, type: 3}
-  unitPrice: 10
   upgradeCountText: {fileID: 8581643374423036182}
+  priceText: {fileID: 8581643374126639891}
   upgradeCount: 0
 --- !u!1 &8581643374312114373
 GameObject:
@@ -6394,10 +6394,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37817c8822e58254ca44f988ae263327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uitype: 18
+  _uitype: 21
   unit: {fileID: 5783308623365600305, guid: f718be1aed9d7ac489a1d4fae79836ff, type: 3}
-  unitPrice: 15
   upgradeCountText: {fileID: 8581643373877273321}
+  priceText: {fileID: 8581643374312114379}
   upgradeCount: 0
 --- !u!1 &8581643374423036176
 GameObject:

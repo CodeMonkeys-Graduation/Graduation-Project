@@ -5,7 +5,8 @@ using UnityEngine;
 public class StageSelectPopup : PanelUIComponent, IPopup
 {
     [Header("Set By Runtime")]
-    [SerializeField] SceneMgr.Scene nextScene;
+    SceneMgr.Scene nextScene;
+    StageData stageData;
 
     [Header("Set In Editor")]
     [SerializeField] public SelectUnitBtn[] selectUnitBtns;
@@ -37,18 +38,27 @@ public class StageSelectPopup : PanelUIComponent, IPopup
     {
         UIStageSelectPopupParam usspp = (UIStageSelectPopupParam)u;
 
+        stageData = usspp.nextStageData;
         nextScene = usspp.nextScene;
+
+        Clear();
+
         gameObject.SetActive(true);
     }
     public override void UnsetPanel()
     {
-        foreach(var btn in selectUnitBtns)
-        {
-            btn.Clear();
-        }
-
-        stagePlayerGold.Clear();
+        //Clear();
 
         gameObject.SetActive(false);
+    }
+
+    void Clear()
+    {
+        foreach (var btn in selectUnitBtns)
+        {
+            btn.SetPrice(stageData.unitPriceDictionary[btn.unit.unitType]);
+            btn.SetUpgradeCount(0);
+        }
+        stagePlayerGold.SetGold(stageData.playerGold);
     }
 }
