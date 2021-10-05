@@ -9,6 +9,7 @@ public class BattleMgr : SingletonBehaviour<BattleMgr>
     //-- Set in Editor --//
     [SerializeField] PlayerData playerData;
 
+    public List<Unit> hasUnitList = new List<Unit>();
     public static List<Cube> _canSummonCubes;
     public StateMachine<BattleMgr> stateMachine;
 
@@ -20,6 +21,13 @@ public class BattleMgr : SingletonBehaviour<BattleMgr>
 
     public void Start()
     {
+        foreach(Unit u in playerData.hasUnitList)
+        {
+            hasUnitList.Add(u);
+        }
+        
+        playerData.Clear();
+
         _canSummonCubes = new List<Cube>(FindObjectsOfType<Cube>().Where(cube => cube._isPlacable));
         stateMachine = new StateMachine<BattleMgr>(new BattleMgr_WaitSingleEvent_(this, EventMgr.Instance.onUICreated, new BattleMgr_Init_(this)));
     }
@@ -66,7 +74,7 @@ public class BattleMgr : SingletonBehaviour<BattleMgr>
     {
         if (stateMachine.IsStateType(typeof(BattleMgr_Init_)))
         {
-            stateMachine.ChangeState(new BattleMgr_Positioning_(this, playerData.hasUnitList, _canSummonCubes), StateMachine<BattleMgr>.StateTransitionMethod.JustPush);
+            stateMachine.ChangeState(new BattleMgr_Positioning_(this, hasUnitList, _canSummonCubes), StateMachine<BattleMgr>.StateTransitionMethod.JustPush);
         }
 
         else if (stateMachine.IsStateType(typeof(BattleMgr_Positioning_)))

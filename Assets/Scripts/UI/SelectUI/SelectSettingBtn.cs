@@ -8,4 +8,5 @@ public class SelectSettingBtn : UIComponent
     {
         Debug.Log("세팅 버튼 눌림");
     }
+
 }
