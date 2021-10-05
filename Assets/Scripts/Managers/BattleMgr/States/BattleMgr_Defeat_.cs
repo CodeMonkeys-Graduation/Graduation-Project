@@ -11,7 +11,7 @@ public class BattleMgr_Defeat_ : BattleMgr_State_
 
     public override void Enter()
     {
-
+        TurnMgr.Instance.stateMachine.SetActive(false);
 
         UIMgr.Instance.SetUIComponent<DefeatPanel>(null, true);
     }
@@ -22,6 +22,7 @@ public class BattleMgr_Defeat_ : BattleMgr_State_
 
     public override void Exit()
     {
+        TurnMgr.Instance.stateMachine.SetActive(true);
 
         UIMgr.Instance.SetUIComponent<DefeatPanel>(null, false);
     }

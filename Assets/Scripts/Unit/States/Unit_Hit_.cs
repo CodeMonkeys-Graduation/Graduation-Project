@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +19,8 @@ public class Unit_Hit_ : State<Unit>
     public override void Enter()
     {
         takingDamage.Invoke(damage);
+        UIMgr.Instance.SetUIComponent<DamageText>(new DamageTextUIParam(owner.transform, damage), true);
+
         if(owner.currHealth <= 0)
         {
             owner.stateMachine.ChangeState(new Unit_Dead_(owner), StateMachine<Unit>.StateTransitionMethod.JustPush);
@@ -27,14 +29,14 @@ public class Unit_Hit_ : State<Unit>
         owner.anim.SetTrigger("ToHit");
         owner.LookAt(opponent);
 
-        owner.StartCoroutine(Execute_Coroutine());
+        owner.StartCoroutine(DoIdleAnimAfterHitAnimEnded());
     }
 
     public override void Execute()
     {
     }
 
-    private IEnumerator Execute_Coroutine()
+    private IEnumerator DoIdleAnimAfterHitAnimEnded()
     {
         yield return new WaitForSeconds(0.1f);
         while (true)

@@ -10,7 +10,7 @@ public enum UIType // UIType은 실제 클래스 이름과 동일해야합니다
     #region BattleUI
     ActionBtn, ActionPanel, ActionPointPanel, BattleNextStateBtn, BattlePlayBtn,
     ItemPanel, ItemSlot, PopupPanel, StatusPanel, SummonPanel, TMBackBtn, TMEndTurnBtn, TurnPanel, TurnSlot, SummonBtn,
-    DefeatPanel, VictoryPanel,
+    DefeatPanel, VictoryPanel, DamageText,
     #endregion
 
     #region SelectUI
