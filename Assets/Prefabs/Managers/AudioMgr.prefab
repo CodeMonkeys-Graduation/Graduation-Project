@@ -73,7 +73,7 @@ MonoBehaviour:
     _values:
     - {fileID: 0}
     - {fileID: 8300000, guid: b5b3a955ec1ad4245ac215d636d5b806, type: 3}
-    - {fileID: 0}
+    - {fileID: 8300000, guid: e6ee71813e1303e4cb8254dd48304712, type: 3}
     - {fileID: 8300000, guid: b5b3a955ec1ad4245ac215d636d5b806, type: 3}
     - {fileID: 8300000, guid: b5b3a955ec1ad4245ac215d636d5b806, type: 3}
     - {fileID: 8300000, guid: b5b3a955ec1ad4245ac215d636d5b806, type: 3}
