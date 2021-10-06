@@ -30,7 +30,7 @@ public class StageSelectPopup : PanelUIComponent, IPopup
 
     public void OnClickClose()
     {
-        UnsetPanel();
+        gameObject.SetActive(false);
     }
 
     public override void SetPanel(UIParam u)
@@ -42,11 +42,11 @@ public class StageSelectPopup : PanelUIComponent, IPopup
 
         ResetUI();
 
-        gameObject.SetActive(true);
+        StartCoroutine(PopupAnimator(true));
     }
     public override void UnsetPanel()
     {
-        gameObject.SetActive(false);
+        StartCoroutine(PopupAnimator(false));
     }
 
     void ResetUI()
@@ -58,5 +58,34 @@ public class StageSelectPopup : PanelUIComponent, IPopup
         }
 
         stagePlayerGold.SetGold(stageData.playerGold);
+    }
+
+    IEnumerator PopupAnimator(bool isOpen)
+    {
+        RectTransform rt = GetComponent<RectTransform>();
+        Vector2 left = new Vector2(0f, rt.anchoredPosition.y);
+        Vector2 right = new Vector2(1110.3f, rt.anchoredPosition.y);
+        Vector2 targetPos;
+
+        if (isOpen)
+        {
+            rt.anchoredPosition = right;
+            targetPos = left;
+        }
+        else
+        {
+            rt.anchoredPosition = left;
+            targetPos = right;
+        }
+
+        float timeElapsed = 0f;
+        while (timeElapsed < 0.8f)
+        {
+            rt.anchoredPosition = Vector2.Lerp(rt.anchoredPosition, targetPos, timeElapsed / 0.8f);
+            yield return null;
+            timeElapsed += Time.deltaTime;
+        }
+
+        rt.anchoredPosition = targetPos;
     }
 }
