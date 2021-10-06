@@ -22,16 +22,15 @@ public class DamageTextUIParam : UIParam
 
 public class DamageText : PanelUIComponent
 {
-    [SerializeField] private TextMeshProUGUI text;
+    [SerializeField] private GameObject textUIPrefab;
 
-    private Transform target;
+    private Dictionary<GameObject, Transform> textInstancesAndTargets = new Dictionary<GameObject, Transform>();
 
     private void Update()
     {
-        if(gameObject.activeInHierarchy && target != null)
+        if(textInstancesAndTargets.Count <= 0)
         {
-            Vector3 screenPoint = Camera.main.WorldToScreenPoint(target.position);
-            transform.position = screenPoint + Vector3.up * 70f;
+            UIMgr.Instance.SetUIComponent<DamageText>(null, false);
         }
     }
 
@@ -40,13 +39,14 @@ public class DamageText : PanelUIComponent
         DamageTextUIParam param = (DamageTextUIParam)u;
 
         Vector3 screenPoint = Camera.main.WorldToScreenPoint(param.damagedTarget.position);
-        transform.position = screenPoint + Vector3.up * 70f;
-        target = param.damagedTarget;
-        text.text = param.damage.ToString();
+        var instanceObject = Instantiate(textUIPrefab, screenPoint, Quaternion.identity, transform);
+        textInstancesAndTargets.Add(instanceObject, param.damagedTarget);
+        instanceObject.transform.position = screenPoint + Vector3.up * 70f;
+        instanceObject.GetComponentInChildren<TextMeshProUGUI>().text = param.damage.ToString();
 
         gameObject.SetActive(true);
 
-        StartCoroutine(UnsetPanelAfterSeconds(1f));
+        StartCoroutine(UnsetInstanceAfterSeconds(instanceObject.gameObject, 1f));
     }
 
     public override void UnsetPanel()
@@ -54,9 +54,20 @@ public class DamageText : PanelUIComponent
         gameObject.SetActive(false);
     }
 
-    private IEnumerator UnsetPanelAfterSeconds(float seconds)
+    private IEnumerator UnsetInstanceAfterSeconds(GameObject go, float seconds)
     {
-        yield return new WaitForSeconds(seconds);
-        UIMgr.Instance.SetUIComponent<DamageText>(null, false);
+        float secondsPassed = 0f;
+        while(seconds > secondsPassed)
+        {
+            yield return null;
+
+            Vector3 screenPoint = Camera.main.WorldToScreenPoint(textInstancesAndTargets[go].position);
+            go.transform.position = screenPoint + Vector3.up * 70f;
+
+            secondsPassed += Time.deltaTime;
+        }
+
+        textInstancesAndTargets.Remove(go);
+        Destroy(go);
     }
 }

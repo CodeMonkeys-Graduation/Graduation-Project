@@ -37,7 +37,7 @@ public class UnitMover : MonoBehaviour
 
     private IEnumerator WalkToDestination(Vector3 nextDestination, Action OnWalkDone)
     {
-        while (true)
+        while (Vector3.Distance(nextDestination, transform.position) > Mathf.Epsilon)
         {
             float distanceRemain = Vector3.Distance(nextDestination, transform.position);
             Vector3 dir = (nextDestination - transform.position).normalized;
@@ -46,14 +46,10 @@ public class UnitMover : MonoBehaviour
             LookDirection(dir);
             transform.Translate(Vector3.ClampMagnitude(move, distanceRemain));
             yield return null;
-
-            if (distanceRemain < Mathf.Epsilon)
-            {
-                transform.position = nextDestination;
-                OnWalkDone();
-                yield break;
-            }
         }
+
+        transform.position = nextDestination;
+        OnWalkDone();
     }
 
     private IEnumerator JumpToDestination(Vector3 currCubePos, Vector3 nextDestination, Action OnJumpDone)
@@ -87,9 +83,9 @@ public class UnitMover : MonoBehaviour
             yield return null;
         }
 
+        transform.position = nextDestination;
         OnJumpDone();
     }
 
     public int CalcMoveAPCost(PFPath path) => (path.path.Count - 1) * owner.GetActionSlot(ActionType.Move).cost;
-
 }
