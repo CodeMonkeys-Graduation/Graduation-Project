@@ -18,7 +18,7 @@ public class SelectCloseBtn : CloseBtn
             btn.TurnOffGlow();
         }
 
-        stageSelectPopup.OnClickClose();
+        stageSelectPopup.UnsetPanel();
     }
 }
 

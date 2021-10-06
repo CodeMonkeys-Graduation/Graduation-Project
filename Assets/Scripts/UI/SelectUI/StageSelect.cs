@@ -13,7 +13,6 @@ public class StageSelect : PanelUIComponent
         stageDataSet = Resources.Load<StageDataSet>("GameDB/StageDataSet");
         stageBtns = FindObjectsOfType<StageSelectBtn>();
         stageSelectPopup = FindObjectOfType<StageSelectPopup>();
-        stageSelectPopup.UnsetPanel();
 
         foreach(var v in stageBtns)
         {
