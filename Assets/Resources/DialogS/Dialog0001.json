@@ -1,0 +1,34 @@
+{
+	"talkDataSet": [
+		{
+			"name": "Swordman",
+			"dialogue": "Why archer? ",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Swordman",
+			"dialogue": "If we go back to king with treasure,",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Swordman",
+			"dialogue": "We can be famous in the whole kingdom. ",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Archer",
+			"dialogue": "Hmm… ",
+			"emotion": "Sad"
+		},
+		{
+			"name": "Wizard",
+			"dialogue": "Hmm…...",
+			"emotion": "Sad"
+		},
+		{
+			"name": "Wizard",
+			"dialogue": "Okay… Okay Go on.",
+			"emotion": "Sad"
+		}
+	]
+}

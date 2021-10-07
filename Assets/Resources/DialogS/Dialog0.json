@@ -1,13 +1,38 @@
 {
 	"talkDataSet": [
 		{
-			"name": "FireBat",
-			"dialogue": "I wanna have a friend. Please with me...",
+			"name": "Swordman",
+			"dialogue": "…?",
 			"emotion": "Sad"
+		},
+		{
+			"name": "Swordman",
+			"dialogue": "Who the hell are you?",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "Haha... I am just a Mage.",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "You guys like adventure...",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "wealth and honor.",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "Right?",
+			"emotion": "Glad"
 		}
 	],
 	"selectionData": {
-		"yes": "Yes, we 're a friend.",
-		"no": "No, I'll fight with you."
+		"yes": "Yes, I love them.",
+		"no": "No, I am not... interested in… them..."
 	}
 }

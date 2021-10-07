@@ -12,7 +12,7 @@ public class DialogDataMgr
         dialogDataContainer.Add("00", LoadDialogData("00"));
         dialogDataContainer.Add("01", LoadDialogData("01"));
         dialogDataContainer.Add("000", LoadDialogData("000"));
-        dialogDataContainer.Add("001", LoadDialogData("001"));
+        dialogDataContainer.Add("0001", LoadDialogData("0001"));
     }
 
     public static List<TalkData> GetTalkDataForEditing(string number) // 에디팅용 함수, 게임 실행 전에 사용하므로 JSON에서 직접 파싱해서 써야 함 + 성능 이슈가 없음
