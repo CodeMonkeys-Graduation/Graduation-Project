@@ -1,14 +1,43 @@
 {
 	"talkDataSet": [
 		{
-			"name": "FireBat",
-			"dialogue": "That's the best friendship.",
+			"name": "Evilmage",
+			"dialogue": "Get right in to the temple behind me.",
 			"emotion": "Glad"
 		},
 		{
-			"name": "FireBat",
-			"dialogue": "Come On. You are died",
-			"emotion": "Normal"
+			"name": "Evilmage",
+			"dialogue": "There's an ancient ruin which is full of precious treasures.",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "Some monsters live there, ...",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "But I think you guys will probably make it. ",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "Right?",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Swordman",
+			"dialogue": "Okay.. Okay… I will take it.",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Swordman",
+			"dialogue": "It doesn't matter for us!!",
+			"emotion": "Glad"
 		}
-	]
+	],
+	"selectionData": {
+		"yes": "Okay… Go on.",
+		"no": "W..wait for a second!"
+	}
 }

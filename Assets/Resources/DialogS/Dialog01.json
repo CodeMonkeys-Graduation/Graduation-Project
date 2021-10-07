@@ -1,14 +1,53 @@
 {
 	"talkDataSet": [
 		{
-			"name": "FireBat",
-			"dialogue": "That's too bad.",
+			"name": "Evilmage",
+			"dialogue": "Okay Okay.. Anyway,",
 			"emotion": "Glad"
 		},
 		{
-			"name": "FireBat",
-			"dialogue": "Come on...",
+			"name": "Evilmage",
+			"dialogue": "There's appealing information for you guys.",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Swordman",
+			"dialogue": "What the hell is it?",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Wizard",
+			"dialogue": "SwordMan, Just ignore him.",
 			"emotion": "Normal"
+		},
+		{
+			"name": "Archer",
+			"dialogue": "Yes, his words are meaningless.",
+			"emotion": "Normal"
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "Haha.. Okay.",
+			"emotion": 0
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "You don't have to listen to me.",
+			"emotion": 0
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "But, I think the king will praise you.",
+			"emotion": 0
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "for doing what I told you to.",
+			"emotion": 0
 		}
-	]
+	],
+	"selectionData": {
+		"yes": "Okay. Tell us about it.",
+		"no": "…Tell us."
+	}
 }

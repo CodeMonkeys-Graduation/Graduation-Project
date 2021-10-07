@@ -7,10 +7,11 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DialogState_0_1
+  m_Name: DialogState01
   m_Speed: 1
   m_CycleOffset: 0
-  m_Transitions: []
+  m_Transitions:
+  - {fileID: 7432994447068476282}
   m_StateMachineBehaviours:
   - {fileID: 4144291815821404285}
   m_Position: {x: 50, y: 50, z: 0}
@@ -71,6 +72,56 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1101 &-7225487312528428310
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 6
+    m_ConditionEvent: Selected
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: -1927747203042903469}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 0.75
+  m_HasExitTime: 0
+  m_HasFixedDuration: 0
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
+--- !u!1101 &-6780364611633458565
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 3
+    m_ConditionEvent: Selected
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: -6644948155931628572}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0.25
+  m_TransitionOffset: 0
+  m_ExitTime: 0.75
+  m_HasExitTime: 0
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1102 &-6644948155931628572
 AnimatorState:
   serializedVersion: 6
@@ -78,10 +129,11 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DialogState_0_0_0
+  m_Name: DialogState000
   m_Speed: 1
   m_CycleOffset: 0
-  m_Transitions: []
+  m_Transitions:
+  - {fileID: -5521975891443699840}
   m_StateMachineBehaviours:
   - {fileID: 7335643286380026042}
   m_Position: {x: 50, y: 50, z: 0}
@@ -112,8 +164,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectionNumber: 0
   selectionData:
-    yes: Yes, we 're a friend.
-    no: No, I'll fight with you.
+    yes: Yes, I love them.
+    no: "No, I am not... interested in\u2026 them..."
 --- !u!1101 &-6270513997377335208
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -134,41 +186,75 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 0
-  m_HasFixedDuration: 1
+  m_HasFixedDuration: 0
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
---- !u!1102 &-5879458469958099811
-AnimatorState:
-  serializedVersion: 6
+--- !u!114 &-5919038863185659127
+MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DialogState_0_0_1
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours:
-  - {fileID: 8367664057351128494}
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 3d1dec1ae5af60f49bde6f827f46c240, type: 2}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 252b9c5108de48f4e851d8d9f52f8b3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  talkDataNumber: 0001
+  talkDataSet:
+  - name: Swordman
+    dialogue: 'Why archer? '
+    emotion: Glad
+  - name: Swordman
+    dialogue: If we go back to king with treasure,
+    emotion: Upset
+  - name: Swordman
+    dialogue: 'We can be famous in the whole kingdom. '
+    emotion: Upset
+  - name: Archer
+    dialogue: "Hmm\u2026 "
+    emotion: Sad
+  - name: Wizard
+    dialogue: "Hmm\u2026..."
+    emotion: Sad
+  - name: Wizard
+    dialogue: "Okay\u2026 Okay Go on."
+    emotion: Sad
+  talkProgress: 0
+--- !u!1101 &-5521975891443699840
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Next
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: isTalkEnd
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 2447674153016138823}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 0.75
+  m_HasExitTime: 0
+  m_HasFixedDuration: 0
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1102 &-5047984621548164767
 AnimatorState:
   serializedVersion: 6
@@ -176,7 +262,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DialogState_0
+  m_Name: DialogState0
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -214,11 +300,11 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 0
-  m_HasFixedDuration: 1
+  m_HasFixedDuration: 0
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
@@ -229,7 +315,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SelectionState_0
+  m_Name: SelectionState0
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -280,12 +366,11 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SelectionState_0_0
+  m_Name: SelectionState00
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 7305184221416544824}
-  - {fileID: 7569332605206720763}
   m_StateMachineBehaviours:
   - {fileID: 3311146667867569094}
   m_Position: {x: 50, y: 50, z: 0}
@@ -302,6 +387,31 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1101 &-3952215495113371106
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 3
+    m_ConditionEvent: Selected
+    m_EventTreshold: -1
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: -6644948155931628572}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0.25
+  m_TransitionOffset: 0
+  m_ExitTime: 0.75
+  m_HasExitTime: 1
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1101 &-3348156207554476795
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -324,6 +434,22 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &-2910539688767407119
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d9bc6d007c001c44b675e88a737a280, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectionNumber: 01
+  selectionData:
+    yes: Okay. Tell us about it.
+    no: "\u2026Tell us."
 --- !u!1101 &-2235658643332364330
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -346,6 +472,33 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1102 &-1927747203042903469
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DialogState0001
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours:
+  - {fileID: -5919038863185659127}
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 3d1dec1ae5af60f49bde6f827f46c240, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!114 &-1902433189929294578
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -360,12 +513,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   talkDataNumber: 00
   talkDataSet:
-  - name: FireBat
-    dialogue: Thank you. guy.
+  - name: Evilmage
+    dialogue: There's appealing information for you guys.
     emotion: Glad
-  - name: FireBat
-    dialogue: Come on... I wanna have friend died...
+  - name: Swordman
+    dialogue: What the hell is it?
+    emotion: Upset
+  - name: Wizard
+    dialogue: SwordMan, Just ignore him.
     emotion: Normal
+  - name: Archer
+    dialogue: Yes, his words are meaningless.
+    emotion: Normal
+  - name: Evilmage
+    dialogue: Haha.. Okay.
+    emotion: 0
+  - name: Evilmage
+    dialogue: You don't have to listen to me.
+    emotion: 0
+  - name: Evilmage
+    dialogue: But, I think the king will praise you.
+    emotion: 0
+  - name: Evilmage
+    dialogue: for doing what I told you to.
+    emotion: 0
   talkProgress: 0
 --- !u!114 &-1704994341974483042
 MonoBehaviour:
@@ -381,9 +552,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   talkDataNumber: 0
   talkDataSet:
-  - name: FireBat
-    dialogue: I wanna have a friend. Please with me...
+  - name: Swordman
+    dialogue: "\u2026?"
     emotion: Sad
+  - name: Swordman
+    dialogue: Who the hell are you?
+    emotion: Upset
+  - name: Evilmage
+    dialogue: Haha... I am just a Mage.
+    emotion: Glad
+  - name: Evilmage
+    dialogue: You guys like adventure...
+    emotion: Upset
+  - name: Evilmage
+    dialogue: wealth and honor.
+    emotion: Upset
+  - name: Evilmage
+    dialogue: Right?
+    emotion: Glad
   talkProgress: 0
 --- !u!114 &-1686643453797069851
 MonoBehaviour:
@@ -415,7 +601,7 @@ AnimatorStateMachine:
     m_Position: {x: 140, y: 110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4741850210295381380}
-    m_Position: {x: 140, y: 180, z: 0}
+    m_Position: {x: 140, y: 190, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8425842051841414978}
     m_Position: {x: 30, y: 260, z: 0}
@@ -427,10 +613,16 @@ AnimatorStateMachine:
     m_Position: {x: 30, y: 340, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6644948155931628572}
-    m_Position: {x: -100, y: 430, z: 0}
+    m_Position: {x: 150, y: 430, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: -5879458469958099811}
-    m_Position: {x: 140, y: 430, z: 0}
+    m_State: {fileID: -170855451041735685}
+    m_Position: {x: 260, y: 340, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 2447674153016138823}
+    m_Position: {x: 150, y: 510, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -1927747203042903469}
+    m_Position: {x: 280, y: 590, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -463,6 +655,34 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1102 &-170855451041735685
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SelectionState01
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions:
+  - {fileID: 5779306991515502200}
+  m_StateMachineBehaviours:
+  - {fileID: -2910539688767407119}
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 8c87ca135d60b004996f8d3d1fa6da34, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
@@ -525,6 +745,22 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &545086645198303347
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d9bc6d007c001c44b675e88a737a280, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectionNumber: 000
+  selectionData:
+    yes: "Okay\u2026 Go on."
+    no: W..wait for a second!
 --- !u!1101 &752982948647358296
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -542,10 +778,38 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 0
+  m_HasFixedDuration: 0
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
+--- !u!1101 &862469417245768913
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Next
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: isTalkEnd
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 2447674153016138823}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0.25
+  m_TransitionOffset: 0
+  m_ExitTime: 0.75
+  m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -599,6 +863,34 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1102 &2447674153016138823
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SelectionState000
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions:
+  - {fileID: -7225487312528428310}
+  m_StateMachineBehaviours:
+  - {fileID: 545086645198303347}
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 8c87ca135d60b004996f8d3d1fa6da34, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1101 &2833282176458954158
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -641,11 +933,11 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 0.75
-  m_HasExitTime: 1
-  m_HasFixedDuration: 1
+  m_HasExitTime: 0
+  m_HasFixedDuration: 0
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
@@ -663,8 +955,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectionNumber: 00
   selectionData:
-    yes: What? don't you wanna just have a friend?
-    no: No, what? I can't be your friend.
+    yes: Okay. Tell us about it.
+    no: "\u2026Tell us."
 --- !u!1101 &3822424856901363466
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -674,7 +966,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions: []
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: -5879458469958099811}
+  m_DstState: {fileID: 0}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -701,13 +993,84 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   talkDataNumber: 01
   talkDataSet:
-  - name: FireBat
-    dialogue: That's too bad.
+  - name: Evilmage
+    dialogue: Okay Okay.. Anyway,
     emotion: Glad
-  - name: FireBat
-    dialogue: Come on...
+  - name: Evilmage
+    dialogue: There's appealing information for you guys.
+    emotion: Glad
+  - name: Swordman
+    dialogue: What the hell is it?
+    emotion: Upset
+  - name: Wizard
+    dialogue: SwordMan, Just ignore him.
     emotion: Normal
+  - name: Archer
+    dialogue: Yes, his words are meaningless.
+    emotion: Normal
+  - name: Evilmage
+    dialogue: Haha.. Okay.
+    emotion: 0
+  - name: Evilmage
+    dialogue: You don't have to listen to me.
+    emotion: 0
+  - name: Evilmage
+    dialogue: But, I think the king will praise you.
+    emotion: 0
+  - name: Evilmage
+    dialogue: for doing what I told you to.
+    emotion: 0
   talkProgress: 0
+--- !u!1101 &4391433318522600883
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 6
+    m_ConditionEvent: Selected
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 0}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0.25
+  m_TransitionOffset: 0
+  m_ExitTime: 0.75
+  m_HasExitTime: 0
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
+--- !u!1101 &5779306991515502200
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 3
+    m_ConditionEvent: Selected
+    m_EventTreshold: -1
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: -6644948155931628572}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 0.75
+  m_HasExitTime: 0
+  m_HasFixedDuration: 0
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1101 &6132847336510383814
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -739,7 +1102,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions: []
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: -5879458469958099811}
+  m_DstState: {fileID: 0}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -762,18 +1125,18 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 3
     m_ConditionEvent: Selected
-    m_EventTreshold: 0
+    m_EventTreshold: -1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6644948155931628572}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 0
-  m_HasFixedDuration: 1
+  m_HasFixedDuration: 0
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
@@ -791,12 +1154,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   talkDataNumber: 000
   talkDataSet:
-  - name: FireBat
-    dialogue: That's the best friendship.
+  - name: Evilmage
+    dialogue: Get right in to the temple behind me.
     emotion: Glad
-  - name: FireBat
-    dialogue: Come On. You are died
-    emotion: Normal
+  - name: Evilmage
+    dialogue: There's an ancient ruin which is full of precious treasures.
+    emotion: Glad
+  - name: Evilmage
+    dialogue: Some monsters live there, ...
+    emotion: Glad
+  - name: Evilmage
+    dialogue: 'But I think you guys will probably make it. '
+    emotion: Glad
+  - name: Evilmage
+    dialogue: Right?
+    emotion: Glad
+  - name: Swordman
+    dialogue: "Okay.. Okay\u2026 I will take it."
+    emotion: Glad
+  - name: Swordman
+    dialogue: It doesn't matter for us!!
+    emotion: Glad
   talkProgress: 0
 --- !u!114 &7355703480459156641
 MonoBehaviour:
@@ -810,7 +1188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82beada7704bd8744a262eedd8381aad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1101 &7569332605206720763
+--- !u!1101 &7432994447068476282
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -818,20 +1196,23 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: Selected
+  - m_ConditionMode: 1
+    m_ConditionEvent: Next
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: isTalkEnd
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: -5879458469958099811}
+  m_DstState: {fileID: -170855451041735685}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 0
-  m_HasFixedDuration: 1
+  m_HasFixedDuration: 0
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
@@ -879,21 +1260,6 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
---- !u!114 &8367664057351128494
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 252b9c5108de48f4e851d8d9f52f8b3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  talkDataNumber: 001
-  talkDataSet: []
-  talkProgress: 0
 --- !u!1101 &8381412457090581019
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -923,7 +1289,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DialogState_0_0
+  m_Name: DialogState00
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
