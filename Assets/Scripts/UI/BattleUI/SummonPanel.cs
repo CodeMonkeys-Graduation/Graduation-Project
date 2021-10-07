@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class SummonPanel : PanelUIComponent
 {
-    [SerializeField] public List<SummonBtn> summonBtnPrefabs;
+    [SerializeField] public SummonBtn summonBtnPrefab;
     [SerializeField] public Transform content;
 
-    public Dictionary<SummonBtn, int> SummonBtnCount = new Dictionary<SummonBtn, int>();
+    public Dictionary<Unit, int> SummonBtnCount = new Dictionary<Unit, int>();
 
     public override void SetPanel(UIParam u) // 유닛을 받아 그 유닛을 판넬에 세팅하는 함수
     {
@@ -18,24 +18,31 @@ public class SummonPanel : PanelUIComponent
         List<Unit> units = us._units;
         bool add = us._add;
 
-        foreach(Unit unit in units)
-        {
-            foreach (SummonBtn summonBtn in summonBtnPrefabs) // Dictionary를 Setting한 후
+        foreach(Unit unit in units) // 유닛을 받아서 순회하며 생성하고, 
+        {   
+            if(add)
             {
-                if (unit == summonBtn.unitPrefab)
+                if (SummonBtnCount.ContainsKey(unit))
                 {
-                    if (add)
-                    {
-                        if (SummonBtnCount.ContainsKey(summonBtn)) SummonBtnCount[summonBtn]++;
-                        else SummonBtnCount.Add(summonBtn, 1);
-                    }
-                    else
-                    {
-                        if (SummonBtnCount.ContainsKey(summonBtn) && SummonBtnCount[summonBtn] > 1) SummonBtnCount[summonBtn]--;
-                        else SummonBtnCount.Remove(summonBtn);
-                    }
+                    SummonBtnCount[unit]++;
+                }
+                else
+                {
+                    SummonBtnCount.Add(unit, 1);
                 }
             }
+            else
+            {
+                if (SummonBtnCount.ContainsKey(unit) && SummonBtnCount[unit] >= 2)
+                {
+                    SummonBtnCount[unit]--;
+                }
+                else
+                {
+                    SummonBtnCount.Remove(unit);
+                }
+            }
+            
         }
 
         UpdateSummonBtns();
@@ -54,12 +61,11 @@ public class SummonPanel : PanelUIComponent
 
         foreach(SummonBtn sb in currSummonBtns) Destroy(sb.gameObject);
         
-        foreach(KeyValuePair<SummonBtn, int> si in SummonBtnCount)
+        foreach(KeyValuePair<Unit, int> si in SummonBtnCount)
         {
-            GameObject g = Instantiate(si.Key.gameObject);
-
-            g.transform.SetParent(content, false);
-            g.GetComponent<SummonBtn>().unitCount.text = si.Value.ToString();
+            summonBtnPrefab.MakeSummonBtn(si.Key, si.Key.name, si.Value.ToString());
+            SummonBtn sb = Instantiate(summonBtnPrefab);
+            sb.transform.SetParent(content, false);
         }
     }
     public override void UnsetPanel()

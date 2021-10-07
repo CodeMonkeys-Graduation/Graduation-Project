@@ -612,10 +612,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _uitype: 9
-  summonBtnPrefabs:
-  - {fileID: 3209373352914551523, guid: 8bb9c5ec7ac89df43ba6f1d39a857756, type: 3}
-  - {fileID: 92470210142111737, guid: 5ae2c94d98afe5d45aed223427c1c211, type: 3}
-  - {fileID: 2563443798959544640, guid: 88180a7a697804d429f1766b2ee32579, type: 3}
+  summonBtnPrefab: {fileID: 3209373352914551523, guid: 8bb9c5ec7ac89df43ba6f1d39a857756,
+    type: 3}
   content: {fileID: 8819214806244639951}
 --- !u!1 &8819214806244639948
 GameObject:
