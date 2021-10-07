@@ -5,8 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 public class SummonBtn : UIComponent, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-    [SerializeField] public Unit unitPrefab;
-    [SerializeField] public Text unitCount;
+    [SerializeField] Unit unitPrefab;
+    [SerializeField] Text unitName;
+    [SerializeField] Text unitCount;
 
     EventListener el_onUnitSummonReady = new EventListener();
 
@@ -80,6 +81,13 @@ public class SummonBtn : UIComponent, IDragHandler, IBeginDragHandler, IEndDragH
         if (currDraggingUnit != null) Destroy(currDraggingUnit.gameObject);
         prevRaycastedCube = null;
         currDraggingUnit = null;
+    }
+
+    public void MakeSummonBtn(Unit u, string context, string count)
+    {
+        unitPrefab = u;
+        unitName.text = context;
+        unitCount.text = count;
     }
 
 }

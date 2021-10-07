@@ -48,7 +48,6 @@ public class StageSelectPopup : PanelUIComponent, IPopup
     {
         StartCoroutine(PopupAnimator(false));
     }
-
     void ResetUI()
     {
         foreach (var btn in selectUnitBtns)

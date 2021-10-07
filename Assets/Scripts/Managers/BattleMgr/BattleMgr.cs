@@ -7,9 +7,8 @@ using UnityEngine.UI;
 public class BattleMgr : SingletonBehaviour<BattleMgr>
 {
     //-- Set in Editor --//
-    [SerializeField] PlayerData playerData;
-
-    public List<Unit> hasUnitList = new List<Unit>();
+    PlayerData playerData;
+    List<Unit> hasUnitList = new List<Unit>();
     public static List<Cube> _canSummonCubes;
     public StateMachine<BattleMgr> stateMachine;
 
@@ -21,6 +20,8 @@ public class BattleMgr : SingletonBehaviour<BattleMgr>
 
     public void Start()
     {
+        playerData = Resources.Load<PlayerData>("GameDB/PlayerData");
+
         foreach(Unit u in playerData.hasUnitList)
         {
             hasUnitList.Add(u);
