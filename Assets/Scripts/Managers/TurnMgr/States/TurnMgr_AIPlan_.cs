@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 
 public class TurnMgr_AIPlan_ : TurnMgr_State_
 {
@@ -22,6 +22,8 @@ public class TurnMgr_AIPlan_ : TurnMgr_State_
         unit.StartBlink();
         CameraMgr.Instance.SetTarget(unit, true);
 
+        UIMgr.Instance.SetUIComponent<PlanningIndicator>(new PlanningIndicatorUIParam(unit), true);
+
         ActionPlanner.Instance.Plan(
             unit, 
             actions => owner.stateMachine.ChangeState(new TurnMgr_AIAction_(owner, unit, actions), StateMachine<TurnMgr>.StateTransitionMethod.JustPush));
@@ -34,6 +36,7 @@ public class TurnMgr_AIPlan_ : TurnMgr_State_
 
     public override void Exit()
     {
+        UIMgr.Instance.SetUIComponent<PlanningIndicator>(null, false);
         unit.StopBlink();
     }
 }
