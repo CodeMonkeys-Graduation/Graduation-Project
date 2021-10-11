@@ -18,6 +18,12 @@ public class BattleMgr : SingletonBehaviour<BattleMgr>
     }
     public BMState bmState;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        stateMachine = new StateMachine<BattleMgr>(new BattleMgr_WaitSingleEvent_(this, EventMgr.Instance.onUICreated, new BattleMgr_Init_(this)));
+    }
+
     public void Start()
     {
         playerData = Resources.Load<PlayerData>("GameDB/PlayerData");
@@ -30,7 +36,6 @@ public class BattleMgr : SingletonBehaviour<BattleMgr>
         playerData.Clear();
 
         _canSummonCubes = new List<Cube>(FindObjectsOfType<Cube>().Where(cube => cube._isPlacable));
-        stateMachine = new StateMachine<BattleMgr>(new BattleMgr_WaitSingleEvent_(this, EventMgr.Instance.onUICreated, new BattleMgr_Init_(this)));
     }
 
     public void Update()
