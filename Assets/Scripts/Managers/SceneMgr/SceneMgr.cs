@@ -44,8 +44,10 @@ public class SceneMgr : SingletonBehaviour<SceneMgr>
     public void LoadScene(Scene sceneEnum, Action<float> onSceneLoad = null)
     {
         _currScene = sceneEnum;
+        SceneManager.sceneLoaded += LoadSceneEnd;
         StartCoroutine(OnLoadSceneCoroutine(sceneEnum, onSceneLoad));
     }
+
     private IEnumerator OnLoadSceneCoroutine(Scene SceneEnum, Action<float> onSceneLoad)
     {
         var asyncOperation = SceneManager.LoadSceneAsync(SceneEnum.ToString(), LoadSceneMode.Single);
@@ -62,5 +64,13 @@ public class SceneMgr : SingletonBehaviour<SceneMgr>
         }
 
         asyncOperation.allowSceneActivation = true;
+    }
+
+    private void LoadSceneEnd(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+    {
+        if(scene.name == _currScene.ToString())
+        {
+            UIMgr.Instance.TurnOffSceneLoadUI();
+        }
     }
 }

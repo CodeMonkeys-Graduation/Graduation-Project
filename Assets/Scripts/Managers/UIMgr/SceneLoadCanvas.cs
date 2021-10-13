@@ -14,21 +14,17 @@ public class SceneLoadCanvas : BaseCanvas
 
     public new void TurnOnCanvas()
     {
-        StartCoroutine(Fade());
+        gameObject.SetActive(true);
+        cg.alpha = 1f;
     }
 
-    public IEnumerator Fade()
+    public new void TurnOffCanvas()
     {
-        cg.alpha = 1f;
+        StartCoroutine(FadeOut());
+    }
 
-        float waitTime = 0.5f;
-
-        while (waitTime > 0)
-        {
-            yield return 0;
-            waitTime -= Time.deltaTime;
-        }
-
+    public IEnumerator FadeOut()
+    {
         float timeElapsed = 0f;
         float fadeTime = 1.5f;
 

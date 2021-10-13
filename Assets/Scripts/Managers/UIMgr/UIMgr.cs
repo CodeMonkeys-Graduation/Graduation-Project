@@ -27,7 +27,6 @@ public class UIMgr : SingletonBehaviour<UIMgr>
 
     public void Start()
     {
-        //TurnOffSceneLoadUI();
         ChangeUIState(SceneMgr.Instance._currScene.ToString());
     }
 
@@ -114,7 +113,7 @@ public class UIMgr : SingletonBehaviour<UIMgr>
     {
         sceneLoadView = FindObjectOfType<SceneLoadCanvas>();
 
-        if (sceneLoadView != null) // 현재 여기 안 들어옴
+        if (sceneLoadView != null)
         {
             sceneLoadView.TurnOffCanvas();
         }
