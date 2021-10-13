@@ -7,6 +7,13 @@ using UnityEngine;
 
 public class Unit_Move_ : State<Unit>
 {
+    public enum MoveState
+    {
+        FlatMoving, Jumping, Stopped
+    }
+
+    private MoveState currMoveState = MoveState.Stopped;
+
     PFPath _path;
     Queue<Cube> _cubesToGo;
     Cube _prevCube;
@@ -32,8 +39,10 @@ public class Unit_Move_ : State<Unit>
     {
         if (_path == null) return;
 
-        if(!ProcessCubeToGo())
+        if(!ProcessCubeToGo()) // 더이상 갈 큐브가 없으면 return false
         {
+            currMoveState = MoveState.Stopped;
+
             FieldItem item = owner.GetCube.GetItem();
             if (item != null)
             {
@@ -49,6 +58,8 @@ public class Unit_Move_ : State<Unit>
         // 혹시나 못쓴 cost는 싹 써버리기
         owner.actionPointsRemain = Mathf.Max(owner.actionPointsRemain - _cost, 0);
         EventMgr.Instance.onUnitRunExit.Invoke(new UnitStateEvent(owner));
+
+        _path = null;
     }
 
     private bool ProcessCubeToGo()
@@ -57,41 +68,15 @@ public class Unit_Move_ : State<Unit>
             return false;
 
         Cube nextCubeToGo = _cubesToGo.Peek();
-        Vector3 nextDestination = nextCubeToGo.Platform.position;
-        float cubeHeightDiff = Mathf.Abs(_prevCube.Platform.position.y - nextDestination.y);
 
-        if (_isWalking || cubeHeightDiff < owner.cubeHeightToJump)  // 걷기로 이동 : 다음 큐브가 유닛이 점프로 이동하는 큐브높이(owner.cubeHeightToJump) 미만이라면 
-        {
-            if (_isWalking) return true;
-            else
-            {
-                _isWalking = true;
-                owner.mover.FlatMove(nextCubeToGo, OnArriveAtNextCube);
-            }
-        }
-        else if(_isJumping || cubeHeightDiff >= owner.cubeHeightToJump) // 점프로 이동 : currCube와 nextCube의 높이가 유닛이 점프로 이동하는 큐브높이(owner.cubeHeightToJump) 이상이라면
-        {
-            if (_isJumping) return true;
-            else
-            {
-                _isJumping = true;
-                owner.mover.JumpMove(nextCubeToGo, OnArriveAtNextCube);
-            }
-        }
-
+        owner.mover.MoveTo(nextCubeToGo, OnArriveAtNextCube);
         return true;
     }
 
     private void OnArriveAtNextCube()
     {
-        _isJumping = false;
-        _isWalking = false;
-        _prevCube = _cubesToGo.Dequeue();
-        if (_cost > 0)
-        {
-            // TODO owner.actionPointsRemain < 0 예외처리
-            owner.actionPointsRemain--;
-            _cost--;
-        }
+        _cubesToGo.Dequeue();
+        owner.actionPointsRemain = Math.Max(owner.actionPointsRemain - 1, 0);
+        _cost = Math.Max(_cost - 1, 0);
     }
 }
