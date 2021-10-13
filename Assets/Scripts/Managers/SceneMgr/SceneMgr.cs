@@ -18,6 +18,9 @@ public class SceneMgr : SingletonBehaviour<SceneMgr>
         Battle2,
         Battle3,
         Battle4,
+        Dialog2,
+        Dialog3,
+        Dialog4
     }
 
     public static Dictionary<string, Scene> sceneMap = new Dictionary<string, Scene>() {
@@ -28,6 +31,9 @@ public class SceneMgr : SingletonBehaviour<SceneMgr>
         { Scene.Battle2.ToString(), Scene.Battle2 },
         { Scene.Battle3.ToString(), Scene.Battle3 },
         { Scene.Battle4.ToString(), Scene.Battle4 },
+        { Scene.Dialog2.ToString(), Scene.Dialog2 },
+        { Scene.Dialog3.ToString(), Scene.Dialog3 },
+        { Scene.Dialog4.ToString(), Scene.Dialog4 }
     };
 
     [SerializeField/*DEBUG*/] public Scene _currScene;

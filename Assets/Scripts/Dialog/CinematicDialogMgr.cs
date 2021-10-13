@@ -25,6 +25,7 @@ public class CinematicDialogMgr : MonoBehaviour
     void SolveCurrentStageNumber(string scenename)
     {
         string num = scenename.Substring(scenename.Length - 1);
+        Debug.Log(num);
         stageNumber = int.Parse(num) - 1; // 다이얼로그 1 ㅡ> Number 0
     }
 
