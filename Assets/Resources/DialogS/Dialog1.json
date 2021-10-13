@@ -1,0 +1,38 @@
+{
+	"talkDataSet": [
+		{
+			"name": "Slime",
+			"dialogue": "…",
+			"emotion": "Sad"
+		},
+		{
+			"name": "Slime",
+			"dialogue": "wiggle wiggle… wiggle wiggle…",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Swordman",
+			"dialogue": "Haha... disgusting monsters.",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Swordman",
+			"dialogue": "I, Swordman will knock it down.",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Slime",
+			"dialogue": "wiggle wiggle… wiggle wiggle…",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Wizard",
+			"dialogue": "…?!",
+			"emotion": "Glad"
+		}
+	],
+	"selectionData": {
+		"yes": "Attack the monsters.",
+		"no": "Run away from monsters."
+	}
+}

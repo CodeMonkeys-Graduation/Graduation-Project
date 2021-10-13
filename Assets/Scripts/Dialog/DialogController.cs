@@ -16,17 +16,10 @@ public class DialogController : SingletonBehaviour<DialogController>
     [SerializeField] TextMeshProUGUI npcname;
     [SerializeField] TextMeshProUGUI context;
 
-    [SerializeField] public int stageProgress;
-
-    private void Start()
+    public void Init(int stageNumber)
     {
         DialogDataMgr.InitDialogData();
-        dialogAnimator.runtimeAnimatorController  = Resources.Load("DialogSystem-" + stageProgress) as RuntimeAnimatorController;
-        InitDialogUI();
-    }
-
-    void InitDialogUI()
-    {
+        dialogAnimator.runtimeAnimatorController  = Resources.Load("DialogAnimations/DialogSystem-" + stageNumber) as RuntimeAnimatorController;
         dialogPopup.UnsetPopup();
     }
 
@@ -58,7 +51,6 @@ public class DialogController : SingletonBehaviour<DialogController>
         {
             dialogAnimator.SetBool("isTalkEnd", true);
         }
-        
     }
 
 }

@@ -1,0 +1,28 @@
+{
+	"talkDataSet": [
+		{
+			"name": "Wizard",
+			"dialogue": "?! Oop..!",
+			"emotion": "Sad"
+		},
+		{
+			"name": "Swordman",
+			"dialogue": "What the… Wizard!",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Golem",
+			"dialogue": "… Oo… U… You.. Uoooh!!",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Archer",
+			"dialogue": "You coward monsters!!",
+			"emotion": "Upset"
+		}
+	],
+	"selectionData": {
+		"yes": "Attack Golem's legs.",
+		"no": "Attack Golem's arms."
+	}
+}

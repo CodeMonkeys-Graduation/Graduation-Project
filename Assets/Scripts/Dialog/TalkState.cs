@@ -16,7 +16,7 @@ public class TalkState : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         talkProgress = 0;
-        talkDataSet = DialogDataMgr.dialogDataContainer.dialogDatas[talkDataNumber].talkDataSet;
+        talkDataSet = DialogDataMgr.dialogDataContainer.dialogData_SO[talkDataNumber].talkDataSet;
         DialogController.Instance.SetTalk(talkDataSet[talkProgress++]);
     }
     

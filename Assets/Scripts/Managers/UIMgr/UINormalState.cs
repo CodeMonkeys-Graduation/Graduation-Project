@@ -9,6 +9,7 @@ public class UINormalState : UIState // UI 자동 제어가 필요없는 영역
     {
         
     }
+
     public override void Enter()
     {
         Debug.Log("노말 스테이트에 들어옴");

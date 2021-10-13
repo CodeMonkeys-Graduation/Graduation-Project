@@ -1,0 +1,424 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f45ff3eec57f1754e9e1751c31209fc3, type: 3}
+  m_Name: DialogData_SO
+  m_EditorClassIdentifier: 
+  dialogData_SO:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 0
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 0
+    _keyValues:
+    - 0
+    - 00
+    - 01
+    - 000
+    - 0001
+    - 1
+    - 10
+    - 11
+    - 100
+    - 2
+    - 20
+    - 3
+    - 30
+    _keys:
+    - 0
+    - 00
+    - 01
+    - 000
+    - 0001
+    - 1
+    - 10
+    - 11
+    - 100
+    - 2
+    - 20
+    - 3
+    - 30
+    _values:
+    - talkDataSet:
+      - name: Swordman
+        dialogue: "\u2026?"
+        emotion: Sad
+      - name: Swordman
+        dialogue: Who the hell are you?
+        emotion: Upset
+      - name: Evilmage
+        dialogue: Haha... I am just a Mage.
+        emotion: Glad
+      - name: Evilmage
+        dialogue: You guys like adventure...
+        emotion: Upset
+      - name: Evilmage
+        dialogue: wealth and honor.
+        emotion: Upset
+      - name: Evilmage
+        dialogue: Right?
+        emotion: Glad
+      selectionData:
+        yes: Yes, I love them.
+        no: "No, I am not... interested in\u2026 them..."
+    - talkDataSet:
+      - name: Evilmage
+        dialogue: There's appealing information for you guys.
+        emotion: Glad
+      - name: Swordman
+        dialogue: What the hell is it?
+        emotion: Upset
+      - name: Wizard
+        dialogue: SwordMan, Just ignore him.
+        emotion: Normal
+      - name: Archer
+        dialogue: Yes, his words are meaningless.
+        emotion: Normal
+      - name: Evilmage
+        dialogue: Haha.. Okay.
+        emotion: 0
+      - name: Evilmage
+        dialogue: You don't have to listen to me.
+        emotion: 0
+      - name: Evilmage
+        dialogue: But, I think the king will praise you.
+        emotion: 0
+      - name: Evilmage
+        dialogue: for doing what I told you to.
+        emotion: 0
+      selectionData:
+        yes: Okay. Tell us about it.
+        no: "\u2026Tell us."
+    - talkDataSet:
+      - name: Evilmage
+        dialogue: Okay Okay.. Anyway,
+        emotion: Glad
+      - name: Evilmage
+        dialogue: There's appealing information for you guys.
+        emotion: Glad
+      - name: Swordman
+        dialogue: What the hell is it?
+        emotion: Upset
+      - name: Wizard
+        dialogue: SwordMan, Just ignore him.
+        emotion: Normal
+      - name: Archer
+        dialogue: Yes, his words are meaningless.
+        emotion: Normal
+      - name: Evilmage
+        dialogue: Haha.. Okay.
+        emotion: 0
+      - name: Evilmage
+        dialogue: You don't have to listen to me.
+        emotion: 0
+      - name: Evilmage
+        dialogue: But, I think the king will praise you.
+        emotion: 0
+      - name: Evilmage
+        dialogue: for doing what I told you to.
+        emotion: 0
+      selectionData:
+        yes: Okay. Tell us about it.
+        no: "\u2026Tell us."
+    - talkDataSet:
+      - name: Evilmage
+        dialogue: Get right in to the temple behind me.
+        emotion: Glad
+      - name: Evilmage
+        dialogue: There's an ancient ruin which is full of precious treasures.
+        emotion: Glad
+      - name: Evilmage
+        dialogue: Some monsters live there, ...
+        emotion: Glad
+      - name: Evilmage
+        dialogue: 'But I think you guys will probably make it. '
+        emotion: Glad
+      - name: Evilmage
+        dialogue: Right?
+        emotion: Glad
+      - name: Swordman
+        dialogue: "Okay.. Okay\u2026 I will take it."
+        emotion: Glad
+      - name: Swordman
+        dialogue: It doesn't matter for us!!
+        emotion: Glad
+      selectionData:
+        yes: "Okay\u2026 Go on."
+        no: W..wait for a second!
+    - talkDataSet:
+      - name: Swordman
+        dialogue: 'Why archer? '
+        emotion: Glad
+      - name: Swordman
+        dialogue: If we go back to king with treasure,
+        emotion: Upset
+      - name: Swordman
+        dialogue: 'We can be famous in the whole kingdom. '
+        emotion: Upset
+      - name: Archer
+        dialogue: "Hmm\u2026 "
+        emotion: Sad
+      - name: Wizard
+        dialogue: "Hmm\u2026..."
+        emotion: Sad
+      - name: Wizard
+        dialogue: "Okay\u2026 Okay Go on."
+        emotion: Sad
+      selectionData:
+        yes: 
+        no: 
+    - talkDataSet:
+      - name: Slime
+        dialogue: "\u2026"
+        emotion: Sad
+      - name: Slime
+        dialogue: "wiggle wiggle\u2026 wiggle wiggle\u2026"
+        emotion: Upset
+      - name: Swordman
+        dialogue: Haha... disgusting monsters.
+        emotion: Glad
+      - name: Swordman
+        dialogue: I, Swordman will knock it down.
+        emotion: Upset
+      - name: Slime
+        dialogue: "wiggle wiggle\u2026 wiggle wiggle\u2026"
+        emotion: Upset
+      - name: Wizard
+        dialogue: "\u2026?!"
+        emotion: Glad
+      selectionData:
+        yes: Attack the monsters.
+        no: Run away from monsters.
+    - talkDataSet:
+      - name: Wizard
+        dialogue: ?! Oop..!
+        emotion: Sad
+      - name: Swordman
+        dialogue: "What the\u2026 Wizard!"
+        emotion: Upset
+      - name: Golem
+        dialogue: "\u2026 Oo\u2026 U\u2026 You.. Uoooh!!"
+        emotion: Glad
+      - name: Archer
+        dialogue: You coward monsters!!
+        emotion: Upset
+      selectionData:
+        yes: Attack Golem's legs.
+        no: Attack Golem's arms.
+    - talkDataSet:
+      - name: Wizard
+        dialogue: ?! Oop..!
+        emotion: Sad
+      - name: Swordman
+        dialogue: "What the\u2026 Wizard!"
+        emotion: Upset
+      - name: Golem
+        dialogue: "\u2026 Oo\u2026 U\u2026 You.. Uoooh!!"
+        emotion: Glad
+      - name: Archer
+        dialogue: You coward monsters!!
+        emotion: Upset
+      selectionData:
+        yes: Attack Golem's legs.
+        no: Attack Golem's arms.
+    - talkDataSet:
+      - name: Golem
+        dialogue: "Urgh..!! Urg\u2026h..!!"
+        emotion: Sad
+      - name: Wizard
+        dialogue: Thank you Swordman.
+        emotion: Upset
+      - name: Archer
+        dialogue: Let's get inside, now!
+        emotion: Glad
+      - name: Swordman
+        dialogue: Let's Go!
+        emotion: Upset
+      - name: Golem
+        dialogue: "Urgh\u2026 Bad guys\u2026"
+        emotion: Upset
+      selectionData:
+        yes: 
+        no: 
+    - talkDataSet:
+      - name: Evilmage
+        dialogue: "Yes\u2026 Yes\u2026"
+        emotion: Glad
+      - name: Evilmage
+        dialogue: "These treasures are all yours\u2026"
+        emotion: Upset
+      - name: Evilmage
+        dialogue: "Well,, Open it now\u2026"
+        emotion: Glad
+      - name: Swordman
+        dialogue: "Oh\u2026 Wow..."
+        emotion: Upset
+      - name: Swordman
+        dialogue: (Swordman opens the Treasure Chest)
+        emotion: Upset
+      - name: Wizard
+        dialogue: "\u2026?!"
+        emotion: Upset
+      - name: Archer
+        dialogue: ...?!
+        emotion: Upset
+      selectionData:
+        yes: What the hell is going on?!
+        no: It is empty! Explain it Evilmage!
+    - talkDataSet:
+      - name: Evilmage
+        dialogue: Haha! You dumbass.
+        emotion: Glad
+      - name: Evilmage
+        dialogue: This box opens the portal to your kingdom.
+        emotion: Upset
+      - name: Evilmage
+        dialogue: I can't open this box.
+        emotion: Glad
+      - name: Evilmage
+        dialogue: This box can only be opened by the people of the kingdom.
+        emotion: Upset
+      - name: Swordman
+        dialogue: (Swordman gasps.)
+        emotion: Upset
+      - name: Wizard
+        dialogue: (Wizard gasps too.)
+        emotion: Upset
+      - name: Archer
+        dialogue: (Archer also gasps.)
+        emotion: Upset
+      selectionData:
+        yes: 
+        no: 
+    - talkDataSet:
+      - name: Evilmage
+        dialogue: "If there were a little more\u2026"
+        emotion: Glad
+      - name: Evilmage
+        dialogue: "If there were a little more\u2026!!!!!"
+        emotion: Upset
+      - name: Evilmage
+        dialogue: I could have destroyed this beggar kingdom!
+        emotion: Glad
+      - name: Evilmage
+        dialogue: "I'm so bitter\u2026 bitter!!!"
+        emotion: Upset
+      - name: Evilmage
+        dialogue: (Evilmage died.)
+        emotion: Upset
+      - name: Commander
+        dialogue: Do you guys live without thinking?
+        emotion: Upset
+      - name: Commander
+        dialogue: Your greed could have make our kingdom doomed!!
+        emotion: Upset
+      - name: Swordman
+        dialogue: "I apologize\u2026"
+        emotion: Upset
+      - name: Archer
+        dialogue: "I'm sorry\u2026"
+        emotion: Upset
+      - name: Wizard
+        dialogue: "I'm ashamed\u2026"
+        emotion: Upset
+      - name: Swordman
+        dialogue: 'But I have a question. '
+        emotion: Upset
+      - name: Commander
+        dialogue: What is it fucking sword guy?
+        emotion: Upset
+      selectionData:
+        yes: Why did he attack our kingdom with monsters? He is a human.
+        no: "No.. nothing\u2026"
+    - talkDataSet:
+      - name: Commander
+        dialogue: He is the kingdom's Priest.
+        emotion: Glad
+      - name: Commander
+        dialogue: He was such an good priest but,
+        emotion: Upset
+      - name: Commander
+        dialogue: He was almost executed in the kingdom.
+        emotion: Glad
+      - name: Commander
+        dialogue: He was falsely accused of a traitor.
+        emotion: Upset
+      - name: Commander
+        dialogue: 'We knew the truth, but we can''t save him. '
+        emotion: Upset
+      - name: Commander
+        dialogue: But I didn't know he changed like that.
+        emotion: Upset
+      - name: Commander
+        dialogue: What a sad thing. But There is nothing we can do.
+        emotion: Upset
+      - name: Swordman
+        dialogue: Oh.. No...
+        emotion: Glad
+      - name: Archer
+        dialogue: "Oh.. Sad thing\u2026"
+        emotion: Upset
+      - name: Wizard
+        dialogue: "\u2026"
+        emotion: Glad
+      - name: Wizard
+        dialogue: "\u2026..."
+        emotion: Upset
+      - name: Swordman
+        dialogue: "uh\u2026 Wizard?"
+        emotion: Upset
+      - name: Wizard
+        dialogue: "\u2026..."
+        emotion: Upset
+      - name: Swordman
+        dialogue: Wizard, Are you okay?
+        emotion: Upset
+      - name: Wizard
+        dialogue: "\u2026..."
+        emotion: Glad
+      - name: Wizard
+        dialogue: "Okay\u2026 okay I'm okay\u2026"
+        emotion: Upset
+      - name: Wizard
+        dialogue: I'll go home first and rest.
+        emotion: Glad
+      - name: Commander
+        dialogue: "(\u2026?)"
+        emotion: Upset
+      - name: Archer
+        dialogue: "(\u2026?)"
+        emotion: Upset
+      - name: Swordman
+        dialogue: Okay! You worked hard. Go home and rest!
+        emotion: Upset
+      - name: Commander
+        dialogue: "(Hmm\u2026)"
+        emotion: 0
+      selectionData:
+        yes: 
+        no: 

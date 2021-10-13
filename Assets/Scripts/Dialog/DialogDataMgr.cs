@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class DialogDataMgr
 {
-    public static DialogDataContainer dialogDataContainer = Resources.Load<DialogDataContainer>("DialogDataContainer"); // 다이얼로그 데이터 캐싱 작업
+    public static DialogData_SO dialogDataContainer = Resources.Load<DialogData_SO>("DialogData_SO"); // 다이얼로그 데이터 캐싱 작업
 
     public static void InitDialogData()
     {
-        dialogDataContainer.Add("0", LoadDialogData("0"));
-        dialogDataContainer.Add("00", LoadDialogData("00"));
-        dialogDataContainer.Add("01", LoadDialogData("01"));
-        dialogDataContainer.Add("000", LoadDialogData("000"));
-        dialogDataContainer.Add("0001", LoadDialogData("0001"));
+        dialogDataContainer.Clear();
+
+        string[] dataNumers = { "0", "00", "01", "000", "0001", "1", "10", "11", "100", "2", "20", "3", "30" };
+
+        foreach(string num in dataNumers)
+        {
+            dialogDataContainer.Add(num, LoadDialogData(num));
+        }
     }
 
     public static List<TalkData> GetTalkDataForEditing(string number) // 에디팅용 함수, 게임 실행 전에 사용하므로 JSON에서 직접 파싱해서 써야 함 + 성능 이슈가 없음

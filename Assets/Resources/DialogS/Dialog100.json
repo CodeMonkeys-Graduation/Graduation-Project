@@ -1,0 +1,29 @@
+{
+	"talkDataSet": [
+		{
+			"name": "Golem",
+			"dialogue": "Urgh..!! Urg…h..!!",
+			"emotion": "Sad"
+		},
+		{
+			"name": "Wizard",
+			"dialogue": "Thank you Swordman.",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Archer",
+			"dialogue": "Let's get inside, now!",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Swordman",
+			"dialogue": "Let's Go!",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Golem",
+			"dialogue": "Urgh… Bad guys…",
+			"emotion": "Upset"
+		}
+	]
+}

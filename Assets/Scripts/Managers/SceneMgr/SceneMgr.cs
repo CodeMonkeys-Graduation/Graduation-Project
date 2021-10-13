@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -32,11 +32,11 @@ public class SceneMgr : SingletonBehaviour<SceneMgr>
 
     [SerializeField/*DEBUG*/] public Scene _currScene;
 
-    private void Awake()
+    private new void Awake()
     {
         base.Awake();
 
-        // AudioMgr이 Start에서 _currScene을 접근하기때문에 Awake에서 수행해야함.
+        // AudioMgr이 Start에서 _currScene을 접근하기때문에 Awake에서 수행해야 함.
         sceneMap.TryGetValue(SceneManager.GetActiveScene().name, out Scene currScene);
         _currScene = currScene;
     }
@@ -50,6 +50,8 @@ public class SceneMgr : SingletonBehaviour<SceneMgr>
     {
         var asyncOperation = SceneManager.LoadSceneAsync(SceneEnum.ToString(), LoadSceneMode.Single);
         asyncOperation.allowSceneActivation = false;
+
+        UIMgr.Instance.TurnOnSceneLoadUI(); // 씬 로딩을 시작하면, 씬 로더 뷰를 생성함
 
         while (asyncOperation.progress < 0.9f)
         {

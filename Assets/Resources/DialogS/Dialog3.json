@@ -1,0 +1,68 @@
+{
+	"talkDataSet": [
+		{
+			"name": "Evilmage",
+			"dialogue": "If there were a little more…",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "If there were a little more…!!!!!",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "I could have destroyed this beggar kingdom!",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "I'm so bitter… bitter!!!",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "(Evilmage died.)",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Commander",
+			"dialogue": "Do you guys live without thinking?",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Commander",
+			"dialogue": "Your greed could have make our kingdom doomed!!",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Swordman",
+			"dialogue": "I apologize…",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Archer",
+			"dialogue": "I'm sorry…",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Wizard",
+			"dialogue": "I'm ashamed…",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Swordman",
+			"dialogue": "But I have a question. ",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Commander",
+			"dialogue": "What is it fucking sword guy?",
+			"emotion": "Upset"
+		}
+	],
+	"selectionData": {
+		"yes": "Why did he attack our kingdom with monsters? He is a human.",
+		"no": "No.. nothing…"
+	}
+}

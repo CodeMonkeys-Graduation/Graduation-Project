@@ -2,25 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 public class TimelineController : MonoBehaviour
 {
-    public PlayableDirector pd; // 타임라인을 실행시키고, 타임라인으로 
-    public DialogController dc;
+    public PlayableDirector pd;
+    public TimelineAsset timeline;
 
-    public void TimelineEnd()
+    private void Init(int stageNumber) //cdmgr에서 init해주면 됨
     {
-        Debug.Log("애니메이션 종료, 다이얼로그 시작");
+        pd = GetComponent<PlayableDirector>();
+        timeline = Resources.Load<TimelineAsset>("DialogAnimations/DialogTimeline-" + stageNumber.ToString());
 
-        //pd.gameObject.SetActive(false);
-        dc.gameObject.SetActive(true);
-    }
-    
-    public void TimelineStart()
-    {
-        Debug.Log("다이얼로그 종료, 애니메이션 실행");
-
-        dc.gameObject.SetActive(false);
-        pd.Play();
+        //pd.SetGenericBinding(timeline , ) // 왼쪽에 타임라인들어가고 오른쪽에 바인딩할 객체 넣으면 되는듯...?
     }
 }

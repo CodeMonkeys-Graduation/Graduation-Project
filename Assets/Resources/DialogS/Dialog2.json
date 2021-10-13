@@ -1,0 +1,43 @@
+{
+	"talkDataSet": [
+		{
+			"name": "Evilmage",
+			"dialogue": "Yes… Yes…",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "These treasures are all yours…",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "Well,, Open it now…",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Swordman",
+			"dialogue": "Oh… Wow...",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Swordman",
+			"dialogue": "(Swordman opens the Treasure Chest)",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Wizard",
+			"dialogue": "…?!",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Archer",
+			"dialogue": "...?!",
+			"emotion": "Upset"
+		}
+	],
+	"selectionData": {
+		"yes": "What the hell is going on?!",
+		"no": "It is empty! Explain it Evilmage!"
+	}
+}

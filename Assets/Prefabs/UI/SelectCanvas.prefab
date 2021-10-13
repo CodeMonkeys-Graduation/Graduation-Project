@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8323525404050317143}
   - component: {fileID: 8323525404050317136}
   - component: {fileID: 8323525404050317137}
-  - component: {fileID: 8323525404050317141}
+  - component: {fileID: 2485180090031152037}
   m_Layer: 5
   m_Name: SelectCanvas
   m_TagString: Untagged
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &8323525404050317141
+--- !u!114 &2485180090031152037
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8323525404050317138}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b252413a075f924695db1cde35dfd27, type: 3}
+  m_Script: {fileID: 11500000, guid: 58b8424c51cde8143b39a67242b631d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _prefab_dictionary:

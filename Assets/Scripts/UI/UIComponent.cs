@@ -18,7 +18,11 @@ public enum UIType // UIType은 실제 클래스 이름과 동일해야합니다
     #endregion
 
     #region MainUI
-    DevSceneLoadBtn
+    DevSceneLoadBtn,
+    #endregion
+
+    #region SceneLoadUI
+    SceneLoadProgressBar
     #endregion
 }
 public class UIComponent : MonoBehaviour // 모든 UI는 이것을 상속받아서 사용합니다

@@ -1,0 +1,39 @@
+{
+	"talkDataSet": [
+		{
+			"name": "Evilmage",
+			"dialogue": "Haha! You dumbass.",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "This box opens the portal to your kingdom.",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "I can't open this box.",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Evilmage",
+			"dialogue": "This box can only be opened by the people of the kingdom.",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Swordman",
+			"dialogue": "(Swordman gasps.)",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Wizard",
+			"dialogue": "(Wizard gasps too.)",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Archer",
+			"dialogue": "(Archer also gasps.)",
+			"emotion": "Upset"
+		}
+	]
+}
