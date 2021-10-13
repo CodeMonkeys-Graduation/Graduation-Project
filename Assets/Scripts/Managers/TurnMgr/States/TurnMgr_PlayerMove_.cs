@@ -17,6 +17,7 @@ public class TurnMgr_PlayerMove_ : TurnMgr_State_
     public override void Enter()
     {
         CameraMgr.Instance.SetTarget(unit, true);
+        UIMgr.Instance.SetUIComponent<TMBackBtn>();
 
         MapMgr.Instance.BlinkCubes(cubesCanGo, 0.5f);
         unit.StartBlink();

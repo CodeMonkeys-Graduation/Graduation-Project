@@ -48,7 +48,7 @@ public class UIMgr : SingletonBehaviour<UIMgr>
         }
     }
 
-    public void SetUIComponent<T>(UIParam uiParam, bool isOn) where T : PanelUIComponent
+    public void SetUIComponent<T>(UIParam uiParam = null, bool isOn = true) where T : PanelUIComponent
     {
         switch(currCanvasType)
         {

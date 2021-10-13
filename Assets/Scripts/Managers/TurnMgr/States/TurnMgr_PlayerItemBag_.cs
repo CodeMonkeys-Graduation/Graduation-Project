@@ -21,6 +21,7 @@ public class TurnMgr_PlayerItemBag_ : TurnMgr_State_
         EventMgr.Instance.onTurnActionEnter.Invoke();
 
         UIMgr.Instance.SetUIComponent<ItemPanel>(new UIItemParam(unit.itemBag.GetItem(), OnClickItemSlot), true);
+        UIMgr.Instance.SetUIComponent<TMBackBtn>();
     }
 
     public override void Execute() 

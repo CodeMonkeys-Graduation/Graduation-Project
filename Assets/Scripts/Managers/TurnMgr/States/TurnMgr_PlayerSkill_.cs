@@ -30,6 +30,8 @@ public class TurnMgr_PlayerSkill_ : TurnMgr_State_
         MapMgr.Instance.BlinkCubes(cubesCanCast, 0.7f);
         unit.StartBlink();
 
+        UIMgr.Instance.SetUIComponent<TMBackBtn>();
+
         EventMgr.Instance.onTurnActionEnter.Invoke();
     }
 
