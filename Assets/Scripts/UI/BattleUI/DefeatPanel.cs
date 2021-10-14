@@ -33,6 +33,18 @@ public class DefeatPanel : PanelUIComponent
         gameObject.SetActive(false);
     }
 
+    // Animation Event
+    public void PlayDefeatSound()
+    {
+        AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.SFX_Defeat, AudioMgr.AudioType.SFX);
+    }
+
+    // Animation Event
+    public void LowerBGMVolume()
+    {
+        AudioMgr.Instance.DimmedBGMVolume(0.2f);
+    }
+
     private void OnClickExitButton()
     {
         SceneMgr.Instance.LoadScene(SceneMgr.Scene.UnitSelection);
@@ -50,6 +62,10 @@ public class DefeatPanel : PanelUIComponent
         backToStageSelBtn.interactable = false;
         tryAgainBtn.interactable = false;
         exitBtn.interactable = false;
+
+        PlayerData playerData = Resources.Load<PlayerData>("GameDB/PlayerData");
+
+        playerData.hasUnitList.AddRange(BattleMgr.Instance.startUnits);
     }
 
     private void OnClickBackToStageSelectionButton()

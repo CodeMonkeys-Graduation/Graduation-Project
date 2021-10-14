@@ -156,6 +156,7 @@ public class ActionNode_Move : APActionNode
             return moveNode;
         }
     }
+    public override bool ShouldReplan(List<Unit> units, List<Cube> cubes) => false;
 
     private ActionNode_Move(APGameState prevGameState, int prevScore, PFPath path)
         : base(prevGameState, prevScore)
@@ -342,8 +343,9 @@ public class ActionNode_Attack : APActionNode
     {
         // 체력이 많은 적보다
         // 체력이 조금 남은 적을 공격하기 (+ 2000 * (자신의공격력/적의체력))
+        List<APUnit> prevSplashUnits = prevState._units.Where(prevUnit => _splashUnits.Any(unit => unit.owner == prevUnit.owner)).ToList();
         int score = (int)(2000 * (
-            _splashUnits
+            prevSplashUnits
             .Select(unit => (float)unit.health)
             .Aggregate((accum, health) => accum + _gameState.self.owner.BasicAttackDamageAvg / health)
             ));

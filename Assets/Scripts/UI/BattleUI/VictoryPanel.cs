@@ -29,6 +29,18 @@ public class VictoryPanel : PanelUIComponent
         gameObject.SetActive(false);
     }
 
+    // Animation Event
+    public void PlayVitorySound()
+    {
+        AudioMgr.Instance.PlayAudio(AudioMgr.AudioClipType.SFX_Victory, AudioMgr.AudioType.SFX);
+    }
+
+    // Animation Event
+    public void LowerBGMVolume()
+    {
+        AudioMgr.Instance.DimmedBGMVolume(0.2f);
+    }
+
     private void OnClickBackToStageSelectionButton()
     {
         SceneMgr.Instance.LoadScene(SceneMgr.Scene.UnitSelection);

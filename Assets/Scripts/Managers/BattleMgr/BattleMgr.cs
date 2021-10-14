@@ -6,11 +6,14 @@ using UnityEngine;
 using UnityEngine.UI;
 public class BattleMgr : SingletonBehaviour<BattleMgr>
 {
-    //-- Set in Editor --//
-    PlayerData playerData;
+    PlayerData playerData; // 다른 곳에서도 쓰이나..?
+                            // Start 말고 안쓰이면 Start의 지역변수로...ㄱㄱ
     List<Unit> hasUnitList = new List<Unit>();
-    public static List<Cube> _canSummonCubes;
-    public StateMachine<BattleMgr> stateMachine;
+    public static List<Cube> _canSummonCubes; // dead code?
+    [HideInInspector] public StateMachine<BattleMgr> stateMachine;
+
+    // Defeat후 재시도할 경우 다시 playerdata를 초기화해주기 위한 캐싱
+    [HideInInspector] public List<Unit> startUnits = new List<Unit>();
 
     public enum BMState
     {
@@ -30,9 +33,10 @@ public class BattleMgr : SingletonBehaviour<BattleMgr>
 
         foreach(Unit u in playerData.hasUnitList)
         {
-            hasUnitList.Add(u);
+            hasUnitList.Add(u); 
+            startUnits.Add(u);
         }
-        
+
         playerData.Clear();
 
         _canSummonCubes = new List<Cube>(FindObjectsOfType<Cube>().Where(cube => cube._isPlacable));

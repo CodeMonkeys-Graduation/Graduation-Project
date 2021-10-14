@@ -47,6 +47,8 @@ public class AudioMgr : SingletonBehaviour<AudioMgr>
         SFX_AcquireItem,
         SFX_UsePotion,
         UI_NoAccept,
+        SFX_Victory,
+        SFX_Defeat,
     }
 
     // Start is called before the first frame update
@@ -99,6 +101,11 @@ public class AudioMgr : SingletonBehaviour<AudioMgr>
         {
             PlayBGM(bgmClip);
         }
+    }
+
+    public void DimmedBGMVolume(float dimmedRatio)
+    {
+        audioInstances.Find(pair => pair.type == AudioType.BGM).audioSource.volume *= dimmedRatio;
     }
 
     private void PlayBGM(AudioClip clip)
