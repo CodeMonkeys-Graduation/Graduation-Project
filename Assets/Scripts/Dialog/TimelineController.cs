@@ -3,17 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
+using RotaryHeart;
+using RotaryHeart.Lib.SerializableDictionary;
 
 public class TimelineController : MonoBehaviour
 {
-    public PlayableDirector pd;
-    public TimelineAsset timeline;
+    [SerializeField] PlayableDirector pd;
+    [System.Serializable] public class timelineDictionary : SerializableDictionaryBase<SceneMgr.Scene, TimelineAsset> { }
+    [SerializeField] timelineDictionary dictionary = new timelineDictionary();
 
-    private void Init(int stageNumber) //cdmgr에서 init해주면 됨
+    public void Init(SceneMgr.Scene scene)
     {
-        pd = GetComponent<PlayableDirector>();
-        timeline = Resources.Load<TimelineAsset>("DialogAnimations/DialogTimeline-" + stageNumber.ToString());
-
-        //pd.SetGenericBinding(timeline , ) // 왼쪽에 타임라인들어가고 오른쪽에 바인딩할 객체 넣으면 되는듯...?
+        pd.playableAsset = dictionary[scene];
     }
+
+    public void Play()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Pause()
+    {
+        gameObject.SetActive(false);      
+    }
+
+    
 }

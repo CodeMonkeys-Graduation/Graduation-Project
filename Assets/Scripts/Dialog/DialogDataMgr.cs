@@ -10,7 +10,7 @@ public class DialogDataMgr
     {
         dialogDataContainer.Clear();
 
-        string[] dataNumers = { "0", "00", "01", "000", "0001", "1", "10", "11", "100", "2", "20", "3", "30" };
+        string[] dataNumers = { "0", "00", "01", "000", "0001", "1", "10", "11", "100", "2", "20", "3", "4", "40" };
 
         foreach(string num in dataNumers)
         {

@@ -3,43 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
-public class CinematicDialogMgr : MonoBehaviour
+public class CinematicDialogMgr : SingletonBehaviour<CinematicDialogMgr>
 {
     [SerializeField] DialogController dialogController;
-    [SerializeField] public int stageNumber;
+    [SerializeField] TimelineController timelineController;
 
-    PlayableDirector playableDirector; // 타임라인을 실행시키고, 타임라인으로 
-    
-   
+    [SerializeField] public SceneMgr.Scene nextScene;
+
     void Start()
     {
-        SolveCurrentStageNumber(SceneMgr.Instance._currScene.ToString());
+        dialogController.Init(SceneMgr.Instance._currScene);
+        //timelineController.Init(SceneMgr.Instance._currScene);
 
-        dialogController = Instantiate(dialogController, transform);
-        dialogController.Init(stageNumber);
-        dialogController.gameObject.SetActive(false);
-
-        playableDirector = FindObjectOfType<PlayableDirector>(); 
+        dialogController.Pause();
+        timelineController.Play();
     }
 
-    void SolveCurrentStageNumber(string scenename)
+    public void DialogOn()
     {
-        string num = scenename.Substring(scenename.Length - 1);
-        Debug.Log(num);
-        stageNumber = int.Parse(num) - 1; // 다이얼로그 1 ㅡ> Number 0
-    }
+        Debug.Log("타임라인 정지, 다이얼로그 시작");
 
-    public void TimelineEnd()
-    {
-        Debug.Log("애니메이션 종료, 다이얼로그 시작");
-
-        //pd.gameObject.SetActive(false);
-        dialogController.gameObject.SetActive(true);
+        dialogController.Play();
+        timelineController.Pause();
     }
     
-    public void TimelineStart()
+    public void CinematicOn()
     {
-        Debug.Log("다이얼로그 종료, 애니메이션 실행");
-        playableDirector.Play();
+        Debug.Log("다이얼로그 정지, 애니메이션 실행");
+        dialogController.Pause();
+        timelineController.Play();
+    }
+
+    public void CinematicEnd()
+    {
+        SceneMgr.Instance.LoadScene(nextScene);
     }
 }

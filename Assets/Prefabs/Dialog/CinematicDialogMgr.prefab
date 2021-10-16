@@ -44,11 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66ac501788ee249409b1582c95a3fe6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageNumber: 0
-  playableDirector: {fileID: 4750018349891256608, guid: 1fbd3a265a2cab4458c1337bfb847d2a,
-    type: 3}
   dialogController: {fileID: 8479827139986557684, guid: 95fdf6cb83a41e547a6794a8496bf26c,
     type: 3}
+  timelineController: {fileID: 8825509230660043767, guid: 64fb45b1e1e2d4d498fbb0fc57e908ab,
+    type: 3}
+  nextScene: 2
 --- !u!114 &3147840519058803148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,12 +65,13 @@ MonoBehaviour:
     m_Signals:
     - {fileID: 11400000, guid: f7ded8db277c53348888b6dd5e28f1dd, type: 2}
     - {fileID: 11400000, guid: ed4920e25ac3f4b4c88d970b3dc5cdd5, type: 2}
+    - {fileID: 11400000, guid: cee7b264f16c2b642bb0b57a677ae5c1, type: 2}
     m_Events:
     - m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 3147840519058803151}
-          m_TargetAssemblyTypeName: TimelineController, Assembly-CSharp
-          m_MethodName: TimelineStart
+          m_TargetAssemblyTypeName: CinematicDialogMgr, Assembly-CSharp
+          m_MethodName: CinematicOn
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -83,8 +84,22 @@ MonoBehaviour:
     - m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 3147840519058803151}
-          m_TargetAssemblyTypeName: TimelineController, Assembly-CSharp
-          m_MethodName: TimelineEnd
+          m_TargetAssemblyTypeName: CinematicDialogMgr, Assembly-CSharp
+          m_MethodName: DialogOn
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3147840519058803151}
+          m_TargetAssemblyTypeName: CinematicDialogMgr, Assembly-CSharp
+          m_MethodName: CinematicEnd
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

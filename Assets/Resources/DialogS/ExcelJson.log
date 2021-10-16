@@ -261,29 +261,45 @@ Found object mark: '#talkDataSet[{}]'
 [Dialog3.xlsx(Sheet1): ROW 2]
  Key: emotion at 3
 Parsing Array Object Table...
+ddddddd[object Object],[object Object],[object Object],[object Object]
+
+Loading: C:\Graduation-Project\excel2json-master\Dialog4.xlsx
+Parse sheet: Sheet1
+Parsing: C:\Graduation-Project\excel2json-master\Dialog4.xlsx.$$$\Sheet1.csv
+Closing: C:\Graduation-Project\excel2json-master\Dialog4.xlsx
+------------------------------------------------------------------------------
+[Dialog4.xlsx(Sheet1): ROW 2]
+Found object mark: '#talkDataSet[{}]'
+[Dialog4.xlsx(Sheet1): ROW 2]
+ Key: name at 1
+[Dialog4.xlsx(Sheet1): ROW 2]
+ Key: dialogue at 2
+[Dialog4.xlsx(Sheet1): ROW 2]
+ Key: emotion at 3
+Parsing Array Object Table...
 ddddddd[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]
 ------------------------------------------------------------------------------
-[Dialog3.xlsx(Sheet1): ROW 18]
+[Dialog4.xlsx(Sheet1): ROW 18]
 Found object mark: '#selectionData{}'
-[Dialog3.xlsx(Sheet1): ROW 18]
+[Dialog4.xlsx(Sheet1): ROW 18]
  Key: $key at 1
-[Dialog3.xlsx(Sheet1): ROW 18]
+[Dialog4.xlsx(Sheet1): ROW 18]
  Key: $value at 2
 Parsing Simple Table...
 Using key index: 1 value index: 2
 
-Loading: C:\Graduation-Project\excel2json-master\Dialog30.xlsx
+Loading: C:\Graduation-Project\excel2json-master\Dialog40.xlsx
 Parse sheet: Sheet1
-Parsing: C:\Graduation-Project\excel2json-master\Dialog30.xlsx.$$$\Sheet1.csv
-Closing: C:\Graduation-Project\excel2json-master\Dialog30.xlsx
+Parsing: C:\Graduation-Project\excel2json-master\Dialog40.xlsx.$$$\Sheet1.csv
+Closing: C:\Graduation-Project\excel2json-master\Dialog40.xlsx
 ------------------------------------------------------------------------------
-[Dialog30.xlsx(Sheet1): ROW 2]
+[Dialog40.xlsx(Sheet1): ROW 2]
 Found object mark: '#talkDataSet[{}]'
-[Dialog30.xlsx(Sheet1): ROW 2]
+[Dialog40.xlsx(Sheet1): ROW 2]
  Key: name at 1
-[Dialog30.xlsx(Sheet1): ROW 2]
+[Dialog40.xlsx(Sheet1): ROW 2]
  Key: dialogue at 2
-[Dialog30.xlsx(Sheet1): ROW 2]
+[Dialog40.xlsx(Sheet1): ROW 2]
  Key: emotion at 3
 Parsing Array Object Table...
 ddddddd[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]

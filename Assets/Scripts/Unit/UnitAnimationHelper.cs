@@ -22,13 +22,13 @@ public class UnitAnimationHelper : MonoBehaviour
 
     public void PlayHitSFX()
     {
-        unit.PlayHitSFX();
-        unit.HitCameraEffect();
+        unit?.PlayHitSFX();
+        unit?.HitCameraEffect();
     }
 
     public void GiveDamageOnTargets()
     {
-        unit.attacker.GiveDamageOnTargets();
+        unit?.attacker.GiveDamageOnTargets();
     }
 
     public void OnSkillMotion()

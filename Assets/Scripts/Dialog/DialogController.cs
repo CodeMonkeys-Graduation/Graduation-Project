@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using RotaryHeart.Lib.SerializableDictionary;
 
 public class DialogController : SingletonBehaviour<DialogController>
 {
     [Header("Set in Editor")]
-    [SerializeField] public Animator dialogAnimator;
+    [SerializeField] public Animator dialogAnimator; // 알 수 있는 정보가 너무 한정되어있음...
     [SerializeField] public DialogEffect dialogEffect;
     [SerializeField] public DialogPopup dialogPopup;
 
@@ -16,10 +17,13 @@ public class DialogController : SingletonBehaviour<DialogController>
     [SerializeField] TextMeshProUGUI npcname;
     [SerializeField] TextMeshProUGUI context;
 
-    public void Init(int stageNumber)
+    [System.Serializable] public class AnimatorDictionary : SerializableDictionaryBase<SceneMgr.Scene, RuntimeAnimatorController> { }
+    [SerializeField] AnimatorDictionary dictionary = new AnimatorDictionary();
+
+    public void Init(SceneMgr.Scene scene)
     {
         DialogDataMgr.InitDialogData();
-        dialogAnimator.runtimeAnimatorController  = Resources.Load("DialogAnimations/DialogSystem-" + stageNumber) as RuntimeAnimatorController;
+        dialogAnimator.runtimeAnimatorController = dictionary[scene];
         dialogPopup.UnsetPopup();
     }
 
@@ -53,4 +57,13 @@ public class DialogController : SingletonBehaviour<DialogController>
         }
     }
 
+    public void Play()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Pause()
+    {
+        gameObject.SetActive(false);
+    }
 }

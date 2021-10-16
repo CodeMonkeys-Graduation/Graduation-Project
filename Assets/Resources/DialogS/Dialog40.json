@@ -1,0 +1,109 @@
+{
+	"talkDataSet": [
+		{
+			"name": "Commander",
+			"dialogue": "He is the kingdom's Priest.",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Commander",
+			"dialogue": "He was such an good priest but,",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Commander",
+			"dialogue": "He was almost executed in the kingdom.",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Commander",
+			"dialogue": "He was falsely accused of a traitor.",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Commander",
+			"dialogue": "We knew the truth, but we can't save him. ",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Commander",
+			"dialogue": "But I didn't know he changed like that.",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Commander",
+			"dialogue": "What a sad thing. But There is nothing we can do.",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Swordman",
+			"dialogue": "Oh.. No...",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Archer",
+			"dialogue": "Oh.. Sad thing…",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Wizard",
+			"dialogue": "…",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Wizard",
+			"dialogue": "…...",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Swordman",
+			"dialogue": "uh… Wizard?",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Wizard",
+			"dialogue": "…...",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Swordman",
+			"dialogue": "Wizard, Are you okay?",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Wizard",
+			"dialogue": "…...",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Wizard",
+			"dialogue": "Okay… okay I'm okay…",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Wizard",
+			"dialogue": "I'll go home first and rest.",
+			"emotion": "Glad"
+		},
+		{
+			"name": "Commander",
+			"dialogue": "(…?)",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Archer",
+			"dialogue": "(…?)",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Swordman",
+			"dialogue": "Okay! You worked hard. Go home and rest!",
+			"emotion": "Upset"
+		},
+		{
+			"name": "Commander",
+			"dialogue": "(Hmm…)",
+			"emotion": 0
+		}
+	]
+}
