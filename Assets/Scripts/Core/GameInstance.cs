@@ -38,6 +38,7 @@ public class GameInstance : SingletonBehaviour<GameInstance>
         UIMgr,
         SceneMgr,
         AudioMgr,
+        CinematicDialogMgr
     }
 
     [SerializeField] public ManagerDictionary ManagerPrefabs;

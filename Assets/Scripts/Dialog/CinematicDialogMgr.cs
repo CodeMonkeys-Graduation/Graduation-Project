@@ -12,8 +12,11 @@ public class CinematicDialogMgr : SingletonBehaviour<CinematicDialogMgr>
 
     void Start()
     {
+        dialogController = Instantiate(dialogController, transform);
         dialogController.Init(SceneMgr.Instance._currScene);
-        //timelineController.Init(SceneMgr.Instance._currScene);
+
+        timelineController = FindObjectOfType<TimelineController>();
+        timelineController.Init(SceneMgr.Instance._currScene);
 
         dialogController.Pause();
         timelineController.Play();
@@ -36,6 +39,7 @@ public class CinematicDialogMgr : SingletonBehaviour<CinematicDialogMgr>
 
     public void CinematicEnd()
     {
+        Debug.Log("다이얼로그 종료, 씬 이동");
         SceneMgr.Instance.LoadScene(nextScene);
     }
 }

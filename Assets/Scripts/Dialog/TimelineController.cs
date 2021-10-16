@@ -14,7 +14,18 @@ public class TimelineController : MonoBehaviour
 
     public void Init(SceneMgr.Scene scene)
     {
-        pd.playableAsset = dictionary[scene];
+        //pd.playableAsset = dictionary[scene];
+
+        var outputs = pd.playableAsset.outputs;
+
+        foreach (var itm in outputs)
+        {
+            Debug.Log(itm.streamName);
+            if (itm.streamName == "Signal Track")
+            {
+                pd.SetGenericBinding(itm.sourceObject, CinematicDialogMgr.Instance);
+            }
+        }
     }
 
     public void Play()

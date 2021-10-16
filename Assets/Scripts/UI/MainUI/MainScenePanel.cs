@@ -18,6 +18,6 @@ public class MainScenePanel : PanelUIComponent, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        SceneMgr.Instance.LoadScene(SceneMgr.Scene.UnitSelection);
+        SceneMgr.Instance.LoadScene(SceneMgr.Scene.Dialog4);
     }
 }

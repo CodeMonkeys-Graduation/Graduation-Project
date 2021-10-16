@@ -17,7 +17,7 @@ public class UnitAnimationHelper : MonoBehaviour
 
     public void PlayAttackSFX()
     {
-        unit.PlayAttackSFX();
+        unit?.PlayAttackSFX();
     }
 
     public void PlayHitSFX()
@@ -33,7 +33,7 @@ public class UnitAnimationHelper : MonoBehaviour
 
     public void OnSkillMotion()
     {
-        unit.skillCaster.CastSkillOnTargets();
+        unit?.skillCaster.CastSkillOnTargets();
     }
 
 }
