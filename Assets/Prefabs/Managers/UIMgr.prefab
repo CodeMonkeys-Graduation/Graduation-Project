@@ -75,5 +75,3 @@ MonoBehaviour:
     - {fileID: 5923848732741602137, guid: b997cdb92be7ee8488acdda845dc6f2c, type: 3}
     - {fileID: 2485180090031152037, guid: 3bf35d99b431975479eebaf3b2b7fe96, type: 3}
     - {fileID: 6669329012972374262, guid: d7c61d11f9750b447bcaa63bdb742c4b, type: 3}
-  sceneLoadView: {fileID: 6669329012972374262, guid: d7c61d11f9750b447bcaa63bdb742c4b,
-    type: 3}

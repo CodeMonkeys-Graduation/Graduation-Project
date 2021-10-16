@@ -8,21 +8,21 @@ using ObserverPattern;
 public enum UIType // UIType은 실제 클래스 이름과 동일해야합니다 뒤에다 추가하기... 세팅한 거 무너짐 ㅠㅠ
 {
     #region BattleUI
-    ActionBtn, ActionPanel, ActionPointPanel, BattleNextStateBtn, BattlePlayBtn,
+    ActionBtn = 0, ActionPanel, ActionPointPanel, BattleNextStateBtn, BattlePlayBtn,
     ItemPanel, ItemSlot, PopupPanel, StatusPanel, SummonPanel, TMBackBtn, TMEndTurnBtn, TurnPanel, TurnSlot, SummonBtn,
     DefeatPanel, VictoryPanel, DamageText, PlanningIndicator,
     #endregion
 
     #region SelectUI
-    SelectLoadSceneBtn, SelectCloseBtn, SelectSettingBtn, SelectUnitBtn, StageSelect, StageSelectPopup, StageSelectBtn, StagePlayerGold,
+    SelectLoadSceneBtn = 50, SelectCloseBtn, SelectSettingBtn, SelectUnitBtn, StageSelect, StageSelectPopup, StageSelectBtn, StagePlayerGold,
     #endregion
 
     #region MainUI
-    DevSceneLoadBtn,
+    DevSceneLoadBtn = 100, MainScenePanel,
     #endregion
 
     #region SceneLoadUI
-    SceneLoadProgressBar
+    SceneLoadProgressBar = 150
     #endregion
 }
 public class UIComponent : MonoBehaviour // 모든 UI는 이것을 상속받아서 사용합니다

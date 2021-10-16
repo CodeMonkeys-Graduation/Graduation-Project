@@ -975,13 +975,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d1377745a5cb444afff547c6ae3c82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uitype: 22
+  _uitype: 54
   stageBtns:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  stageDataSet: {fileID: 11400000, guid: 47e7ab1257eb82847b99dd184eff1ee6, type: 2}
 --- !u!1 &2604490674437374946
 GameObject:
   m_ObjectHideFlags: 0
