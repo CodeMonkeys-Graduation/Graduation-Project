@@ -14,7 +14,7 @@ public class StageSelect : PanelUIComponent
         stageBtns = FindObjectsOfType<StageSelectBtn>();
         stageSelectPopup = FindObjectOfType<StageSelectPopup>();
 
-        foreach(var v in stageBtns)
+        foreach (var v in stageBtns)
         {
             v.button.onClick.AddListener(() => OnClickStage(v));
         }

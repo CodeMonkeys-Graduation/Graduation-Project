@@ -15,6 +15,7 @@ public enum UIType // UIType은 실제 클래스 이름과 동일해야합니다
 
     #region SelectUI
     SelectLoadSceneBtn = 50, SelectCloseBtn, SelectSettingBtn, SelectUnitBtn, StageSelect, StageSelectPopup, StageSelectBtn, StagePlayerGold,
+    SelectSetting,
     #endregion
 
     #region MainUI

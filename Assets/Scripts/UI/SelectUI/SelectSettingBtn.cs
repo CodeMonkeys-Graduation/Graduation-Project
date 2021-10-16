@@ -4,9 +4,24 @@ using UnityEngine;
 
 public class SelectSettingBtn : UIComponent
 {
+    SelectSetting settingPopup = null;
+
+    private void Start()
+    {
+        settingPopup = FindObjectOfType<SelectSetting>();
+        settingPopup.UnsetPanel();
+    }
+
     public void OnClickSetting()
     {
-        Debug.Log("세팅 버튼 눌림");
+        if (settingPopup.gameObject.activeSelf)
+        {
+            settingPopup.UnsetPanel();
+        }
+        else
+        {
+            settingPopup.SetPanel();
+        }
     }
 
 }

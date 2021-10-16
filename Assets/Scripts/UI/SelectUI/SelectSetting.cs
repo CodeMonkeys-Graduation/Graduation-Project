@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class MainScenePanel : PanelUIComponent, IPointerClickHandler
+public class SelectSetting : PanelUIComponent
 {
+
+
 
     public override void SetPanel(UIParam u = null)
     {
@@ -14,10 +15,5 @@ public class MainScenePanel : PanelUIComponent, IPointerClickHandler
     public override void UnsetPanel()
     {
         gameObject.SetActive(false);
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        SceneMgr.Instance.LoadScene(SceneMgr.Scene.UnitSelection);
     }
 }
