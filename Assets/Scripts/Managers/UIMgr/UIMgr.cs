@@ -25,8 +25,9 @@ public class UIMgr : SingletonBehaviour<UIMgr>
     SceneLoadCanvas sceneLoadView = null;
     CanvasType currCanvasType;
 
-    public void Start()
+    public new void Awake()
     {
+        base.Awake();
         ChangeUIState(SceneMgr.Instance._currScene.ToString());
     }
 
@@ -41,6 +42,7 @@ public class UIMgr : SingletonBehaviour<UIMgr>
             case CanvasType.Main:
             case CanvasType.Select:
             case CanvasType.Battle:
+            case CanvasType.Dialog:
                 UINormalState normalState = (UINormalState)stateMachine.stateStack.Peek();
                 normalState._canvas.TurnOffAllUI();
                 break;
@@ -54,6 +56,7 @@ public class UIMgr : SingletonBehaviour<UIMgr>
             case CanvasType.Main:
             case CanvasType.Select:
             case CanvasType.Battle:
+            case CanvasType.Dialog:
                 UINormalState normalState = (UINormalState)stateMachine.stateStack.Peek();
 
                 if(isOn) normalState._canvas.GetUIComponent<T>().SetPanel(uiParam);
@@ -71,6 +74,7 @@ public class UIMgr : SingletonBehaviour<UIMgr>
             case CanvasType.Main:
             case CanvasType.Select:
             case CanvasType.Battle:
+            case CanvasType.Dialog:
                 UINormalState normalState = (UINormalState)uiState;
                 return normalState._canvas.GetUIComponent<T>(evenInactive);
             default:
@@ -100,6 +104,11 @@ public class UIMgr : SingletonBehaviour<UIMgr>
             stateMachine = new StateMachine<UIMgr>(new UINormalState(this, canvasPrefab_Dictionary[CanvasType.Select]));
             currCanvasType = CanvasType.Select;
         }
+        else if(scenename.Contains("Dialog"))
+        {
+            stateMachine = new StateMachine<UIMgr>(new UINormalState(this, canvasPrefab_Dictionary[CanvasType.Dialog]));
+            currCanvasType = CanvasType.Dialog;
+        }    
     }
     public void TurnOnSceneLoadUI()
     {
@@ -117,5 +126,12 @@ public class UIMgr : SingletonBehaviour<UIMgr>
         {
             sceneLoadView.TurnOffCanvas();
         }
+    }
+
+    public BaseCanvas GetCurrentCanvas()
+    {
+        UINormalState uns = (UINormalState)stateMachine.stateStack.Peek();
+
+        return uns._canvas;
     }
 }

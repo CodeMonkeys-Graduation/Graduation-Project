@@ -17,7 +17,7 @@ public class TalkState : StateMachineBehaviour
     {
         talkProgress = 0;
         talkDataSet = DialogDataMgr.dialogDataContainer.dialogData_SO[talkDataNumber].talkDataSet;
-        DialogController.Instance.SetTalk(talkDataSet[talkProgress++]);
+        CinematicDialogMgr.Instance.SetTalkData(talkDataSet[talkProgress++]);
     }
     
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -26,7 +26,7 @@ public class TalkState : StateMachineBehaviour
         {
             if (talkProgress < talkDataSet.Count) // 토크셋의 모든 토크가 사용되지 않았다면
             {
-                DialogController.Instance.SetTalk(talkDataSet[talkProgress++]); // 다음 토크를 세팅하고
+                CinematicDialogMgr.Instance.SetTalkData(talkDataSet[talkProgress++]); // 다음 토크를 세팅하고
                 animator.SetBool("isTalkEnd", false); // 토크가 종료되지 않음
             }
             else animator.SetTrigger("Next"); // 다음 스테이트

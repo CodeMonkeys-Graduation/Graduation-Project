@@ -11,7 +11,7 @@ public class SelectionState : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        DialogController.Instance.SetSelection(selectionData);
+        CinematicDialogMgr.Instance.SelectSelectionData(selectionData);
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

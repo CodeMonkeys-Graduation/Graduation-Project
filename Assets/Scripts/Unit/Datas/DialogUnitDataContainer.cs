@@ -9,7 +9,7 @@ public class DialogUnitDataContainer : ScriptableObject
 {
     public List<DialogUnitData> dialogUnitDataContainer = new List<DialogUnitData>();
 
-    public Sprite GetSprite(string name, int emotion) => dialogUnitDataContainer.Find((u) => u.name == name)?.illustArr[emotion];
+    public Sprite GetSprite(string name, int emotion) => dialogUnitDataContainer.Find((u) => u.name == name)?.illustArr[0];
     public int GetEmotion(string emotion)
     {
         switch (emotion)

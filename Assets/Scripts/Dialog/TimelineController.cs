@@ -12,30 +12,41 @@ public class TimelineController : MonoBehaviour
     [System.Serializable] public class timelineDictionary : SerializableDictionaryBase<SceneMgr.Scene, TimelineAsset> { }
     [SerializeField] timelineDictionary dictionary = new timelineDictionary();
 
-    public void Init(SceneMgr.Scene scene)
+    EventListener el_cinematicReady = new EventListener();
+
+    private void Awake()
     {
-        //pd.playableAsset = dictionary[scene];
+        EventMgr.Instance.OnSceneChanged.Register(el_cinematicReady, (param) => CinematicReady());
+        Pause();
+    }
+
+    public void CinematicReady()
+    {
+        //pd.playableAsset = dictionary[scene]; 
+        // 현재는 그냥 오브젝트 바인딩 문제로 인해 미리 꼽혀 있음 
 
         var outputs = pd.playableAsset.outputs;
 
         foreach (var itm in outputs)
         {
-            Debug.Log(itm.streamName);
             if (itm.streamName == "Signal Track")
             {
+                Debug.Log("타임라인 가져오기");
                 pd.SetGenericBinding(itm.sourceObject, CinematicDialogMgr.Instance);
             }
         }
+
+        Play();
     }
 
     public void Play()
     {
-        gameObject.SetActive(true);
+        pd.Play();
     }
 
     public void Pause()
     {
-        gameObject.SetActive(false);      
+        pd.Pause();   
     }
 
     

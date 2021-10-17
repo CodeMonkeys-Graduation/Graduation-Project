@@ -7,7 +7,7 @@ public class UINormalState : UIState // UI 자동 제어가 필요없는 영역
 
     public UINormalState(UIMgr owner, BaseCanvas canvasPrefab) : base(owner, canvasPrefab)
     {
-        
+
     }
 
     public override void Enter()
@@ -15,6 +15,7 @@ public class UINormalState : UIState // UI 자동 제어가 필요없는 영역
         Debug.Log("노말 스테이트에 들어옴");
         _canvas = MonoBehaviour.Instantiate(_canvasPrefab);
     }
+
     public override void Execute()
     {
         

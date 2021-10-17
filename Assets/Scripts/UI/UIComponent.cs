@@ -23,7 +23,11 @@ public enum UIType // UIType은 실제 클래스 이름과 동일해야합니다
     #endregion
 
     #region SceneLoadUI
-    SceneLoadProgressBar = 150
+    SceneLoadProgressBar = 150,
+    #endregion
+
+    #region DialogUI
+    DialogEffect = 200, DialogPopup
     #endregion
 }
 public class UIComponent : MonoBehaviour // 모든 UI는 이것을 상속받아서 사용합니다

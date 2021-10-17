@@ -12,16 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be1ab9beb28ba274f8bdda38416cf034, type: 3}
   m_Name: DialogUnitDataContainer
   m_EditorClassIdentifier: 
-  unitDataContainer:
+  dialogUnitDataContainer:
   - id: 0
-    name: SwordMan
+    name: Swordman
     illustArr:
-    - {fileID: 21300000, guid: 695bf1a0f9b004b57b57a6b3f78e4322, type: 3}
-    - {fileID: 21300000, guid: f802ceda35f5c4662a240c6ceef56a64, type: 3}
-    - {fileID: 21300000, guid: ee6c8f37bd0f143a89513cadc662c0b0, type: 3}
+    - {fileID: 21300000, guid: 7ccaea3d3e3e2e348a7a922bf3392ae6, type: 3}
   - id: 1
-    name: FireBat
+    name: Wizard
     illustArr:
-    - {fileID: 21300000, guid: 695bf1a0f9b004b57b57a6b3f78e4322, type: 3}
-    - {fileID: 21300000, guid: f802ceda35f5c4662a240c6ceef56a64, type: 3}
-    - {fileID: 21300000, guid: ee6c8f37bd0f143a89513cadc662c0b0, type: 3}
+    - {fileID: 21300000, guid: 6c5ccd0204a06a649a0c744aa5ede32a, type: 3}
+  - id: 2
+    name: Archer
+    illustArr:
+    - {fileID: 21300000, guid: 768bed1df569fc942a8a3cdcfb4f9749, type: 3}
+  - id: 3
+    name: Commander
+    illustArr:
+    - {fileID: 21300000, guid: 37f8f51d0d7c97648bf3bb848b8d5d16, type: 3}
+  - id: 4
+    name: Evilmage
+    illustArr:
+    - {fileID: 21300000, guid: da3a72b0f1f48ab40b83b20061c68262, type: 3}
+  - id: 5
+    name: Golem
+    illustArr:
+    - {fileID: 21300000, guid: 331bc6f7fdbde0b4ca1a1a0d7c09c4ad, type: 3}
+  - id: 6
+    name: Slime
+    illustArr:
+    - {fileID: 21300000, guid: 0d833efd11c25284a9738fa954b9abba, type: 3}
