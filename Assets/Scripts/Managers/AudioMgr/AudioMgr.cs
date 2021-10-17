@@ -19,7 +19,7 @@ public class AudioMgr : SingletonBehaviour<AudioMgr>
 
     [SerializeField] private AudioClipDictionary audioClipDictionary;
 
-    [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] public AudioMixer audioMixer;
 
     private Dictionary<AudioType, AudioMixerGroup> audioMixerGroups = new Dictionary<AudioType, AudioMixerGroup>();
 

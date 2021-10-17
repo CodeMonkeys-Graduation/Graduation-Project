@@ -90,6 +90,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _uitype: 58
+  bgmSlider: {fileID: 8451237178177398873}
+  sfxSlider: {fileID: 2195583334998227380}
 --- !u!1 &30824825586445915
 GameObject:
   m_ObjectHideFlags: 0
@@ -3113,8 +3115,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 58.102, y: -0.000091552734}
-  m_SizeDelta: {x: 264.57, y: -11.0001}
+  m_AnchoredPosition: {x: 0.0024871826, y: -0.0001001358}
+  m_SizeDelta: {x: -0.0050049, y: -7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8545150048539166749
 CanvasRenderer:
@@ -3892,10 +3894,10 @@ RectTransform:
   m_Father: {fileID: 3928280709725738273}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 150, y: 0}
-  m_SizeDelta: {x: 230, y: 34}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -231, y: 0}
+  m_SizeDelta: {x: 366, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &2195583334998227380
 MonoBehaviour:
@@ -3941,13 +3943,25 @@ MonoBehaviour:
   m_FillRect: {fileID: 8796173499060133145}
   m_HandleRect: {fileID: 0}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 10
+  m_MinValue: -40
+  m_MaxValue: 0
   m_WholeNumbers: 0
-  m_Value: 5
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -2295826649155874902}
+        m_TargetAssemblyTypeName: SelectSetting, Assembly-CSharp
+        m_MethodName: ControlSFXMixer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6651843887052677170
 GameObject:
   m_ObjectHideFlags: 0
@@ -4441,8 +4455,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 60.909, y: -0.000091552734}
-  m_SizeDelta: {x: 270.18, y: -11.0001}
+  m_AnchoredPosition: {x: 0.00024414062, y: -0.00006866455}
+  m_SizeDelta: {x: -0.00048828, y: -7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2272916072950330779
 CanvasRenderer:
@@ -4879,10 +4893,10 @@ RectTransform:
   m_Father: {fileID: 4403981120857055970}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 150, y: 0}
-  m_SizeDelta: {x: 230, y: 34}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -231, y: 0}
+  m_SizeDelta: {x: 366.4132, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &8451237178177398873
 MonoBehaviour:
@@ -4928,13 +4942,25 @@ MonoBehaviour:
   m_FillRect: {fileID: 6545772958925496983}
   m_HandleRect: {fileID: 0}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 10
+  m_MinValue: -40
+  m_MaxValue: 0
   m_WholeNumbers: 0
-  m_Value: 5
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -2295826649155874902}
+        m_TargetAssemblyTypeName: SelectSetting, Assembly-CSharp
+        m_MethodName: ControlBGMMixer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8202377763721524009
 GameObject:
   m_ObjectHideFlags: 0
