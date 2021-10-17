@@ -9,6 +9,9 @@ public class SelectSetting : PanelUIComponent
     [SerializeField] Slider bgmSlider;
     [SerializeField] Slider sfxSlider;
 
+    [SerializeField] GameObject[] bgmToggle = new GameObject[2];
+    [SerializeField] GameObject[] sfxToggle = new GameObject[2];
+
     public void ControlBGMMixer()
     {
         float sound = bgmSlider.value;
@@ -19,7 +22,14 @@ public class SelectSetting : PanelUIComponent
         }
         else
         {
-            AudioMgr.Instance.audioMixer.SetFloat("BGM", sound);
+            if (bgmToggle[1].activeSelf)
+            {
+                ToggleBGM();
+            }
+            else
+            {
+                AudioMgr.Instance.audioMixer.SetFloat("BGM", sound);
+            }
         }
     }
 
@@ -33,13 +43,45 @@ public class SelectSetting : PanelUIComponent
         }
         else
         {
-            AudioMgr.Instance.audioMixer.SetFloat("SFX", sound);
+            if (sfxToggle[1].activeSelf)
+            {
+                ToggleSFX();
+            }
+            else
+            {
+                AudioMgr.Instance.audioMixer.SetFloat("SFX", sound);
+            }
         }
     }
 
-    public void ToggleAudioVolume()
+    public void ToggleBGM()
     {
-        AudioListener.volume = AudioListener.volume == 0 ? 1 : 0;
+        bgmToggle[0].SetActive(bgmToggle[1].activeSelf);
+        bgmToggle[1].SetActive(!bgmToggle[0].activeSelf);
+
+        if(bgmToggle[0].activeSelf)
+        {
+            AudioMgr.Instance.audioMixer.SetFloat("BGM", bgmSlider.value);
+        }
+        else if(bgmToggle[1].activeSelf)
+        {
+            AudioMgr.Instance.audioMixer.SetFloat("BGM", -40f);
+        } 
+    }
+
+    public void ToggleSFX()
+    {
+        sfxToggle[0].SetActive(sfxToggle[1].activeSelf);
+        sfxToggle[1].SetActive(!sfxToggle[0].activeSelf);
+
+        if (sfxToggle[0].activeSelf)
+        {
+            AudioMgr.Instance.audioMixer.SetFloat("SFX", sfxSlider.value);
+        }
+        else if (sfxToggle[1].activeSelf)
+        {
+            AudioMgr.Instance.audioMixer.SetFloat("SFX", -40f);
+        }
     }
 
 
