@@ -47,7 +47,16 @@ MonoBehaviour:
   _lifeCycles: 03000000040000000500000006000000
   _lerpTime: 0.35
   _cameraMoveSpeed: 7
-  _cameraMaxHeightOffset: -5
+  _cameraMinHeightOffsetFromCube: 8
   _cameraHeightSpeed: 500
-  _offsetFromGround: {x: 0, y: 0, z: 0}
-  _cameraDirection: {x: 0, y: 0, z: 0}
+  _maxOffsetFromGround: {x: 0, y: 0, z: 0}
+  _minOffsetFromGround: {x: 0, y: 0, z: 0}
+  standardPosition: {x: 0, y: 0, z: 0}
+  _target: {fileID: 0}
+  _unsetWhenArrivedTrigger: 0
+  xMin: 0
+  xMax: 0
+  zMin: 0
+  zMax: 0
+  yMin: 0
+  yMax: 0

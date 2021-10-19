@@ -6,43 +6,54 @@ using UnityEngine.SceneManagement;
 
 public class CameraMgr : SingletonBehaviour<CameraMgr>
 {
-    [SerializeField] private float _lerpTime = 1f; // lerpTime만에 Target으로 갑니다.
+    [Header("Set in Editor")]
+    // lerpTime만에 Target으로 갑니다.
+    [SerializeField] private float _lerpTime = 1f; 
 
+    // 마우스나 WASD로 카메라를 움직이는 속도
     [SerializeField] private float _cameraMoveSpeed = 5f;
 
-    [SerializeField] private float _cameraMaxHeightOffset = 10f;
+    // Camera가 최대한 줌인하여 _cameraMinHeightOffsetFronCube만큼 큐브로부터 가까워질 수 있다. 그 이하는 안된다.
+    [SerializeField] private float _cameraMinHeightOffsetFromCube = 2f;
 
+    // 마우스 스크롤으로 줌인하는 속도
     [SerializeField] private float _cameraHeightSpeed = 3f;
 
-    [SerializeField] private Vector3 _offsetFromGround;
+    // 게임 시작시, 카메라가 큐브로부터 떨어진 Offset
+    // 이게 최대 카메라 줌아웃이 됩니다.
+    [SerializeField /*DEBUG*/] private Vector3 _maxOffsetFromGround; // InitData
 
-    private Vector3 _screenXInWorld;
+    // 게임 시작시, 카메라가 큐브로부터 떨어진 Offset
+    // 이게 최대 카메라 줌인이 됩니다.
+    [SerializeField /*DEBUG*/] private Vector3 _minOffsetFromGround; // InitData
 
-    private Vector3 _screenYInWorld;
+    private Vector3 _currOffsetFromGround;
 
-    [SerializeField /*DEBUG*/] private Vector3 _cameraDirection;
+    // 레이캐스트를 쏴서 맞는 큐브의 Position을 기준으로
+    // 얼마나의 offset을 떨어질지 정합니다.
+    [SerializeField] private Vector3 _standardPosition; // InitData
+
+    private Vector3 _screenXInWorld; // InitData
+
+    private Vector3 _screenYInWorld; // InitData
 
     private StateMachine<CameraMgr> _stateMachine;
 
-    private Vector3 DesiredPosition { 
-        get {
-            return _desiredPositionWithoutHeight - _cameraDirection * _cameraHeightOffset; 
-        } 
-    }
-
-    private Vector3 _desiredPositionWithoutHeight;
-
-    private float _cameraHeightOffset = 0f;
 
     /////////////////////////////////
     // Targeting
+    [SerializeField]
     private Transform _target;
 
     private Func<bool> _unsetCondition;
 
+    [SerializeField]
     private bool _unsetWhenArrivedTrigger = false;
+    ////////////////////////////////
 
-    private float xMin, xMax, zMin, zMax;
+    [SerializeField]
+    private float xMin, xMax, zMin, zMax, yMin, yMax;
+
     void Start()
     {
         InitData();
@@ -61,10 +72,7 @@ public class CameraMgr : SingletonBehaviour<CameraMgr>
     private void InitData()
     {
         _stateMachine = new StateMachine<CameraMgr>(new CameraMgr_NormalState_(this));
-        _cameraDirection = Camera.main.transform.rotation * Vector3.forward;
-        CalculateInitialOffsetFromYZero();
-        CalculateScreenDirectionInWorld();
-        _desiredPositionWithoutHeight = Camera.main.transform.position;
+
         Cursor.lockState = CursorLockMode.Confined;
 
         foreach (var cube in FindObjectsOfType<Cube>())
@@ -73,7 +81,27 @@ public class CameraMgr : SingletonBehaviour<CameraMgr>
             xMax = Mathf.Max(cube.transform.position.x, xMax);
             zMin = Mathf.Min(cube.transform.position.z, zMin);
             zMax = Mathf.Max(cube.transform.position.z, zMax);
+            yMin = Mathf.Min(cube.transform.position.y, yMin);
+            yMax = Mathf.Max(cube.transform.position.y, yMax);
         }
+
+        _screenXInWorld = new Vector3(Camera.main.transform.right.x, 0f, Camera.main.transform.right.z).normalized;
+        _screenYInWorld = new Vector3(Camera.main.transform.up.x, 0f, Camera.main.transform.up.z).normalized;
+
+        Ray cameraForwardRay = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+        if(Physics.Raycast(cameraForwardRay, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Cube")))
+        {
+            _standardPosition = hit.transform.GetComponent<Cube>().Platform.position;
+
+            _maxOffsetFromGround = Camera.main.transform.position - _standardPosition;
+            _minOffsetFromGround = Vector3.ClampMagnitude(_maxOffsetFromGround, _cameraMinHeightOffsetFromCube);
+            _currOffsetFromGround = _maxOffsetFromGround;
+        }
+        else
+        {
+            Debug.Assert(false, "카메라의 중앙에 큐브가 있도록 시작해야 합니다.");
+        }
+
     }
 
     private void OnDrawGizmos()
@@ -136,25 +164,33 @@ public class CameraMgr : SingletonBehaviour<CameraMgr>
         HandleKeyInputWASD(ref direction);
         GetMousePositionIfEdge(ref direction);
         Vector3 directionInWorld = direction.x * _screenXInWorld + direction.y * _screenYInWorld;
-        _desiredPositionWithoutHeight = ClampCameraPositionInConfinement(_desiredPositionWithoutHeight + _cameraMoveSpeed * Time.deltaTime * (directionInWorld.normalized));
+        _standardPosition += directionInWorld * _cameraMoveSpeed * Time.deltaTime;
+
+        Ray cameraForwardRay = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+        if (Physics.Raycast(cameraForwardRay, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Cube")))
+        {
+            _standardPosition.y = hit.transform.GetComponent<Cube>().Platform.position.y;
+        }
 
         HandleMouseScroll();
 
-        Camera.main.transform.position = DesiredPosition;
+        Camera.main.transform.position = _standardPosition + _currOffsetFromGround;
     }
 
     private void HandleMouseScroll()
     {
-        if(Physics.Raycast(Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f)), out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Cube")))
+        float scrollDelta = Input.GetAxis("Mouse ScrollWheel");
+        float delta = _cameraHeightSpeed * scrollDelta * Time.deltaTime;
+        Vector3 newOffset = _currOffsetFromGround + delta * Camera.main.transform.forward;
+        if(newOffset.y < 0 || newOffset.magnitude < _minOffsetFromGround.magnitude)
         {
-            float distanceFromCube = Vector3.Distance(hit.point, Camera.main.transform.position);
-            float scrollDelta = Input.GetAxis("Mouse ScrollWheel");
-            _cameraHeightOffset = Mathf.Clamp(
-                _cameraHeightOffset - _cameraHeightSpeed * scrollDelta * Time.deltaTime,
-                -Mathf.Abs(distanceFromCube - _cameraMaxHeightOffset),
-                0f);
+            _currOffsetFromGround = _minOffsetFromGround;
         }
-        
+        else
+        {
+            _currOffsetFromGround = Vector3.ClampMagnitude(newOffset, _maxOffsetFromGround.magnitude);
+        }
+
     }
 
     public void ProcessTargetFollowing(Vector3 startPosition, float time)
@@ -162,8 +198,10 @@ public class CameraMgr : SingletonBehaviour<CameraMgr>
         HandleMouseScroll();
 
         float lerp = Mathf.Clamp(time / _lerpTime, 0f, 1f);
-        _desiredPositionWithoutHeight = _target.position + _offsetFromGround;
-        Camera.main.transform.position = Vector3.Lerp(startPosition, DesiredPosition, lerp);
+
+        _standardPosition = _target.position;
+
+        Camera.main.transform.position = Vector3.Lerp(startPosition, _target.position + _currOffsetFromGround, lerp);
 
         if (IsTargetFollowingDone())
             _stateMachine.ChangeState(new CameraMgr_NormalState_(this), StateMachine<CameraMgr>.StateTransitionMethod.PopNPush);
@@ -178,7 +216,7 @@ public class CameraMgr : SingletonBehaviour<CameraMgr>
     {
         if(_unsetWhenArrivedTrigger)
         {
-            return Vector3.Distance(Camera.main.transform.position, DesiredPosition) <= Mathf.Epsilon;
+            return Vector3.Distance(Camera.main.transform.position, _standardPosition + _currOffsetFromGround) <= Mathf.Epsilon;
         }
 
         if(_unsetCondition != null && _unsetCondition.Invoke())
@@ -189,25 +227,6 @@ public class CameraMgr : SingletonBehaviour<CameraMgr>
         {
             return false;
         }
-    }
-
-    private void CalculateScreenDirectionInWorld()
-    {
-        _screenXInWorld = Camera.main.transform.right;
-        _screenXInWorld.y = 0f;
-        _screenXInWorld.Normalize();
-        _screenYInWorld = Camera.main.transform.up;
-        _screenYInWorld.y = 0f;
-        _screenYInWorld.Normalize();
-    }
-
-    private void CalculateInitialOffsetFromYZero()
-    {
-        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-        float height = Camera.main.transform.position.y;
-        float xAngle = Quaternion.FromToRotation(Camera.main.transform.forward, Vector3.down).eulerAngles.x;
-        Vector3 posFromScreenCenter = ray.GetPoint(height / Mathf.Cos(Mathf.Deg2Rad * xAngle));
-        _offsetFromGround = (Camera.main.transform.position - posFromScreenCenter);
     }
 
     private Vector2 HandleKeyInputWASD(ref Vector2 direction)
@@ -273,7 +292,6 @@ public class CameraMgr : SingletonBehaviour<CameraMgr>
     public void UnsetTarget()
     {
         _target = null;
-
         _stateMachine.ChangeState(new CameraMgr_NormalState_(this), StateMachine<CameraMgr>.StateTransitionMethod.PopNPush);
     }
 
