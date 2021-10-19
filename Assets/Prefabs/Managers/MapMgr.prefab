@@ -46,3 +46,4 @@ MonoBehaviour:
   Type: 5
   _lifeCycles: 03000000040000000500000006000000
   showPaths: 1
+  cubeMaterial: {fileID: 2100000, guid: ca62dc52d5c468f40a981269c2004e23, type: 2}

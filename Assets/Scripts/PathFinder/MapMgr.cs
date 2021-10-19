@@ -9,10 +9,11 @@ public class MapMgr : SingletonBehaviour<MapMgr>
     [Header("Reset Before Test")]
     [SerializeField] private bool showPaths = true;
     [SerializeField] public Map map;
+    [SerializeField] public Material cubeMaterial;
 
     void Start()
     {
-        map = new Map(FindObjectsOfType<Cube>().ToList());
+        map = new Map(FindObjectsOfType<Cube>().ToList(), cubeMaterial);
     }
 
     public bool IsInRange(Range range, Cube centerCube, Cube targetCube)
@@ -37,19 +38,19 @@ public class MapMgr : SingletonBehaviour<MapMgr>
         float minZPos = centerZPos - centerZIndex;
 
         List<Cube> result = new List<Cube>();
-        for(int z = 0; z < range.GetLength(0); z++)
+        for (int z = 0; z < range.GetLength(0); z++)
         {
-            for(int x = 0; x < range.GetLength(1); x++)
+            for (int x = 0; x < range.GetLength(1); x++)
             {
                 // 범위안임
-                if(range[z, x] != 0)
+                if (range[z, x] != 0)
                 {
                     Ray ray = new Ray(new Vector3(minXPos + x, RaycastYPos, minZPos + z), Vector3.up);
                     RaycastHit hit;
                     // 해당 위치에 큐브가 있음
-                    if(Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Cube")))
+                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Cube")))
                     {
-                        if(hit.transform.GetComponent<Cube>())
+                        if (hit.transform.GetComponent<Cube>())
                             result.Add(hit.transform.GetComponent<Cube>());
                     }
                 }
@@ -69,7 +70,7 @@ public class MapMgr : SingletonBehaviour<MapMgr>
 
         List<Cube> result = new List<Cube>();
         int currRange = -1;
-        while(currRange < range)
+        while (currRange < range)
         {
             Queue<Cube> secondQueue = new Queue<Cube>();
             while (queue.Count > 0)
@@ -103,7 +104,7 @@ public class MapMgr : SingletonBehaviour<MapMgr>
 
     public void StopBlinkAll()
     {
-        foreach(var cube in map.Cubes)
+        foreach (var cube in map.Cubes)
             cube.StopBlink();
     }
 
@@ -111,7 +112,7 @@ public class MapMgr : SingletonBehaviour<MapMgr>
     {
         float distance = Mathf.Infinity;
         Cube returnCube = null;
-        foreach(var cube in map.Cubes)
+        foreach (var cube in map.Cubes)
         {
             float cubeFromPos = Vector3.Distance(cube.transform.position, pos);
             if (distance > cubeFromPos)
