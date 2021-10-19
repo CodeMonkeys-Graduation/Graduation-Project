@@ -41,6 +41,8 @@ public class CinematicDialogMgr : SingletonBehaviour<CinematicDialogMgr>
     {
         Debug.Log("다이얼로그 종료, 씬 이동");
         SceneMgr.Instance.LoadScene(nextScene);
+
+        SaveManager.WatchedDialog(SceneMgr.Instance._currScene);
     }
 
     public void SetTalkData(TalkData talkData)

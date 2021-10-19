@@ -48,6 +48,23 @@ public static class SaveManager
 
         return null;
     }
+
+    public static void Progressing()
+    {
+        SaveData data = LoadData();
+        data.stageProgress++;
+        SaveData(data);
+    }
+
+    public static void WatchedDialog(SceneMgr.Scene dialog)
+    {
+        SaveData data = LoadData();
+
+        if (!data.dialogWatched.ContainsKey(dialog)) return;
+
+        data.dialogWatched[dialog] = true;
+        SaveData(data);
+    }
 }
 
 [Serializable]

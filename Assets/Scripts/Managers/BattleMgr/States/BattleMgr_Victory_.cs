@@ -12,6 +12,7 @@ public class BattleMgr_Victory_ : BattleMgr_State_
     public override void Enter()
     {
         TurnMgr.Instance.stateMachine.SetActive(false);
+        SaveManager.Progressing();
 
         UIMgr.Instance.SetUIComponent<VictoryPanel>(new VictoryPanelUIParam(SceneMgr.Instance.GetNextDialogScene()), true);
     }

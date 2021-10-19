@@ -18,10 +18,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Game/Battle1.unity
     guid: c82ca07844429f2468de4829e7b97184
   - enabled: 1
-    path: Assets/Scenes/Game/Battle2.unity
+    path: Assets/Scenes/Game/Battle3.unity
     guid: 2058588eab038f242ac4bdec21ee6833
   - enabled: 1
-    path: Assets/Scenes/Game/Battle3.unity
+    path: Assets/Scenes/Game/Battle2.unity
     guid: 96d85ddfb80c9c745a307168096b67cd
   - enabled: 1
     path: Assets/Scenes/Game/Battle4.unity

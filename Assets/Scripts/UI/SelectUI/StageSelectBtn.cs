@@ -14,6 +14,7 @@ public class StageSelectBtn : UIComponent
     void Awake()
     {
         button = GetComponent<Button>();
+        button.interactable = nextStageIdx <= SaveManager.LoadData().stageProgress;
     }
     public void TurnOnGlow()
     {
