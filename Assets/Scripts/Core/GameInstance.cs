@@ -65,9 +65,19 @@ public class GameInstance : SingletonBehaviour<GameInstance>
         foreach (var Mgr in ManagerPrefabs)
             Instantiate(Mgr.Value);
 
-        SceneManager.sceneLoaded += OnSceneLoaded;
         gameDB.Init();
     }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()    
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
 
     // Start is called before the first frame update
     void Start()
