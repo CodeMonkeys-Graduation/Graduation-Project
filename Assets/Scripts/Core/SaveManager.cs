@@ -9,8 +9,9 @@ public static class SaveManager
 {
     private static readonly string path = Path.Combine(Application.persistentDataPath, "SaveData.sav");
 
-    public static void SavePlayer(SaveData playerData)
+    public static void SaveData(SaveData playerData)
     {
+        Debug.Log($"SaveData: {path}");
         BinaryFormatter bf = new BinaryFormatter();
         FileStream stream = new FileStream(path, FileMode.Create);
 
@@ -20,13 +21,20 @@ public static class SaveManager
         stream.Close();
     }
 
+    public static void InitData()
+    {
+        Debug.Log("InitData");
+        SaveData(new SaveData());
+    }
+
     public static bool SaveDataExists()
     {
         return File.Exists(path + "/SaveData.sav");
     }
 
-    public static SaveData LoadPlayer()
+    public static SaveData LoadData()
     {
+        Debug.Log("LoadData");
         if (File.Exists(path))
         {
             BinaryFormatter bf = new BinaryFormatter();
@@ -45,5 +53,14 @@ public static class SaveManager
 [Serializable]
 public class SaveData
 {
+    public int stageProgress = 0;
+
+    public Dictionary<SceneMgr.Scene, bool> dialogWatched = new Dictionary<SceneMgr.Scene, bool>()
+    {
+        { SceneMgr.Scene.Dialog1, false },
+        { SceneMgr.Scene.Dialog2, false },
+        { SceneMgr.Scene.Dialog3, false },
+        { SceneMgr.Scene.Dialog5, false },
+    };
 
 }

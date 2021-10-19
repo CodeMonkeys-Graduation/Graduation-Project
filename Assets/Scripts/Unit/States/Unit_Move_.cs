@@ -32,6 +32,12 @@ public class Unit_Move_ : State<Unit>
         EventMgr.Instance.onUnitRunEnter.Invoke(new UnitStateEvent(owner));
         owner.anim.SetTrigger("ToRun");
 
+        if(owner.GetCube == _cubesToGo.Peek()) // 첫 큐브가 이미 유닛이 위치한 큐브라면
+        {
+            owner.transform.position = _cubesToGo.Peek().Platform.position;
+            _cubesToGo.Dequeue();
+        }
+
         _prevCube = owner.GetCube;
     }
 

@@ -13,7 +13,7 @@ public class BattleMgr_Victory_ : BattleMgr_State_
     {
         TurnMgr.Instance.stateMachine.SetActive(false);
 
-        UIMgr.Instance.SetUIComponent<VictoryPanel>(null, true);
+        UIMgr.Instance.SetUIComponent<VictoryPanel>(new VictoryPanelUIParam(SceneMgr.Instance.GetNextDialogScene()), true);
     }
 
     public override void Execute()

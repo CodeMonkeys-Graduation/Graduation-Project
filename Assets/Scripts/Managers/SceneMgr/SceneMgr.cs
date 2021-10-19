@@ -9,9 +9,9 @@ public class SceneMgr : SingletonBehaviour<SceneMgr>
 {
     [System.Serializable]
     public enum Scene // ToString()으로 검사하기때문에 Scene의 이름과 정확히 일치해야합니다. 
-        // 그리고 이미 있는 중간에 새로운 enum을 넣지말고 아래에 이어서 넣습니다. (중간에 넣으면 설정한 것들이 깨져버림...)
-    { 
-        Main, 
+                      // 그리고 이미 있는 중간에 새로운 enum을 넣지말고 아래에 이어서 넣습니다. (중간에 넣으면 설정한 것들이 깨져버림...)
+    {
+        Main,
         Dialog1,
         UnitSelection,
         Battle1,
@@ -37,6 +37,22 @@ public class SceneMgr : SingletonBehaviour<SceneMgr>
         { Scene.Dialog4.ToString(), Scene.Dialog4 },
         { Scene.Dialog5.ToString(), Scene.Dialog5 }
     };
+
+    private static Dictionary<Scene, Scene> BattleToDialogMap = new Dictionary<Scene, Scene>()
+    {
+        { Scene.Battle1, Scene.Dialog1 },
+        { Scene.Battle2, Scene.Dialog2 },
+        { Scene.Battle3, Scene.Dialog3 },
+        { Scene.Battle4, Scene.Dialog5 },
+    };
+
+    // currScene으로 검사하기때문에 무조건 Battle씬에서만 호출하도록 합니다.
+    public Scene GetNextDialogScene()
+    {
+        BattleToDialogMap.TryGetValue(_currScene, out Scene nextDialogScene);
+        return nextDialogScene;
+    }
+
 
     [SerializeField/*DEBUG*/] public Scene _currScene;
 
