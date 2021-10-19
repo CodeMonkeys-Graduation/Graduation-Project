@@ -424,6 +424,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lava Cave
       objectReference: {fileID: 0}
+    - target: {fileID: 2053856536748451034, guid: 43082b7ac7d57f94caebc225485886b7,
+        type: 3}
+      propertyPath: _isPlacable
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2473370345361264348, guid: 43082b7ac7d57f94caebc225485886b7,
         type: 3}
       propertyPath: _isPlacable
@@ -448,6 +453,16 @@ PrefabInstance:
         type: 3}
       propertyPath: _isPlacable
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4940829931125149821, guid: 43082b7ac7d57f94caebc225485886b7,
+        type: 3}
+      propertyPath: _isPlacable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5098354964314489156, guid: 43082b7ac7d57f94caebc225485886b7,
+        type: 3}
+      propertyPath: _isPlacable
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5981476143380083533, guid: 43082b7ac7d57f94caebc225485886b7,
         type: 3}

@@ -40,34 +40,7 @@ MonoBehaviour:
       _keyValues: 00000000010000000200000003000000
       _keys: 00000000010000000200000003000000
       _values: 0a0000000f0000001e0000001e000000
-  - playerGold: 70
-    unitPriceDictionary:
-      reorderableList:
-        canAdd: 1
-        canRemove: 1
-        draggable: 1
-        expandable: 1
-        multipleSelection: 1
-        isExpanded: 0
-        label:
-          m_Text: Keys
-          m_Image: {fileID: 0}
-          m_Tooltip: 
-        headerHeight: 18
-        footerHeight: 13
-        slideEasing: 0.15
-        verticalSpacing: 2
-        showDefaultBackground: 1
-        elementDisplayType: 0
-        elementNameProperty: 
-        elementNameOverride: 
-        elementIcon: {fileID: 0}
-      reqReferences: {fileID: 0}
-      isExpanded: 0
-      _keyValues: 00000000010000000200000003000000
-      _keys: 00000000010000000200000003000000
-      _values: 0a0000000f0000001e0000001e000000
-  - playerGold: 70
+  - playerGold: 100
     unitPriceDictionary:
       reorderableList:
         canAdd: 1
@@ -93,8 +66,8 @@ MonoBehaviour:
       isExpanded: 1
       _keyValues: 00000000010000000200000003000000
       _keys: 00000000010000000200000003000000
-      _values: 0a0000000f0000001e0000001e000000
-  - playerGold: 70
+      _values: 0a00000014000000190000001e000000
+  - playerGold: 120
     unitPriceDictionary:
       reorderableList:
         canAdd: 1
@@ -120,4 +93,31 @@ MonoBehaviour:
       isExpanded: 1
       _keyValues: 00000000010000000200000003000000
       _keys: 00000000010000000200000003000000
-      _values: 0a0000000f0000001e0000001e000000
+      _values: 0a000000140000001e0000001e000000
+  - playerGold: 150
+    unitPriceDictionary:
+      reorderableList:
+        canAdd: 1
+        canRemove: 1
+        draggable: 1
+        expandable: 1
+        multipleSelection: 1
+        isExpanded: 1
+        label:
+          m_Text: Keys
+          m_Image: {fileID: 0}
+          m_Tooltip: 
+        headerHeight: 18
+        footerHeight: 13
+        slideEasing: 0.15
+        verticalSpacing: 2
+        showDefaultBackground: 1
+        elementDisplayType: 0
+        elementNameProperty: 
+        elementNameOverride: 
+        elementIcon: {fileID: 0}
+      reqReferences: {fileID: 0}
+      isExpanded: 1
+      _keyValues: 00000000010000000200000003000000
+      _keys: 00000000010000000200000003000000
+      _values: 0f000000140000001e0000001e000000
