@@ -12,6 +12,7 @@ public class CinematicDialogMgr : SingletonBehaviour<CinematicDialogMgr>
 
     void Start()
     {
+        nextScene = SceneMgr.Instance._currScene == SceneMgr.Scene.Dialog3 ? SceneMgr.Scene.Dialog4 : SceneMgr.Scene.UnitSelection;
         dialogController = null;
         timelineController = FindObjectOfType<TimelineController>();
     }
@@ -25,7 +26,7 @@ public class CinematicDialogMgr : SingletonBehaviour<CinematicDialogMgr>
         dialogController.Play();
         timelineController.Pause();
     }
-    
+
     public void CinematicOn()
     {
         Debug.Log("다이얼로그 정지, 애니메이션 실행");
@@ -44,7 +45,7 @@ public class CinematicDialogMgr : SingletonBehaviour<CinematicDialogMgr>
 
     public void SetTalkData(TalkData talkData)
     {
-        if(dialogController == null) dialogController = (DialogCanvas)UIMgr.Instance.GetCurrentCanvas();
+        if (dialogController == null) dialogController = (DialogCanvas)UIMgr.Instance.GetCurrentCanvas();
 
         dialogController.SetTalk(talkData);
     }
